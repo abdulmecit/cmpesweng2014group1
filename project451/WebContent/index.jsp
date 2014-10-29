@@ -43,7 +43,7 @@
 			  <div class="form-group">
 			    <label for="inputName" class="col-sm-2 control-label">Enter a name</label>
 			    <div class="col-sm-6">
-			      <input type="text" id="inputName" name="inputName" size="45" maxlength="30">
+			      <input type="text" class="form-control" id="inputName" name="inputName" style="width:80%" maxlength="30">
 			    </div>
 			  </div>
 			  <div class="form-group">
@@ -95,7 +95,7 @@
 		$.ajax({
 			  type: "POST",
 			  url: "InputNameServlet",
-			  data: { name: $( "#inputName" ).val(), fnc: 0}
+			  data: { name: $( "#inputName" ).val()}
 			})
 			  .done(function(msg) {
 				  document.getElementById('errorMsg').innerHTML = msg;
