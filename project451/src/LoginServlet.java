@@ -25,19 +25,19 @@ public class LoginServlet extends HttpServlet {
         //Setup response message
         response.setContentType("text/html; charset=UTF-8");
                 
-        String name = request.getParameter("username");
+        String email = request.getParameter("email");
         String pwd = request.getParameter("password");
         
         PrintWriter out = response.getWriter();
 		LoginManager LogMan = new LoginManager();
         
-        if(LogMan.checkUser(name, pwd)){
+        if(LogMan.checkUser(email, pwd)){
             RequestDispatcher rs = request.getRequestDispatcher("loginsuccess.jsp");
             rs.forward(request, response);
         }
         else{
            out.println("Username or Password is Incorrect");
-           RequestDispatcher rs = request.getRequestDispatcher("login.jsp");
+           RequestDispatcher rs = request.getRequestDispatcher("loginsuccess.jsp");
            rs.include(request, response);
         }
 	}
