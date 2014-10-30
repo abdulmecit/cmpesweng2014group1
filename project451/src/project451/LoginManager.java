@@ -2,6 +2,7 @@ package project451;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -49,6 +50,26 @@ public class LoginManager {
 			return "Database Closing Connection Error: " + e.toString();
 		}  
 		return "Success";
+	}
+	
+	public boolean checkUser(String name, String pwd){
+		
+		boolean result = false;
+		
+		try{
+	    	Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://titan.cmpe.boun.edu.tr:3306/database1", "project1", "2TJZD32R");
+			PreparedStatement ps = con.prepareStatement("SELECT * FROM database1.Users WHERE username=? and password=?");
+	        ps.setString(1, name);
+	        ps.setString(2, pwd);
+	        ResultSet rs = ps.executeQuery();
+	        result = rs.next();
+			con.close();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return result;
 	}
 	
 }
