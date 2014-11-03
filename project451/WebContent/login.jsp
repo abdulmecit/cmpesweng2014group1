@@ -30,12 +30,10 @@
         <div class="navbar-header">
           <a class="navbar-brand" href=".">Nutty Test</a>
         </div>
-
       </div><!-- /.container -->
     </nav>
 
     <div class="container">
-
       <div class="row">
         <div class="col-md-offset-3 col-md-6 well">
           <h2>Login</h2>
@@ -54,7 +52,7 @@
 			  </div>
 			  <div class="form-group">
 			    <div class="col-sm-offset-2 col-sm-10">
-			      <button type="submit" class="btn btn-primary" id="LoginButton">Login</button>
+			      <button type="submit" class="btn btn-primary" id="loginButton">Login</button>
 			      <button type="button" class="btn btn-default" id="registerButton">Register</button>
 			    </div>
 			  </div>
@@ -63,8 +61,9 @@
 			</form>
         </div>
       </div>
+    </div>  
+    
     <script>
-	
     $("#registerButton").on('click', function (event) {
     	event.preventDefault();
     	window.location.href = "signup.jsp";
@@ -73,12 +72,17 @@
     $("#loginButton").on('click', function (event) {
     	event.preventDefault();
     	$.ajax({
-			  type: "POST",
-			  url: "LoginServlet",
-			  data: { email: $( "#inputEmail" ).val(), password: $( "inputPassword" ).val()}
-			})
-  	});	
-
+			type: "POST",
+			url: "LoginServlet",
+			data: { email: $( "#inputEmail" ).val(), password: $( "#inputPassword" ).val()}
+		})
+		.done(function(msg) {		
+			if(msg.lastIndexOf("You've", 0) === 0)	//login success
+				window.location.assign("loginsuccess.jsp");
+			else
+				document.getElementById('errorMsg').innerHTML = msg;
+		});
+    });
 	</script>
 
   </body>

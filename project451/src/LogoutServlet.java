@@ -10,10 +10,10 @@ import javax.servlet.http.HttpSession;
 import project451.LoginManager;
 
 /**
- * Servlet implementation class LoginServlet
+ * Servlet implementation class LogoutServlet
  */
-@WebServlet("/LoginServlet")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/LogoutServlet")
+public class LogoutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	/**
@@ -22,14 +22,10 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
         response.setContentType("text/plain; charset=UTF-8");         
-        String email = request.getParameter("email");
-        String pwd = request.getParameter("password");  
-		LoginManager LogMan = new LoginManager();
-  		String msg = LogMan.checkUser(email, pwd); 
   		
-  		HttpSession session = request.getSession();
-		session.setAttribute("login_message", msg);
+  		HttpSession session = request.getSession(false);
+		session.invalidate();
 		
-		response.getWriter().write(msg);
+		response.getWriter().write("You've succesfully logged out.");
 	}
 }
