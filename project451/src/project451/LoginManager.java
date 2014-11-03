@@ -9,40 +9,58 @@ import java.sql.Statement;
 
 public class LoginManager {
 
-	public String addUser(String email, String password){
+	public String addUser(String email, String password, String name, String surname, String birthday, int gender){
 		Connection con;
-        Statement stmt;
         try{
         	Class.forName("com.mysql.jdbc.Driver");
         	con = DriverManager.getConnection("jdbc:mysql://titan.cmpe.boun.edu.tr:3306/database1", "project1", "2TJZD32R");
-        	stmt = con.createStatement();
         }
         catch(Exception e){
         	return "Database Opening Connection Error: " + e.toString();	
         }
+		PreparedStatement ps;
+		try{
+	    	ps = con.prepareStatement("SELECT name FROM database1.User WHERE email=?");
+	        ps.setString(1, email);
+		}
+		catch(Exception e){
+			return "Query Building Error: " + e.toString();	
+		}
         ResultSet rs;
         int count;
         try {
-			rs = stmt.executeQuery("SELECT * FROM database1.Users WHERE email='" + email + "'");
+			rs = ps.executeQuery();
 			rs.last();
 			count = rs.getRow();
 			rs.beforeFirst();
-        } catch (SQLException e1) {
-			// TODO Auto-generated catch block
+        } 
+        catch (SQLException e1){
 			return "Database Error: " + e1.toString();
 		}       
         if(count!=0){
         	return "This email is already registered!";
         }
-        String username="deneme";
-        String query = "INSERT INTO database1.Users (email, password, username) VALUES ('" + email + "', '" + password + "', '" + username + "')";
+        int isBanned = 0;
 		try{
-		stmt.executeUpdate(query);
+	    	ps = con.prepareStatement("INSERT INTO database1.User (email, password, name, surname, birthday, gender, isBanned) "
+	    			+ "VALUES ('" + email + "', '" + password + "', '" + name + "', '" + surname + "', STR_TO_DATE('" + birthday + "', '%d/%m/%Y'), '" + gender + "', '" + isBanned + "')");
+	        ps.setString(1, email);
+	        ps.setString(2, password);
+	        ps.setString(3, name);
+	        ps.setString(4, surname);
+	        ps.setString(5, birthday);
+	        ps.setInt(6, gender);
+	        ps.setInt(7, isBanned);
+		}
+		catch(Exception e){
+			return "Query Building Error: " + e.toString();	
+		}
+		try{
+			ps.executeUpdate();
 		}
 		catch(Exception e){
 			return "Database Insertion Error: " + e.toString();
 		}  
-		//Close all
 		try {
 			con.close();
 		} 

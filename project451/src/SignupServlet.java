@@ -32,11 +32,23 @@ public class SignupServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		 String email = request.getParameter("email");
 		 String password = request.getParameter("password");
+		 String name = request.getParameter("name");
+		 String surname = request.getParameter("surname");
+		 String birthday = request.getParameter("birthday");
+		 String gndr = request.getParameter("gender");
+		 
+		 int gender;
+		 if(gndr.equalsIgnoreCase("male")){
+			 gender = 0;
+		 }
+		 else 
+			 gender = 1;
+		 
 		 response.setContentType("text/plain");
 	     response.setCharacterEncoding("UTF-8");
 		 LoginManager LogMan=new LoginManager();
-		 String res=LogMan.addUser(email, password);
-		 response.getWriter().write(res);	 
+		 String res=LogMan.addUser(email, password, name, surname, birthday, gender);
+		 response.getWriter().write(res); 
 	}
 
 }
