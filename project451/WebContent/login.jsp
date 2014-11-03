@@ -30,15 +30,12 @@
         <div class="navbar-header">
           <a class="navbar-brand" href=".">Nutty Test</a>
         </div>
-<<<<<<< .merge_file_a03860
 		  <ul class="nav navbar-nav navbar-right">
 		    <li><a href="login.jsp">Login</a></li>
 		    <li><a href="signup.jsp">Sign Up</a></li>
 		  </ul>
         
 
-=======
->>>>>>> .merge_file_a05304
       </div><!-- /.container -->
     </nav>
 
@@ -62,11 +59,6 @@
 			  <div class="form-group">
 			    <div class="col-sm-offset-2 col-sm-10">
 			      <button type="submit" class="btn btn-primary" id="loginButton">Login</button>
-<<<<<<< .merge_file_a03860
-			      <!-- <button type="button" class="btn btn-default" id="registerButton">Register</button> -->
-=======
-			      <button type="button" class="btn btn-default" id="registerButton">Register</button>
->>>>>>> .merge_file_a05304
 			    </div>
 			  </div>
 			  <br>
@@ -77,10 +69,9 @@
     </div>  
     
     <script>
-<<<<<<< .merge_file_a03860
+
 	/* 
-=======
->>>>>>> .merge_file_a05304
+
     $("#registerButton").on('click', function (event) {
     	event.preventDefault();
     	window.location.href = "signup.jsp";
@@ -89,7 +80,6 @@
     $("#loginButton").on('click', function (event) {
     	event.preventDefault(); 
     	$.ajax({
-<<<<<<< .merge_file_a03860
 			  type: "POST",
 			  url: "LoginServlet",
 			  data: { 
@@ -103,20 +93,6 @@
 					  alert("Success");
 			});
   	});	
-
-=======
-			type: "POST",
-			url: "LoginServlet",
-			data: { email: $( "#inputEmail" ).val(), password: $( "#inputPassword" ).val()}
-		})
-		.done(function(msg) {		
-			if(msg.lastIndexOf("You've", 0) === 0)	//login success
-				window.location.assign("loginsuccess.jsp");
-			else
-				document.getElementById('errorMsg').innerHTML = msg;
-		});
-    });
->>>>>>> .merge_file_a05304
 	</script>
 
   </body>

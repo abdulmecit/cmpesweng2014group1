@@ -109,6 +109,7 @@
       });
       
       $("#registerButton").on('click', function (event) {
+    	  alert($( 'input:radio[name=sex]:checked' ).val());
     	if(!passwordSame){
     		alert("Passwords are not the same!");
     	}else{
@@ -117,9 +118,12 @@
 	  			  type: "POST",
 	  			  url: "SignUpServlet",
 	  			  data: { 
+	  				  name:$( "#inputName" ).val(),
+	  				  surname:$( "#inputSurname" ).val(),
 	  				  email: $( "#inputEmail" ).val(), 
 	  				  password: $( "#inputPassword1" ).val(),
-	  				  birthday: $( "#day" ).val() + "/" + $( "#month" ).val() + "/" + $( "#year" ).val()
+	  				  birthday: $( "#day" ).val() + "." + $( "#month" ).val() + "." + $( "#year" ).val(),
+	  				  gender: $( 'input:radio[name=sex]:checked' ).val()
 	  				  }
 	  			})
 	  			.done(function(msg) {
