@@ -30,6 +30,11 @@
         <div class="navbar-header">
           <a class="navbar-brand" href=".">Nutty Test</a>
         </div>
+		  <ul class="nav navbar-nav navbar-right">
+		    <li><a href="login.jsp">Login</a></li>
+		    <li><a href="signup.jsp">Sign Up</a></li>
+		  </ul>
+        
 
       </div><!-- /.container -->
     </nav>
@@ -41,21 +46,21 @@
           <h2>Login</h2>
           <form class="form-horizontal" action="" method="POST">
 			  <div class="form-group">
-			    <label for="inputEmail" class="col-sm-2 control-label">E-mail:</label>
+			    <label for="inputEmail" class="col-sm-4 control-label">E-mail:</label>
 			    <div class="col-sm-6">
-			      <input type="email" class="form-control" id="inputEmail" name="inputEmail" style="width:80%" maxlength="30">
+			      <input type="email" class="form-control" id="inputEmail" name="inputEmail" style="width:80%" maxlength="30" required>
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="inputPassword" class="col-sm-2 control-label">Password:</label>
+			    <label for="inputPassword" class="col-sm-4 control-label">Password:</label>
 			    <div class="col-sm-6">
-			      <input type="password" class="form-control" id="inputPassword" name="inputPassword" style="width:80%" maxlength="30">
+			      <input type="password" class="form-control" id="inputPassword" name="inputPassword" style="width:80%" maxlength="30" required>
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <div class="col-sm-offset-2 col-sm-10">
-			      <button type="submit" class="btn btn-primary" id="LoginButton">Login</button>
-			      <button type="button" class="btn btn-default" id="registerButton">Register</button>
+			      <button type="submit" class="btn btn-primary" id="loginButton">Login</button>
+			      <!-- <button type="button" class="btn btn-default" id="registerButton">Register</button> -->
 			    </div>
 			  </div>
 			  <br>
@@ -64,19 +69,27 @@
         </div>
       </div>
     <script>
-	
+	/* 
     $("#registerButton").on('click', function (event) {
     	event.preventDefault();
     	window.location.href = "signup.jsp";
-  	});	
+  	}); */	
 
     $("#loginButton").on('click', function (event) {
-    	event.preventDefault();
+    	event.preventDefault(); 
     	$.ajax({
 			  type: "POST",
 			  url: "LoginServlet",
-			  data: { email: $( "#inputEmail" ).val(), password: $( "inputPassword" ).val()}
+			  data: { 
+				  email: $( "#inputEmail" ).val(), 
+				  password: $( "#inputPassword" ).val()
+				  }
 			})
+			.done(function(msg) {
+				  document.getElementById('errorMsg').innerHTML = msg;
+				  if(msg != "Success!") 
+					  alert("Success");
+			});
   	});	
 
 	</script>

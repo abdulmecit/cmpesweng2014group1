@@ -30,6 +30,11 @@
         <div class="navbar-header">
           <a class="navbar-brand" href=".">Nutty Test</a>
         </div>
+		  <ul class="nav navbar-nav navbar-right">
+		    <li><a href="login.jsp">Login</a></li>
+		    <li><a href="signup.jsp">Sign Up</a></li>
+		  </ul>
+        
 
       </div><!-- /.container -->
     </nav>
