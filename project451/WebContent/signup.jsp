@@ -54,25 +54,25 @@
 			  <div class="form-group">
 			    <label for="inputSurname" class="col-sm-4 control-label">Surname:</label>
 			    <div class="col-sm-6">
-			      <input type="text" class="form-control" id="inputSurname" name="inputSurname" style="width:80%" maxlength="30">
+			      <input type="text" class="form-control" id="inputSurname" name="inputSurname" style="width:80%" maxlength="30" required>
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="inputEmail" class="col-sm-4 control-label">E-mail:</label>
 			    <div class="col-sm-6">
-			      <input type="email" class="form-control" id="inputEmail" name="inputEmail" style="width:80%" maxlength="30">
+			      <input type="email" class="form-control" id="inputEmail" name="inputEmail" style="width:80%" maxlength="30" required>
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="inputPassword" class="col-sm-4 control-label">Password:</label>
 			    <div class="col-sm-6">
-			      <input type="password" class="form-control" id="inputPassword1" name="inputPassword1" style="width:80%" maxlength="30">
+			      <input type="password" class="form-control" id="inputPassword1" name="inputPassword1" style="width:80%" maxlength="30" required>
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="inputPassword" class="col-sm-4 control-label">Confirm Password:</label>
 			    <div class="col-sm-6">
-			      <input type="password" class="form-control" id="inputPassword2" name="inputPassword2" style="width:80%" maxlength="30">
+			      <input type="password" class="form-control" id="inputPassword2" name="inputPassword2" style="width:80%" maxlength="30" required>
 			    </div>
 			  </div>
 			  <div class="form-group">
@@ -88,7 +88,7 @@
 			  </div>
 			  <div class="form-group">
 			    <div class="col-sm-offset-2 col-sm-10">
-			      <button type="submit" class="btn btn-primary" id="registerButton">Sign Up</button>
+			      <button type="submit" class="btn btn-primary" id="registerButton" disabled>Sign Up</button>
 			    </div>
 			  </div>
 			  <br>
@@ -101,15 +101,56 @@
       $("#inputPassword2").keyup(function (event) {
     	  if($( "#inputPassword1" ).val() != $( "#inputPassword2" ).val()){
     	  	$("#inputPassword2").css("background-color","pink");
+    	  	$('#registerButton').attr("disabled", true);
     	  	passwordSame = false;
     	  }else{
     		  $("#inputPassword2").css("background-color","lightgreen");
     		  passwordSame = true;
+    		  if($("#inputName").val().length != 0 && $("#inputSurname").val().length != 0 && $("#inputEmail").val().length != 0 && $("#inputPassword1").val().length != 0){
+    		  	$('#registerButton').attr("disabled", false);
+    		  }	
     	  }
       });
       
+      $("#inputPassword1").keyup(function (event) {
+    	  if($( "#inputPassword1" ).val() != $( "#inputPassword2" ).val()){
+      	  	$("#inputPassword2").css("background-color","pink");
+      	  	$('#registerButton').attr("disabled", true);
+      	  	passwordSame = false;
+      	  }else{
+      		  $("#inputPassword2").css("background-color","lightgreen");
+      		  passwordSame = true;
+      		  if($("#inputName").val().length != 0 && $("#inputSurname").val().length != 0 && $("#inputEmail").val().length != 0 && $("#inputPassword1").val().length != 0){
+      		  	$('#registerButton').attr("disabled", false);
+      		  }	
+      	  }
+      });
+      
+      $("#inputName").keyup(function (event) {
+    	  if(passwordSame && $("#inputName").val().length != 0 && $("#inputSurname").val().length != 0 && $("#inputEmail").val().length != 0 && $("#inputPassword1").val().length != 0){
+  		  	$('#registerButton').attr("disabled", false);
+  		  }else{
+  			$('#registerButton').attr("disabled", true);
+  		  }
+      });
+      
+      $("#inputSurname").keyup(function (event) {
+    	  if(passwordSame && $("#inputName").val().length != 0 && $("#inputSurname").val().length != 0 && $("#inputEmail").val().length != 0 && $("#inputPassword1").val().length != 0){
+  		  	$('#registerButton').attr("disabled", false);
+  		  }else{
+    			$('#registerButton').attr("disabled", true);
+  		  }
+      });
+      
+      $("#inputEmail").keyup(function (event) {
+    	  if(passwordSame && $("#inputName").val().length != 0 && $("#inputSurname").val().length != 0 && $("#inputEmail").val().length != 0 && $("#inputPassword1").val().length != 0){
+  		  	$('#registerButton').attr("disabled", false);
+  		  }else{
+    			$('#registerButton').attr("disabled", true);
+  		  }
+      });
+      
       $("#registerButton").on('click', function (event) {
-    	  alert($( 'input:radio[name=sex]:checked' ).val());
     	if(!passwordSame){
     		alert("Passwords are not the same!");
     	}else{
@@ -129,7 +170,9 @@
 	  			.done(function(msg) {
 	  				  document.getElementById('errorMsg').innerHTML = msg;
 	  				  if(msg != "Success!") 
-	  					  alert("Success");
+	  					  alert("Some problem");
+	  				  else
+	  					  alert("success");
 	  			});
     		}
     	});		

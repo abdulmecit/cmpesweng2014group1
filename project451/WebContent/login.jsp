@@ -88,9 +88,10 @@
 				  }
 			})
 			.done(function(msg) {
-				  document.getElementById('errorMsg').innerHTML = msg;
-				  if(msg != "Success!") 
-					  alert("Success");
+				if(msg.lastIndexOf("You've", 0) === 0)	//login success		
+					window.location.assign("loginsuccess.jsp");		
+				else		
+					document.getElementById('errorMsg').innerHTML = msg;
 			});
   	});	
 	</script>
