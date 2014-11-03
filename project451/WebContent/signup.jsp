@@ -157,13 +157,13 @@
 	      	event.preventDefault(); 
 	      	$.ajax({
 	  			  type: "POST",
-	  			  url: "SignUpServlet",
+	  			  url: "SignupServlet",
 	  			  data: { 
 	  				  name:$( "#inputName" ).val(),
 	  				  surname:$( "#inputSurname" ).val(),
 	  				  email: $( "#inputEmail" ).val(), 
 	  				  password: $( "#inputPassword1" ).val(),
-	  				  birthday: $( "#day" ).val() + "." + $( "#month" ).val() + "." + $( "#year" ).val(),
+	  				  birthday: $( "#year" ).val() + "-" + $( "#month" ).val() + "-" + $( "#day" ).val(),
 	  				  gender: $( 'input:radio[name=sex]:checked' ).val()
 	  				  }
 	  			})

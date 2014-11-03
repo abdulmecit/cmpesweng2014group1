@@ -1,6 +1,7 @@
 package project451;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -42,13 +43,13 @@ public class LoginManager {
         }
         int isBanned = 0;
 		try{
-	    	ps = con.prepareStatement("INSERT INTO database1.User (email, password, name, surname, birthday, gender, isBanned) "
-	    			+ "VALUES ('" + email + "', '" + password + "', '" + name + "', '" + surname + "', STR_TO_DATE('" + birthday + "', '%d/%m/%Y'), '" + gender + "', '" + isBanned + "')");
+	    	ps = con.prepareStatement("INSERT INTO database1.User (email, password, name, surname, birthday, gender, isBanned) VALUES "
+	    			+ "(?,?,?,?,?,?,?)");
 	        ps.setString(1, email);
 	        ps.setString(2, password);
 	        ps.setString(3, name);
 	        ps.setString(4, surname);
-	        ps.setString(5, birthday);
+	        ps.setDate(5, Date.valueOf(birthday));
 	        ps.setInt(6, gender);
 	        ps.setInt(7, isBanned);
 		}
@@ -67,7 +68,7 @@ public class LoginManager {
 		catch (Exception e) {
 			return "Database Closing Connection Error: " + e.toString();
 		}  
-		return "Success";
+		return "Success!";
 	}
 	
 	public String checkUser(String email, String pwd){
