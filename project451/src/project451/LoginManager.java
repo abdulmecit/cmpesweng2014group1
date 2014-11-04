@@ -6,7 +6,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class LoginManager {
 
@@ -41,12 +40,20 @@ public class LoginManager {
         if(count!=0){
         	return "This email is already registered!";
         }
+        PasswordManager PassMan = new PasswordManager();
+        String hashedSaltedPass = "";
+        try{
+        	hashedSaltedPass = PassMan.createHash(password);
+        }
+        catch(Exception e){
+			return "Password Hashing Error: " + e.toString();	
+        }
         int isBanned = 0;
 		try{
 	    	ps = con.prepareStatement("INSERT INTO database1.User (email, password, name, surname, birthday, gender, isBanned) VALUES "
 	    			+ "(?,?,?,?,?,?,?)");
 	        ps.setString(1, email);
-	        ps.setString(2, password);
+	        ps.setString(2, hashedSaltedPass);
 	        ps.setString(3, name);
 	        ps.setString(4, surname);
 	        ps.setDate(5, Date.valueOf(birthday));
@@ -83,40 +90,49 @@ public class LoginManager {
         }
 		PreparedStatement ps;
 		try{
-	    	ps = con.prepareStatement("SELECT name FROM database1.User WHERE email=? and password=?");
+	    	ps = con.prepareStatement("SELECT password, name FROM database1.User WHERE email=?");
 	        ps.setString(1, email);
-	        ps.setString(2, pwd);
 		}
 		catch(Exception e){
 			return "Query Building Error: " + e.toString();	
 		}
-        ResultSet rs;
-        String username = "";
+		ResultSet rs;
         int count;
-        try {
+		try{
         	rs = ps.executeQuery();
 			rs.last();
 			count = rs.getRow();
-        }
-        catch (Exception e) {
-			return "Query Running Error: " + e.toString();
-		}       
+		}
+		catch(Exception e){
+			return "Query Running Error: " + e.toString();	
+		}
         if(count > 1){
-        	return "Multiple users with same email and password!"; //Should never reach here
+        	return "Multiple users with same email!"; //Should never reach here
         }
         else if(count == 0){
         	return "Invalid email address or password! Please try again.";
         }
-        else{ 
-        	try{
-	    		rs.beforeFirst();
-	    		if(rs.next()){
-	    			username = rs.getString(1);
-	    		}
-        	}
-        	catch (Exception e){
-        		return "Result Processing Error: " + e.toString();
-        	}
+		String hashedSaltedPass = "";
+		String username = "";
+		try{
+			rs.beforeFirst();
+			if(rs.next())
+				hashedSaltedPass = rs.getString(1);
+				username = rs.getString(2);
+		}
+		catch(Exception e){
+    		return "Result Processing Error: " + e.toString();
+		}
+        PasswordManager PassMan = new PasswordManager();
+        boolean isValid = false;
+        try{
+        	isValid = PassMan.validatePassword(pwd, hashedSaltedPass);
+        }
+        catch(Exception e){
+			return "Password Hash Validation Error: " + e.toString();	
+        }
+        if(!isValid){
+        	return "Invalid email address or password! Please try again.";
         }
 		try {
 			con.close();
@@ -124,6 +140,8 @@ public class LoginManager {
 		catch (Exception e) {
 			return "Database Closing Connection Error: " + e.toString();
 		}  
+		if(username == null)
+			return "You've successfully logged in.";
 		return "You've successfully logged in, " + username;
 	}
 	
