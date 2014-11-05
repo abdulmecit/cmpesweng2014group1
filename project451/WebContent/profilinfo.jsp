@@ -28,7 +28,7 @@ body {
 }
 
 #section {
-	width: 240px;
+	width: 280px;
 	height: 150px;
 	float: left;
 	padding: 10px;
@@ -38,7 +38,7 @@ body {
 
 #sec2 {
 	width: 1000px;
-	height: 300px;
+	height: 250px;
 	float: none;
 	padding: 10px;
 	margin-right: 10px;
@@ -183,7 +183,19 @@ body {
 			</div>
 			<input type="submit" value="submit" />
 		</form>
+		
+		
+		<div id="section">
+		<form name="Others" onsubmit="checkBoxValidation()">
+			<h4>Other Preferences</h4>
+			<input type="text" id="OtherPreferences" name="OtherPreferences" /> <input
+				type="submit" value="submit" />
+		</form>
+		</div>
 	</div>
+
+
+
 
 </body>
 </html>
