@@ -90,7 +90,7 @@ public class LoginManager {
         }
 		PreparedStatement ps;
 		try{
-	    	ps = con.prepareStatement("SELECT password, name, user_id FROM database1.User WHERE email=?");
+	    	ps = con.prepareStatement("SELECT password, user_id FROM database1.User WHERE email=?");
 	        ps.setString(1, email);
 		}
 		catch(Exception e){
@@ -113,14 +113,12 @@ public class LoginManager {
         	return "Invalid email address or password! Please try again.";
         }
 		String hashedSaltedPass = "";
-		String username = "";
 		int user_id=0;
 		try{
 			rs.beforeFirst();
 			if(rs.next())
 				hashedSaltedPass = rs.getString(1);
-				username = rs.getString(2);
-				user_id=rs.getInt(3);
+				user_id=rs.getInt(2);
 		}
 		catch(Exception e){
     		return "Result Processing Error: " + e.toString();

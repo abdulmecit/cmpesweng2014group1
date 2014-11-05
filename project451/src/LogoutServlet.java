@@ -24,7 +24,8 @@ public class LogoutServlet extends HttpServlet {
         response.setContentType("text/plain; charset=UTF-8");         
   		
   		HttpSession session = request.getSession(false);
-		session.invalidate();
+		session.setAttribute("login_message", null);
+		session.setAttribute("user_id", null);
 		
 		response.getWriter().write("You've succesfully logged out.");
 	}

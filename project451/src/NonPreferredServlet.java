@@ -1,3 +1,5 @@
+
+
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -10,36 +12,26 @@ import javax.servlet.http.HttpSession;
 import project451.FoodSelectionManager;
 
 /**
- * Servlet implementation class FoodSelectionServlet
+ * Servlet implementation class NonPreferredServlet
  */
-@WebServlet("/FoodSelectionServlet")
-public class FoodSelectionServlet extends HttpServlet {
+@WebServlet("/NonPreferredServlet")
+public class NonPreferredServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public FoodSelectionServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String foodIntolerance[] = request.getParameterValues("foodIntolerance"); 
-		String healthCondition[] = request.getParameterValues("healthCondition"); 
-		String nonPreferred[]= request.getParameterValues("nonPreferred"); 
+		
+		String nonPreferred = request.getParameter("nonPreferred"); 
 		
 		response.setContentType("text/plain");
 	    response.setCharacterEncoding("UTF-8");
 	    FoodSelectionManager foodSel=new FoodSelectionManager();
 	    HttpSession session = request.getSession(false);
 	    int user_id=Integer.valueOf(session.getAttribute("user_id").toString());
-	    String res=foodSel.addSelections(user_id,foodIntolerance, healthCondition, nonPreferred);    
-	    
+	    String res=foodSel.addNonPreferred(user_id, nonPreferred); 
 	}
 
 }

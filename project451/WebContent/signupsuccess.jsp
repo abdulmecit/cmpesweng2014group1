@@ -45,7 +45,9 @@
    <div class="container">
       <div class="row">
         <div class="col-md-offset-3 col-md-6 well">
-			<p>${sessionScope.login_message}</p>
+			<p>You've successfully signed up. Please log in with your email address and password.</p>
+			<br>
+			<p>Click <a href="login.jsp">here</a> to log in.<p>
 			<br>
 			<p>Click <a href=".">here</a> to return to the main page.<p>
 		</div>

@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>NuttyTest</title>
+    <title>Nutty</title>
 
     <!-- Bootstrap core CSS -->
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -28,11 +28,15 @@
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href=".">Nutty Test</a>
+          <a class="navbar-brand" href=".">Nutty</a>
         </div>
 		  <ul class="nav navbar-nav navbar-right">
-		    <li><a href="login.jsp">Login</a></li>
-		    <li><a href="signup.jsp">Sign Up</a></li>
+		    <% 	if (session.getAttribute("user_id") == null || Integer.valueOf(session.getAttribute("user_id").toString()) == 0){ %>		  
+	    		<li><a href="login.jsp">Login</a></li>
+	    		<li><a href="signup.jsp">Sign Up</a></li>
+	    	<%} else {%>
+	    		<li><a href="logout.jsp">Logout</a></li>
+	    	<%}%>	    				    
 		  </ul>
         
 
@@ -48,7 +52,7 @@
 			  <div class="form-group">
 			    <label for="inputName" class="col-sm-4 control-label">Name:</label>
 			    <div class="col-sm-6">
-			      <input type="text" class="form-control" id="inputName" name="inputName" style="width:80%" maxlength="30">
+			      <input type="text" class="form-control" id="inputName" name="inputName" style="width:80%" maxlength="30" required>
 			    </div>
 			  </div>
 			  <div class="form-group">
@@ -168,11 +172,9 @@
 	  				  }
 	  			})
 	  			.done(function(msg) {
-	  				  document.getElementById('errorMsg').innerHTML = msg;
-	  				  if(msg != "Success!") 
-	  					  alert("Some problem");
-	  				  else
-	  					  alert("success");
+					document.getElementById('errorMsg').innerHTML = msg;
+					if(msg.lastIndexOf("Succ", 0) === 0)	//signup success		
+						window.location.assign("signupsuccess.jsp");	
 	  			});
     		}
     	});		

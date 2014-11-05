@@ -37,7 +37,8 @@
 	    	<%} else {%>
 	    		<li><a href="logout.jsp">Logout</a></li>
 	    	<%}%>	    				    
-		  </ul>  
+		  </ul>
+        
 
       </div><!-- /.container -->
     </nav>
@@ -45,11 +46,22 @@
    <div class="container">
       <div class="row">
         <div class="col-md-offset-3 col-md-6 well">
-			<p>${sessionScope.login_message}</p>
+			<p>You have successfully logged out.</p>
 			<br>
 			<p>Click <a href=".">here</a> to return to the main page.<p>
 		</div>
 	 </div>
    </div>
+   
+   <script>
+	$(document).ready( function (event) {
+		event.preventDefault();
+		$.ajax({
+			  type: "POST",
+			  url: "LogoutServlet",
+			})
+	});
+   </script>
 </body>
 </html>
+

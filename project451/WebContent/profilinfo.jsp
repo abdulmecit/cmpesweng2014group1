@@ -9,7 +9,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>NuttyTest</title>
+<title>Nutty</title>
 
 <!-- Bootstrap core CSS -->
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -52,18 +52,23 @@ body {
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 	<div class="container">
 		<div class="navbar-header">
-			<a class="navbar-brand" href=".">Nutty Test</a>
+			<a class="navbar-brand" href=".">Nutty</a>
 		</div>
-		<ul class="nav navbar-nav navbar-right">
-			<li><a href="">Settings</a></li>
-			<li><a href="">Logout</a></li>
-		</ul>
+		  <ul class="nav navbar-nav navbar-right">
+		  		<li>Settings</li>
+		    <% 	if (session.getAttribute("user_id") == null || Integer.valueOf(session.getAttribute("user_id").toString()) == 0){ %>		  
+	    		<li><a href="login.jsp">Login</a></li>
+	    		<li><a href="signup.jsp">Sign Up</a></li>
+	    	<%} else {%>
+	    		<li><a href="logout.jsp">Logout</a></li>
+	    	<%}%>	    				    
+		  </ul>
 	</div>
 	</nav>
 
 
 	<div id="sec2">
-		<form name="foodForm" onsubmit="checkBoxValidation()">
+		<form name="foodForm" method="post" action="FoodIntoleranceServlet">
 			<h4>Select Your Food Intolerance and Allergies</h4>
 
 			<div id="section">
@@ -140,13 +145,13 @@ body {
 				</p>
 			</div>
 
-			<input type="submit" value="submit" />
+			<input type="submit" value="Submit" />
 		</form>
 	</div>
 
 
 	<div id="sec2">
-		<form name="DiseaseForm" onsubmit="checkBoxValidation()">
+		<form name="DiseaseForm" method="post" action="HealthConditionServlet">
 			<h4>Select Your Diseases</h4>
 			<div id="section">
 				<p>
@@ -181,15 +186,15 @@ body {
 					High Blood Pressure
 				</p>
 			</div>
-			<input type="submit" value="submit" />
+			<input type="submit" value="Submit" />
 		</form>
 		
 		
 		<div id="section">
-		<form name="Others" onsubmit="checkBoxValidation()">
-			<h4>Other Preferences</h4>
+		<form name="Others" method="post" action="NonPreferredServlet">
+			<h4>Other Non-Preferred Ingredients</h4>
 			<input type="text" id="OtherPreferences" name="OtherPreferences" /> <input
-				type="submit" value="submit" />
+				type="submit" value="Add" />
 		</form>
 		</div>
 	</div>
