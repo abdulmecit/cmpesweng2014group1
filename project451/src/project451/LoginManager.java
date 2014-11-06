@@ -9,7 +9,8 @@ import java.sql.SQLException;
 
 public class LoginManager {
 
-	public String addUser(String email, String password, String name, String surname, String birthday, int gender){
+	@SuppressWarnings("resource")
+	public String addUser(String email, String password, String name, String surname, String birthday, String gender){
 		Connection con;
         try{
         	Class.forName("com.mysql.jdbc.Driver");
@@ -48,17 +49,56 @@ public class LoginManager {
         catch(Exception e){
 			return "Password Hashing Error: " + e.toString();	
         }
+		int gndr = 0;
+		if(gender != null && gender.equalsIgnoreCase("female")){
+			gndr = 1;
+		}
+		String[] brthdy = birthday.split("-");
+		for(int i=0; i<brthdy.length; i++){
+			if(brthdy[i].equals("0")) birthday = null;
+		}
         int isBanned = 0;
 		try{
-	    	ps = con.prepareStatement("INSERT INTO database1.User (email, password, name, surname, birthday, gender, isBanned) VALUES "
-	    			+ "(?,?,?,?,?,?,?)");
-	        ps.setString(1, email);
-	        ps.setString(2, hashedSaltedPass);
-	        ps.setString(3, name);
-	        ps.setString(4, surname);
-	        ps.setDate(5, Date.valueOf(birthday));
-	        ps.setInt(6, gender);
-	        ps.setInt(7, isBanned);
+			if(birthday != null && gender != null){
+		    	ps = con.prepareStatement("INSERT INTO database1.User (email, password, name, surname, birthday, gender, isBanned) VALUES "
+		    			+ "(?,?,?,?,?,?,?)");
+		        ps.setString(1, email);
+		        ps.setString(2, hashedSaltedPass);
+		        ps.setString(3, name);
+		        ps.setString(4, surname);
+		        ps.setDate(5, Date.valueOf(birthday));
+				ps.setInt(6, gndr);
+		        ps.setInt(7, isBanned);
+			}
+			else if(birthday != null && gender == null){
+		    	ps = con.prepareStatement("INSERT INTO database1.User (email, password, name, surname, birthday, isBanned) VALUES "
+		    			+ "(?,?,?,?,?,?)");
+		        ps.setString(1, email);
+		        ps.setString(2, hashedSaltedPass);
+		        ps.setString(3, name);
+		        ps.setString(4, surname);
+		        ps.setDate(5, Date.valueOf(birthday));
+		        ps.setInt(6, isBanned);
+			}
+			else if(birthday == null && gender != null){
+		    	ps = con.prepareStatement("INSERT INTO database1.User (email, password, name, surname, gender, isBanned) VALUES "
+		    			+ "(?,?,?,?,?,?)");
+		        ps.setString(1, email);
+		        ps.setString(2, hashedSaltedPass);
+		        ps.setString(3, name);
+		        ps.setString(4, surname);
+				ps.setInt(5, gndr);
+		        ps.setInt(6, isBanned);
+			}
+			else{	// birthday == null && gender == null
+		    	ps = con.prepareStatement("INSERT INTO database1.User (email, password, name, surname, isBanned) VALUES "
+		    			+ "(?,?,?,?,?)");
+		        ps.setString(1, email);
+		        ps.setString(2, hashedSaltedPass);
+		        ps.setString(3, name);
+		        ps.setString(4, surname);
+		        ps.setInt(5, isBanned);
+			}
 		}
 		catch(Exception e){
 			return "Query Building Error: " + e.toString();	

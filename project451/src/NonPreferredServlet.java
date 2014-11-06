@@ -24,14 +24,27 @@ public class NonPreferredServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		String nonPreferred = request.getParameter("nonPreferred"); 
+		String nonPreferred = request.getParameter("OtherPreferences"); 
 		
 		response.setContentType("text/plain");
 	    response.setCharacterEncoding("UTF-8");
-	    FoodSelectionManager foodSel=new FoodSelectionManager();
-	    HttpSession session = request.getSession(false);
-	    int user_id=Integer.valueOf(session.getAttribute("user_id").toString());
-	    String res=foodSel.addNonPreferred(user_id, nonPreferred); 
+	    
+	    String res = "";
+		if(nonPreferred == null || nonPreferred.isEmpty()){
+			res = "Nothing written.";
+		}
+		else{
+		    FoodSelectionManager foodSel=new FoodSelectionManager();
+		    HttpSession session = request.getSession(false);
+		    try{
+			    int user_id=Integer.valueOf(session.getAttribute("user_id").toString());
+			    res = foodSel.addNonPreferred(user_id, nonPreferred); 
+		    }
+		    catch(Exception e){
+		    	res = "Not logged in.";
+		    }
+		}
+		request.setAttribute("res3", res);
+	    request.getRequestDispatcher("profilinfo.jsp").forward(request, response);
 	}
-
 }

@@ -36,6 +36,7 @@
 	    		<li><a href="login.jsp">Login</a></li>
 	    		<li><a href="signup.jsp">Sign Up</a></li>
 	    	<%} else {%>
+	    		<li><a href="ownProfile.jsp">My Profile</a></li>	
 	    		<li><a href="logout.jsp">Logout</a></li>
 	    	<%}%>	    				    
 		  </ul>

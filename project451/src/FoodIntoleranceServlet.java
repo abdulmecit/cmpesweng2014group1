@@ -24,14 +24,28 @@ public class FoodIntoleranceServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		String foodIntolerance[] = request.getParameterValues("foodIntolerance"); 
+		String foodIntolerance[] = request.getParameterValues("Food Intolerance and Allergies"); 
 		
 		response.setContentType("text/plain");
 	    response.setCharacterEncoding("UTF-8");
-	    FoodSelectionManager foodSel=new FoodSelectionManager();
-	    HttpSession session = request.getSession(false);
-	    int user_id=Integer.valueOf(session.getAttribute("user_id").toString());
-	    String res=foodSel.addFoodIntolerance(user_id, foodIntolerance); 
+	    
+	    String res = "";
+		if(foodIntolerance == null){
+			res = "Nothing selected.";
+		}
+		else{	    
+		    FoodSelectionManager foodSel=new FoodSelectionManager();
+		    HttpSession session = request.getSession(false);
+		    try{
+			    int user_id = Integer.valueOf(session.getAttribute("user_id").toString());
+			    res = foodSel.addFoodIntolerance(user_id, foodIntolerance); 
+		    }
+		    catch(Exception e){
+		    	res = "Not logged in.";
+		    }
+		}
+		request.setAttribute("res", res);
+	    request.getRequestDispatcher("profilinfo.jsp").forward(request, response);
 	}
 
 }

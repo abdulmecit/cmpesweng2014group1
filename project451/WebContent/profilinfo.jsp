@@ -55,11 +55,12 @@ body {
 			<a class="navbar-brand" href=".">Nutty</a>
 		</div>
 		  <ul class="nav navbar-nav navbar-right">
-		  		<li>Settings</li>
+		  		<li><a>Settings</a></li>
 		    <% 	if (session.getAttribute("user_id") == null || Integer.valueOf(session.getAttribute("user_id").toString()) == 0){ %>		  
 	    		<li><a href="login.jsp">Login</a></li>
 	    		<li><a href="signup.jsp">Sign Up</a></li>
 	    	<%} else {%>
+	    		<li><a href="ownProfile.jsp">My Profile</a></li>	
 	    		<li><a href="logout.jsp">Logout</a></li>
 	    	<%}%>	    				    
 		  </ul>
@@ -146,6 +147,8 @@ body {
 			</div>
 
 			<input type="submit" value="Submit" />
+			<br><br>
+			<font color="blue">${res}</font>
 		</form>
 	</div>
 
@@ -187,6 +190,8 @@ body {
 				</p>
 			</div>
 			<input type="submit" value="Submit" />
+			<br><br>
+			<font color="blue">${res2}</font>
 		</form>
 		
 		
@@ -195,12 +200,10 @@ body {
 			<h4>Other Non-Preferred Ingredients</h4>
 			<input type="text" id="OtherPreferences" name="OtherPreferences" /> <input
 				type="submit" value="Add" />
+			<br><br>
+			<font color="blue">${res3}</font>
 		</form>
 		</div>
 	</div>
-
-
-
-
 </body>
 </html>

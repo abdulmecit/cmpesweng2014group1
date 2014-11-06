@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>NuttyTest</title>
+    <title>Nutty</title>
 
     <!-- Bootstrap core CSS -->
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -66,11 +66,12 @@
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href=".">Nutty Test</a>
+          <a class="navbar-brand" href=".">Nutty</a>
         </div>
 		  <ul class="nav navbar-nav navbar-right">
-		    <li><a href="javascript:settings();">Settings</a></li>
-		    <li><a href="">Logout</a></li>
+		    <li><a>Settings</a></li>
+		    <li><a href="profilinfo.jsp">Info</a></li>
+		    <li><a href="logout.jsp">Logout</a></li>
 		  </ul>
         
 

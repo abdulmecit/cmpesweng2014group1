@@ -24,14 +24,27 @@ public class HealthConditionServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		String healthCondition[] = request.getParameterValues("healthCondition"); 
+		String healthCondition[] = request.getParameterValues("disease"); 
 		
 		response.setContentType("text/plain");
 	    response.setCharacterEncoding("UTF-8");
-	    FoodSelectionManager foodSel=new FoodSelectionManager();
-	    HttpSession session = request.getSession(false);
-	    int user_id=Integer.valueOf(session.getAttribute("user_id").toString());
-	    String res=foodSel.addHealthCondition(user_id, healthCondition); 
+	    
+	    String res = "";
+		if(healthCondition == null){
+			res = "Nothing selected.";
+		}
+		else{    
+		    FoodSelectionManager foodSel=new FoodSelectionManager();
+		    HttpSession session = request.getSession(false);
+		    try{
+		    	int user_id = Integer.valueOf(session.getAttribute("user_id").toString());
+			    res = foodSel.addHealthCondition(user_id, healthCondition);
+		    }
+		    catch(Exception e){
+		    	res = "Not logged in.";
+		    }
+		}
+		request.setAttribute("res2", res);
+	    request.getRequestDispatcher("profilinfo.jsp").forward(request, response);
 	}
-
 }
