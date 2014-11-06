@@ -48,6 +48,7 @@
 			<p>${sessionScope.login_message}</p>
 			<br>
 			<p>Click <a href=".">here</a> to return to the main page.<p>
+			<p>Click <a href="ownProfile.jsp">here</a> to go your profile page.<p>
 		</div>
 	 </div>
    </div>
