@@ -24,6 +24,8 @@
   </head>
 
   <body>
+  
+    <% session.removeAttribute("user_id"); %>
 
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
@@ -39,7 +41,8 @@
 	    		<li><a href="logout.jsp">Logout</a></li>
 	    	<%}%>	    				    
 		  </ul>
-        
+    
+    <% session.invalidate(); %>    
 
       </div><!-- /.container -->
     </nav>
@@ -53,16 +56,6 @@
 		</div>
 	 </div>
    </div>
-   
-   <script>
-	$(document).ready( function (event) {
-		event.preventDefault();
-		$.ajax({
-			  type: "POST",
-			  url: "LogoutServlet",
-			})
-	});
-   </script>
 </body>
 </html>
 

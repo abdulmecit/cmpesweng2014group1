@@ -31,7 +31,6 @@
           <a class="navbar-brand" href=".">Nutty</a>
         </div>
 		  <ul class="nav navbar-nav navbar-right">
-		    <% System.out.println(session.getAttribute("user_id")); %>
 		    <% 	if (session.getAttribute("user_id") == null || Integer.valueOf(session.getAttribute("user_id").toString()) == 0){ %>		  
 	    		<li><a href="login.jsp">Login</a></li>
 	    		<li><a href="signup.jsp">Sign Up</a></li>

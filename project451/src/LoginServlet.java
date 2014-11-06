@@ -31,7 +31,7 @@ public class LoginServlet extends HttpServlet {
   			user_id=Integer.valueOf(msg.substring(2));
   			msg=LogMan.getUsername(Integer.valueOf(msg.substring(2)));
   		} 		
-  		HttpSession session = request.getSession();
+  		HttpSession session = request.getSession(false);
 		session.setAttribute("login_message", msg);
 		session.setAttribute("user_id", user_id);
 		
