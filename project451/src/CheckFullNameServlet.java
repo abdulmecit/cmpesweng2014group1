@@ -9,23 +9,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import project451.FoodSelectionManager;
+import project451.LoginManager;
 
 /**
- * Servlet implementation class CheckHealthConditionServlet
+ * Servlet implementation class CheckFullNameServlet
  */
-@WebServlet("/CheckHealthConditionServlet")
-public class CheckHealthConditionServlet extends HttpServlet {
+@WebServlet("/CheckFullNameServlet")
+public class CheckFullNameServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public CheckHealthConditionServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -35,8 +27,8 @@ public class CheckHealthConditionServlet extends HttpServlet {
 	    response.setCharacterEncoding("UTF-8");
 	    HttpSession session = request.getSession(false);
 	    int user_id = Integer.valueOf(session.getAttribute("user_id").toString());
-	    FoodSelectionManager FoodSel = new FoodSelectionManager();
-	    String res = FoodSel.getHealthCondition(user_id);
+	    LoginManager LogMan = new LoginManager();
+	    String res = LogMan.getFullName(user_id);
 		response.getWriter().write(res);
 	}
 

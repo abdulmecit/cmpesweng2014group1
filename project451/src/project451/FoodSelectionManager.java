@@ -217,18 +217,48 @@ public class FoodSelectionManager {
         	return "";
         }
         String nonPreferred="";
+        int ing_id=0;
 		try{
 			rs.beforeFirst();
 			while(rs.next()){
-				nonPreferred +=rs.getString(1)+"%";
+				ing_id=rs.getInt(1);
+				PreparedStatement ps2;
+				try{
+			    	ps2 = con.prepareStatement("SELECT ing_name FROM database1.Ingredient WHERE ing_id=?");
+			        ps2.setInt(1, ing_id);
+				}
+				catch(Exception e){
+					return "Query Building Error: " + e.toString();	
+				}
+				ResultSet rs2;
+		        int count2;
+				try{
+		        	rs2 = ps2.executeQuery();
+					rs2.last();
+					count2 = rs2.getRow();
+				}
+				catch(Exception e){
+					return "Query Running Error: " + e.toString();	
+				}
+		        if(count2 != 0){
+					try{
+						rs2.beforeFirst();
+						while(rs2.next()){
+							nonPreferred +=rs2.getString(1)+"%";
+						}
+					}
+					catch(Exception e){
+			    		return "Result Processing Error: " + e.toString();
+					}
+		        }
 			}
 		}
 		catch(Exception e){
     		return "Result Processing Error: " + e.toString();
 		}
-		return nonPreferred;     
-        
+		return nonPreferred;            
 	}
+	
 	public String getHealthCondition(int user_id){
 		Connection con;
         try{
@@ -270,7 +300,7 @@ public class FoodSelectionManager {
 				try{
 			    	ps2 = con.prepareStatement("SELECT fs_name FROM database1.FoodSelection WHERE fs_id=? AND type=?");
 			        ps2.setInt(1,fs_id );
-			        ps2.setString(1, "health_condition");
+			        ps2.setString(2, "health_condition");
 				}
 				catch(Exception e){
 					return "Query Building Error: " + e.toString();	
@@ -286,18 +316,17 @@ public class FoodSelectionManager {
 					return "Query Running Error: " + e.toString();	
 				}
 
-		        if(count2 == 0){ //never reach??
-		        	return "";
-		        }
-				try{
-					rs2.beforeFirst();
-					while(rs2.next()){
-						conditions +=rs2.getString(1)+"%";
+		        if(count2 != 0){
+					try{
+						rs2.beforeFirst();
+						while(rs2.next()){
+							conditions +=rs2.getString(1)+"%";
+						}
 					}
-				}
-				catch(Exception e){
-		    		return "Result Processing Error: " + e.toString();
-				}	
+					catch(Exception e){
+			    		return "Result Processing Error: " + e.toString();
+					}
+		        }
 			}
 		}
 		catch(Exception e){
@@ -348,7 +377,7 @@ public class FoodSelectionManager {
 				try{
 			    	ps2 = con.prepareStatement("SELECT fs_name FROM database1.FoodSelection WHERE fs_id=? AND type=?");
 			        ps2.setInt(1,fs_id );
-			        ps2.setString(1, "food_intolerance");
+			        ps2.setString(2, "food_intolerance");
 				}
 				catch(Exception e){
 					return "Query Building Error: " + e.toString();	
@@ -364,18 +393,17 @@ public class FoodSelectionManager {
 					return "Query Running Error: " + e.toString();	
 				}
 
-		        if(count2 == 0){ //never reach??
-		        	return "";
-		        }
-				try{
-					rs2.beforeFirst();
-					while(rs2.next()){
-						intolerances +=rs2.getString(1)+"%";
+		        if(count2 != 0){  
+					try{
+						rs2.beforeFirst();
+						while(rs2.next()){
+							intolerances +=rs2.getString(1)+"%";
+						}
 					}
-				}
-				catch(Exception e){
-		    		return "Result Processing Error: " + e.toString();
-				}	
+					catch(Exception e){
+			    		return "Result Processing Error: " + e.toString();
+					}
+		        }
 			}
 		}
 		catch(Exception e){

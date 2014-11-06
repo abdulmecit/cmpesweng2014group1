@@ -227,8 +227,150 @@ public class LoginManager {
     		return "Result Processing Error: " + e.toString();
 		}
 		return "You've successfully logged in "+username;
-       
-       
 	}
 	
+	public String getFullName(int user_id){
+		Connection con;
+        try{
+        	Class.forName("com.mysql.jdbc.Driver");
+        	con = DriverManager.getConnection("jdbc:mysql://titan.cmpe.boun.edu.tr:3306/database1", "project1", "2TJZD32R");
+        }
+        catch(Exception e){
+        	return "Database Opening Connection Error: " + e.toString();	
+        }
+		PreparedStatement ps;
+		try{
+	    	ps = con.prepareStatement("SELECT name, surname FROM database1.User WHERE user_id=?");
+	        ps.setInt(1, user_id);
+		}
+		catch(Exception e){
+			return "Query Building Error: " + e.toString();	
+		}
+		ResultSet rs;
+        int count;
+		try{
+        	rs = ps.executeQuery();
+			rs.last();
+			count = rs.getRow();
+		}
+		catch(Exception e){
+			return "Query Running Error: " + e.toString();	
+		}
+		if(count > 1){
+        	return "Multiple users with same user id!"; //Should never reach here
+        }
+        else if(count == 0){
+        	return "Invalid user id";
+        }
+		String name="";
+		String surname="";
+		try{
+			rs.beforeFirst();
+			if(rs.next()){
+				name=rs.getString(1);
+				surname=rs.getString(2);
+			}
+		}
+		catch(Exception e){
+    		return "Result Processing Error: " + e.toString();
+		}
+		
+		return name + " " + surname;
+	}
+	
+	public String getBirthday(int user_id){
+		Connection con;
+        try{
+        	Class.forName("com.mysql.jdbc.Driver");
+        	con = DriverManager.getConnection("jdbc:mysql://titan.cmpe.boun.edu.tr:3306/database1", "project1", "2TJZD32R");
+        }
+        catch(Exception e){
+        	return "Database Opening Connection Error: " + e.toString();	
+        }
+		PreparedStatement ps;
+		try{
+	    	ps = con.prepareStatement("SELECT birthday FROM database1.User WHERE user_id=?");
+	        ps.setInt(1, user_id);
+		}
+		catch(Exception e){
+			return "Query Building Error: " + e.toString();	
+		}
+		ResultSet rs;
+        int count;
+		try{
+        	rs = ps.executeQuery();
+			rs.last();
+			count = rs.getRow();
+		}
+		catch(Exception e){
+			return "Query Running Error: " + e.toString();	
+		}
+		if(count > 1){
+        	return "Multiple users with same user id!"; //Should never reach here
+        }
+        else if(count == 0){
+        	return "Invalid user id";
+        }
+		Date birthday = null;
+		try{
+			rs.beforeFirst();
+			if(rs.next()){
+				birthday =rs.getDate(1);
+			}
+		}
+		catch(Exception e){
+    		return "Result Processing Error: " + e.toString();
+		}
+		
+		return birthday.toString();
+	}
+	
+	public String getGender(int user_id){
+		Connection con;
+        try{
+        	Class.forName("com.mysql.jdbc.Driver");
+        	con = DriverManager.getConnection("jdbc:mysql://titan.cmpe.boun.edu.tr:3306/database1", "project1", "2TJZD32R");
+        }
+        catch(Exception e){
+        	return "Database Opening Connection Error: " + e.toString();	
+        }
+		PreparedStatement ps;
+		try{
+	    	ps = con.prepareStatement("SELECT gender FROM database1.User WHERE user_id=?");
+	        ps.setInt(1, user_id);
+		}
+		catch(Exception e){
+			return "Query Building Error: " + e.toString();	
+		}
+		ResultSet rs;
+        int count;
+		try{
+        	rs = ps.executeQuery();
+			rs.last();
+			count = rs.getRow();
+		}
+		catch(Exception e){
+			return "Query Running Error: " + e.toString();	
+		}
+		if(count > 1){
+        	return "Multiple users with same user id!"; //Should never reach here
+        }
+        else if(count == 0){
+        	return "Invalid user id";
+        }
+		int gender = 0;
+		try{
+			rs.beforeFirst();
+			if(rs.next()){
+				gender =rs.getInt(1);
+			}
+		}
+		catch(Exception e){
+    		return "Result Processing Error: " + e.toString();
+		}
+		String gndr="Male";
+		if(gender == 1) gndr="Female";
+		
+		return gndr;
+	}
 }

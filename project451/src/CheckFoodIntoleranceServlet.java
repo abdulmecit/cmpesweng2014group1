@@ -35,9 +35,10 @@ public class CheckFoodIntoleranceServlet extends HttpServlet {
 		response.setContentType("text/plain");
 	    response.setCharacterEncoding("UTF-8");
 	    HttpSession session = request.getSession(false);
-	    int user_id=Integer.valueOf(session.getAttribute("user_id").toString());
-	    FoodSelectionManager FoodSel=new FoodSelectionManager();
-	    String res=FoodSel.getFoodIntolerance(user_id);
+	    int user_id = Integer.valueOf(session.getAttribute("user_id").toString());
+	    FoodSelectionManager FoodSel = new FoodSelectionManager();
+	    String res = FoodSel.getFoodIntolerance(user_id);
+		response.getWriter().write(res);
 	}
 
 }

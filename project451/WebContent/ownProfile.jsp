@@ -100,13 +100,15 @@
 	        <div id="info-wrap">
 	            <div class="info" align="center">
 	            	<p>&nbsp;</p>
-	            	<h1>Name Surname</h1>
-	            	<h3>Age</h3>
-	            	<h3>Gender</h3>
-	            	<h3 id="pref">No Preferences</h3>
-	            	<h3>.</h3>
-	            	<h3>.</h3>
-	            </div>
+	            	<h1>Name Surname:</h1> <h3 id="full_name"></h3>
+	            	<h3>Age:</h3> <p id="age">Not specified</p>
+	            	<h3>Gender:</h3> <p id="gender">Not specified</p>
+	            	<h3>Food Intolerances:</h3> 
+	            	<p id="food_int"> None </p>
+	            	<h3>Health Conditions:</h3>
+	            	<p id="health_cond"> None </p>
+	            	<h3>Not Preferred:</h3>
+	            	<p id="not_pref"> None </p>
 	            <div class="info" align="center">
 	            	<p>&nbsp;</p>
 	            	<h1>*****</h1>
@@ -134,20 +136,81 @@
     	$.ajax({
 			  type: "POST",
 			  url: "CheckFoodIntoleranceServlet",
-			  data: {},
+			})
+			.done(function(msg) {
+				if(msg.length != 0 && msg.indexOf("%") > -1){
+					var prefs = (msg.slice(0, -1)).split("%")
+					document.getElementById('food_int').innerHTML = prefs;
+				}
+			});   	
+  	});	
+	
+	$(document).ready(function () {
+    	$.ajax({
+			  type: "POST",
+			  url: "CheckHealthConditionServlet",
+			})
+			.done(function(msg) {
+				if(msg.length != 0 && msg.indexOf("%") > -1){
+					var prefs = (msg.slice(0, -1)).split("%")
+					document.getElementById('health_cond').innerHTML = prefs;
+				}
+			});   	
+  	});	
+	
+	$(document).ready(function () {
+    	$.ajax({
+			  type: "POST",
+			  url: "CheckNonPreferredServlet",
+			})
+			.done(function(msg) {
+				if(msg.length != 0 && msg.indexOf("%") > -1){
+					var prefs = (msg.slice(0, -1)).split("%")
+					document.getElementById('not_pref').innerHTML = prefs;
+				}
+			});   	
+  	});	
+	
+	$(document).ready(function () {
+    	$.ajax({
+			  type: "POST",
+			  url: "CheckFullNameServlet",
 			})
 			.done(function(msg) {
 				if(msg.length != 0){
-					document.getElementById('pref').innerHTML = msg;
-					alert(msg);
+					document.getElementById('full_name').innerHTML = msg;
 				}
-			});
-    	
+			});   	
   	});	
 	
-	function settings(){
-    	window.location.href = "profilinfo.jsp";
-  	} 
+	$(document).ready(function () {
+    	$.ajax({
+			  type: "POST",
+			  url: "CheckBirthdayServlet",
+			})
+			.done(function(msg) {
+				if(msg.length != 0){
+					document.getElementById('age').innerHTML = calcAge(msg);
+				}
+			});   	
+  	});	
+	
+	$(document).ready(function () {
+    	$.ajax({
+			  type: "POST",
+			  url: "CheckGenderServlet",
+			})
+			.done(function(msg) {
+				if(msg.length != 0){
+					document.getElementById('gender').innerHTML = msg;
+				}
+			});   	
+  	});	
+	
+	function calcAge(dateString) {
+		  var birthday = +new Date(dateString);
+		  return ~~((Date.now() - birthday) / (31557600000));
+	}
 	</script>
 </body>
 </html>
