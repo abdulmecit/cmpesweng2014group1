@@ -1,6 +1,6 @@
 package cmpesweng2014.group1.nutty.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class User {
 	private Long id;

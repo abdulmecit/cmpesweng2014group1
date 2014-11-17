@@ -22,6 +22,7 @@ public class UserResultSetExtractor implements ResultSetExtractor<User> {
 		user.setBirthday(rs.getDate(6));
 		user.setGender(rs.getInt(7));
 		user.setIsBanned(rs.getInt(8));
+		user.setPhoto(rs.getString(9));
 		return user;
 	}
 

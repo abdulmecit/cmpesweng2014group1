@@ -58,6 +58,5 @@ public class UserDao extends PcDao {
 		} else {
 			return users.get(0);
 		}
-
 	}
 }

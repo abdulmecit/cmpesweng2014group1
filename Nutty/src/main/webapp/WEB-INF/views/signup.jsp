@@ -49,7 +49,7 @@
       <div class="row">
         <div class="col-md-offset-3 col-md-6 well">
           <h2>Sign Up</h2>
-          <form:form class="form-horizontal" action="" method="POST" modelAttribute="user">
+          <form:form class="form-horizontal" method="POST" modelAttribute="user">
 			  <div class="form-group">
 			    <label for="inputName" class="col-sm-4 control-label">Name:</label>
 			    <div class="col-sm-6">
@@ -87,8 +87,8 @@
 			  <div class="form-group">
 			    <label for="inputGender" class="col-sm-4 control-label">Gender:</label>
 			    <div class="col-sm-6">
-			      <input type="radio" name="sex" value="male">Male
-                  <input type="radio" name="sex" value="female">Female
+			      <input type="radio" name="gender" value="0">Male
+                  <input type="radio" name="gender" value="1">Female
 			    </div>
 			  </div>
 			  <div class="form-group">
@@ -103,4 +103,84 @@
       </div>
 	</div>
 </body>
+ <script>
+      var passwordSame;
+      $("#inputPassword2").keyup(function (event) {
+    	  if($( "#inputPassword1" ).val() != $( "#inputPassword2" ).val()){
+    	  	$("#inputPassword2").css("background-color","pink");
+    	  	$('#registerButton').attr("disabled", true);
+    	  	passwordSame = false;
+    	  }else{
+    		  $("#inputPassword2").css("background-color","lightgreen");
+    		  passwordSame = true;
+    		  if($("#inputName").val().length != 0 && $("#inputSurname").val().length != 0 && $("#inputEmail").val().length != 0 && $("#inputPassword1").val().length != 0){
+    		  	$('#registerButton').attr("disabled", false);
+    		  }	
+    	  }
+      });
+      
+      $("#inputPassword1").keyup(function (event) {
+    	  if($( "#inputPassword1" ).val() != $( "#inputPassword2" ).val()){
+      	  	$("#inputPassword2").css("background-color","pink");
+      	  	$('#registerButton').attr("disabled", true);
+      	  	passwordSame = false;
+      	  }else{
+      		  $("#inputPassword2").css("background-color","lightgreen");
+      		  passwordSame = true;
+      		  if($("#inputName").val().length != 0 && $("#inputSurname").val().length != 0 && $("#inputEmail").val().length != 0 && $("#inputPassword1").val().length != 0){
+      		  	$('#registerButton').attr("disabled", false);
+      		  }	
+      	  }
+      });
+      
+      $("#inputName").keyup(function (event) {
+    	  if(passwordSame && $("#inputName").val().length != 0 && $("#inputSurname").val().length != 0 && $("#inputEmail").val().length != 0 && $("#inputPassword1").val().length != 0){
+  		  	$('#registerButton').attr("disabled", false);
+  		  }else{
+  			$('#registerButton').attr("disabled", true);
+  		  }
+      });
+      
+      $("#inputSurname").keyup(function (event) {
+    	  if(passwordSame && $("#inputName").val().length != 0 && $("#inputSurname").val().length != 0 && $("#inputEmail").val().length != 0 && $("#inputPassword1").val().length != 0){
+  		  	$('#registerButton').attr("disabled", false);
+  		  }else{
+    			$('#registerButton').attr("disabled", true);
+  		  }
+      });
+      
+      $("#inputEmail").keyup(function (event) {
+    	  if(passwordSame && $("#inputName").val().length != 0 && $("#inputSurname").val().length != 0 && $("#inputEmail").val().length != 0 && $("#inputPassword1").val().length != 0){
+  		  	$('#registerButton').attr("disabled", false);
+  		  }else{
+    			$('#registerButton').attr("disabled", true);
+  		  }
+      });
+      
+      $("#registerButton").on('click', function (event) {
+    	if(!passwordSame){
+    		alert("Passwords are not the same!");
+    	}else{
+    		/*
+	      	event.preventDefault(); 
+	      	$.ajax({
+	  			  type: "POST",
+	  			  url: "signup",
+	  			  data: { 
+	  				  name:$( "#inputName" ).val(),
+	  				  surname:$( "#inputSurname" ).val(),
+	  				  email: $( "#inputEmail" ).val(), 
+	  				  password: $( "#inputPassword1" ).val(),
+	  				  birthday: $( "#year" ).val() + "-" + $( "#month" ).val() + "-" + $( "#day" ).val(),
+	  				  gender: $( 'input:radio[name=sex]:checked' ).val()
+	  				  }
+	  			})
+	  			.done(function(msg) {
+	  				document.getElementById('errorMsg').innerHTML = msg;
+					if(msg.lastIndexOf("Succ", 0) === 0)	//signup success		
+						window.location.assign("signupsuccess.jsp");
+	  			});*/
+    		}
+    	});		
+	</script>
 </html>

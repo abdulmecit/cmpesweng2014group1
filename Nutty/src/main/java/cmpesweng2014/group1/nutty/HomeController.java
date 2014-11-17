@@ -1,5 +1,8 @@
 package cmpesweng2014.group1.nutty;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -81,18 +84,32 @@ public class HomeController {
 		model.addAttribute("user", u);
 		return "signup";
 	}
-
+	
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public String signUp(@ModelAttribute("user") User u, HttpSession session) {
-		/*
-		if (u.getEmail().equals("") || u.getPassword().equals("")
-				|| u.getName().equals("") || u.getSurname().equals("")) {
-			return "redirect:signup";
-		}*/
-		userService.createUser(u.getEmail(), u.getPassword(),
-				u.getName(), u.getSurname(), u.getBirthday(), u.getGender());
+	public ModelAndView signUp(
+			@RequestParam(value = "inputName", required = true) String name,
+			@RequestParam(value = "inputSurname", required = true) String surname,
+			@RequestParam(value = "inputEmail", required = true) String email,
+			@RequestParam(value = "inputPassword1", required = true) String password,
+			@RequestParam(value = "birthday_year", required = false) String year,
+			@RequestParam(value = "birthday_month", required = false) String month,
+			@RequestParam(value = "birthday_day", required = false) String day,
+			@RequestParam(value = "gender", required = false) Integer gender,
+			HttpServletRequest request, HttpSession session) throws ParseException {
+		
+		if (name.equals("") || surname.equals("") || email.equals("") || password.equals("")) {
+			return new ModelAndView("redirect:signin");
+		}
+		
+		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		java.util.Date birthdate = formatter.parse(year + "-" + month + "-" + day);
+		java.sql.Date birthday = new java.sql.Date(birthdate.getTime());
+		
+		System.out.println(email + " " + password + " " + name + " " + surname + " " + birthday + " " + gender);
+
+		userService.createUser(email, password, name, surname, birthday, gender);
 		session.setAttribute("isLogged", true);
-		return "redirect:/";
+		return new ModelAndView("redirect:/");
 	}
 
 	@RequestMapping(value = "/signout", method = RequestMethod.GET)
@@ -102,4 +119,13 @@ public class HomeController {
 		session.setAttribute("userName", null);
 		return "redirect:/";
 	}
+	
+	/*
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+	    SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+	    sdf.setLenient(true);
+	    binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
+	}
+	*/
 }
