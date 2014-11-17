@@ -59,4 +59,17 @@ public class UserDao extends PcDao {
 			return users.get(0);
 		}
 	}
+	
+	public User getUserById(Long id) {
+		
+		List<User> users = this.getTemplate().query(
+				"SELECT * FROM User WHERE user_id = ? ",
+				new Object[] { id }, new UserRowMapper());
+
+		if (users.isEmpty()) {
+			return null;
+		} else {
+			return users.get(0);
+		}
+	}
 }

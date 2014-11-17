@@ -32,7 +32,7 @@
           <a class="navbar-brand" href=".">Nutty</a>
         </div>
 		  <ul class="nav navbar-nav navbar-right">
-		    <% 	if (session.getAttribute("user_id") == null || Integer.valueOf(session.getAttribute("user_id").toString()) == 0){ %>		  
+		    <% 	if (session.getAttribute("isLogged") == null || ((Boolean)(session.getAttribute("isLogged")) == false)){ %>		  
 	    		<li><a href="login">Login</a></li>
 	    		<li><a href="signup">Sign Up</a></li>
 	    	<%} else {%>
@@ -93,7 +93,7 @@
 			  </div>
 			  <div class="form-group">
 			    <div class="col-sm-offset-2 col-sm-10">
-			      <button type="submit" class="btn btn-primary" id="registerButton">Sign Up</button>
+			      <button type="submit" class="btn btn-primary" id="registerButton" disabled>Sign Up</button>
 			    </div>
 			  </div>
 			  <br>

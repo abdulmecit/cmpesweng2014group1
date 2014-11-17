@@ -1,6 +1,6 @@
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-
+    pageEncoding="ISO-8859-1" %>
 <html>
   <head>
     <meta charset="utf-8">
@@ -32,46 +32,40 @@
         </div>
 		  <ul class="nav navbar-nav navbar-right">
 		    <% 	if (session.getAttribute("isLogged") == null || ((Boolean)(session.getAttribute("isLogged")) == false)){ %>		  
-	    		<li><a href="login">Login</a></li>
-	    		<li><a href="signup">Sign Up</a></li>
+	    		<li><a href="login.jsp">Login</a></li>
+	    		<li><a href="signup.jsp">Sign Up</a></li>
 	    	<%} else {%>
-	    		<li><a href="ownProfile.jsp">My Profile</a></li>	    	
 	    		<li><a href="logout.jsp">Logout</a></li>
 	    	<%}%>	    				    
-		  </ul>
-        
+		  </ul>  
 
       </div><!-- /.container -->
     </nav>
-
-    <div class="container">
+    
+   <div class="container">
       <div class="row">
         <div class="col-md-offset-3 col-md-6 well">
-          <h2>Login</h2>
-          <form id="user" class="form-horizontal" method="POST">
-			  <div class="form-group">
-			    <label for="inputEmail" class="col-sm-4 control-label">E-mail:</label>
-			    <div class="col-sm-6">
-			      <input type="email" class="form-control" id="inputEmail" name="inputEmail" style="width:80%" maxlength="30" required>
-			    </div>
-			  </div>
-			  <div class="form-group">
-			    <label for="inputPassword" class="col-sm-4 control-label">Password:</label>
-			    <div class="col-sm-6">
-			      <input type="password" class="form-control" id="inputPassword" name="inputPassword" style="width:80%" maxlength="30" required>
-			    </div>
-			  </div>
-			  <div class="form-group">
-			    <div class="col-sm-offset-2 col-sm-10">
-			      <button type="submit" class="btn btn-primary" id="loginButton">Login</button>
-			    </div>
-			  </div>
-			  <br>
-		      <font color="blue" id="errorMsg">${errorMsg}</font>
-			</form>
-        </div>
-      </div>
-    </div>  
+			<p>You've successfully signed up.</p>
+			<br>
+			<p id="elma"></p>
+			<br>
+			<p>${message}<p>
+			<br>
+			<p>${message.isSuccess} ${message.message}</p>
+			<br>		
+			<p>Click <a href="index">here</a> to go back where you've left off.<p>
+			<br>
+			<p>Click <a href=".">here</a> to return to the main page.<p>
+		</div>
+	 </div>
+   </div>
+</body>
 
-  </body>
+<script>  	  
+	var msg = "${param.message}";
+	alert(msg);
+	$(document).ready(function () {
+	    $('#elma').html(msg);
+	});
+</script>
 </html>

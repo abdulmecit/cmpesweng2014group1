@@ -23,11 +23,11 @@ public class UserService {
 		this.userDao = userDao;
 	}
 
-	public Long createUser(String email, String password, String name,
+	public User createUser(String email, String password, String name,
 			String surname, Date birthday, int gender) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		return userDao.createUser(email, encoder.encode(password), 
-				name, surname, birthday, gender);
+		return userDao.getUserById(userDao.createUser(email, encoder.encode(password), 
+				name, surname, birthday, gender));
 	}
 	
 	public User canLogin(String email, String password) {
@@ -37,7 +37,6 @@ public class UserService {
 		}
 
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		System.out.println(encoder.encode(password));
 		if(	encoder.matches(password, u.getPassword())){
 			return u;
 		}else{

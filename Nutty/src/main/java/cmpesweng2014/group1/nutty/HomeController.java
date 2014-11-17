@@ -3,7 +3,6 @@ package cmpesweng2014.group1.nutty;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -15,8 +14,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import cmpesweng2014.group1.nutty.model.Message;
 import cmpesweng2014.group1.nutty.model.User;
 import cmpesweng2014.group1.nutty.service.UserService;
 
@@ -30,11 +31,13 @@ public class HomeController {
 	@Autowired
 	private UserService userService;
 
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model, HttpSession session) {
+	public String home(HttpSession session) {
+		return "redirect:index";
+	}
+	
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String home(Model model, HttpSession session) {
 		Object logged = session.getAttribute("isLogged");
 		boolean isLogged = logged == null ? false : (Boolean) logged;
 		if (isLogged) {
@@ -50,7 +53,7 @@ public class HomeController {
 		Object logged = session.getAttribute("isLogged");
 		boolean isLogged = logged == null ? false : (Boolean) logged;
 		if (isLogged) {
-			return "redirect:/";
+			return "redirect:index";
 		} else {
 			User u = new User();
 			model.addAttribute("user", u);
@@ -71,7 +74,7 @@ public class HomeController {
 			session.setAttribute("user", u);
 			session.setAttribute("userName", u.getName());
 			session.setAttribute("isLogged", true);
-			return new ModelAndView("redirect:/");
+			return new ModelAndView("redirect:index");
 		} else {
 			return new ModelAndView("redirect:login");
 		}
@@ -86,7 +89,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public ModelAndView signUp(
+	public @ResponseBody ModelAndView signUp(
 			@RequestParam(value = "inputName", required = true) String name,
 			@RequestParam(value = "inputSurname", required = true) String surname,
 			@RequestParam(value = "inputEmail", required = true) String email,
@@ -96,7 +99,7 @@ public class HomeController {
 			@RequestParam(value = "birthday_day", required = false) String day,
 			@RequestParam(value = "gender", required = false) Integer gender,
 			HttpServletRequest request, HttpSession session) throws ParseException {
-		
+				
 		if (name.equals("") || surname.equals("") || email.equals("") || password.equals("")) {
 			return new ModelAndView("redirect:signin");
 		}
@@ -106,10 +109,28 @@ public class HomeController {
 		java.sql.Date birthday = new java.sql.Date(birthdate.getTime());
 		
 		System.out.println(email + " " + password + " " + name + " " + surname + " " + birthday + " " + gender);
+		
+		User u = userService.createUser(email, password, name, surname, birthday, gender);
 
-		userService.createUser(email, password, name, surname, birthday, gender);
-		session.setAttribute("isLogged", true);
-		return new ModelAndView("redirect:/");
+		if (u != null) {
+			session.setAttribute("user", u);
+			session.setAttribute("userName", u.getName());
+			session.setAttribute("isLogged", true);
+			
+			/*
+			Message msg = new Message();
+			msg.setIsSuccess(1);
+			msg.setMessage("You've successfully signed up!");*/
+			String msg = "Hey you!";
+			return new ModelAndView("redirect:signupsuccess", "message", msg);
+		} else {
+			return new ModelAndView("redirect:signin");
+		}
+	}
+	
+	@RequestMapping(value = "/signupsuccess", method = RequestMethod.GET)
+	public String viewSignupSuccess(HttpSession session) {
+		return "signupsuccess";
 	}
 
 	@RequestMapping(value = "/signout", method = RequestMethod.GET)
@@ -117,7 +138,7 @@ public class HomeController {
 		session.setAttribute("isLogged", false);
 		session.setAttribute("user", null);
 		session.setAttribute("userName", null);
-		return "redirect:/";
+		return "redirect:index";
 	}
 	
 	/*
