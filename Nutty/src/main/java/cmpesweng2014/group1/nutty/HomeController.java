@@ -117,12 +117,12 @@ public class HomeController {
 			session.setAttribute("userName", u.getName());
 			session.setAttribute("isLogged", true);
 			
-			/*
+			
 			Message msg = new Message();
 			msg.setIsSuccess(1);
-			msg.setMessage("You've successfully signed up!");*/
-			String msg = "Hey you!";
-			return new ModelAndView("redirect:signupsuccess", "message", msg);
+			msg.setMessage("You've successfully signed up!");
+			//String msg = "Hey you!";
+			return new ModelAndView("signupsuccess", "message", msg);
 		} else {
 			return new ModelAndView("redirect:signin");
 		}
@@ -133,7 +133,7 @@ public class HomeController {
 		return "signupsuccess";
 	}
 
-	@RequestMapping(value = "/signout", method = RequestMethod.GET)
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String signOut(HttpSession session) {
 		session.setAttribute("isLogged", false);
 		session.setAttribute("user", null);
