@@ -35,8 +35,8 @@
 	    		<li><a href="login">Login</a></li>
 	    		<li><a href="signup">Sign Up</a></li>
 	    	<%} else {%>
-	    		<li><a href="ownProfile.jsp">My Profile</a></li>	    	
-	    		<li><a href="logout.jsp">Logout</a></li>
+	    		<li><a href="ownProfile">My Profile</a></li>	    	
+	    		<li><a href="logout">Logout</a></li>
 	    	<%}%>	    				    
 		  </ul>
         

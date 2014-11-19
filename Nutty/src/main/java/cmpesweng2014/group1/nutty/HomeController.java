@@ -4,18 +4,17 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.google.gson.Gson;
 
 import cmpesweng2014.group1.nutty.model.Message;
 import cmpesweng2014.group1.nutty.model.User;
@@ -37,7 +36,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public String home(Model model, HttpSession session) {
+	public String index(HttpSession session) {
 		Object logged = session.getAttribute("isLogged");
 		boolean isLogged = logged == null ? false : (Boolean) logged;
 		if (isLogged) {
@@ -48,8 +47,7 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String viewSignin(Model model,
-			@ModelAttribute("user") Object command, HttpSession session) {
+	public String viewSignin(Model model, HttpSession session) {
 		Object logged = session.getAttribute("isLogged");
 		boolean isLogged = logged == null ? false : (Boolean) logged;
 		if (isLogged) {
@@ -62,34 +60,33 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ModelAndView signIn(
+	public String signIn(
 			@RequestParam(value = "inputEmail", required = true) String email,
 			@RequestParam(value = "inputPassword", required = true) String password,
-			HttpServletRequest request, HttpSession session) {
+			HttpSession session) {
 		if (email.equals("") || password.equals("")) {
-			return new ModelAndView("redirect:login");
+			return "redirect:login";
 		}
 		User u = userService.canLogin(email, password);
 		if (u != null) {
 			session.setAttribute("user", u);
 			session.setAttribute("userName", u.getName());
 			session.setAttribute("isLogged", true);
-			return new ModelAndView("redirect:index");
+			return "redirect:index";
 		} else {
-			return new ModelAndView("redirect:login");
+			return "redirect:login";
 		}
 	}
 
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
-	public String viewSignup(Model model,
-			@ModelAttribute("user") Object command, HttpSession session) {
+	public String viewSignup(Model model, HttpSession session) {
 		User u = new User();
 		model.addAttribute("user", u);
 		return "signup";
 	}
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public @ResponseBody ModelAndView signUp(
+	public String signUp(
 			@RequestParam(value = "inputName", required = true) String name,
 			@RequestParam(value = "inputSurname", required = true) String surname,
 			@RequestParam(value = "inputEmail", required = true) String email,
@@ -98,35 +95,52 @@ public class HomeController {
 			@RequestParam(value = "birthday_month", required = false) String month,
 			@RequestParam(value = "birthday_day", required = false) String day,
 			@RequestParam(value = "gender", required = false) Integer gender,
-			HttpServletRequest request, HttpSession session) throws ParseException {
+			RedirectAttributes redirectAttrs, HttpSession session) throws ParseException {
+		
+		Message msg = new Message();
 				
 		if (name.equals("") || surname.equals("") || email.equals("") || password.equals("")) {
-			return new ModelAndView("redirect:signin");
+			msg.setIsSuccess(0);
+			msg.setMessage("Name, surname, email and password fields cannot be empty!");
+			return "redirect:signup";
 		}
 		
 		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		java.util.Date birthdate = formatter.parse(year + "-" + month + "-" + day);
 		java.sql.Date birthday = new java.sql.Date(birthdate.getTime());
-		
-		System.out.println(email + " " + password + " " + name + " " + surname + " " + birthday + " " + gender);
-		
+				
 		User u = userService.createUser(email, password, name, surname, birthday, gender);
-
+		
 		if (u != null) {
 			session.setAttribute("user", u);
 			session.setAttribute("userName", u.getName());
 			session.setAttribute("isLogged", true);
-			
-			
-			Message msg = new Message();
+					
 			msg.setIsSuccess(1);
 			msg.setMessage("You've successfully signed up!");
-			//String msg = "Hey you!";
-			return new ModelAndView("signupsuccess", "message", msg);
-		} else {
-			return new ModelAndView("redirect:signin");
-		}
+			
+			/*		
+			Gson gson = new Gson();
+			String msgJSON = gson.toJson(msg);
+			*/		
+			
+			redirectAttrs.addFlashAttribute("message", msg);
+
+			return "redirect:signupsuccess";
+		} 
+		return "redirect:signup";	
 	}
+	/*
+	@RequestMapping(value = "/accounts", method = RequestMethod.POST)
+	 public String handle(Account account, BindingResult result, RedirectAttributes redirectAttrs) {
+	   if (result.hasErrors()) {
+	     return "accounts/new";
+	   }
+	   // Save account ...
+	   redirectAttrs.addAttribute("id", account.getId()).addFlashAttribute("message", "Account created!");
+	   return "redirect:/accounts/{id}";
+	 }
+	*/
 	
 	@RequestMapping(value = "/signupsuccess", method = RequestMethod.GET)
 	public String viewSignupSuccess(HttpSession session) {

@@ -36,7 +36,7 @@
 	    		<li><a href="login">Login</a></li>
 	    		<li><a href="signup">Sign Up</a></li>
 	    	<%} else {%>
-	    		<li><a href="logout.jsp">Logout</a></li>
+	    		<li><a href="logout">Logout</a></li>
 	    	<%}%>	    				    
 		  </ul>
         
@@ -97,7 +97,7 @@
 			    </div>
 			  </div>
 			  <br>
-		      <font color="blue" id="errorMsg">${errorMsg}</font>
+		      <font color="blue">${message.message}</font>
 			</form:form>
         </div>
       </div>
