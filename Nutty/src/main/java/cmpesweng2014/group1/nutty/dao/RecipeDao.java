@@ -10,8 +10,11 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
+import cmpesweng2014.group1.nutty.dao.mapper.EatLikeRateRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.RecipeRowMapper;
+import cmpesweng2014.group1.nutty.model.EatLikeRate;
 import cmpesweng2014.group1.nutty.model.Recipe;
+import cmpesweng2014.group1.nutty.model.User;
 
 public class RecipeDao extends PcDao{
 	
@@ -43,8 +46,7 @@ public class RecipeDao extends PcDao{
 		return newItemId;
 	}
 	
-	public Recipe getRecipeById(int id) {
-		
+	public Recipe getRecipeById(int id) {		
 		List<Recipe> recipes = this.getTemplate().query(
 				"SELECT * FROM Recipe WHERE recipe_id = ? ",
 				new Object[] { id }, new RecipeRowMapper());
@@ -101,4 +103,69 @@ public class RecipeDao extends PcDao{
 			}
 		}, gkh);	
 	}
+
+	public void evaluateRecipe(final String column,final int value,final User user, final Recipe recipe){
+		if (emptyCheckUserRecipeRelation(user,recipe)) {
+			//add this recipe user relation to the table with eats value		
+			final String query = "INSERT INTO EatLikeRate (user_id, recipe_id,"+column+") VALUES (?,?,?)";
+			KeyHolder gkh = new GeneratedKeyHolder();
+
+			this.getTemplate().update(new PreparedStatementCreator() {
+
+				@Override
+				public PreparedStatement createPreparedStatement(
+						Connection connection) throws SQLException {
+					PreparedStatement ps = connection.prepareStatement(query,
+							Statement.RETURN_GENERATED_KEYS);
+					ps.setLong(1, user.getId());
+					ps.setInt(2, recipe.getRecipeId());
+					ps.setInt(3, value);
+					return ps;
+				}
+			}, gkh);	
+		} else {
+			//update eats value
+			final String query = "UPDATE EatLikeRate SET "+column+"=? WHERE user_id=? AND recipe_id=?";
+			KeyHolder gkh = new GeneratedKeyHolder();
+			this.getTemplate().update(new PreparedStatementCreator() {
+
+				@Override
+				public PreparedStatement createPreparedStatement(
+						Connection connection) throws SQLException {
+					PreparedStatement ps = connection.prepareStatement(query,
+							Statement.RETURN_GENERATED_KEYS);
+					ps.setInt(1, value);
+					ps.setLong(2, user.getId());
+					ps.setInt(3, recipe.getRecipeId());
+					return ps;
+				}
+			}, gkh);	
+		}	
+	}
+	
+	public boolean emptyCheckUserRecipeRelation(User user, Recipe recipe){
+		List<EatLikeRate> eLikeR = this.getTemplate().query(
+				"SELECT * FROM EatLikeRate WHERE recipe_id =? AND user_id=?",
+				new Object[] { recipe.getRecipeId(), user.getId()  }, new EatLikeRateRowMapper());
+	
+		if (eLikeR.isEmpty()) {
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	//this method returns the number of likes, eats.
+	//property is set to likes or eats
+	public int getEatLikeStatistic(String property,int recipe_id){
+		int value=1;		
+		//not sure about this
+		int total=this.getTemplate().queryForObject(
+				"SELECT COUNT(*) FROM EatLikeRate WHERE recipe_id = ? AND "+property+"= ?", 
+				new Object[] {recipe_id, value}, Integer.class);
+		return total;
+	}
+	
+	
 }
