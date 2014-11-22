@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import cmpesweng2014.group1.nutty.dao.mapper.UserRowMapper;
@@ -50,6 +51,7 @@ public class UserDao extends PcDao {
 	
 	public void updateUser(User userModel){
 		final Long id = userModel.getId();
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		User userDB = this.getUserById(id);
 		String newString = null;
 		Date newDate = null;
@@ -65,9 +67,9 @@ public class UserDao extends PcDao {
 		}else if(!userDB.getEmail().equals(userModel.getEmail())){
 			column = "email";
 			newString = userModel.getEmail();
-		}else if(!userDB.getPassword().equals(userModel.getPassword())){
+		}else if(!encoder.matches(userModel.getPassword(),userDB.getPassword())){
 			column = "password";
-			newString = userModel.getPassword();
+			newString = encoder.encode(userModel.getPassword());
 		}else if(!userDB.getBirthday().equals(userModel.getBirthday())){
 			column = "birthday";
 			newDate = (Date) userModel.getBirthday();
