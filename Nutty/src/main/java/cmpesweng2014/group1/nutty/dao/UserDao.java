@@ -49,26 +49,26 @@ public class UserDao extends PcDao {
 	}
 	
 	public void updateUser(User userModel){
-		Long id = userModel.getId();
+		final Long id = userModel.getId();
 		User userDB = this.getUserById(id);
 		String newString = null;
 		Date newDate = null;
 		Integer newInt = (Integer) null;
 		String column = "";
 		int type = 0; //string = 0, Date = 1, Int = 2
-		if(userDB.getName() != userModel.getName()){
+		if(!userDB.getName().equals(userModel.getName())){
 			column = "name";
 			newString = userModel.getName();
-		}else if(userDB.getSurname() != userModel.getSurname()){
+		}else if(!userDB.getSurname().equals(userModel.getSurname())){
 			column = "surname";
 			newString = userModel.getSurname();
-		}else if(userDB.getEmail() != userModel.getEmail()){
+		}else if(!userDB.getEmail().equals(userModel.getEmail())){
 			column = "email";
 			newString = userModel.getEmail();
-		}else if(userDB.getPassword() != userModel.getPassword()){
+		}else if(!userDB.getPassword().equals(userModel.getPassword())){
 			column = "password";
 			newString = userModel.getPassword();
-		}else if(userDB.getBirthday() != userModel.getBirthday()){
+		}else if(!userDB.getBirthday().equals(userModel.getBirthday())){
 			column = "birthday";
 			newDate = (Date) userModel.getBirthday();
 			type = 1;
@@ -83,8 +83,8 @@ public class UserDao extends PcDao {
 		}
 		final String finalString = newString;
 		final Date finalDate = newDate;
-		final int finalInt = newInt;
-		final int finalType = type;
+		final Integer finalInt = newInt;
+		final Integer finalType = type;
 		if(column == ""){
 			//error message
 		}else{
@@ -99,10 +99,13 @@ public class UserDao extends PcDao {
 							Statement.RETURN_GENERATED_KEYS);
 					if(finalType == 0){
 						ps.setString(1, finalString);
+						ps.setLong(2, id);
 					}else if(finalType == 1){
 						ps.setDate(1, finalDate);
+						ps.setLong(2, id);
 					}else if(finalType == 2){
 						ps.setInt(1, finalInt);
+						ps.setLong(2, id);
 					}
 					return ps;
 				}

@@ -53,8 +53,7 @@ public class UserController {
 		User u = (User) session.getAttribute("user");
 		session.setAttribute("userName", name);
 		u.setName(name);
-		UserService service = new UserService();
-		service.getUserDao().updateUser(u);
+		userService.getUserDao().updateUser(u);
 		msg.setIsSuccess(1);
 		msg.setMessage("You've successfully changed your name!");
 			
@@ -83,8 +82,7 @@ public class UserController {
 				
 		User u = (User) session.getAttribute("user");
 		u.setSurname(surname);
-		UserService service = new UserService();
-		service.getUserDao().updateUser(u);
+		userService.getUserDao().updateUser(u);
 		msg.setIsSuccess(1);
 		msg.setMessage("You've successfully changed your surname!");
 			
@@ -113,8 +111,7 @@ public class UserController {
 				
 		User u = (User) session.getAttribute("user");
 		u.setEmail(email);
-		UserService service = new UserService();
-		service.getUserDao().updateUser(u);
+		userService.getUserDao().updateUser(u);
 		msg.setIsSuccess(1);
 		msg.setMessage("You've successfully changed your email!");
 			
@@ -143,8 +140,7 @@ public class UserController {
 				
 		User u = (User) session.getAttribute("user");
 		u.setPassword(password);
-		UserService service = new UserService();
-		service.getUserDao().updateUser(u);
+		userService.getUserDao().updateUser(u);
 		msg.setIsSuccess(1);
 		msg.setMessage("You've successfully changed your password!");
 			
@@ -203,8 +199,7 @@ public class UserController {
 				
 		User u = (User) session.getAttribute("user");
 		u.setBirthday(birthdate);
-		UserService service = new UserService();
-		service.getUserDao().updateUser(u);
+		userService.getUserDao().updateUser(u);
 		msg.setIsSuccess(1);
 		msg.setMessage("You've successfully changed your birthday!");
 			
@@ -227,8 +222,7 @@ public class UserController {
 				
 		User u = (User) session.getAttribute("user");
 		u.setGender(gender);
-		UserService service = new UserService();
-		service.getUserDao().updateUser(u);
+		userService.getUserDao().updateUser(u);
 		msg.setIsSuccess(1);
 		msg.setMessage("You've successfully changed your gender!");
 			
