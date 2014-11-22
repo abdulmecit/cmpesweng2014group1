@@ -47,6 +47,68 @@ public class UserDao extends PcDao {
 
 		return newItemId;
 	}
+	
+	public void updateUser(User userModel){
+		Long id = userModel.getId();
+		User userDB = this.getUserById(id);
+		String newString = null;
+		Date newDate = null;
+		Integer newInt = (Integer) null;
+		String column = "";
+		int type = 0; //string = 0, Date = 1, Int = 2
+		if(userDB.getName() != userModel.getName()){
+			column = "name";
+			newString = userModel.getName();
+		}else if(userDB.getSurname() != userModel.getSurname()){
+			column = "surname";
+			newString = userModel.getSurname();
+		}else if(userDB.getEmail() != userModel.getEmail()){
+			column = "email";
+			newString = userModel.getEmail();
+		}else if(userDB.getPassword() != userModel.getPassword()){
+			column = "password";
+			newString = userModel.getPassword();
+		}else if(userDB.getBirthday() != userModel.getBirthday()){
+			column = "birthday";
+			newDate = (Date) userModel.getBirthday();
+			type = 1;
+		}else if(userDB.getGender() != userModel.getGender()){
+			column = "gender";
+			newInt = userModel.getGender();
+			type = 2;
+		}else if(userDB.getIsBanned() != userModel.getIsBanned()){
+			column = "isBanned";
+			newInt = userModel.getIsBanned();
+			type = 2;
+		}
+		final String finalString = newString;
+		final Date finalDate = newDate;
+		final int finalInt = newInt;
+		final int finalType = type;
+		if(column == ""){
+			//error message
+		}else{
+			final String query = "UPDATE User SET " + column + "=? WHERE user_id=?";
+			KeyHolder gkh = new GeneratedKeyHolder();
+			this.getTemplate().update(new PreparedStatementCreator() {
+	
+				@Override
+				public PreparedStatement createPreparedStatement(
+						Connection connection) throws SQLException {
+					PreparedStatement ps = connection.prepareStatement(query,
+							Statement.RETURN_GENERATED_KEYS);
+					if(finalType == 0){
+						ps.setString(1, finalString);
+					}else if(finalType == 1){
+						ps.setDate(1, finalDate);
+					}else if(finalType == 2){
+						ps.setInt(1, finalInt);
+					}
+					return ps;
+				}
+			}, gkh);
+		}
+	}
 
 	public User getUserByEmail(String email) {
 		List<User> users = this.getTemplate().query(

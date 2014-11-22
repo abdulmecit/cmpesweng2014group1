@@ -23,17 +23,16 @@
     </style>
     
     <script type="text/javascript">
-    
     $(document).ready(function () {
-		$( ".formName" ).fadeOut();
-		$( ".formSurname" ).fadeOut();
-		$( ".formEmail" ).fadeOut();
-		$( ".formPassword" ).fadeOut();
-		$( ".formBirthday" ).fadeOut();
-		$( ".formGender" ).fadeOut();
-	});
+    	if('${user.gender}' == 0){
+    		document.getElementById('genderString').innerHTML = "Male";
+    	}else{
+    		document.getElementById('genderString').innerHTML = "Female";
+    	}
+    });
 	
-    </script>
+</script>
+    
   </head>
 
   <body>
@@ -166,7 +165,7 @@
 			</form:form>
 		  </div>
 		  <div>
-		    <p id="gender">Gender: ${user.gender} <button id="changeGender"> <img alt="Edit" src="https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/256/edit.png" height="12px"> </button></p>
+		    <p id="gender">Gender: <span id="genderString"> ${user.gender} </span> <button id="changeGender"> <img alt="Edit" src="https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/256/edit.png" height="12px"> </button></p>
 		  	<form:form class="form-horizontal" action="homesettings/changeGender" method="POST" modelAttribute="user">
 		    	<div class="formGender">
 		    		<div class="form-group">
@@ -193,6 +192,15 @@
 	
 	<script type="text/javascript">  
 	
+	$(document).ready(function () {
+		$( ".formName" ).hide();
+		$( ".formSurname" ).hide();
+		$( ".formEmail" ).hide();
+		$( ".formPassword" ).hide();
+		$( ".formBirthday" ).hide();
+		$( ".formGender" ).hide();
+	});
+
 	var changeNameOpen;	
 	$("#changeName").on("click", function (event) {
 		if(!changeNameOpen){
