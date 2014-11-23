@@ -127,8 +127,7 @@ public class UserDao extends PcDao {
 		}
 	}
 	
-	public User getUserById(Long id) {
-		
+	public User getUserById(Long id) {		
 		List<User> users = this.getTemplate().query(
 				"SELECT * FROM User WHERE user_id = ? ",
 				new Object[] { id }, new UserRowMapper());
@@ -138,5 +137,10 @@ public class UserDao extends PcDao {
 		} else {
 			return users.get(0);
 		}
+	}
+	
+	//will complete this
+	public void addFoodIntolerance(User user, int[] foodSelectionIds){
+		
 	}
 }

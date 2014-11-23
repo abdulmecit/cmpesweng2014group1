@@ -11,11 +11,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import cmpesweng2014.group1.nutty.dao.mapper.CommentRowMapper;
-import cmpesweng2014.group1.nutty.dao.mapper.EatLikeRateRowMapper;
-import cmpesweng2014.group1.nutty.dao.mapper.UserRowMapper;
 import cmpesweng2014.group1.nutty.model.Comment;
-import cmpesweng2014.group1.nutty.model.EatLikeRate;
-import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.model.User;
 
 public class CommentDao extends PcDao {
@@ -65,5 +61,16 @@ public class CommentDao extends PcDao {
 			Comment[] comments = commentList.toArray(new Comment[commentList.size()]);
 			return comments;
 		}
+	}
+	public void likeComment(Comment comment, User user){
+		final String query = "INSERT INTO LikesComment (user_id, comment_id) VALUES (?,?)";
+		this.getTemplate().update(query, new Object[] { 
+				user.getId(), comment.getCommentId()});
+	}
+	public int numberOfLikes(Comment comment) {
+		int total=this.getTemplate().queryForObject(
+				"SELECT COUNT(*) FROM LikesComment WHERE comment_id = ?", 
+				new Object[] {comment.getCommentId()}, Integer.class);
+		return total;
 	}
 }

@@ -110,10 +110,30 @@ public class RecipeService {
 	public int numberOfEats(int recipe_id){
 		return recipeDao.getEatLikeStatistic("eats",recipe_id);
 	}
-	
-	
-	
-	
-	
+	//creates and returns the derived recipe
+	public Recipe deriveRecipe(String name, String description,
+			int portion, int photo_id,String[] ingredients, double[] amounts, User user, 
+			Recipe originalRecipe){
+		Recipe createdRecipe=createRecipe(name, description,
+				portion, photo_id,ingredients,amounts,user);
+		recipeDao.addDerivedFrom(originalRecipe, createdRecipe);
+		return createdRecipe;
+	}	
+	//return derived recipe list from the given recipe
+	public Recipe[] getDerivedRecipes(Recipe originalRecipe){
+		return recipeDao.getAllDerivations(originalRecipe);
+	}
+	//returns the parent recipe which the given recipe is derived from
+	public Recipe getParentRecipe(Recipe recipe){
+		return recipeDao.getParent(recipe);
+	}
+	//user likes the comment
+	public void likeComment(Comment comment, User user){
+		commentDao.likeComment(comment, user);
+	}
+	//get likes of a comment
+	public int numberOfLikesOfAComment(Comment comment){
+		return commentDao.numberOfLikes(comment);
+	}
 	
 }

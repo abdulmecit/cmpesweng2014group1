@@ -8,7 +8,8 @@ public class Recipe {
 	private String name;
 	private String description;
 	private int portion;
-	private Date date;
+	private Date updatedDate;
+	private Date createdDate;
 	private double total_calorie;
 	
 	public Recipe() {
@@ -22,7 +23,7 @@ public class Recipe {
 		this.name = name;
 		this.description = description;
 		this.portion = portion;
-		this.date = date;
+		this.createdDate = date;
 		this.total_calorie = total_calorie;		
 	}
 	
@@ -53,12 +54,19 @@ public class Recipe {
 	public void setPortion(int portion) {
 		this.portion = portion;
 	}
-	public Date getDate() {
-		return date;
+	public Date getCreatedDate() {
+		return createdDate;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setCreatedDate(Date date) {
+		this.createdDate = date;
+	}
+	public Date getUpdatedDate() {
+		return updatedDate;
+	}
+
+	public void setUpdatedDate(Date date) {
+		this.updatedDate = date;
 	}
 	public double getTotalCalorie() {
 		return total_calorie;

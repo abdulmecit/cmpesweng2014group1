@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import cmpesweng2014.group1.nutty.dao.FoodSelectionDao;
 import cmpesweng2014.group1.nutty.dao.UserDao;
 import cmpesweng2014.group1.nutty.model.User;
 
@@ -14,6 +15,7 @@ public class UserService {
 
 	@Autowired
 	private UserDao userDao;
+	private FoodSelectionDao foodSelectionDao;
 
 	public UserDao getUserDao() {
 		return userDao;
@@ -42,5 +44,14 @@ public class UserService {
 		}else{
 			return null;
 		}
+	}
+	
+	//not complete yet
+	public void addFoodIntolerance(User user, String[] FoodSelectionNames){
+		int[] fs_ids=new int[FoodSelectionNames.length] ;
+		for(int i=0; i<FoodSelectionNames.length; i++){
+			fs_ids[i]=foodSelectionDao.getFoodSelectionIdByName(FoodSelectionNames[i]);
+		}
+		userDao.addFoodIntolerance(user, fs_ids);
 	}
 }

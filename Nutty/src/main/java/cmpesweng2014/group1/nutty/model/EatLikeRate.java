@@ -56,7 +56,7 @@ public class EatLikeRate {
 		this.taste_rate = taste_rate;
 	}
 	public int getEaseRate() {
-		return health_rate;
+		return ease_rate;
 	}
 	public void setEaseRate(int ease_rate) {
 		this.ease_rate = ease_rate;

@@ -18,8 +18,9 @@ public class RecipeResultSetExtractor implements ResultSetExtractor<Recipe> {
 		recipe.setName(rs.getString(2));
 		recipe.setDescription(rs.getString(3));
 		recipe.setPortion(rs.getInt(4));
-		recipe.setDate(rs.getDate(5));
-		recipe.setTotalCalorie(rs.getDouble(6));	
+		recipe.setCreatedDate(rs.getDate(5));
+		recipe.setUpdatedDate(rs.getDate(6));
+		recipe.setTotalCalorie(rs.getDouble(7));	
 		return recipe;
 	}
 }

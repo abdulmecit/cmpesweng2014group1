@@ -166,6 +166,53 @@ public class RecipeDao extends PcDao{
 				new Object[] {recipe_id, value}, Integer.class);
 		return total;
 	}
+	public void addDerivedFrom(final Recipe original, final Recipe derived){
+		final String query = "INSERT INTO Derived (parent_recipe_id, child_recipe_id) VALUES (?,?)";
+		KeyHolder gkh = new GeneratedKeyHolder();
+
+		this.getTemplate().update(new PreparedStatementCreator() {
+
+			@Override
+			public PreparedStatement createPreparedStatement(
+					Connection connection) throws SQLException {
+				PreparedStatement ps = connection.prepareStatement(query,
+						Statement.RETURN_GENERATED_KEYS);
+				ps.setInt(1, original.getRecipeId());
+				ps.setInt(2, derived.getRecipeId());
+				return ps;
+			}
+		}, gkh);
+	}
+
+	public Recipe[] getAllDerivations(Recipe originalRecipe) {
+		List<Recipe> recipeList = this.getTemplate().query(
+				"SELECT recipe_id, name, description, portion, created,"
+				+ "last_updated,total_calorie  FROM Recipe, Derived WHERE recipe_id = child_recipe_id"
+				+ "AND parent_recipe_id = ? ",
+				new Object[] { originalRecipe.getRecipeId() }, new RecipeRowMapper());
+
+		if (recipeList.isEmpty()) {
+			return null;
+		} else {
+			Recipe[] recipes = recipeList.toArray(new Recipe[recipeList.size()]);
+			return recipes;
+		}
+		
+	}
+
+	public Recipe getParent(Recipe recipe) {
+		List<Recipe> recipes = this.getTemplate().query(
+				"SELECT recipe_id, name, description, portion, created,"
+				+ "last_updated,total_calorie  FROM Recipe, Derived WHERE recipe_id = parent_recipe_id"
+				+ "AND child_recipe_id = ? ",
+				new Object[] { recipe.getRecipeId() }, new RecipeRowMapper());
+
+		if (recipes.isEmpty()) {
+			return null;
+		} else {
+			return recipes.get(0);
+		}
+	}
 	
 	
 }
