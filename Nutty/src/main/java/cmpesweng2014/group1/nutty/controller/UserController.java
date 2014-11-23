@@ -40,109 +40,154 @@ public class UserController {
 		}
 	}
 	
-	@RequestMapping(value = "/homesettings/changeName", method = RequestMethod.POST)
-	public String changeName(
-			@RequestParam(value = "inputName", required = true) String name,
+	@RequestMapping(value = "/homesettings/updateUser", method = RequestMethod.POST)
+	public String updateUser(
+			@RequestParam(value = "changed", required = true) String changed,
+			@RequestParam(value = "inputName", required = false) String name,
+			@RequestParam(value = "inputSurname", required = false) String surname,
+			@RequestParam(value = "inputEmail", required = false) String email,
+			@RequestParam(value = "inputPassword1", required = false) String password,
+			@RequestParam(value = "birthday_year", required = false) String year,
+			@RequestParam(value = "birthday_month", required = false) String month,
+			@RequestParam(value = "birthday_day", required = false) String day,
+			@RequestParam(value = "gender", required = false) Integer gender,
 			RedirectAttributes redirectAttrs, HttpSession session) throws ParseException {
 		Message msg = new Message();
-		if (name.equals("")) {
-			msg.setIsSuccess(0);
-			msg.setMessage("Name cannot be empty!");
-			return "redirect:/user/homesettings";
-		}		
-		User u = (User) session.getAttribute("user");
-		session.setAttribute("userName", name);
-		u.setName(name);
-		userService.getUserDao().updateUser(u);
-		msg.setIsSuccess(1);
-		msg.setMessage("You've successfully changed your name!");
-			
-		/*		
-		Gson gson = new Gson();
-		String msgJSON = gson.toJson(msg);
-		*/		
-		
-		redirectAttrs.addFlashAttribute("message", msg);
 
-		return "redirect:/user/homesettings";	
-	}
-	
-	@RequestMapping(value = "/homesettings/changeSurname", method = RequestMethod.POST)
-	public String changeSurname(
-			@RequestParam(value = "inputSurname", required = true) String surname,
-			RedirectAttributes redirectAttrs, HttpSession session) throws ParseException {
-		
-		Message msg = new Message();
+		if(changed.equals("name")){
+			if (name.equals("")) {
+				msg.setIsSuccess(0);
+				msg.setMessage("Name cannot be empty!");
+				return "redirect:/user/homesettings";
+			}
+
+			User u = (User) session.getAttribute("user");
+			session.setAttribute("userName", name);
+			u.setName(name);
+			userService.getUserDao().updateUser(u);
+			msg.setIsSuccess(1);
+			msg.setMessage("You've successfully changed your name!");
 				
-		if (surname.equals("")) {
-			msg.setIsSuccess(0);
-			msg.setMessage("Surname cannot be empty!");
+			/*		
+			Gson gson = new Gson();
+			String msgJSON = gson.toJson(msg);
+			*/		
+			
+			redirectAttrs.addFlashAttribute("message", msg);
+
+			return "redirect:/user/homesettings";	
+			
+		}else if (changed.equals("surname")){
+			if (surname.equals("")) {
+				msg.setIsSuccess(0);
+				msg.setMessage("Surname cannot be empty!");
+				return "redirect:/user/homesettings";
+			}
+					
+			User u = (User) session.getAttribute("user");
+			u.setSurname(surname);
+			userService.getUserDao().updateUser(u);
+			msg.setIsSuccess(1);
+			msg.setMessage("You've successfully changed your surname!");
+				
+			/*		
+			Gson gson = new Gson();
+			String msgJSON = gson.toJson(msg);
+			*/		
+			
+			redirectAttrs.addFlashAttribute("message", msg);
+
+			return "redirect:/user/homesettings";
+			
+		}else if (changed.equals("email")){
+			if (email.equals("")) {
+				msg.setIsSuccess(0);
+				msg.setMessage("Email cannot be empty!");
+				return "redirect:/user/homesettings";
+			}
+					
+			User u = (User) session.getAttribute("user");
+			u.setEmail(email);
+			userService.getUserDao().updateUser(u);
+			msg.setIsSuccess(1);
+			msg.setMessage("You've successfully changed your email!");
+				
+			/*		
+			Gson gson = new Gson();
+			String msgJSON = gson.toJson(msg);
+			*/		
+			
+			redirectAttrs.addFlashAttribute("message", msg);
+
+			return "redirect:/user/homesettings";
+			
+		}else if (changed.equals("password")){
+			if (password.equals("")) {
+				msg.setIsSuccess(0);
+				msg.setMessage("Password cannot be empty!");
+				return "redirect:/user/homesettings";
+			}
+
+			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+			User u = (User) session.getAttribute("user");
+			u.setPassword(encoder.encode(password));
+			userService.getUserDao().updateUser(u);
+			msg.setIsSuccess(1);
+			msg.setMessage("You've successfully changed your password!");
+				
+			/*		
+			Gson gson = new Gson();
+			String msgJSON = gson.toJson(msg);
+			*/		
+			
+			redirectAttrs.addFlashAttribute("message", msg);
+
+			return "redirect:/user/homesettings";
+			
+		}else if (changed.equals("birthday")){
+			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			java.util.Date birthdate = formatter.parse(year + "-" + month + "-" + day);
+			java.sql.Date birthday = new java.sql.Date(birthdate.getTime());
+					
+			if (birthday.equals("")) {
+				msg.setIsSuccess(0);
+				msg.setMessage("Birthday cannot be empty!");
+				return "redirect:/user/homesettings";
+			}
+					
+			User u = (User) session.getAttribute("user");
+			u.setBirthday(birthday);
+			userService.getUserDao().updateUser(u);
+			msg.setIsSuccess(1);
+			msg.setMessage("You've successfully changed your birthday to " + u.getBirthday());
+				
+			/*		
+			Gson gson = new Gson();
+			String msgJSON = gson.toJson(msg);
+			*/		
+			
+			redirectAttrs.addFlashAttribute("message", msg);
+
+			return "redirect:/user/homesettings";
+			
+		}else if (changed.equals("gender")){
+			User u = (User) session.getAttribute("user");
+			u.setGender(gender);
+			userService.getUserDao().updateUser(u);
+			msg.setIsSuccess(1);
+			msg.setMessage("You've successfully changed your gender!");
+				
+			/*		
+			Gson gson = new Gson();
+			String msgJSON = gson.toJson(msg);
+			*/		
+			
+			redirectAttrs.addFlashAttribute("message", msg);
+
 			return "redirect:/user/homesettings";
 		}
-				
-		User u = (User) session.getAttribute("user");
-		u.setSurname(surname);
-		userService.getUserDao().updateUser(u);
-		msg.setIsSuccess(1);
-		msg.setMessage("You've successfully changed your surname!");
-			
-		/*		
-		Gson gson = new Gson();
-		String msgJSON = gson.toJson(msg);
-		*/		
-		
-		redirectAttrs.addFlashAttribute("message", msg);
-
-		return "redirect:/user/homesettings";	
-	}
-	
-	@RequestMapping(value = "/homesettings/changeEmail", method = RequestMethod.POST)
-	public String changeEmail(
-			@RequestParam(value = "inputEmail", required = true) String email,
-			RedirectAttributes redirectAttrs, HttpSession session) throws ParseException {
-		
-		Message msg = new Message();
-				
-		if (email.equals("")) {
-			msg.setIsSuccess(0);
-			msg.setMessage("Email cannot be empty!");
-			return "redirect:/user/homesettings";
-		}
-				
-		User u = (User) session.getAttribute("user");
-		u.setEmail(email);
-		userService.getUserDao().updateUser(u);
-		msg.setIsSuccess(1);
-		msg.setMessage("You've successfully changed your email!");
-			
-		/*		
-		Gson gson = new Gson();
-		String msgJSON = gson.toJson(msg);
-		*/		
-		
-		redirectAttrs.addFlashAttribute("message", msg);
-
-		return "redirect:/user/homesettings";	
-	}
-	
-	@RequestMapping(value = "/homesettings/changePassword", method = RequestMethod.POST)
-	public String changePassword(
-			@RequestParam(value = "inputPassword1", required = true) String password,
-			RedirectAttributes redirectAttrs, HttpSession session) throws ParseException {
-		
-		Message msg = new Message();
-				
-		if (password.equals("")) {
-			msg.setIsSuccess(0);
-			msg.setMessage("Password cannot be empty!");
-			return "redirect:/user/homesettings";
-		}
-				
-		User u = (User) session.getAttribute("user");
-		u.setPassword(password);
-		userService.getUserDao().updateUser(u);
-		msg.setIsSuccess(1);
-		msg.setMessage("You've successfully changed your password!");
+		msg.setIsSuccess(0);
+		msg.setMessage("A problem occured" + changed);
 			
 		/*		
 		Gson gson = new Gson();
@@ -177,62 +222,5 @@ public class UserController {
 		Gson gson = new Gson();
 		String msgJSON = gson.toJson(msg);
 		*/		
-	}
-	
-	@RequestMapping(value = "/homesettings/changeBirthday", method = RequestMethod.POST)
-	public String changeBirthday(
-			@RequestParam(value = "birthday_year", required = false) String year,
-			@RequestParam(value = "birthday_month", required = false) String month,
-			@RequestParam(value = "birthday_day", required = false) String day,
-			RedirectAttributes redirectAttrs, HttpSession session) throws ParseException {
-		
-		Message msg = new Message();
-		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		java.util.Date birthdate = formatter.parse(year + "-" + month + "-" + day);
-		java.sql.Date birthday = new java.sql.Date(birthdate.getTime());
-				
-		if (birthday.equals("")) {
-			msg.setIsSuccess(0);
-			msg.setMessage("Birthday cannot be empty!");
-			return "redirect:/user/homesettings";
-		}
-				
-		User u = (User) session.getAttribute("user");
-		u.setBirthday(birthdate);
-		userService.getUserDao().updateUser(u);
-		msg.setIsSuccess(1);
-		msg.setMessage("You've successfully changed your birthday!");
-			
-		/*		
-		Gson gson = new Gson();
-		String msgJSON = gson.toJson(msg);
-		*/		
-		
-		redirectAttrs.addFlashAttribute("message", msg);
-
-		return "redirect:/user/homesettings";	
-	}
-	
-	@RequestMapping(value = "/homesettings/changeGender", method = RequestMethod.POST)
-	public String changeGender(
-			@RequestParam(value = "gender", required = true) int gender,
-			RedirectAttributes redirectAttrs, HttpSession session) throws ParseException {
-		
-		Message msg = new Message();
-				
-		User u = (User) session.getAttribute("user");
-		u.setGender(gender);
-		userService.getUserDao().updateUser(u);
-		msg.setIsSuccess(1);
-		msg.setMessage("You've successfully changed your gender!");
-			
-		/*		
-		Gson gson = new Gson();
-		String msgJSON = gson.toJson(msg);
-		*/		
-		
-		redirectAttrs.addFlashAttribute("message", msg);
-
-		return "redirect:/user/homesettings";	
 	}
 }
