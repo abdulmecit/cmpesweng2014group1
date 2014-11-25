@@ -179,7 +179,7 @@ input[type="submit"]:active {
 		    display: none;
 		    position: absolute;
 		
-			  opacity: 0;
+			opacity: 0;
 		    z-index: 9;
 		    cursor: pointer;
 		

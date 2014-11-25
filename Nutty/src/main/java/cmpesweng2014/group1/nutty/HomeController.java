@@ -65,7 +65,6 @@ public class HomeController {
 		User u = userService.canLogin(email, password);
 		if (u != null) {
 			session.setAttribute("user", u);
-			session.setAttribute("userName", u.getName());
 			session.setAttribute("isLogged", true);
 			redirectAttrs.addFlashAttribute("message", new Message(1, null, "You have successfully logged in, " + u.getName() + "."));
 			return "redirect:success";
@@ -126,7 +125,6 @@ public class HomeController {
 		
 		if (u != null) {
 			session.setAttribute("user", u);
-			session.setAttribute("userName", u.getName());
 			session.setAttribute("isLogged", true);
 					
 			redirectAttrs.addFlashAttribute("message", new Message(1, null, "You've successfully signed up, " + u.getName() + "."));
@@ -189,7 +187,6 @@ public class HomeController {
 	public String signOut(HttpSession session) {
 		session.setAttribute("isLogged", false);
 		session.setAttribute("user", null);
-		session.setAttribute("userName", null);
 		return "redirect:index";
 	}
 	

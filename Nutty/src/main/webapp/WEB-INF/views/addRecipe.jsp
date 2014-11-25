@@ -1,6 +1,6 @@
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1" import="java.sql.*"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta charset="utf-8">
@@ -60,13 +60,13 @@ body {
 	<div class="container">
 		<h3 align="center">Add Recipe</h3>
 		<div class="row row well">
-			<form method="POST">
+			<form:form method="POST" modelAttribute="recipe">
 				<!------------------------  Get Directions  --------------------------->
 
 				<div class="col-xs-6">
 					<h4 align="left">Directions</h4>
 					<input type="text" name="myInputs[]"
-						style="width: 300px; height: 300px"">
+						style="width: 300px; height: 300px">
 				</div>
 				<!------------------------  Get Ingredients  --------------------------->
 				<div class="col-xs-6">
@@ -75,31 +75,31 @@ body {
 					<div id="dynamicInput">
 						<p>
 							<input type="text" name="myInputs[]"
-								placeholder="5g,2 pounds,etc." style="width: 70px;""> <input
+								placeholder="5g,2 pounds,etc." style="width: 70px;"> <input
 								type="text" name="myInputs[]" placeholder="sugar,etc."
 								style="width: 200px;">
 						</p>
 						<p>
 							<input type="text" name="myInputs[]"
-								placeholder="5g,2 pounds,etc." style="width: 70px;""> <input
+								placeholder="5g,2 pounds,etc." style="width: 70px;"> <input
 								type="text" name="myInputs[]" placeholder="sugar,etc."
 								style="width: 200px;">
 						</p>
 						<p>
 							<input type="text" name="myInputs[]"
-								placeholder="5g,2 pounds,etc." style="width: 70px;""> <input
+								placeholder="5g,2 pounds,etc." style="width: 70px;"> <input
 								type="text" name="myInputs[]" placeholder="sugar,etc."
 								style="width: 200px;">
 						</p>
 						<p>
 							<input type="text" name="myInputs[]"
-								placeholder="5g,2 pounds,etc." style="width: 70px;""> <input
+								placeholder="5g,2 pounds,etc." style="width: 70px;"> <input
 								type="text" name="myInputs[]" placeholder="sugar,etc."
 								style="width: 200px;">
 						</p>
 						<p>
 							<input type="text" name="myInputs[]"
-								placeholder="5g,2 pounds,etc." style="width: 70px;""> <input
+								placeholder="5g,2 pounds,etc." style="width: 70px;"> <input
 								type="text" name="myInputs[]" placeholder="sugar,etc."
 								style="width: 200px;">
 						</p>
@@ -110,7 +110,7 @@ body {
 					<br> <br> <input type="submit" value="Submit"
 						class="btn btn-primary" />
 				</div>
-			</form>
+			</form:form>
 		</div>
 	</div>
 

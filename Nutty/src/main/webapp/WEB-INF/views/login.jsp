@@ -67,7 +67,7 @@
 			    </div>
 			  </div>
 			  <br>
-		      <font color="blue" id="errorMsg">${errorMsg}</font>
+		      <font color="blue">${message.message}</font>
 			</form>
         </div>
       </div>

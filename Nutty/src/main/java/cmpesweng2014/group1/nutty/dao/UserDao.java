@@ -50,14 +50,13 @@ public class UserDao extends PcDao {
 	
 	public void updateUser(final User u){
 		final String query = "UPDATE User SET name=?, surname=?, email=?, password=?, birthday=?, gender=?, isBanned=? WHERE user_id=?";
-		KeyHolder gkh = new GeneratedKeyHolder();
+
 		this.getTemplate().update(new PreparedStatementCreator() {
 
 			@Override
 			public PreparedStatement createPreparedStatement(
 					Connection connection) throws SQLException {
-				PreparedStatement ps = connection.prepareStatement(query,
-						Statement.RETURN_GENERATED_KEYS);
+				PreparedStatement ps = connection.prepareStatement(query);
 				ps.setString(1, u.getName());
 				ps.setString(2, u.getSurname());
 				ps.setString(3, u.getEmail());
@@ -69,7 +68,7 @@ public class UserDao extends PcDao {
 
 				return ps;
 			}
-		}, gkh);
+		});
 	}
 	
 	public User getUserByEmail(String email) {
