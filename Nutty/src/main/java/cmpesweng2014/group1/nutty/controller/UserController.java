@@ -27,6 +27,19 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+	@RequestMapping(value = "/profile", method = RequestMethod.GET)
+	public String viewProfile(Model model, HttpSession session) {
+		Object logged = session.getAttribute("isLogged");
+		boolean isLogged = logged == null ? false : (Boolean) logged;
+		if (isLogged) {
+			User u = (User) session.getAttribute("user");
+			model.addAttribute("user", u);
+			return "profile";
+		} else {
+			return "redirect:/login";
+		}
+	}
+	
 	@RequestMapping(value = "/homesettings", method = RequestMethod.GET)
 	public String viewHomeSettings(Model model, HttpSession session) {
 		Object logged = session.getAttribute("isLogged");
@@ -145,16 +158,16 @@ public class UserController {
 			return "redirect:/user/homesettings";
 			
 		}else if (changed.equals("birthday")){
+			if(Integer.parseInt(year) == 0 || Integer.parseInt(month) == 0 || Integer.parseInt(day) == 0){
+				msg.setIsSuccess(0);
+				msg.setMessage("0 is not a valid value");
+				return "redirect:/user/homesettings";
+			}
+			
 			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			java.util.Date birthdate = formatter.parse(year + "-" + month + "-" + day);
 			java.sql.Date birthday = new java.sql.Date(birthdate.getTime());
-					
-			if (birthday.equals("")) {
-				msg.setIsSuccess(0);
-				msg.setMessage("Birthday cannot be empty!");
-				return "redirect:/user/homesettings";
-			}
-					
+							
 			User u = (User) session.getAttribute("user");
 			u.setBirthday(birthday);
 			userService.getUserDao().updateUser(u);

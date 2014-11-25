@@ -258,8 +258,9 @@ input[type="submit"]:active {
 	    		<li><a href="login">Login</a></li>
 	    		<li><a href="signup">Sign Up</a></li>
 	    	<%} else {%>
-	    		<li><a href="ownProfile">My Profile</a></li>	    	
+	    		<li><a href="user/profile">My Profile</a></li>	    	
 	    		<li><a href="logout">Logout</a></li>
+	    		<li id="settings" class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle"><img alt="Settings" src="http://www.foxconnbuilders.com/img/gear.png" width="20px" height="20px"/><i class="fa fa-caret-down"></i></a><ul role="menu" class="dropdown-menu"><li id="popular"><a href="/nutty/user/homesettings">Profile Settings</a></li><li id="app"><a href="/nutty/user/healthSettings">Health Settings</a></li></li>
 	    	<%}%>	    				    
 		  </ul>
 <!-- 		  <ul class="nav navbar-nav navbar-search navbar-right"> -->
