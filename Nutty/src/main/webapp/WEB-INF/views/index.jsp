@@ -293,7 +293,7 @@ input[type="submit"]:active {
 	    <input type="radio" name="radio-btn" id="img-2" />
 	    <li class="slide-container">
 	        <div class="slide">
-	        	<h3 align="center">Healty</h3>
+	        	<h3 align="center">Healthy</h3>
 	        	<a href="/nutty"><button><img src="http://sandiegobargainmama.com/wp-content/uploads/2011/09/balanced-meal.png" /></button></a>
 	        </div>
 			<div class="nav">

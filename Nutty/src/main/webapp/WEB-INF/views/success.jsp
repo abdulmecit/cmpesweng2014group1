@@ -43,9 +43,7 @@
    <div class="container">
       <div class="row">
         <div class="col-md-offset-3 col-md-6 well">
-			<p>You've successfully signed up, ${sessionScope.userName}.</p>
-			<br>
-			<p>Click <a href="index">here</a> to go back where you've left off.<p>
+			<p>${message.message}</p>
 			<br>
 			<p>Click <a href=".">here</a> to return to the main page.<p>
 		</div>

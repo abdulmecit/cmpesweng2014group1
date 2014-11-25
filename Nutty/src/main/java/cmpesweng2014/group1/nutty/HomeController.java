@@ -12,9 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.google.gson.Gson;
 
 import cmpesweng2014.group1.nutty.model.Message;
 import cmpesweng2014.group1.nutty.model.User;
@@ -37,34 +36,30 @@ public class HomeController {
 	
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index(HttpSession session) {
-		Object logged = session.getAttribute("isLogged");
-		boolean isLogged = logged == null ? false : (Boolean) logged;
-		if (isLogged) {
 			return "index";
-		} else {
-			return "redirect:login";
-		}
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String viewSignin(Model model, HttpSession session) {
+	public String viewLogin(Model model, HttpSession session) {
 		Object logged = session.getAttribute("isLogged");
 		boolean isLogged = logged == null ? false : (Boolean) logged;
 		if (isLogged) {
 			return "redirect:index";
-		} else {
+		} 
+		else {
 			User u = new User();
 			model.addAttribute("user", u);
 			return "login";
 		}
 	}
-
+	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String signIn(
+	public String login(
 			@RequestParam(value = "inputEmail", required = true) String email,
 			@RequestParam(value = "inputPassword", required = true) String password,
-			HttpSession session) {
+			RedirectAttributes redirectAttrs, HttpSession session) {
 		if (email.equals("") || password.equals("")) {
+			redirectAttrs.addFlashAttribute("message", new Message(0, null, "Email and password fields cannot be empty!")); 
 			return "redirect:login";
 		}
 		User u = userService.canLogin(email, password);
@@ -72,9 +67,30 @@ public class HomeController {
 			session.setAttribute("user", u);
 			session.setAttribute("userName", u.getName());
 			session.setAttribute("isLogged", true);
-			return "redirect:index";
-		} else {
+			redirectAttrs.addFlashAttribute("message", new Message(1, null, "You have successfully logged in, " + u.getName() + "."));
+			return "redirect:success";
+		} 
+		else {
+			redirectAttrs.addFlashAttribute("message", new Message(0, null, "Invalid email address or password."));
 			return "redirect:login";
+		}
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/loginREST")
+	public Message loginREST(
+			@RequestParam(value = "inputEmail", required = true) String email,
+			@RequestParam(value = "inputPassword", required = true) String password,
+			HttpSession session) {
+		if (email.equals("") || password.equals("")) {
+			return new Message(0, null, "Email and password fields cannot be empty!"); 
+		}
+		User u = userService.canLogin(email, password);
+		if (u != null) {
+			return new Message(1, u, "You have successfully logged in, " + u.getName() + "."); 
+		} 
+		else {
+			return new Message(0, null, "Invalid email address or password.");
 		}
 	}
 
@@ -86,7 +102,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public String signUp(
+	public String signup(
 			@RequestParam(value = "inputName", required = true) String name,
 			@RequestParam(value = "inputSurname", required = true) String surname,
 			@RequestParam(value = "inputEmail", required = true) String email,
@@ -96,12 +112,9 @@ public class HomeController {
 			@RequestParam(value = "birthday_day", required = false) String day,
 			@RequestParam(value = "gender", required = false) Integer gender,
 			RedirectAttributes redirectAttrs, HttpSession session) throws ParseException {
-		
-		Message msg = new Message();
-				
+						
 		if (name.equals("") || surname.equals("") || email.equals("") || password.equals("")) {
-			msg.setIsSuccess(0);
-			msg.setMessage("Name, surname, email and password fields cannot be empty!");
+			redirectAttrs.addFlashAttribute("message", new Message(0, null, "Name, surname, email and password fields cannot be empty!"));
 			return "redirect:signup";
 		}
 		
@@ -116,19 +129,44 @@ public class HomeController {
 			session.setAttribute("userName", u.getName());
 			session.setAttribute("isLogged", true);
 					
-			msg.setIsSuccess(1);
-			msg.setMessage("You've successfully signed up!");
-			
-			/*		
-			Gson gson = new Gson();
-			String msgJSON = gson.toJson(msg);
-			*/		
-			
-			redirectAttrs.addFlashAttribute("message", msg);
-
-			return "redirect:signupsuccess";
+			redirectAttrs.addFlashAttribute("message", new Message(1, null, "You've successfully signed up, " + u.getName() + "."));
+			return "redirect:success";
 		} 
-		return "redirect:signup";	
+		else {
+			redirectAttrs.addFlashAttribute("message",new Message(0, null, "Signup failed."));
+			return "redirect:signup";
+		}
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/signupREST")
+	public Message signupREST(
+			@RequestParam(value = "inputName", required = true) String name,
+			@RequestParam(value = "inputSurname", required = true) String surname,
+			@RequestParam(value = "inputEmail", required = true) String email,
+			@RequestParam(value = "inputPassword1", required = true) String password,
+			@RequestParam(value = "birthday_year", required = false) String year,
+			@RequestParam(value = "birthday_month", required = false) String month,
+			@RequestParam(value = "birthday_day", required = false) String day,
+			@RequestParam(value = "gender", required = false) Integer gender,
+			HttpSession session) throws ParseException {
+						
+		if (name.equals("") || surname.equals("") || email.equals("") || password.equals("")) {
+			return new Message(0, null, "Name, surname, email and password fields cannot be empty!");
+		}
+		
+		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		java.util.Date birthdate = formatter.parse(year + "-" + month + "-" + day);
+		java.sql.Date birthday = new java.sql.Date(birthdate.getTime());
+				
+		User u = userService.createUser(email, password, name, surname, birthday, gender);
+		
+		if (u != null) {		
+			return new Message(1, u, "You've successfully signed up, " + u.getName() + ".");
+		} 
+		else {
+			return new Message(0, null, "Signup failed."); 
+		}
 	}
 	/*
 	@RequestMapping(value = "/accounts", method = RequestMethod.POST)
@@ -142,9 +180,9 @@ public class HomeController {
 	 }
 	*/
 	
-	@RequestMapping(value = "/signupsuccess", method = RequestMethod.GET)
+	@RequestMapping(value = "/success", method = RequestMethod.GET)
 	public String viewSignupSuccess(HttpSession session) {
-		return "signupsuccess";
+		return "success";
 	}
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
@@ -155,12 +193,4 @@ public class HomeController {
 		return "redirect:index";
 	}
 	
-	/*
-	@InitBinder
-	public void initBinder(WebDataBinder binder) {
-	    SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
-	    sdf.setLenient(true);
-	    binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
-	}
-	*/
 }
