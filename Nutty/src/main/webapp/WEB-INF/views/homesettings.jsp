@@ -65,7 +65,7 @@
         <div class="col-md-offset-3 col-md-6 well" align="center">
           <h1>Profile Settings</h1>
 		  <div>
-		  	<h3>Name <span id="imgButton1" style="cursor:pointer"><a id="changeName"> <img id="editButton1" alt="Edit" src="https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/256/edit.png" height="18px"></a></span></h3>
+		  	<h3>Name <span style="cursor:pointer"><a id="changeName"><span class="glyphicon glyphicon-pencil"></span></a></span></h3>
 		    <p id="name">${user.name}</p>		  
 			<form:form class="form-horizontal" action="homesettings/updateUser" method="POST" modelAttribute="user">
 		    	<div class="formName">
@@ -75,13 +75,13 @@
   					</div>
     				<div class="form-group">
       					<div class="col-sm-offset-2 col-sm-10">
-       						<button type="submit" class="btn btn-primary" id="changeNameApply">Apply</button>
+       						<button type="submit" class="btn btn-primary">Apply</button>
    						</div>
    					</div>
 		    	</div>
 			</form:form>
 		  <div>
-		  	<h3>Surname <span id="imgButton2" style="cursor:pointer"><a id="changeSurname"> <img id="editButton2" alt="Edit" src="https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/256/edit.png" height="18px"></a></span></h3>
+		  	<h3>Surname <span style="cursor:pointer"><a id="changeSurname"><span class="glyphicon glyphicon-pencil"></span></a></span></h3>
 		    <p id="surname">${user.surname}</p>
 			<form:form class="form-horizontal" action="homesettings/updateUser" method="POST" modelAttribute="user">
 		    	<div class="formSurname">
@@ -91,14 +91,14 @@
 					</div>
     				<div class="form-group">
       					<div class="col-sm-offset-2 col-sm-10">
-        					<button type="submit" class="btn btn-primary" id="changeSurnameApply">Apply</button>
+        					<button type="submit" class="btn btn-primary">Apply</button>
       					</div>
       				</div>
       			</div>
 			</form:form>		  
 		  </div>
 		  <div>
-		  	<h3>E-mail <span id="imgButton3" style="cursor:pointer"><a id="changeEmail"> <img id="editButton3" alt="Edit" src="https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/256/edit.png" height="18px"></a></span></h3>
+		  	<h3>E-mail <span style="cursor:pointer"><a id="changeEmail"><span class="glyphicon glyphicon-pencil"></span></a></span></h3>
 		    <p id="email">${user.email}</p>
 		    <form:form class="form-horizontal" action="homesettings/updateUser" method="POST" modelAttribute="user">
 		    	<div class="formEmail">
@@ -108,14 +108,14 @@
 					</div>
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
-					    	<button type="submit" class="btn btn-primary" id="changeEmailApply">Apply</button>
+					    	<button type="submit" class="btn btn-primary">Apply</button>
 					  	</div>
 					</div>
 		    	</div>
 			</form:form>
 		  </div>
 		  <div>
-		  	<h3>Password <span id="imgButton4" style="cursor:pointer"><a id="changePassword"> <img id="editButton4" alt="Edit" src="https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/256/edit.png" height="18px"></a></span></h3>
+		  	<h3>Password <span style="cursor:pointer"><a id="changePassword"><span class="glyphicon glyphicon-pencil"></span></a></span></h3>
 		    <p id="password">*******</p>
 		  	<form:form class="form-horizontal" action="homesettings/updateUser" method="POST" modelAttribute="user">
 		    	<div class="formPassword">
@@ -140,14 +140,14 @@
 				    <div class="form-group">
 				    	<div class="col-sm-offset-2 col-sm-10">
 				    		<input type="hidden" name="changed" id="changed" value="password">
-				        	<button type="submit" class="btn btn-primary" id="changePasswordApply" disabled>Apply</button>
+				        	<button type="submit" class="btn btn-primary" disabled>Apply</button>
 				       	</div>
 				 	</div>
 				</div>
 			</form:form>
 		  </div>
 		  <div>
-		  	<h3>Birthday <span id="imgButton5" style="cursor:pointer"><a id="changeBirthday"> <img id="editButton5" alt="Edit" src="https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/256/edit.png" height="18px"></a></span></h3>
+		  	<h3>Birthday <span style="cursor:pointer"><a id="changeBitrhday"><span class="glyphicon glyphicon-pencil"></span></a></span></h3>
 		    <p id="birthday">${user.birthday}</p>
 		  	<form:form class="form-horizontal" action="homesettings/updateUser" method="POST" modelAttribute="user">
 		    	<div class="formBirthday">
@@ -157,14 +157,14 @@
 					</div>
 					<div class="form-group">
 			    		<div class="col-sm-offset-2 col-sm-10">
-			      			<button type="submit" class="btn btn-primary" id="changeBirthdayApply" >Apply</button>
+			      			<button type="submit" class="btn btn-primary">Apply</button>
 			    		</div>
 			  		</div>
 		    	</div>
 			</form:form>
 		  </div>
 		  <div>
-		  	<h3>Gender <span id="imgButton6" style="cursor:pointer"><a id="changeGender"> <img id="editButton6" alt="Edit" src="https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/256/edit.png" height="18px"></a></span></h3>	
+		  	<h3>Gender <span style="cursor:pointer"><a id="changeGender"><span class="glyphicon glyphicon-pencil"></span></a></span></h3>	
 		    <p id="gender"><span id="genderString"> ${user.gender}</span></p>
 		  	<form:form class="form-horizontal" action="homesettings/updateUser" method="POST" modelAttribute="user">
 		    	<div class="formGender">
@@ -175,7 +175,7 @@
 					</div>
 		    		<div class="form-group">
 			    		<div class="col-sm-offset-2 col-sm-10">
-			      			<button type="submit" class="btn btn-primary" id="changeBirthdayApply" >Apply</button>
+			      			<button type="submit" class="btn btn-primary">Apply</button>
 			    		</div>
 			  		</div>
 		    	</div>
@@ -186,51 +186,10 @@
         </div>
       </div>
 	</div>
+	</div>
 	
 	<script type="text/javascript">  
-	
-	$('#imgButton1').mouseover(function(e){
-		$('#editButton1').css({ 'height': '20px'});
-	});
-	$('#imgButton1').mouseout(function(e){
-		$('#editButton1').css({ 'height': '18px'});
-	});
-	
-	$('#imgButton2').mouseover(function(e){
-		$('#editButton2').css({ 'height': '20px'});
-	});
-	$('#imgButton2').mouseout(function(e){
-		$('#editButton2').css({ 'height': '18px'});
-	});
-	
-	$('#imgButton3').mouseover(function(e){
-		$('#editButton3').css({ 'height': '20px'});
-	});
-	$('#imgButton3').mouseout(function(e){
-		$('#editButton3').css({ 'height': '18px'});
-	});
-
-	$('#imgButton4').mouseover(function(e){
-		$('#editButton4').css({ 'height': '20px'});
-	});
-	$('#imgButton4').mouseout(function(e){
-		$('#editButton4').css({ 'height': '18px'});
-	});
-	
-	$('#imgButton5').mouseover(function(e){
-		$('#editButton5').css({ 'height': '20px'});
-	});
-	$('#imgButton5').mouseout(function(e){
-		$('#editButton5').css({ 'height': '18px'});
-	});
-	
-	$('#imgButton6').mouseover(function(e){
-		$('#editButton6').css({ 'height': '20px'});
-	});
-	$('#imgButton6').mouseout(function(e){
-		$('#editButton6').css({ 'height': '18px'});
-	});
-	
+		
 	$(document).ready(function () {
 		$( ".formName" ).hide();
 		$( ".formSurname" ).hide();
