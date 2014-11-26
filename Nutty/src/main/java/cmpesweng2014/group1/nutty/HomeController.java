@@ -3,6 +3,7 @@ package cmpesweng2014.group1.nutty;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import cmpesweng2014.group1.nutty.model.Message;
+import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.model.User;
+import cmpesweng2014.group1.nutty.service.RecipeService;
 import cmpesweng2014.group1.nutty.service.UserService;
 
 /**
@@ -28,7 +31,8 @@ public class HomeController {
 
 	@Autowired
 	private UserService userService;
-
+	private RecipeService recipeService;
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(HttpSession session) {
 		return "redirect:index";
@@ -177,6 +181,21 @@ public class HomeController {
 		session.setAttribute("isLogged", false);
 		session.setAttribute("user", null);
 		return "redirect:index";
+	}
+	
+	@RequestMapping(value = "/basicsearchrecipe", method = RequestMethod.POST)
+	@ResponseBody
+	public boolean basicSearchRecipe(
+			@RequestParam(value = "search", required = true) String search,
+			HttpSession session){
+
+		List<Recipe> recipes = (List<Recipe>) recipeService.getRecipeDao().searchRecipeByName(search);//userService.getUserDao().updateUser(u);
+		
+		if (recipes.size() == 0){
+			return false;
+		}
+		session.setAttribute("recipes", recipes);
+		return true;
 	}
 	
 }

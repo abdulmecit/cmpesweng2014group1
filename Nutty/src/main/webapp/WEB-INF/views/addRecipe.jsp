@@ -66,8 +66,48 @@ body {
 					<input type="submit" value="Submit" class="btn btn-primary"
 						style="float: right;">
 				</div>
-
+				<!------------------------  Get Name & Tag  --------------------------->
 				<div class="panel-body">
+					<div class="col-sm-12">
+						<div class="panel panel-default">
+							<div class="panel-heading clearfix">
+								<h2 class="panel-title pull-left" style="padding-top: 7.5px;">Name,Tags
+									& Photo</h2>
+							</div>
+							<div class="panel-body">
+								<p>
+									<input type="text" class="form-control" name="myInputs[]"
+										placeholder="Name of Recipe...">
+								</p>
+
+								<div id="dynamicInput3" class="col-sm-3" align="left">
+									<input type="text" class="form-control" name="myInputs[]"
+										placeholder="italian cuisine"> <br> <input
+										type="text" class="form-control" name="myInputs[]"
+										placeholder="fish,french recipe, etc.">
+								</div>
+								<div id="dynamicInput3" class="col-sm-3" align="left">
+									<input type="text" class="form-control" name="myInputs[]"
+										placeholder="chicken,etc"> <br> <input
+										type="text" class="form-control" name="myInputs[]"
+										placeholder="soup,etc.">
+								</div>
+								<div id="dynamicInput3" class="col-sm-3" align="left">
+									<input type="text" class="form-control" name="myInputs[]"
+										placeholder="soy sauce,etc"> <br> <input
+										type="text" class="form-control" name="myInputs[]"
+										placeholder=" chilli sauce,etc">
+								</div>
+								<div id="dynamicInput3" class="col-sm-3" align="left">
+									<input type="text" class="form-control" name="myInputs[]"
+										placeholder="easy"> <br> <input type="text"
+										class="form-control" name="myInputs[]" placeholder="cheap">
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-sm-12"></div>
 					<!------------------------  Get Ingredients  --------------------------->
 					<div class="col-sm-6">
 						<div class="panel panel-default">
@@ -149,9 +189,10 @@ body {
 							</div>
 						</div>
 					</div>
+
+
 				</div>
 		</form>
-
 
 		<!---------------------------  Functions  ------------------------------>
 		<script type="text/javascript">

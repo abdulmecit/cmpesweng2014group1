@@ -33,4 +33,18 @@ public class IngredientDao extends PcDao{
 			return ingredients.get(0).getId();
 		}
 	}
+	
+	public Ingredient[] allIngredients(){
+		List<Ingredient> ingredientList = this.getTemplate().query(
+				"SELECT * FROM ingredients",
+				new Object[] {}, new IngredientRowMapper());
+	
+		if (ingredientList.isEmpty()) {
+			return null;
+		}
+		else{
+			Ingredient[] ingredients = ingredientList.toArray(new Ingredient[ingredientList.size()]);
+			return ingredients;
+		}
+	}
 }
