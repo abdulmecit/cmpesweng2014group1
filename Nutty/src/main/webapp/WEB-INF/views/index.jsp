@@ -276,6 +276,12 @@ input[type="submit"]:active {
 	</form>
 	
 	<br><br>
+	<div class="container" id="searchResults" style="background-color:#eeeeee;">
+	
+	
+	</div>
+	
+	<br><br>
 	
 	 <ul class="slides">
 	    <input type="radio" name="radio-btn" id="img-1" checked />
@@ -335,7 +341,8 @@ input[type="submit"]:active {
 	</ul>
 
 	<script type="text/javascript">
-	 $('#search-form').submit(function () {
+	 $('#search-form').submit(function (event) {
+	      event.preventDefault();
 		  $.ajax({
 			  type: "POST",
 			  url: "basicsearchrecipe",
@@ -343,14 +350,20 @@ input[type="submit"]:active {
 				  search: $( "#searchText" ).val(),
 				  }
 			}) 
-			.done(function(success) { 
-				if(success){	//there is at least one output		
-					alert("there is at least one result");
+			.done(function(answer) {
+				$( "#searchResults" ).html("");
+				if(answer == ""){
+					$( "#searchResults" ).append( "<p>Nothing to show :(</p>" );
 				}else{
-					alert("there is no result for your search");
+					var recipes = answer.split('|');
+					for (i = 0; i < recipes.length; i++) {
+						dummy = recipes[i].split('>');
+						$( "#searchResults" ).append( "<a href='recipe/" + dummy[1] + "'>" + dummy[0] + "</p>" );
+					}
 				}
 			});
 	  });
+
 	</script>	
 
   </body>

@@ -31,6 +31,7 @@ public class HomeController {
 
 	@Autowired
 	private UserService userService;
+	@Autowired
 	private RecipeService recipeService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -185,17 +186,20 @@ public class HomeController {
 	
 	@RequestMapping(value = "/basicsearchrecipe", method = RequestMethod.POST)
 	@ResponseBody
-	public boolean basicSearchRecipe(
-			@RequestParam(value = "search", required = true) String search,
+	public String basicSearchRecipe(
+			String search,
 			HttpSession session){
 
-		List<Recipe> recipes = (List<Recipe>) recipeService.getRecipeDao().searchRecipeByName(search);//userService.getUserDao().updateUser(u);
-		
-		if (recipes.size() == 0){
-			return false;
+		String answer = "";
+		List<Recipe> recipes = recipeService.getRecipeDao().searchRecipeByName(search);
+		if(recipes == null){
+			return answer;
 		}
-		session.setAttribute("recipes", recipes);
-		return true;
+		for(int i=0; i<recipes.size(); i++){
+			answer += "|" + recipes.get(i).getName() + ">" + recipes.get(i).getRecipe_id();
+		}
+		
+		return answer;
 	}
 	
 }
