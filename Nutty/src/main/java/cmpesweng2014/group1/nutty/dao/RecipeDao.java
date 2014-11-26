@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
 
 import cmpesweng2014.group1.nutty.dao.mapper.EatLikeRateRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.RecipeRowMapper;
@@ -16,6 +17,7 @@ import cmpesweng2014.group1.nutty.model.EatLikeRate;
 import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.model.User;
 
+@Component
 public class RecipeDao extends PcDao{
 	
 	public int createRecipe(final String name, final String description,
@@ -118,7 +120,7 @@ public class RecipeDao extends PcDao{
 					PreparedStatement ps = connection.prepareStatement(query,
 							Statement.RETURN_GENERATED_KEYS);
 					ps.setLong(1, user.getId());
-					ps.setInt(2, recipe.getRecipeId());
+					ps.setInt(2, recipe.getRecipe_id());
 					ps.setInt(3, value);
 					return ps;
 				}
@@ -136,7 +138,7 @@ public class RecipeDao extends PcDao{
 							Statement.RETURN_GENERATED_KEYS);
 					ps.setInt(1, value);
 					ps.setLong(2, user.getId());
-					ps.setInt(3, recipe.getRecipeId());
+					ps.setInt(3, recipe.getRecipe_id());
 					return ps;
 				}
 			}, gkh);	
@@ -146,7 +148,7 @@ public class RecipeDao extends PcDao{
 	public boolean emptyCheckUserRecipeRelation(User user, Recipe recipe){
 		List<EatLikeRate> eLikeR = this.getTemplate().query(
 				"SELECT * FROM EatLikeRate WHERE recipe_id =? AND user_id=?",
-				new Object[] { recipe.getRecipeId(), user.getId()  }, new EatLikeRateRowMapper());
+				new Object[] { recipe.getRecipe_id(), user.getId()  }, new EatLikeRateRowMapper());
 	
 		if (eLikeR.isEmpty()) {
 			return true;
@@ -177,8 +179,8 @@ public class RecipeDao extends PcDao{
 					Connection connection) throws SQLException {
 				PreparedStatement ps = connection.prepareStatement(query,
 						Statement.RETURN_GENERATED_KEYS);
-				ps.setInt(1, original.getRecipeId());
-				ps.setInt(2, derived.getRecipeId());
+				ps.setInt(1, original.getRecipe_id());
+				ps.setInt(2, derived.getRecipe_id());
 				return ps;
 			}
 		}, gkh);
@@ -189,7 +191,7 @@ public class RecipeDao extends PcDao{
 				"SELECT recipe_id, name, description, portion, created,"
 				+ "last_updated,total_calorie  FROM Recipe, Derived WHERE recipe_id = child_recipe_id"
 				+ "AND parent_recipe_id = ? ",
-				new Object[] { originalRecipe.getRecipeId() }, new RecipeRowMapper());
+				new Object[] { originalRecipe.getRecipe_id() }, new RecipeRowMapper());
 
 		if (recipeList.isEmpty()) {
 			return null;
@@ -205,7 +207,7 @@ public class RecipeDao extends PcDao{
 				"SELECT recipe_id, name, description, portion, created,"
 				+ "last_updated,total_calorie  FROM Recipe, Derived WHERE recipe_id = parent_recipe_id"
 				+ "AND child_recipe_id = ? ",
-				new Object[] { recipe.getRecipeId() }, new RecipeRowMapper());
+				new Object[] { recipe.getRecipe_id() }, new RecipeRowMapper());
 
 		if (recipes.isEmpty()) {
 			return null;

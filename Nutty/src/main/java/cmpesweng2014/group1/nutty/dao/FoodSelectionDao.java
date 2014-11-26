@@ -2,9 +2,12 @@ package cmpesweng2014.group1.nutty.dao;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import cmpesweng2014.group1.nutty.dao.mapper.FoodSelectionRowMapper;
 import cmpesweng2014.group1.nutty.model.FoodSelection;
 
+@Component
 public class FoodSelectionDao extends PcDao {
 	public int getFoodSelectionIdByName(String foodSelection){
 		List<FoodSelection> foodSelections = this.getTemplate().query(

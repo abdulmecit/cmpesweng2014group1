@@ -13,10 +13,10 @@ public class CommentResultSetExtractor implements ResultSetExtractor<Comment> {
 	public Comment extractData(ResultSet rs) throws SQLException,
 			DataAccessException {
 		Comment comment = new Comment();
-		comment.setCommentId(rs.getInt(1));
+		comment.setComment_id(rs.getInt(1));
 		comment.setText(rs.getString(2));
-		comment.setUserId(rs.getInt(3));
-		comment.setRecipeId(rs.getInt(4));
+		comment.setUser_id(rs.getInt(3));
+		comment.setRecipe_id(rs.getInt(4));
 		return comment;
 	}
 }

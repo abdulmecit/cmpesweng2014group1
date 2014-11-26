@@ -9,11 +9,13 @@ import java.util.List;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
 
 import cmpesweng2014.group1.nutty.dao.mapper.CommentRowMapper;
 import cmpesweng2014.group1.nutty.model.Comment;
 import cmpesweng2014.group1.nutty.model.User;
 
+@Component
 public class CommentDao extends PcDao {
 
 	public int createComment(final String text, final long user_id, final int recipe_id){
@@ -48,7 +50,6 @@ public class CommentDao extends PcDao {
 		}
 	}
 	
-	
 	public Comment[] allComments(int recipe_id){
 		List<Comment> commentList = this.getTemplate().query(
 				"SELECT * FROM Comment WHERE recipe_id =?",
@@ -65,12 +66,12 @@ public class CommentDao extends PcDao {
 	public void likeComment(Comment comment, User user){
 		final String query = "INSERT INTO LikesComment (user_id, comment_id) VALUES (?,?)";
 		this.getTemplate().update(query, new Object[] { 
-				user.getId(), comment.getCommentId()});
+				user.getId(), comment.getComment_id()});
 	}
 	public int numberOfLikes(Comment comment) {
 		int total=this.getTemplate().queryForObject(
 				"SELECT COUNT(*) FROM LikesComment WHERE comment_id = ?", 
-				new Object[] {comment.getCommentId()}, Integer.class);
+				new Object[] {comment.getComment_id()}, Integer.class);
 		return total;
 	}
 }

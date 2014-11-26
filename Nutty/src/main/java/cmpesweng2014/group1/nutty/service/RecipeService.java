@@ -2,18 +2,24 @@ package cmpesweng2014.group1.nutty.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import cmpesweng2014.group1.nutty.dao.CommentDao;
+import cmpesweng2014.group1.nutty.dao.IngredientAmountDao;
 import cmpesweng2014.group1.nutty.dao.IngredientDao;
 import cmpesweng2014.group1.nutty.dao.RecipeDao;
 import cmpesweng2014.group1.nutty.model.Comment;
+import cmpesweng2014.group1.nutty.model.IngredientAmount;
 import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.model.User;
 
+@Component
 public class RecipeService {
+	
 	@Autowired
 	private RecipeDao recipeDao;
 	private IngredientDao ingredientDao;
+	private IngredientAmountDao ingredientAmountDao;
 	private CommentDao commentDao;
 
 	public RecipeDao getRecipeDao() {
@@ -90,12 +96,17 @@ public class RecipeService {
 	}
 	//returns created Comment
 	public Comment commentRecipe(String text, User user, Recipe recipe){
-		int comment_id=commentDao.createComment(text,user.getId(), recipe.getRecipeId());
+		int comment_id=commentDao.createComment(text,user.getId(), recipe.getRecipe_id());
 		return commentDao.getCommentById(comment_id);
 	}	
 	//returns recipe object to view its properties
 	public Recipe getRecipe(int recipe_id){
 		return recipeDao.getRecipeById(recipe_id);
+	}
+	
+	//returns all ingredients and their amounts of a recipe
+	public IngredientAmount[] getIngredientAmounts(int recipe_id){
+		return ingredientAmountDao.allIngredientAmounts(recipe_id);
 	}
 	
 	//returns all comments of a recipe

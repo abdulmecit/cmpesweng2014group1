@@ -11,35 +11,31 @@ public class Comment {
 	}
 	public Comment(int comment_id, String text){
 		super();
-		this.comment_id=comment_id;
-		this.text=text;	
+		this.setComment_id(comment_id);
+		this.setText(text);	
+	}
+	public int getComment_id() {
+		return comment_id;
+	}
+	public void setComment_id(int comment_id) {
+		this.comment_id = comment_id;
 	}
 	public String getText() {
 		return text;
 	}
-
 	public void setText(String text) {
 		this.text = text;
 	}
-	public int getCommentId() {
-		return comment_id;
-	}
-
-	public void setCommentId(int comment_id) {
-		this.comment_id = comment_id;
-	}
-	public int getUserId() {
+	public int getUser_id() {
 		return user_id;
 	}
-
-	public void setUserId(int user_id) {
+	public void setUser_id(int user_id) {
 		this.user_id = user_id;
 	}
-	public int getRecipeId() {
+	public int getRecipe_id() {
 		return recipe_id;
 	}
-
-	public void setRecipeId(int recipe_id) {
+	public void setRecipe_id(int recipe_id) {
 		this.recipe_id = recipe_id;
 	}
 }

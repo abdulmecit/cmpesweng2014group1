@@ -19,21 +19,22 @@ public class Recipe {
 	public Recipe(int recipe_id, String name, String description, int portion,
 			      Date date,double total_calorie) {
 		super();
-		this.recipe_id = recipe_id;
+		this.setRecipe_id(recipe_id);
 		this.name = name;
 		this.description = description;
 		this.portion = portion;
 		this.createdDate = date;
-		this.total_calorie = total_calorie;		
+		this.setTotal_calorie(total_calorie);		
 	}
 	
-	public int getRecipeId() {
+	public int getRecipe_id() {
 		return recipe_id;
 	}
 
-	public void setRecipeId(int recipe_id) {
+	public void setRecipe_id(int recipe_id) {
 		this.recipe_id = recipe_id;
 	}
+
 	public String getName() {
 		return name;
 	}
@@ -68,11 +69,12 @@ public class Recipe {
 	public void setUpdatedDate(Date date) {
 		this.updatedDate = date;
 	}
-	public double getTotalCalorie() {
+
+	public double getTotal_calorie() {
 		return total_calorie;
 	}
-	public void setTotalCalorie(double total_calorie) {
-		this.total_calorie=total_calorie;
+
+	public void setTotal_calorie(double total_calorie) {
+		this.total_calorie = total_calorie;
 	}
-	
 }
