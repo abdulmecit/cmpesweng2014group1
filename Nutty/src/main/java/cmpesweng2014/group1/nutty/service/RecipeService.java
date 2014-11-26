@@ -11,6 +11,7 @@ import cmpesweng2014.group1.nutty.dao.RecipeDao;
 import cmpesweng2014.group1.nutty.model.Comment;
 import cmpesweng2014.group1.nutty.model.IngredientAmount;
 import cmpesweng2014.group1.nutty.model.Recipe;
+import cmpesweng2014.group1.nutty.model.Tag;
 import cmpesweng2014.group1.nutty.model.User;
 
 @Component
@@ -35,7 +36,7 @@ public class RecipeService {
 	//returns created recipe object 
 	//give the user also to the function
 	public Recipe createRecipe(String name, String description,
-			int portion, int photo_id,String[] ingredients, double[] amounts, User user) {
+			int portion, int photo_id,String[] ingredients, double[] amounts, User user, String[] tags) {
 		
 		int[] ingredient_ids=new int[ingredients.length] ;
 		int[] ingredient_calories=new int[ingredients.length]  ;
@@ -51,7 +52,11 @@ public class RecipeService {
 		//for now assumed given amount is in gram and the database calorie has value for 100 gram
 		double total_calorie=recipeDao.calculateTotalCalorie(ingredient_calories, amounts);		
 		//create new recipe
-		int recipe_id=recipeDao.createRecipe(name, description, portion, total_calorie);		
+		int recipe_id=recipeDao.createRecipe(name, description, portion, total_calorie);
+		//add tags
+		for(int i=0; i<tags.length; i++){
+			recipeDao.addTags(recipe_id, tags[i]);
+		}		
 		//ingredients are added to HasIngredient table
 		for(int i=0; i<ingredients.length; i++){
 			recipeDao.addIngredient(ingredient_ids[i], recipe_id, amounts[i]);
@@ -150,9 +155,9 @@ public class RecipeService {
 	//creates and returns the derived recipe
 	public Recipe deriveRecipe(String name, String description,
 			int portion, int photo_id,String[] ingredients, double[] amounts, User user, 
-			Recipe originalRecipe){
+			Recipe originalRecipe, String[] tags){
 		Recipe createdRecipe=createRecipe(name, description,
-				portion, photo_id,ingredients,amounts,user);
+				portion, photo_id,ingredients,amounts,user,tags);
 		recipeDao.addDerivedFrom(originalRecipe, createdRecipe);
 		return createdRecipe;
 	}	
@@ -171,6 +176,10 @@ public class RecipeService {
 	//get likes of a comment
 	public int numberOfLikesOfAComment(Comment comment){
 		return commentDao.numberOfLikes(comment);
+	}
+	//get tags
+	public Tag[] getAllTags(int recipe_id){
+		return recipeDao.getAllTags(recipe_id);
 	}
 	
 }

@@ -13,8 +13,10 @@ import org.springframework.stereotype.Component;
 
 import cmpesweng2014.group1.nutty.dao.mapper.EatLikeRateRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.RecipeRowMapper;
+import cmpesweng2014.group1.nutty.dao.mapper.TagRowMapper;
 import cmpesweng2014.group1.nutty.model.EatLikeRate;
 import cmpesweng2014.group1.nutty.model.Recipe;
+import cmpesweng2014.group1.nutty.model.Tag;
 import cmpesweng2014.group1.nutty.model.User;
 
 @Component
@@ -245,6 +247,56 @@ public class RecipeDao extends PcDao{
 			return null;
 		} else {
 			return recipes.get(0);
+		}
+	}
+
+	public void addTags(final int recipe_id, final String tag) {
+		final String query = "INSERT INTO Tag (tag_name) VALUES (?)";
+
+		KeyHolder gkh = new GeneratedKeyHolder();
+
+		this.getTemplate().update(new PreparedStatementCreator() {
+
+			@Override
+			public PreparedStatement createPreparedStatement(
+					Connection connection) throws SQLException {
+				PreparedStatement ps = connection.prepareStatement(query,
+						Statement.RETURN_GENERATED_KEYS);
+				ps.setString(1, tag);
+				return ps;
+			}
+		}, gkh);
+
+		final int newItemId = gkh.getKey().intValue();
+		final String query2 = "INSERT INTO HasTag (recipe_id, tag_id) VALUES (?,?)";
+		KeyHolder gkh2 = new GeneratedKeyHolder();
+
+		this.getTemplate().update(new PreparedStatementCreator() {
+
+			@Override
+			public PreparedStatement createPreparedStatement(
+					Connection connection) throws SQLException {
+				PreparedStatement ps = connection.prepareStatement(query2,
+						Statement.RETURN_GENERATED_KEYS);
+				ps.setInt(1, recipe_id);
+				ps.setInt(2, newItemId);
+				return ps;
+			}
+		}, gkh2);
+		
+	}
+
+	public Tag[] getAllTags(int recipe_id) {
+		List<Tag> tagList = this.getTemplate().query(
+				"SELECT tag_id,tag_name FROM HasTag a, Tag b WHERE recipe_id =? AND b.tag_id = a.tag_id",
+				new Object[] { recipe_id  }, new TagRowMapper());
+	
+		if (tagList.isEmpty()) {
+			return null;
+		}
+		else{
+			Tag[] tags = tagList.toArray(new Tag[tagList.size()]);
+			return tags;
 		}
 	}
 	

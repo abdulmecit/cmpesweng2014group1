@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import cmpesweng2014.group1.nutty.model.Comment;
 import cmpesweng2014.group1.nutty.model.IngredientAmount;
 import cmpesweng2014.group1.nutty.model.Recipe;
+import cmpesweng2014.group1.nutty.model.Tag;
 import cmpesweng2014.group1.nutty.service.RecipeService;
 
 @Controller
@@ -80,6 +81,9 @@ public class RecipeController {
 		Recipe[] children = recipeService.getDerivedRecipes(recipe);
 		model.addAttribute("children", children);
 
+		Tag[] tags=recipeService.getAllTags(recipeId);
+		model.addAttribute("tags", tags);
+		
 		return "viewRecipe";
 	}
 
