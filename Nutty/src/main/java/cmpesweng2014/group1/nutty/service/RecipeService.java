@@ -18,8 +18,11 @@ public class RecipeService {
 	
 	@Autowired
 	private RecipeDao recipeDao;
+	@Autowired
 	private IngredientDao ingredientDao;
+	@Autowired
 	private IngredientAmountDao ingredientAmountDao;
+	@Autowired
 	private CommentDao commentDao;
 
 	public RecipeDao getRecipeDao() {
@@ -120,6 +123,29 @@ public class RecipeService {
 	//returns number of eats for this recipe
 	public int numberOfEats(int recipe_id){
 		return recipeDao.getEatLikeStatistic("eats",recipe_id);
+	}
+	//returns average health rating for this recipe
+	public double avgOfHealthRates(int recipe_id){
+		return recipeDao.getAvgRateStatistic("health_rate", recipe_id);
+	}
+	//returns average cost rating for this recipe
+	public double avgOfCostRates(int recipe_id){
+		return recipeDao.getAvgRateStatistic("cost_rate", recipe_id);
+	}
+	//returns average taste rating for this recipe
+	public double avgOfTasteRates(int recipe_id){
+		return recipeDao.getAvgRateStatistic("taste_rate", recipe_id);
+	}
+	//returns average ease rating for this recipe
+	public double avgOfEaseRates(int recipe_id){
+		return recipeDao.getAvgRateStatistic("ease_rate", recipe_id);
+	}
+	//returns url of the recipe photo
+	public String getRecipePhotoUrl(int recipe_id){
+		return recipeDao.getPhotoUrl(recipe_id);
+	}
+	public Long getRecipeOwnerId(int recipe_id){
+		return recipeDao.getOwnerId(recipe_id);
 	}
 	//creates and returns the derived recipe
 	public Recipe deriveRecipe(String name, String description,

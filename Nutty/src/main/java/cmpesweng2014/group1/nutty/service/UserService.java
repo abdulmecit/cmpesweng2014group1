@@ -15,6 +15,7 @@ public class UserService {
 
 	@Autowired
 	private UserDao userDao;
+	@Autowired
 	private FoodSelectionDao foodSelectionDao;
 
 	public UserDao getUserDao() {

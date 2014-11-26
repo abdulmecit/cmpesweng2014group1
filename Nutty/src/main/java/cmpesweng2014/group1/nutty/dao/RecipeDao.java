@@ -168,6 +168,38 @@ public class RecipeDao extends PcDao{
 				new Object[] {recipe_id, value}, Integer.class);
 		return total;
 	}
+	
+	public double getAvgRateStatistic(String property,int recipe_id){
+		//not sure about this
+		int voterCount=this.getTemplate().queryForObject(
+				"SELECT COUNT(*) FROM EatLikeRate WHERE recipe_id = ? AND "+property+"> 0", 
+				new Object[] {recipe_id}, Integer.class);
+		int total=this.getTemplate().queryForObject(
+				"SELECT SUM(" + property + ") FROM EatLikeRate WHERE recipe_id = ? AND "+property+"> 0", 
+				new Object[] {recipe_id}, Integer.class);
+		
+		if(voterCount == 0){
+			return 0.0;
+		}
+		return (double)total / voterCount;
+	}
+	
+	public String getPhotoUrl(int recipe_id){
+		
+		String photoUrl=this.getTemplate().queryForObject(
+				"SELECT url FROM RecipePhoto a, Photo b WHERE a.photo_id = b.photo_id and recipe_id = ?", 
+				new Object[] {recipe_id}, String.class);
+		return photoUrl;
+	}
+	
+	public Long getOwnerId(int recipe_id){
+		
+		Long id=this.getTemplate().queryForObject(
+				"SELECT user_id FROM OwnsRecipe WHERE recipe_id = ?", 
+				new Object[] {recipe_id}, Long.class);
+		return id;
+	}
+	
 	public void addDerivedFrom(final Recipe original, final Recipe derived){
 		final String query = "INSERT INTO Derived (parent_recipe_id, child_recipe_id) VALUES (?,?)";
 		KeyHolder gkh = new GeneratedKeyHolder();
@@ -189,7 +221,7 @@ public class RecipeDao extends PcDao{
 	public Recipe[] getAllDerivations(Recipe originalRecipe) {
 		List<Recipe> recipeList = this.getTemplate().query(
 				"SELECT recipe_id, name, description, portion, created,"
-				+ "last_updated,total_calorie  FROM Recipe, Derived WHERE recipe_id = child_recipe_id"
+				+ "last_updated,total_calorie  FROM Recipe, Derived WHERE recipe_id = child_recipe_id "
 				+ "AND parent_recipe_id = ? ",
 				new Object[] { originalRecipe.getRecipe_id() }, new RecipeRowMapper());
 
@@ -205,7 +237,7 @@ public class RecipeDao extends PcDao{
 	public Recipe getParent(Recipe recipe) {
 		List<Recipe> recipes = this.getTemplate().query(
 				"SELECT recipe_id, name, description, portion, created,"
-				+ "last_updated,total_calorie  FROM Recipe, Derived WHERE recipe_id = parent_recipe_id"
+				+ "last_updated,total_calorie  FROM Recipe, Derived WHERE recipe_id = parent_recipe_id "
 				+ "AND child_recipe_id = ? ",
 				new Object[] { recipe.getRecipe_id() }, new RecipeRowMapper());
 

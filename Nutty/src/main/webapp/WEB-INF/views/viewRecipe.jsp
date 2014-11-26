@@ -1,4 +1,5 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="cmpesweng2014.group1.nutty.model.Message"%>
 <html>
@@ -43,7 +44,8 @@
    <div class="container">
       <div class="row">
         <div class="col-md-offset-3 col-md-6 well">
-        	<img src= "${recipe.url}"/>
+        	<img src= "${photoUrl}"/>
+        	        	
         	<h3>Recipe Information</h3>
 			<p>Name: ${recipe.name}</p>
 			<p>Description: ${recipe.description}</p>
@@ -51,6 +53,44 @@
 			<p>Created On: ${recipe.createdDate}</p>
 			<p>Last Updated On: ${recipe.updatedDate}</p>
 			<p>Total Calories: ${recipe.total_calorie}</p>
+			
+			<p>OwnerId: ${ownerId}</p>
+			
+			<h3>Ingredients</h3>			
+			<c:forEach var="ingredientAmount" items="${ingredientAmounts}">
+   				Id: <c:out value="${ingredientAmount.ing_id}"/>
+   				Name: <c:out value="${ingredientAmount.ing_name}"/>
+   				Amount: <c:out value="${ingredientAmount.amount}"/>	
+   				<br>
+			</c:forEach>
+			
+			<h3>Comments</h3>			
+			<c:forEach var="commentAndLike" items="${commentsAndLikes}">
+   				Id: <c:out value="${commentAndLike.key.comment_id}"/>
+   				Text: <c:out value="${commentAndLike.key.text}"/>
+   				UserId: <c:out value="${commentAndLike.key.user_id}"/>	
+   				Likes: <c:out value="${commentAndLike.value}"/>	
+   				<br>
+			</c:forEach>
+			
+			<h3>Recipe Ratings</h3>
+			<p>Likes: ${noOfLikes}</p>
+			<p>Eaten: ${noOfEats}</p>
+			<p>Avg Health Rate: ${avgHealthRate}</p>
+			<p>Avg Cost Rate: ${avgCostRate}</p>
+			<p>Avg Taste Rate: ${avgTasteRate}</p>
+			<p>Avg Ease Rate: ${avgEaseRate}</p>
+			
+			<h4>Recipe Tree</h4>
+			<p>ParentId: ${parent.recipe_id}</p>
+			<p>ParentName: ${parent.name}</p>		
+			<p>Children:</p>
+			<c:forEach var="child" items="${children}">
+				Child:
+   				Id: <c:out value="${child.recipe_id}"/>
+   				Name: <c:out value="${child.name}"/>
+   				<br>
+			</c:forEach>
 		</div>
 	 </div>
    </div>
