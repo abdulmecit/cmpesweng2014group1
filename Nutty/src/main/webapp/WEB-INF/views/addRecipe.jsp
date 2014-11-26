@@ -33,100 +33,136 @@ body {
 	<!------------------------ navigation bar --------------------------->
 
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-	<div class="container">
-		<div class="navbar-header">
-			<a class="navbar-brand" href=".">Nutty</a>
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href=".">Nutty</a>
+			</div>
+			<ul class="nav navbar-nav navbar-right">
+				<%
+					if (session.getAttribute("user_id") == null
+							|| Integer.valueOf(session.getAttribute("user_id")
+									.toString()) == 0) {
+				%>
+				<li><a href="login.jsp">Login</a></li>
+				<li><a href="signup.jsp">Sign Up</a></li>
+				<%
+					} else {
+				%>
+				<li><a href="ownProfile.jsp">My Profile</a></li>
+				<li><a href="logout.jsp">Logout</a></li>
+				<%
+					}
+				%>
+			</ul>
 		</div>
-		<ul class="nav navbar-nav navbar-right">
-			<%
-				if (session.getAttribute("user_id") == null
-						|| Integer.valueOf(session.getAttribute("user_id")
-								.toString()) == 0) {
-			%>
-			<li><a href="login.jsp">Login</a></li>
-			<li><a href="signup.jsp">Sign Up</a></li>
-			<%
-				} else {
-			%>
-			<li><a href="ownProfile.jsp">My Profile</a></li>
-			<li><a href="logout.jsp">Logout</a></li>
-			<%
-				}
-			%>
-		</ul>
-	</div>
 	</nav>
 
 	<div class="container">
-		<h3 align="center">Add Recipe</h3>
-		<div class="row row well">
-			<form:form method="POST" modelAttribute="recipe">
-				<!------------------------  Get Directions  --------------------------->
-
-				<div class="col-xs-6">
-					<h4 align="left">Directions</h4>
-					<input type="text" name="myInputs[]"
-						style="width: 300px; height: 300px">
+		<form method="POST">
+			<div class="panel panel-default">
+				<div class="panel-heading clearfix">
+					<h2 class="panel-title pull-left" style="padding-top: 7.5px;">Create
+						New Recipes</h2>
+					<input type="submit" value="Submit" class="btn btn-primary"
+						style="float: right;">
 				</div>
-				<!------------------------  Get Ingredients  --------------------------->
-				<div class="col-xs-6">
-					<h4 align="left">Amount - Ingredients</h4>
 
-					<div id="dynamicInput">
-						<p>
-							<input type="text" name="myInputs[]"
-								placeholder="5g,2 pounds,etc." style="width: 70px;"> <input
-								type="text" name="myInputs[]" placeholder="sugar,etc."
-								style="width: 200px;">
-						</p>
-						<p>
-							<input type="text" name="myInputs[]"
-								placeholder="5g,2 pounds,etc." style="width: 70px;"> <input
-								type="text" name="myInputs[]" placeholder="sugar,etc."
-								style="width: 200px;">
-						</p>
-						<p>
-							<input type="text" name="myInputs[]"
-								placeholder="5g,2 pounds,etc." style="width: 70px;"> <input
-								type="text" name="myInputs[]" placeholder="sugar,etc."
-								style="width: 200px;">
-						</p>
-						<p>
-							<input type="text" name="myInputs[]"
-								placeholder="5g,2 pounds,etc." style="width: 70px;"> <input
-								type="text" name="myInputs[]" placeholder="sugar,etc."
-								style="width: 200px;">
-						</p>
-						<p>
-							<input type="text" name="myInputs[]"
-								placeholder="5g,2 pounds,etc." style="width: 70px;"> <input
-								type="text" name="myInputs[]" placeholder="sugar,etc."
-								style="width: 200px;">
-						</p>
+				<div class="panel-body">
+					<!------------------------  Get Ingredients  --------------------------->
+					<div class="col-sm-6">
+						<div class="panel panel-default">
+							<div class="panel-heading clearfix">
+								<h4 class="panel-title pull-left" style="padding-top: 7.5px;">Amount
+									/ Ingredients</h4>
+								<input type="button" value="Another ingredient"
+									class="btn btn-primary"
+									onClick="addInput('dynamicInput','dynamicInput2');"
+									style="float: right;">
+							</div>
+
+							<div class="panel-body">
+								<div id="dynamicInput" class="col-sm-4" align="left">
+									<p>
+										<input type="text" class="form-control" name="myInputs[]"
+											placeholder="2pounds,etc">
+									</p>
+									<p>
+										<input type="text" class="form-control" name="myInputs[]"
+											placeholder="2pounds,etc">
+									</p>
+									<p>
+										<input type="text" class="form-control" name="myInputs[]"
+											placeholder="2pounds,etc">
+									</p>
+									<p>
+										<input type="text" class="form-control" name="myInputs[]"
+											placeholder="2pounds,etc">
+									</p>
+									<p>
+										<input type="text" class="form-control" name="myInputs[]"
+											placeholder="2pounds,etc">
+									</p>
+									<p>
+										<input type="text" class="form-control" name="myInputs[]"
+											placeholder="2pounds,etc">
+									</p>
+								</div>
+								<div id="dynamicInput2" class="col-sm-8" align="left">
+									<p>
+										<input type="text" class="form-control" name="myInputs[]"
+											placeholder="sugar,etc.">
+									</p>
+									<p>
+										<input type="text" class="form-control" name="myInputs[]"
+											placeholder="sugar,etc.">
+									</p>
+									<p>
+										<input type="text" class="form-control" name="myInputs[]"
+											placeholder="sugar,etc.">
+									</p>
+									<p>
+										<input type="text" class="form-control" name="myInputs[]"
+											placeholder="sugar,etc.">
+									</p>
+									<p>
+										<input type="text" class="form-control" name="myInputs[]"
+											placeholder="sugar,etc.">
+									</p>
+									<p>
+										<input type="text" class="form-control" name="myInputs[]"
+											placeholder="sugar,etc.">
+									</p>
+								</div>
+							</div>
+						</div>
 					</div>
-					<input type="button" value="Add another ingredients"
-						class="btn btn-primary" onClick="addInput('dynamicInput');">
 
-					<br> <br> <input type="submit" value="Submit"
-						class="btn btn-primary" />
+					<!------------------------  Get Directions  --------------------------->
+
+					<div class="col-sm-6">
+						<div class="panel panel-default">
+							<div class="panel-heading clearfix">
+								<h4 class="panel-title " style="padding-top: 7.5px;">Directions</h4>
+							</div>
+							<div class="panel-body">
+								<textarea class="form-control" rows="13"></textarea>
+							</div>
+						</div>
+					</div>
 				</div>
-			</form:form>
-		</div>
-	</div>
+		</form>
 
 
-	<!---------------------------  Functions  ------------------------------>
-	<script type="text/javascript">
-		var counter = 1;
-		function addInput(divName) {
-			var newdiv1 = document.createElement('div');
-			//var newdiv2 = document.createElement('div');
-			newdiv1.innerHTML = "<p><input type='text' name='myInputs[]' placeholder='5g,2 pounds,etc.' style='width: 70px;'>"
-					+ " <input type='text' name='myInputs[]' placeholder='sugar,etc.' style='width: 200px;'></p>";
-			document.getElementById(divName).appendChild(newdiv1);
-			//document.getElementById(divName).appendChild(newdiv2);
-			counter++;
-		}
-	</script>
-	</body>
-</html>
+		<!---------------------------  Functions  ------------------------------>
+		<script type="text/javascript">
+			var counter = 1;
+			function addInput(divName, div2) {
+				var newdiv1 = document.createElement('div');
+				var newdiv2 = document.createElement('div');
+				newdiv1.innerHTML = "<p> <input type='text' class='form-control' name='myInputs[]' placeholder='2pounds,etc'> </p>"
+				newdiv2.innerHTML = "<p> <input type='text' class='form-control' name='myInputs[]' placeholder='sugar,etc'> </p>";
+				document.getElementById(divName).appendChild(newdiv1);
+				document.getElementById(div2).appendChild(newdiv2);
+				counter++;
+			}
+		</script>
