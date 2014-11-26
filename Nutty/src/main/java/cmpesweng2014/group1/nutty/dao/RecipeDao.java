@@ -248,5 +248,25 @@ public class RecipeDao extends PcDao{
 		}
 	}
 	
+	public List<Recipe> searchRecipeByName(String search){
+		String words[] = search.split(" ");
+		String query = "SELECT * FROM Recipe WHERE";
+		for(int i=0; i<words.length; i++){
+			query += " name LIKE '%" + words[i] + "%' ";
+			if(i<words.length-1){
+				query += "AND";
+			}
+		}
+		List<Recipe> recipes = this.getTemplate().query(
+				query,
+				new RecipeRowMapper());
+
+		if (recipes.isEmpty()) {
+			return null;
+		} else {
+			return recipes;
+		}
+	}
+	
 	
 }

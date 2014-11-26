@@ -40,6 +40,19 @@ public class UserController {
 		}
 	}
 	
+	@RequestMapping(value = "/preferences", method = RequestMethod.GET)
+	public String viewFoodPreferences(Model model, HttpSession session) {
+		Object logged = session.getAttribute("isLogged");
+		boolean isLogged = logged == null ? false : (Boolean) logged;
+		if (isLogged) {
+			User u = (User) session.getAttribute("user");
+			model.addAttribute("user", u);
+			return "preferences";
+		} else {
+			return "redirect:/login";
+		}
+	}
+	
 	@RequestMapping(value = "/homesettings", method = RequestMethod.GET)
 	public String viewHomeSettings(Model model, HttpSession session) {
 		Object logged = session.getAttribute("isLogged");
