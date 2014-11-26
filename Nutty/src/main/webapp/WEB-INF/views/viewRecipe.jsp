@@ -57,6 +57,13 @@
 			
 			<p>OwnerId: ${ownerId}</p>
 			
+			<h3>Tags</h3>			
+			<c:forEach var="tag" items="${tags}">
+   				Id: <c:out value="${tag.tag_id}"/>
+   				Name: <c:out value="${tag.tag_name}"/>
+   				<br>
+			</c:forEach>
+			
 			<h3>Ingredients</h3>			
 			<c:forEach var="ingredientAmount" items="${ingredientAmounts}">
    				Id: <c:out value="${ingredientAmount.ing_id}"/>

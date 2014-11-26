@@ -107,5 +107,19 @@ public class RecipeController {
 	public Ingredient[] allIngredients(HttpSession session) {
 		return recipeService.getAllIngredients();
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/someIngredients")
+	public Map<Integer, String> someIngredients(@RequestParam(value = "filter", required = true) String filter, 
+			HttpSession session) {
+		Ingredient[] ingr = recipeService.getSomeIngredients(filter);
+		if(ingr != null){
+			Map<Integer, String> result = new HashMap<Integer, String>();
+			for(int i=0; i<ingr.length; i++)
+				result.put(ingr[i].getId(), ingr[i].getName());
+			return result;
+		}
+		return null;
+	}	
 
 }

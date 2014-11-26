@@ -47,4 +47,17 @@ public class IngredientDao extends PcDao{
 			return ingredients;
 		}
 	}
+	public Ingredient[] someIngredients(String filter) {
+		List<Ingredient> ingredientList = this.getTemplate().query(
+				"SELECT * FROM ingredients WHERE Shrt_Desc LIKE " + filter,
+				new Object[] {}, new IngredientRowMapper());
+	
+		if (ingredientList.isEmpty()) {
+			return null;
+		}
+		else{
+			Ingredient[] ingredients = ingredientList.toArray(new Ingredient[ingredientList.size()]);
+			return ingredients;
+		}
+	}
 }

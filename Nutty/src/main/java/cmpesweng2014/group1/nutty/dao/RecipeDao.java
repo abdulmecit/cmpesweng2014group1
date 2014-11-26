@@ -288,7 +288,7 @@ public class RecipeDao extends PcDao{
 
 	public Tag[] getAllTags(int recipe_id) {
 		List<Tag> tagList = this.getTemplate().query(
-				"SELECT tag_id,tag_name FROM HasTag a, Tag b WHERE recipe_id =? AND b.tag_id = a.tag_id",
+				"SELECT a.tag_id,tag_name FROM HasTag a, Tag b WHERE recipe_id =? AND b.tag_id = a.tag_id",
 				new Object[] { recipe_id  }, new TagRowMapper());
 	
 		if (tagList.isEmpty()) {

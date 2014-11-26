@@ -122,6 +122,10 @@ public class RecipeService {
 	public Ingredient[] getAllIngredients(){
 		return ingredientDao.allIngredients();
 	}
+	//returns some ingredients according to a filter from the database
+	public Ingredient[] getSomeIngredients(String filter){
+		return ingredientDao.someIngredients(filter);
+	}
 	
 	//returns all comments of a recipe
 	public Comment[] getComments(int recipe_id){
