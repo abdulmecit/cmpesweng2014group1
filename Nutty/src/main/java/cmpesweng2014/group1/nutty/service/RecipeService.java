@@ -9,6 +9,7 @@ import cmpesweng2014.group1.nutty.dao.IngredientAmountDao;
 import cmpesweng2014.group1.nutty.dao.IngredientDao;
 import cmpesweng2014.group1.nutty.dao.RecipeDao;
 import cmpesweng2014.group1.nutty.model.Comment;
+import cmpesweng2014.group1.nutty.model.Ingredient;
 import cmpesweng2014.group1.nutty.model.IngredientAmount;
 import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.model.User;
@@ -110,6 +111,11 @@ public class RecipeService {
 	//returns all ingredients and their amounts of a recipe
 	public IngredientAmount[] getIngredientAmounts(int recipe_id){
 		return ingredientAmountDao.allIngredientAmounts(recipe_id);
+	}
+	
+	//returns all ingredients in the database
+	public Ingredient[] getAllIngredients(){
+		return ingredientDao.allIngredients();
 	}
 	
 	//returns all comments of a recipe

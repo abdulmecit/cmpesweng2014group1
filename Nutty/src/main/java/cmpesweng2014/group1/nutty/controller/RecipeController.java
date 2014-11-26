@@ -11,9 +11,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import cmpesweng2014.group1.nutty.model.Comment;
+import cmpesweng2014.group1.nutty.model.Ingredient;
 import cmpesweng2014.group1.nutty.model.IngredientAmount;
+import cmpesweng2014.group1.nutty.model.Message;
 import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.service.RecipeService;
 
@@ -34,6 +39,16 @@ public class RecipeController {
 			return "redirect:/login";
 		}	
 	}
+	/*
+	@RequestMapping(value = "/addRecipe", method = RequestMethod.POST)
+	public String addRecipe(@RequestParam(value = "directions", required = true) String directions, 
+							@RequestParam(value = "amounts[]", required = true) double[] amounts, 
+							@RequestParam(value = "ingredients[]", required = true) String[] ingredients,
+			RedirectAttributes redirectAttrs, HttpSession session) {
+		
+		recipeService.createRecipe(name, description, portion, photo_id, ingredients, amounts, user)
+		return "success";
+	}*/
 	
 	@RequestMapping(value = "/recipe/{recipeId}", method = RequestMethod.GET)
 	public String viewRecipe(@PathVariable int recipeId, Model model, HttpSession session){
@@ -81,6 +96,12 @@ public class RecipeController {
 		model.addAttribute("children", children);
 
 		return "viewRecipe";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/allIngredients")
+	public Ingredient[] allIngredients(HttpSession session) {
+		return recipeService.getAllIngredients();
 	}
 
 }
