@@ -50,10 +50,10 @@ public class CommentDao extends PcDao {
 		}
 	}
 	
-	public Comment[] allComments(int recipe_id){
+	public Comment[] allComments(int recipeId){
 		List<Comment> commentList = this.getTemplate().query(
 				"SELECT * FROM Comment WHERE recipe_id =?",
-				new Object[] { recipe_id  }, new CommentRowMapper());
+				new Object[] { recipeId  }, new CommentRowMapper());
 	
 		if (commentList.isEmpty()) {
 			return null;

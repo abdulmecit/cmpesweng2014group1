@@ -42,7 +42,7 @@
       </div><!-- /.container -->
     </nav>
        
-   <div class="container">
+   
       <div class="row">
         <div class="col-md-offset-3 col-md-6 well">
         	<img src= "${photoUrl}"/>
@@ -100,7 +100,41 @@
    				<br>
 			</c:forEach>
 		</div>
+		<br>
+		<div class="col-md-offset-3 col-md-6 well">
+		<h4>Comments:</h4>
+			<div id="comments">
+			</div>
+		</div>
 	 </div>
-   </div>
+   
 </body>
+
+<script type="text/javascript">
+
+$(document).ready(function (event) {
+    event.preventDefault();
+	  $.ajax({
+		  type: "POST",
+		  url: "recipeComments",
+		  data: {  
+			  recipeId:'${recipe.recipe_id}',
+			  }
+		}) 
+		.done(function(answer) {
+			$( "#comments" ).html("");
+			if(answer == ""){
+				$( "#comments" ).append( "<p>No comments :(</p>" );
+			}else{
+				var recipes = answer.split('|');
+				for (i = 0; i < recipes.length; i++) {
+					dummy = recipes[i].split('>');
+					$( "#comments" ).append( "<p><b>" + dummy[1] + "</b></p><p>" + dummy[0] + "</p>" );
+				}
+			}
+		});
+});
+
+</script>
+
 </html>

@@ -1,6 +1,7 @@
 package cmpesweng2014.group1.nutty.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import cmpesweng2014.group1.nutty.dao.CommentDao;
 import cmpesweng2014.group1.nutty.model.Comment;
 import cmpesweng2014.group1.nutty.model.Ingredient;
 import cmpesweng2014.group1.nutty.model.IngredientAmount;
@@ -22,12 +24,16 @@ import cmpesweng2014.group1.nutty.model.Message;
 import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.model.Tag;
 import cmpesweng2014.group1.nutty.service.RecipeService;
+import cmpesweng2014.group1.nutty.service.UserService;
 
 @Controller
 public class RecipeController {
 	
 	@Autowired
 	private RecipeService recipeService;
+	
+	@Autowired
+	private UserService userService;
 
 	@RequestMapping(value = "/addRecipe", method = RequestMethod.GET)
 	public String viewAddRecipe(HttpSession session) {
@@ -121,5 +127,25 @@ public class RecipeController {
 		}
 		return null;
 	}	
+	
+	@RequestMapping(value = "/recipeComments", method = RequestMethod.POST)
+	@ResponseBody
+	public String basicSearchRecipe(
+			Long recipeId,
+			HttpSession session){
+
+		String answer = "";
+		
+		Comment comments[] = recipeService.getComments(recipeId);
+		if(comments == null || comments.length == 0){
+			return answer;
+		}
+		for(int i=0; i<comments.length; i++){
+			String userName = userService.getUserDao().getUserById((comments[i].getUser_id())).getName() + " " + userService.getUserDao().getUserById((comments[i].getUser_id())).getSurname();
+			answer += "|" + userName + ">" + comments[i].getText();
+		}
+		
+		return answer;
+	}
 
 }
