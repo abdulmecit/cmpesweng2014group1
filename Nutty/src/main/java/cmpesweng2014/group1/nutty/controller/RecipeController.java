@@ -114,7 +114,7 @@ public class RecipeController {
 		Tag[] tags=recipeService.getAllTags(recipeId);
 		model.addAttribute("tags", tags);
 		
-		return "viewRecipe";
+		return "Recipe";
 	}
 	
 	@ResponseBody
