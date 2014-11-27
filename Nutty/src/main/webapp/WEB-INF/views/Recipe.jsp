@@ -184,7 +184,6 @@ body {
 			%>
 			<li><a href="ownProfile.jsp">My Profile</a></li>
 			<li><a href="logout.jsp">Logout</a></li>
-			<li id="settings" class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="glyphicon glyphicon-cog"></span><i class="fa fa-caret-down"></i></a><ul role="menu" class="dropdown-menu"><li id="popular"><a href="/nutty/user/homesettings">Profile Settings</a></li><li id="app"><a href="/nutty/user/preferences">Food Preferences</a></li></li>
 			<%
 				}
 			%>
@@ -211,7 +210,7 @@ body {
 								<li class="slide-container">
 									<div class="slide">
 										<img
-											src="http://farm9.staticflickr.com/8072/8346734966_f9cd7d0941_z.jpg" />
+											src="http://blog.fotografium.com/wp-content/uploads/2011/09/318.jpg" />
 									</div>
 									<div class="nav">
 										<label for="img-6" class="prev">&#x2039;</label> <label
@@ -223,7 +222,7 @@ body {
 								<li class="slide-container">
 									<div class="slide">
 										<img
-											src="http://farm9.staticflickr.com/8504/8365873811_d32571df3d_z.jpg" />
+											src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRikkxvA53g0Vc8XJuH2uIvWBMq8FGj5yFl5Gz-gLRJsk0XhwE" />
 									</div>
 									<div class="nav">
 										<label for="img-1" class="prev">&#x2039;</label> <label
@@ -235,7 +234,7 @@ body {
 								<li class="slide-container">
 									<div class="slide">
 										<img
-											src="http://farm9.staticflickr.com/8068/8250438572_d1a5917072_z.jpg" />
+											src="http://blog.fotografium.com/wp-content/uploads/2011/09/1218.jpg" />
 									</div>
 									<div class="nav">
 										<label for="img-2" class="prev">&#x2039;</label> <label
@@ -247,7 +246,7 @@ body {
 								<li class="slide-container">
 									<div class="slide">
 										<img
-											src="http://farm9.staticflickr.com/8061/8237246833_54d8fa37f0_z.jpg" />
+											src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3mwbgHPPWvhTK9lRaqmsLDG3nDJ-SxqjzgPocywPCPpMghR1dNw" />
 									</div>
 									<div class="nav">
 										<label for="img-3" class="prev">&#x2039;</label> <label
@@ -259,8 +258,7 @@ body {
 								<input type="radio" name="radio-btn" id="img-5" />
 								<li class="slide-container">
 									<div class="slide">
-										<img
-											src="http://farm9.staticflickr.com/8055/8098750623_66292a35c0_z.jpg" />
+										<img src="http://i.imgur.com/If2Ma.jpg" />
 									</div>
 									<div class="nav">
 										<label for="img-4" class="prev">&#x2039;</label> <label
@@ -271,8 +269,7 @@ body {
 								<input type="radio" name="radio-btn" id="img-6" />
 								<li class="slide-container">
 									<div class="slide">
-										<img
-											src="http://farm9.staticflickr.com/8195/8098750703_797e102da2_z.jpg" />
+										<img src="http://i.imgur.com/If2Ma.jpg" />
 									</div>
 									<div class="nav">
 										<label for="img-5" class="prev">&#x2039;</label> <label
@@ -295,7 +292,95 @@ body {
 									<h2 class="panel-title text-center" style="padding-top: 7.5px;">RATING
 									</h2>
 								</div>
-								<div class="panel-body" style="height: 270px"></div>
+								<div class="panel-body" style="height: 270px">
+
+									<div class="col-sm-6 col-centered">
+										<div class="btn-group btn-info">
+											<button type="button" class="btn btn-info btn-lg">Health</button>
+											<button type="button"
+												class="btn dropdown-toggle btn-lg btn-info"
+												name="healthRate" data-toggle="dropdown"
+												aria-expanded="false">
+												<span class="caret"></span> <span class="sr-only"></span>
+											</button>
+											<ul class="dropdown-menu" role="menu">
+												<li><a href="#">Health : 5</a></li>
+												<li><a href="#">Health : 4</a></li>
+												<li><a href="#">Health : 3</a></li>
+												<li><a href="#">Health : 2</a></li>
+												<li><a href="#">Health : 1</a></li>
+											</ul>
+										</div>
+
+										<br> <br>
+
+										<div class="btn-group btn-warning">
+											<button type="button" class="btn btn-warning btn-lg">Taste</button>
+											<button type="button"
+												class="btn dropdown-toggle btn-lg btn-warning"
+												name="tasteRate" data-toggle="dropdown"
+												aria-expanded="false">
+												<span class="caret"></span> <span class="sr-only"></span>
+											</button>
+											<ul class="dropdown-menu" role="menu">
+												<li><a href="#">Taste : 5</a></li>
+												<li><a href="#">Taste : 4</a></li>
+												<li><a href="#">Taste : 3</a></li>
+												<li><a href="#">Taste : 2</a></li>
+												<li><a href="#">Taste : 1</a></li>
+											</ul>
+										</div>
+
+										<br> <br>
+
+										<div class="btn-group btn-success">
+											<button type="button" class="btn btn-success btn-lg">Ease</button>
+											<button type="button"
+												class="btn dropdown-toggle btn-lg btn-success"
+												name="easeRate" data-toggle="dropdown" aria-expanded="false">
+												<span class="caret"></span> <span class="sr-only"></span>
+											</button>
+											<ul class="dropdown-menu" role="menu">
+												<li><a href="#">Ease : 5</a></li>
+												<li><a href="#">Ease : 4</a></li>
+												<li><a href="#">Ease : 3</a></li>
+												<li><a href="#">Ease : 2</a></li>
+												<li><a href="#">Ease : 1</a></li>
+											</ul>
+										</div>
+										<br> <br>
+
+
+										<div class="btn-group btn-danger">
+											<button type="button" class="btn btn-danger btn-lg">
+												Cost</button>
+											<button type="button"
+												class="btn dropdown-toggle btn-lg btn-danger"
+												name="costRate" data-toggle="dropdown" aria-expanded="false">
+												<span class="caret"></span> <span class="sr-only"></span>
+											</button>
+											<ul class="dropdown-menu" role="menu">
+												<li><a href="#">Cost : 5</a></li>
+												<li><a href="#">Cost : 4</a></li>
+												<li><a href="#">Cost : 3</a></li>
+												<li><a href="#">Cost : 2</a></li>
+												<li><a href="#">Cost : 1</a></li>
+											</ul>
+
+										</div>
+									</div>
+									<div class="col-sm-6 col-centered">
+										<!-- Standard button -->
+										<button type="button" class="btn btn-default">
+											<span class="glyphicons glyphicons-ok-2"> </span> Eat
+										</button>
+										<!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+										<button type="button" class="btn btn-primary">
+											<span class="glyphicons glyphicons-thumbs-up"></span> Like
+										</button>
+
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -343,6 +428,50 @@ body {
 
 
 		<script type="text/javascript">
-			
+			var healtRate = 0; // change recipe healthRate
+			var costRate = 0;
+			var tasteRate = 0;
+			var easeRate = 0;
+
+			$(document)
+					.ready(
+							function() {
+								if (healtRate != 0) {
+									$("#healthRate")
+											.parents('.btn-group')
+											.find('.dropdown-toggle')
+											.html(
+													rate
+															+ ' <span class="caret"></span>');
+									document.getElementById('deneme').innerHTML = newSelText[1];
+								}
+								if (costRate != 0) {
+
+								}
+								if (tasteRate != 0) {
+
+								}
+								if (healtRate != 0) {
+
+								}
+							});
+			$(".dropdown-menu li a").click(
+					function() {
+						var selText = $(this).text();
+						var newSelText = selText.split(' : ');
+						var name = newSelText[0]
+						var rate = newSelText[1];
+						$(this).parents('.btn-group').find('.dropdown-toggle')
+								.html(rate + ' <span class="caret"></span>');
+						if (name == "Health") {
+							healtRate = rate;
+						} else if (name == "Cost") {
+							costRate = rate;
+						} else if (name == "Taste") {
+							tasteRate = rate;
+						} else if (name == "Ease") {
+							easeRate = rate;
+						}
+					});
 		</script>
 </html>
