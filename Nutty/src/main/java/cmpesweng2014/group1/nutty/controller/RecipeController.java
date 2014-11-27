@@ -130,13 +130,14 @@ public class RecipeController {
 	
 	@RequestMapping(value = "/recipeComments", method = RequestMethod.POST)
 	@ResponseBody
-	public String basicSearchRecipe(
-			Long recipeId,
+	public String recipeComments(
+			int recipeId,
 			HttpSession session){
 
 		String answer = "";
 		
 		Comment comments[] = recipeService.getComments(recipeId);
+		
 		if(comments == null || comments.length == 0){
 			return answer;
 		}
@@ -144,7 +145,6 @@ public class RecipeController {
 			String userName = userService.getUserDao().getUserById((comments[i].getUser_id())).getName() + " " + userService.getUserDao().getUserById((comments[i].getUser_id())).getSurname();
 			answer += "|" + userName + ">" + comments[i].getText();
 		}
-		
 		return answer;
 	}
 

@@ -175,9 +175,9 @@ input[type="submit"]:active {
         <div class="navbar-header">
           <a class="navbar-brand" href="../">Nutty</a>
         </div>
-		  <ul class="nav navbar-nav navbar-search">
-            <input type="text" class="search-query span3" placeholder="Search...">
-          </ul>
+<!-- 		  <ul class="nav navbar-nav navbar-search"> -->
+<!--             <input type="text" class="search-query span3" placeholder="Search..."> -->
+<!--           </ul> -->
 		  <ul class="nav navbar-nav navbar-right">
 		    <li><a href="../logout">Logout</a></li>
 		    <li id="settings" class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="glyphicon glyphicon-cog"></span><i class="fa fa-caret-down"></i></a><ul role="menu" class="dropdown-menu"><li id="popular"><a href="/nutty/user/homesettings">Profile Settings</a></li><li id="app"><a href="/nutty/user/preferences">Food Preferences</a></li></li>

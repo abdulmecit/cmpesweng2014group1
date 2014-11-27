@@ -26,7 +26,7 @@ public class Comment {
 	public void setText(String text) {
 		this.text = text;
 	}
-	public int getUser_id() {
+	public long getUser_id() {
 		return user_id;
 	}
 	public void setUser_id(int user_id) {
