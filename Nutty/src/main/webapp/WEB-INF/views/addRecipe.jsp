@@ -107,9 +107,22 @@ body {
 
 										<!------------------------  Photo  --------------------------->
 										<div class="panel-body" style="height: 200px">
-										
-										
-										
+											<div>DROP!<button onclick="document.querySelector('input').click()">Or click</button></div>
+											<input style="visibility: collapse; width: 0px;" type="file" onchange="upload(this.files[0])">
+											
+											<style>
+											    body {text-align: center; padding-top: 100px;}
+											    div { border: 10px solid black; text-align: center; line-height: 100px; width: 200px; margin: auto; font-size: 40px; display: inline-block;}
+											    #link, p , div {display: none}
+											    div {display: inline-block;}
+											    .uploading div {display: none}
+											    .uploaded div {display: none}
+											    .uploading p {display: inline}
+											    .uploaded #link {display: inline}
+											</style>
+												
+											<p>Uploading...</p>
+											<a id="link">Done!</a>
 										</div>
 										<!----------------------- Ends of photo --------------------------->
 									</div>
@@ -263,4 +276,23 @@ body {
 							$('#submit').attr("disabled", true);
 						}
 					});
+			
+		    window.ondragover = function(e) {e.preventDefault()}
+		    window.ondrop = function(e) {e.preventDefault(); upload(e.dataTransfer.files[0]); }
+		    function upload(file) {
+		        if (!file || !file.type.match(/image.*/)) return;
+		        document.body.className = "uploading";
+		        var fd = new FormData(); 
+		        fd.append("image", file); 
+		        var xhr = new XMLHttpRequest(); 
+		        xhr.open("POST", "https://api.imgur.com/3/image.json"); 
+		        xhr.onload = function() {
+		            document.querySelector("#link").href = JSON.parse(xhr.responseText).data.link;
+		            document.body.className = "uploaded";
+		        }
+		        
+		        xhr.setRequestHeader('Authorization', 'Client-ID 4aaaa88af99c596'); 
+		        
+		        xhr.send(fd);
+		    }
 		</script>
