@@ -1,6 +1,8 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1" import="java.sql.*"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta charset="utf-8">
@@ -33,87 +35,29 @@ body {
 	<!------------------------ navigation bar --------------------------->
 
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-		<div class="container">
-			<div class="navbar-header">
-				<a class="navbar-brand" href=".">Nutty</a>
-			</div>
-			<ul class="nav navbar-nav navbar-right">
-				<%
+	<div class="container">
+		<div class="navbar-header">
+			<a class="navbar-brand" href=".">Nutty</a>
+		</div>
+		<ul class="nav navbar-nav navbar-right">
+			<%
 					if (session.getAttribute("user_id") == null
 							|| Integer.valueOf(session.getAttribute("user_id")
 									.toString()) == 0) {
 				%>
-				<li><a href="login.jsp">Login</a></li>
-				<li><a href="signup.jsp">Sign Up</a></li>
-				<%
+			<li><a href="login.jsp">Login</a></li>
+			<li><a href="signup.jsp">Sign Up</a></li>
+			<%
 					} else {
 				%>
-				<li><a href="ownProfile.jsp">My Profile</a></li>
-				<li><a href="logout.jsp">Logout</a></li>
-				<%
+			<li><a href="ownProfile.jsp">My Profile</a></li>
+			<li><a href="logout.jsp">Logout</a></li>
+			<%
 					}
 				%>
-			</ul>
-		</div>
-		<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-			pageEncoding="ISO-8859-1" import="java.sql.*"%>
-		<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-		<html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="">
-<meta name="author" content="">
-
-<title>Nutty</title>
-
-<!-- Bootstrap core CSS -->
-<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-<link
-	href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"
-	rel="stylesheet">
-<script
-	src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-
-
-<!-- Add custom CSS here -->
-<style>
-body {
-	margin-top: 80px;
-}
-</style>
-
-</head>
-
-<body>
-
-	<!------------------------ navigation bar --------------------------->
-
-	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-		<div class="container">
-			<div class="navbar-header">
-				<a class="navbar-brand" href=".">Nutty</a>
-			</div>
-			<ul class="nav navbar-nav navbar-right">
-				<%
-					if (session.getAttribute("user_id") == null
-							|| Integer.valueOf(session.getAttribute("user_id")
-									.toString()) == 0) {
-				%>
-				<li><a href="login.jsp">Login</a></li>
-				<li><a href="signup.jsp">Sign Up</a></li>
-				<%
-					} else {
-				%>
-				<li><a href="ownProfile.jsp">My Profile</a></li>
-				<li><a href="logout.jsp">Logout</a></li>
-				<%
-					}
-				%>
-			</ul>
-		</div>
+		</ul>
+	</div>
 	</nav>
-
 	<div class="container">
 		<form method="POST">
 			<div class="panel panel-default">
@@ -135,38 +79,45 @@ body {
 							<div class="panel-body">
 								<p>
 									<input type="text" class="form-control" id="recipeName"
-										name="recipeName" placeholder="Name of Recipe...">
+										name="recipeName" placeholder="Write Name of Recipe...">
 								</p>
 
 								<div id="dynamicInput3" class="col-sm-3" align="left">
 									<input type="text" class="form-control" id="tag" name="tag[]"
-										placeholder="italian cuisine"> <br> <input
+										placeholder=" Write Tags of Recipe"> <br> <input
 										type="text" class="form-control" id="tag" name="tag[]"
-										placeholder="fish,french recipe, etc.">
+										placeholder="italian cuisine..."> <br> <input
+										type="text" class="form-control" id="tag" name="tag[]"
+										placeholder="chicken..."> <br> <input type="text"
+										class="form-control" id="tag" name="tag[]"
+										placeholder="soup...">
 								</div>
 								<div id="dynamicInput3" class="col-sm-3" align="left">
 									<input type="text" class="form-control" id="tag" name="tag[]"
-										placeholder="chicken,etc"> <br> <input
+										placeholder="soy sauce..."> <br> <input
 										type="text" class="form-control" id="tag" name="tag[]"
-										placeholder="soup,etc.">
-								</div>
-								<div id="dynamicInput3" class="col-sm-3" align="left">
-									<input type="text" class="form-control" id="tag" name="tag[]"
-										placeholder="soy sauce,etc"> <br> <input
+										placeholder=" chilli sauce..."> <br> <input
 										type="text" class="form-control" id="tag" name="tag[]"
-										placeholder=" chilli sauce,etc">
-								</div>
-								<div id="dynamicInput3" class="col-sm-3" align="left">
-									<input type="text" class="form-control" id="tag" name="tag[]"
-										placeholder="easy"> <br> <input type="text"
+										placeholder="easy..."> <br> <input type="text"
 										class="form-control" name="tags[]" id="tag"
-										placeholder="cheap">
+										placeholder="cheap...">
+								</div>
+								<div id="dynamicInput3" class="col-sm-6" align="left">
+									<div class="panel panel-default">
+
+										<!------------------------  Photo  --------------------------->
+										<div class="panel-body" style="height: 200px">
+										
+										
+										
+										</div>
+										<!----------------------- Ends of photo --------------------------->
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 
-					<div class="col-sm-12"></div>
 					<!------------------------  Get Ingredients  --------------------------->
 					<div class="col-sm-6">
 						<div class="panel panel-default">
@@ -252,11 +203,11 @@ body {
 
 
 				</div>
+			</div>
 		</form>
-
-
-		<!---------------------------  Functions  ------------------------------>
-		<script type="text/javascript">
+	</div>
+	<!---------------------------  Functions  ------------------------------>
+	<script type="text/javascript">
 			var counter = 1;
 			function addInput(divName, div2) {
 				var newdiv1 = document.createElement('div');
