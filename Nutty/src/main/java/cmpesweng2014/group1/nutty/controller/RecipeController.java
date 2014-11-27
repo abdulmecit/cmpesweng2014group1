@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import cmpesweng2014.group1.nutty.dao.CommentDao;
 import cmpesweng2014.group1.nutty.model.Comment;
 import cmpesweng2014.group1.nutty.model.Ingredient;
 import cmpesweng2014.group1.nutty.model.IngredientAmount;
 import cmpesweng2014.group1.nutty.model.Message;
 import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.model.Tag;
+import cmpesweng2014.group1.nutty.model.User;
 import cmpesweng2014.group1.nutty.service.RecipeService;
 import cmpesweng2014.group1.nutty.service.UserService;
 
@@ -46,16 +46,25 @@ public class RecipeController {
 			return "redirect:/login";
 		}	
 	}
-	/*
+	
 	@RequestMapping(value = "/addRecipe", method = RequestMethod.POST)
-	public String addRecipe(@RequestParam(value = "directions", required = true) String directions, 
-							@RequestParam(value = "amounts[]", required = true) double[] amounts, 
-							@RequestParam(value = "ingredients[]", required = true) String[] ingredients,
+	public String addRecipe(@RequestParam(value = "recipeName", required = true) String recipeName,
+							@RequestParam(value = "description", required = true) String description,
+							@RequestParam(value = "portion", required = true) int portion,
+							@RequestParam(value = "link", required = true) String link,
+							@RequestParam(value = "ingredient[]", required = true) String[] ingredients,
+							@RequestParam(value = "amount[]", required = true) double[] amounts, 
+							@RequestParam(value = "tag[]", required = true) String[] tags,
 			RedirectAttributes redirectAttrs, HttpSession session) {
-		
-		recipeService.createRecipe(name, description, portion, photo_id, ingredients, amounts, user)
-		return "success";
-	}*/
+		User u = (User) session.getAttribute("user");
+		Recipe r = recipeService.createRecipe(recipeName, description, portion, link, ingredients, amounts, u, tags);
+		if(r != null){
+			redirectAttrs.addFlashAttribute("message", new Message(1, null, "Your recipe is successfully added to the system."));
+			return "redirect:/success";
+		}
+		redirectAttrs.addFlashAttribute("message", new Message(0, null, "Your recipe couldn't added to the system."));
+		return "redirect:/addRecipe";
+	}
 	
 	@RequestMapping(value = "/recipe/{recipeId}", method = RequestMethod.GET)
 	public String viewRecipe(@PathVariable int recipeId, Model model, HttpSession session){

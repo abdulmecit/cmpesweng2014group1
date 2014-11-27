@@ -107,6 +107,39 @@ public class RecipeDao extends PcDao{
 			}
 		}, gkh);	
 	}
+	
+	public void addPhotoUrl(final String photoUrl, final int recipe_id) {
+		final String query = "INSERT INTO Photo (url) VALUES (?)";
+		KeyHolder gkh = new GeneratedKeyHolder();
+
+		this.getTemplate().update(new PreparedStatementCreator() {
+
+			@Override
+			public PreparedStatement createPreparedStatement(
+					Connection connection) throws SQLException {
+				PreparedStatement ps = connection.prepareStatement(query,
+						Statement.RETURN_GENERATED_KEYS);
+				ps.setString(1, photoUrl);
+				return ps;
+			}
+		}, gkh);	
+		
+		final int photo_id = gkh.getKey().intValue();
+		
+		final String query2 = "INSERT INTO RecipePhoto (recipe_id, photo_id) VALUES (?,?)";
+
+		this.getTemplate().update(new PreparedStatementCreator() {
+
+			@Override
+			public PreparedStatement createPreparedStatement(
+					Connection connection) throws SQLException {
+				PreparedStatement ps = connection.prepareStatement(query2);
+				ps.setInt(1, recipe_id);
+				ps.setInt(2, photo_id);
+				return ps;
+			}
+		});	
+	}
 
 	public void evaluateRecipe(final String column,final int value,final User user, final Recipe recipe){
 		if (emptyCheckUserRecipeRelation(user,recipe)) {

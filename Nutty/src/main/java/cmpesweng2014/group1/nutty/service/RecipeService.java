@@ -37,7 +37,7 @@ public class RecipeService {
 	//returns created recipe object 
 	//give the user also to the function
 	public Recipe createRecipe(String name, String description,
-			int portion, int photo_id,String[] ingredients, double[] amounts, User user, String[] tags) {
+			int portion, String photo_url, String[] ingredients, double[] amounts, User user, String[] tags) {
 		
 		int[] ingredient_ids=new int[ingredients.length] ;
 		int[] ingredient_calories=new int[ingredients.length]  ;
@@ -64,7 +64,11 @@ public class RecipeService {
 		}		
 		//Added to OwnsRecipe table
 		recipeDao.addOwner(recipe_id,user.getId());			
-		return recipeDao.getRecipeById(recipe_id);		
+		
+		//Add photoUrl
+		recipeDao.addPhotoUrl(photo_url, recipe_id);
+		
+		return recipeDao.getRecipeById(recipe_id);	
 	}	
 	
 	//likes becomes 1 in the table
@@ -164,10 +168,10 @@ public class RecipeService {
 	}
 	//creates and returns the derived recipe
 	public Recipe deriveRecipe(String name, String description,
-			int portion, int photo_id,String[] ingredients, double[] amounts, User user, 
+			int portion, String photo_url, String[] ingredients, double[] amounts, User user, 
 			Recipe originalRecipe, String[] tags){
 		Recipe createdRecipe=createRecipe(name, description,
-				portion, photo_id,ingredients,amounts,user,tags);
+				portion, photo_url,ingredients,amounts,user,tags);
 		recipeDao.addDerivedFrom(originalRecipe, createdRecipe);
 		return createdRecipe;
 	}	
