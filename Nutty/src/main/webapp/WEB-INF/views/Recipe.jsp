@@ -197,9 +197,9 @@ body {
 	<div class="container">
 		<div class="panel panel-default">
 			<div class="panel-heading clearfix">
-				<h2 class="panel-title pull-center" style="padding-top: 10px;">RECIPE
-					*****</h2>
-				by Chef John
+				<h2 class="panel-title pull-center" style="padding-top: 10px;">
+					${recipe.name}</h2>
+				by Chef ${ownerId}
 			</div>
 			<div class="panel-body">
 				<div class="panel panel-default">
@@ -209,8 +209,7 @@ body {
 								<input type="radio" name="radio-btn" id="img-1" checked />
 								<li class="slide-container">
 									<div class="slide">
-										<img
-											src="http://blog.fotografium.com/wp-content/uploads/2011/09/318.jpg" />
+										<img src="${photoUrl}" />
 									</div>
 									<div class="nav">
 										<label for="img-6" class="prev">&#x2039;</label> <label
@@ -380,6 +379,13 @@ body {
 										</button>
 
 									</div>
+									<br> <br>
+									<p>Likes: ${noOfLikes}</p>
+									<p>Eaten: ${noOfEats}</p>
+									<p>Avg Health Rate: ${avgHealthRate}</p>
+									<p>Avg Cost Rate: ${avgCostRate}</p>
+									<p>Avg Taste Rate: ${avgTasteRate}</p>
+									<p>Avg Ease Rate: ${avgEaseRate}</p>
 								</div>
 							</div>
 						</div>
@@ -394,84 +400,129 @@ body {
 								class="btn btn-primary" onClick="addInput('dynamicInput');"
 								style="float: right;">
 						</div>
-						<div class="panel-body"></div>
+						<div class="panel-body">
+							<h4>Recipe Tree</h4>
+							<p>ParentId: ${parent.recipe_id}</p>
+							<p>ParentName: ${parent.name}</p>
+							<p>Children:</p>
+							<c:forEach var="child" items="${children}">
+				Child:
+   				Id: <c:out value="${child.recipe_id}" />
+   				Name: <c:out value="${child.name}" />
+								<br>
+							</c:forEach>
+
+						</div>
 					</div>
 				</div>
 				<div class="col-sm-4">
 					<div id="info-wrap">
 						<div class="info" align="center">
 							<p>&nbsp;</p>
-							<h3>Ingredients:</h3>
-							<!--		<p><h8 id="full_name"></h8></p>  -->
-							<h5>.</h5>
-							<h5>.</h5>
-							<h5>.</h5>
-							<h3>Directions:</h3>
-							<h5>.</h5>
-							<h5>.</h5>
-							<h5>.</h5>
+							<h3>Recipe Information</h3>
+							<p>Portion: ${recipe.portion}</p>
+							<p>Created On: ${recipe.createdDate}</p>
+							<p>Last Updated On: ${recipe.updatedDate}</p>
+							<p>Total Calories: ${recipe.total_calorie}</p>
+
+							<h3>Ingredients</h3>
+							<c:forEach var="ingredientAmount" items="${ingredientAmounts}">
+   				Id: <c:out value="${ingredientAmount.ing_id}" />
+   				Name: <c:out value="${ingredientAmount.ing_name}" />
+   				Amount: <c:out value="${ingredientAmount.amount}" />
+								<br>
+							</c:forEach>
+
+							<h3>Description</h3>
+							<p>${recipe.description}</p>
+
+
+
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-4">
-					<div class="panel panel-default">
-						<div class="panel-heading clearfix">
-							<h4 class="panel-title pull-left" style="padding-top: 7.5px;">Comments</h4>
-							<input type="button" value="Comment" class="btn btn-primary"
-								onClick="addInput('dynamicInput');" style="float: right;">
-						</div>
-						<div class="panel-body"></div>
+			</div>
+			<div class="col-sm-4">
+				<div class="panel panel-default">
+					<div class="panel-heading clearfix">
+						<h4 class="panel-title pull-left" style="padding-top: 7.5px;">Comments</h4>
+						<input type="button" value="Comment" class="btn btn-primary"
+							onClick="addInput('dynamicInput');" style="float: right;">
+					</div>
+					<div class="panel-body">
+						<div id="comments"></div>
 					</div>
 				</div>
 			</div>
 		</div>
+	</div>
 
 
-		<script type="text/javascript">
-			var healtRate = 0; // change recipe healthRate
-			var costRate = 0;
-			var tasteRate = 0;
-			var easeRate = 0;
+	<script type="text/javascript">
+		var healtRate = 0; // change recipe healthRate
+		var costRate = 0;
+		var tasteRate = 0;
+		var easeRate = 0;
 
-			$(document)
-					.ready(
-							function() {
-								if (healtRate != 0) {
-									$("#healthRate")
-											.parents('.btn-group')
-											.find('.dropdown-toggle')
-											.html(
-													rate
-															+ ' <span class="caret"></span>');
-									document.getElementById('deneme').innerHTML = newSelText[1];
-								}
-								if (costRate != 0) {
+		$(document)
+				.ready(
+						function() {
+							if (healtRate != 0) {
+								$("#healthRate").parents('.btn-group').find(
+										'.dropdown-toggle').html(
+										rate + ' <span class="caret"></span>');
+								document.getElementById('deneme').innerHTML = newSelText[1];
+							}
+							if (costRate != 0) {
 
-								}
-								if (tasteRate != 0) {
+							}
+							if (tasteRate != 0) {
 
-								}
-								if (healtRate != 0) {
+							}
+							if (healtRate != 0) {
 
-								}
-							});
-			$(".dropdown-menu li a").click(
-					function() {
-						var selText = $(this).text();
-						var newSelText = selText.split(' : ');
-						var name = newSelText[0]
-						var rate = newSelText[1];
-						$(this).parents('.btn-group').find('.dropdown-toggle')
-								.html(rate + ' <span class="caret"></span>');
-						if (name == "Health") {
-							healtRate = rate;
-						} else if (name == "Cost") {
-							costRate = rate;
-						} else if (name == "Taste") {
-							tasteRate = rate;
-						} else if (name == "Ease") {
-							easeRate = rate;
+							}
+						});
+		$(".dropdown-menu li a").click(
+				function() {
+					var selText = $(this).text();
+					var newSelText = selText.split(' : ');
+					var name = newSelText[0]
+					var rate = newSelText[1];
+					$(this).parents('.btn-group').find('.dropdown-toggle')
+							.html(rate + ' <span class="caret"></span>');
+					if (name == "Health") {
+						healtRate = rate;
+					} else if (name == "Cost") {
+						costRate = rate;
+					} else if (name == "Taste") {
+						tasteRate = rate;
+					} else if (name == "Ease") {
+						easeRate = rate;
+					}
+				});
+		
+
+		$(document).ready(function (){
+			  $.ajax({
+				  type: "POST",
+				  url: "../recipeComments",
+				  data: {  
+					  recipeId:'${recipe.recipe_id}',
+					  }
+				}) 
+				.done(function(answer) {
+					$( "#comments" ).html("");
+					if(answer == ""){
+						$( "#comments" ).append( "<p>No comments :(</p>" );
+					}else{
+						var recipes = answer.split('|');
+						for (i = 1; i < recipes.length; i++) {
+							dummy = recipes[i].split('>');
+							$( "#comments" ).append( "<p><b>" + dummy[1] + "</b></p><p>" + dummy[0] + "</p>" );
 						}
-					});
-		</script>
+					}
+				});
+		});
+	</script>
 </html>
