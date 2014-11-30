@@ -56,14 +56,14 @@ public class RecipeService {
 		int recipe_id=recipeDao.createRecipe(name, description, portion, total_calorie);
 		//add tags
 		for(int i=0; i<tags.length; i++){
-			recipeDao.addTags(recipe_id, tags[i]);
+			recipeDao.addTag(recipe_id, tags[i]);
 		}		
 		//ingredients are added to HasIngredient table
 		for(int i=0; i<ingredients.length; i++){
 			recipeDao.addIngredient(ingredient_ids[i], recipe_id, amounts[i]);
 		}		
 		//Added to OwnsRecipe table
-		recipeDao.addOwner(recipe_id,user.getId());			
+		recipeDao.addOwner(recipe_id, user.getId());			
 		
 		//Add photoUrl
 		recipeDao.addPhotoUrl(photo_url, recipe_id);

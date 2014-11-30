@@ -150,48 +150,8 @@ body {
 										<input type="text" class="form-control" id="amount"
 											name="amount[]" placeholder="2pounds,etc">
 									</p>
-									<p>
-										<input type="text" class="form-control" id="amount"
-											name="amount[]" placeholder="2pounds,etc">
-									</p>
-									<p>
-										<input type="text" class="form-control" id="amount"
-											name="amount[]" placeholder="2pounds,etc">
-									</p>
-									<p>
-										<input type="text" class="form-control" id="amount"
-											name="amount[]" placeholder="2pounds,etc">
-									</p>
-									<p>
-										<input type="text" class="form-control" id="amount"
-											name="amount[]" placeholder="2pounds,etc">
-									</p>
-									<p>
-										<input type="text" class="form-control" id="amount"
-											name="amount[]" placeholder="2pounds,etc">
-									</p>
 								</div>
 								<div id="dynamicInput2" class="col-sm-8" align="left">
-									<p>
-										<input type="text" class="form-control" id="ingredient"
-											name="ingredient[]" placeholder="sugar,etc.">
-									</p>
-									<p>
-										<input type="text" class="form-control" id="ingredient"
-											name="ingredient[]" placeholder="sugar,etc.">
-									</p>
-									<p>
-										<input type="text" class="form-control" id="ingredient"
-											name="ingredient[]" placeholder="sugar,etc.">
-									</p>
-									<p>
-										<input type="text" class="form-control" id="ingredient"
-											name="ingredient[]" placeholder="sugar,etc.">
-									</p>
-									<p>
-										<input type="text" class="form-control" id="ingredient"
-											name="ingredient[]" placeholder="sugar,etc.">
-									</p>
 									<p>
 										<input type="text" class="form-control" id="ingredient"
 											name="ingredient[]" placeholder="sugar,etc.">
@@ -210,7 +170,7 @@ body {
 							</div>
 							<div class="panel-body">
 								<textarea class="form-control" id="description"
-									name="description[]" rows="13"></textarea>
+									name="description" rows="13"></textarea>
 							</div>
 						</div>
 					</div>
@@ -303,7 +263,7 @@ body {
 		        var xhr = new XMLHttpRequest(); 
 		        xhr.open("POST", "https://api.imgur.com/3/image.json"); 
 		        xhr.onload = function() {
-		            document.querySelector("#link").innerHTML = JSON.parse(xhr.responseText).data.link;
+		            document.querySelector("#link").value = JSON.parse(xhr.responseText).data.link;
 		            document.querySelector("#progress").innerHTML = "Done!";
 		            document.body.className = "uploaded";
 		        }

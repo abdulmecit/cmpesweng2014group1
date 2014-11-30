@@ -209,14 +209,17 @@ public class RecipeDao extends PcDao{
 		int voterCount=this.getTemplate().queryForObject(
 				"SELECT COUNT(*) FROM EatLikeRate WHERE recipe_id = ? AND "+property+"> 0", 
 				new Object[] {recipe_id}, Integer.class);
-		int total=this.getTemplate().queryForObject(
-				"SELECT SUM(" + property + ") FROM EatLikeRate WHERE recipe_id = ? AND "+property+"> 0", 
-				new Object[] {recipe_id}, Integer.class);
-		
+
 		if(voterCount == 0){
 			return 0.0;
 		}
-		return (double)total / voterCount;
+		else{			
+			int total=this.getTemplate().queryForObject(
+					"SELECT SUM(" + property + ") FROM EatLikeRate WHERE recipe_id = ? AND "+property+"> 0", 
+					new Object[] {recipe_id}, Integer.class);
+			
+			return (double)total / voterCount;
+		}
 	}
 	
 	public String getPhotoUrl(int recipe_id){
@@ -283,40 +286,50 @@ public class RecipeDao extends PcDao{
 		}
 	}
 
-	public void addTags(final int recipe_id, final String tag) {
-		final String query = "INSERT INTO Tag (tag_name) VALUES (?)";
-
-		KeyHolder gkh = new GeneratedKeyHolder();
-
-		this.getTemplate().update(new PreparedStatementCreator() {
-
-			@Override
-			public PreparedStatement createPreparedStatement(
-					Connection connection) throws SQLException {
-				PreparedStatement ps = connection.prepareStatement(query,
-						Statement.RETURN_GENERATED_KEYS);
-				ps.setString(1, tag);
-				return ps;
-			}
-		}, gkh);
-
-		final int newItemId = gkh.getKey().intValue();
-		final String query2 = "INSERT INTO HasTag (recipe_id, tag_id) VALUES (?,?)";
-		KeyHolder gkh2 = new GeneratedKeyHolder();
-
-		this.getTemplate().update(new PreparedStatementCreator() {
-
-			@Override
-			public PreparedStatement createPreparedStatement(
-					Connection connection) throws SQLException {
-				PreparedStatement ps = connection.prepareStatement(query2,
-						Statement.RETURN_GENERATED_KEYS);
-				ps.setInt(1, recipe_id);
-				ps.setInt(2, newItemId);
-				return ps;
-			}
-		}, gkh2);
+	public void addTag(final int recipe_id, final String tag) {
 		
+		List<Tag> tagList = this.getTemplate().query(
+				"SELECT tag_id FROM Tag WHERE tag_name = ?",
+				new Object[] { tag }, new TagRowMapper());
+
+		final int tag_id;
+		
+		if (!tagList.isEmpty()) {	//tag is already in database, use its id
+			tag_id = tagList.get(0).getTag_id();
+		} 
+		else {			
+			final String query = "INSERT INTO Tag (tag_name) VALUES (?)";
+	
+			KeyHolder gkh = new GeneratedKeyHolder();
+	
+			this.getTemplate().update(new PreparedStatementCreator() {
+	
+				@Override
+				public PreparedStatement createPreparedStatement(
+						Connection connection) throws SQLException {
+					PreparedStatement ps = connection.prepareStatement(query,
+							Statement.RETURN_GENERATED_KEYS);
+					ps.setString(1, tag);
+					return ps;
+				}
+			}, gkh);
+	
+			tag_id = gkh.getKey().intValue();
+		}
+		
+		final String query2 = "INSERT INTO HasTag (recipe_id, tag_id) VALUES (?,?)";
+
+		this.getTemplate().update(new PreparedStatementCreator() {
+
+			@Override
+			public PreparedStatement createPreparedStatement(
+					Connection connection) throws SQLException {
+				PreparedStatement ps = connection.prepareStatement(query2);
+				ps.setInt(1, recipe_id);
+				ps.setInt(2, tag_id);
+				return ps;
+			}
+		});		
 	}
 
 	public Tag[] getAllTags(int recipe_id) {

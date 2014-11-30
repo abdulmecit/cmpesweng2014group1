@@ -75,11 +75,13 @@ public class RecipeController {
 		model.addAttribute("ingredientAmounts", ingredientAmounts);
 		
 		Comment[] comments = recipeService.getComments(recipeId);
-		Map<Comment, Integer> commentsAndLikes = new HashMap<Comment, Integer>();
-		for(int i=0; i<comments.length; i++){
-			commentsAndLikes.put(comments[i], recipeService.numberOfLikesOfAComment(comments[i]));
+		if(comments != null){
+			Map<Comment, Integer> commentsAndLikes = new HashMap<Comment, Integer>();
+			for(int i=0; i<comments.length; i++){
+				commentsAndLikes.put(comments[i], recipeService.numberOfLikesOfAComment(comments[i]));
+			}
+			model.addAttribute("commentsAndLikes", commentsAndLikes);
 		}
-		model.addAttribute("commentsAndLikes", commentsAndLikes);
 		
 		int noOfLikes = recipeService.numberOfLikes(recipeId);
 		model.addAttribute("noOfLikes", noOfLikes);
