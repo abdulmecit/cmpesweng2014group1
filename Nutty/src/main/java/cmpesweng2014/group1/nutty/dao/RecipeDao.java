@@ -289,7 +289,7 @@ public class RecipeDao extends PcDao{
 	public void addTag(final int recipe_id, final String tag) {
 		
 		List<Tag> tagList = this.getTemplate().query(
-				"SELECT tag_id FROM Tag WHERE tag_name = ?",
+				"SELECT tag_id, tag_name FROM Tag WHERE tag_name = ?",
 				new Object[] { tag }, new TagRowMapper());
 
 		final int tag_id;

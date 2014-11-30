@@ -105,7 +105,7 @@ body {
 										placeholder=" chilli sauce..."> <br> <input
 										type="text" class="form-control" id="tag" name="tag[]"
 										placeholder="easy..."> <br> <input type="text"
-										class="form-control" name="tags[]" id="tag"
+										class="form-control" name="tag[]" id="tag"
 										placeholder="cheap...">
 								</div>
 								<div id="dynamicInput3" class="col-sm-6" align="left">

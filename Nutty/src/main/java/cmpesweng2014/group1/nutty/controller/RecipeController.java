@@ -133,7 +133,7 @@ public class RecipeController {
 		if(ingr != null){
 			Map<Integer, String> result = new HashMap<Integer, String>();
 			for(int i=0; i<ingr.length; i++)
-				result.put(ingr[i].getId(), ingr[i].getName());
+				result.put(ingr[i].getId(), ingr[i].getIng_name());
 			return result;
 		}
 		return null;

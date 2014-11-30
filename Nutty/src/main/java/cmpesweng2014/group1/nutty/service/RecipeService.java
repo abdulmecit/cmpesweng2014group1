@@ -52,6 +52,8 @@ public class RecipeService {
 		//get total calorie value for the recipe
 		//for now assumed given amount is in gram and the database calorie has value for 100 gram
 		double total_calorie=recipeDao.calculateTotalCalorie(ingredient_calories, amounts);		
+		//double total_calorie=100;
+		
 		//create new recipe
 		int recipe_id=recipeDao.createRecipe(name, description, portion, total_calorie);
 		//add tags

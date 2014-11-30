@@ -13,9 +13,9 @@ public class IngredientResultSetExtractor implements ResultSetExtractor<Ingredie
 	public Ingredient extractData(ResultSet rs) throws SQLException,
 			DataAccessException {
 		Ingredient ingredient = new Ingredient();
-		ingredient.setId(rs.getInt(1));
-		ingredient.setName(rs.getString(2));
-		ingredient.setCalorie(rs.getInt(4));	
+		ingredient.setIng_name(rs.getString(1));
+		ingredient.setCalorie(rs.getInt(2));
+		ingredient.setId(rs.getInt(3));	
 		return ingredient;
 	}
 }

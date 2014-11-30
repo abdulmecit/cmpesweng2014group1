@@ -3,33 +3,35 @@ package cmpesweng2014.group1.nutty.model;
 
 public class Ingredient {
 	private int id;
-	private String name;
+	private String ing_name;
 	private int calorie;
 	
 	public Ingredient() {
 		super();
 	}
-	public Ingredient(String name) {
-		super();
-		this.name = name;
-	}
-	public int getCalorie() {
-		return calorie;
-	}
-	public void setCalorie(int calorie) {
-		this.calorie = calorie;
-	}
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getName() {
-		return name;
+
+	public String getIng_name() {
+		return ing_name;
 	}
-	public void setName(String name) {
-		this.name = name;
+
+	public void setIng_name(String ing_name) {
+		this.ing_name = ing_name;
+	}
+
+	public int getCalorie() {
+		return calorie;
+	}
+
+	public void setCalorie(int calorie) {
+		this.calorie = calorie;
 	}
 	
 	
