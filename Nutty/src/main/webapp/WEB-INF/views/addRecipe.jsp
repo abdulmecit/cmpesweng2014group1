@@ -12,19 +12,26 @@
 <title>Nutty</title>
 
 <!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-<link
-	href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"
-	rel="stylesheet">
-<script
-	src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+	
+<!-- Autocomplete CSS -->	
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 
 <!-- Add custom CSS here -->
 <style>
 body {
 	margin-top: 80px;
 }
+.ui-autocomplete-loading { background: white url("./resources/img/ui-anim_basic_16x16.gif") right center no-repeat; }
+.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
+.autocomplete-suggestion { padding: 5px 5px; white-space: nowrap; overflow: hidden; font-size:22px}
+.autocomplete-selected { background: #F0F0F0; }
+.autocomplete-suggestions strong { font-weight: bold; color: #3399FF; }
+
 #dropArea {text-align: center; line-height: 50px; line-width: 50px; margin: auto; font-size: 15px; display: inline-block;}
 #progress {display: none}
 .uploading #dropArea {display: none}
@@ -136,26 +143,17 @@ body {
 					<div class="col-sm-6">
 						<div class="panel panel-default">
 							<div class="panel-heading clearfix">
-								<h4 class="panel-title pull-left" style="padding-top: 7.5px;">Amount
-									/ Ingredients</h4>
-								<input type="button" value="Another ingredient"
-									class="btn btn-primary"
-									onClick="addInput('dynamicInput','dynamicInput2');"
-									style="float: right;">
+								<h4 class="panel-title pull-left" style="padding-top: 7.5px;">Search Ingredient</h4>			
+								<input type="text" class="form-control" id="addIngredient">					
 							</div>
 
 							<div class="panel-body">
+								<div class="panel-heading clearfix">		
+									<h4 class="panel-title pull-left" style="padding-top: 7.5px;">Amount / Ingredients</h4>	
+								</div>
 								<div id="dynamicInput" class="col-sm-4" align="left">
-									<p>
-										<input type="text" class="form-control" id="amount"
-											name="amount[]" placeholder="2pounds,etc">
-									</p>
 								</div>
 								<div id="dynamicInput2" class="col-sm-8" align="left">
-									<p>
-										<input type="text" class="form-control" id="ingredient"
-											name="ingredient[]" placeholder="sugar,etc.">
-									</p>
 								</div>
 							</div>
 						</div>
@@ -178,19 +176,17 @@ body {
 			</div>
 		</form>
 	</div>
+
 	<!---------------------------  Functions  ------------------------------>
 	<script type="text/javascript">
-			var counter = 1;
-			function addInput(divName, div2) {
+			function addInput(div1, div2, value) {
 				var newdiv1 = document.createElement('div');
 				var newdiv2 = document.createElement('div');
-				newdiv1.innerHTML = "<p> <input type='text' class='form-control' id='amount' name='amount[]' placeholder='2pounds,etc'> </p>"
-				newdiv2.innerHTML = "<p> <input type='text' class='form-control' id='ingredient' name='ingredient[]' placeholder='sugar,etc'> </p>";
-				document.getElementById(divName).appendChild(newdiv1);
+				newdiv1.innerHTML = "<p> <input type='text' class='form-control' id='amount' name='amount[]' placeholder='2pounds,etc'> </p>";
+				newdiv2.innerHTML = "<p> <input type='text' class='form-control' id='ingredient' name='ingredient[]' value='" + value + "'> </p>";				document.getElementById(div1).appendChild(newdiv1);
 				document.getElementById(div2).appendChild(newdiv2);
-				counter++;
 			}
-
+			
 			$("#recipeName").keyup(
 					function(event) {
 						if ($("#recipeName").val().length != 0
@@ -271,4 +267,27 @@ body {
 		        xhr.setRequestHeader('Authorization', 'Client-ID 4aaaa88af99c596'); 		        
 		        xhr.send(fd);
 		    }
+	   
+		    $("#addIngredient").autocomplete({
+                source: function( request, response ) {
+                $.ajax({
+                    url: "someIngredients2",
+                    dataType: "json",
+                    data: {filter: request.term},
+                    success: function(data) {
+                                response($.map(data, function(item) {
+                                return {
+                                    label: item.ing_name,
+                                    id: item.id,
+                                    };
+                            }));
+                        }
+                    });
+                },
+                minLength: 3,
+                select: function(event, ui) {
+    				addInput('dynamicInput', 'dynamicInput2', ui.item.label);           
+    			}
+            });
+             
 		</script>

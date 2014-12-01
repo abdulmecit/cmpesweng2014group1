@@ -139,6 +139,13 @@ public class RecipeController {
 		return null;
 	}	
 	
+	@ResponseBody
+	@RequestMapping(value = "/someIngredients2")
+	public Ingredient[] someIngredients2(@RequestParam(value = "filter", required = true) String filter,
+			HttpSession session) {
+		return recipeService.getSomeIngredients(filter);
+	}
+	
 	@RequestMapping(value = "/recipeComments", method = RequestMethod.POST)
 	@ResponseBody
 	public String recipeComments(
