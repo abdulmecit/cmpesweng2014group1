@@ -158,7 +158,41 @@ body {
 	width: 50%;
 	float: left;
 }
+
+#diveder {
+	width: 5px;
+	height: auto;
+	display: inline-block;
+	float: right;
+}
+
+.wrap {
+	/* force the div to properly contain the floated images: */
+	position: relative;
+	clear: none;
+	overflow: hidden;
+	float: left;
+	margin-left: 10px;
+	margin-right: 10px
+}
+
+.wrap img {
+	position: relative;
+	width: 80px;
+	height: 70px
+}
+
+.wrap .desc {
+	display: block;
+	position: absolute;
+	width: 100%;
+	top: 10%;
+	text-align: center;
+	font-size: 14;
+	font-style: oblique;
+}
 </style>
+
 
 </head>
 
@@ -197,332 +231,366 @@ body {
 	<div class="container">
 		<div class="panel panel-default">
 			<div class="panel-heading clearfix">
-				<h2 class="panel-title pull-center" style="padding-top: 10px;">
-					${recipe.name}</h2>
-				by Chef ${ownerId}
+				<div class="wrap">
+					<img
+						src="https://dl.dropboxusercontent.com/u/45511253/one-star.png" />
+					<h3 class="desc"></h3>
+				</div>
+				<input type="button" value="Like" class="btn btn-primary"
+					style="float: right; margin-right: 3 px; margin-top: 18px;">
+
+				<input type="button" value="Eat" class="btn btn-primary"
+					style="float: right; margin-left: 10px; margin-right: 10px; margin-top: 18px">
+
+				<h2 class="panel-title pull-center"
+					style="margin-top: 25px; font-size: 24px">
+					${recipe.name} <small><em>by Chef ${ownerId}</em></small>
+				</h2>
 			</div>
 			<div class="panel-body">
-				<div class="panel panel-default">
-					<div class="panel-body">
-						<div class="col-sm-6 col-centered">
-							<ul class="slides">
-								<input type="radio" name="radio-btn" id="img-1" checked />
-								<li class="slide-container">
-									<div class="slide">
-										<img src="${photoUrl}" />
-									</div>
-									<div class="nav">
-										<label for="img-6" class="prev">&#x2039;</label> <label
-											for="img-2" class="next">&#x203a;</label>
-									</div>
-								</li>
-
-								<input type="radio" name="radio-btn" id="img-2" />
-								<li class="slide-container">
-									<div class="slide">
-										<img
-											src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRikkxvA53g0Vc8XJuH2uIvWBMq8FGj5yFl5Gz-gLRJsk0XhwE" />
-									</div>
-									<div class="nav">
-										<label for="img-1" class="prev">&#x2039;</label> <label
-											for="img-3" class="next">&#x203a;</label>
-									</div>
-								</li>
-
-								<input type="radio" name="radio-btn" id="img-3" />
-								<li class="slide-container">
-									<div class="slide">
-										<img
-											src="http://blog.fotografium.com/wp-content/uploads/2011/09/1218.jpg" />
-									</div>
-									<div class="nav">
-										<label for="img-2" class="prev">&#x2039;</label> <label
-											for="img-4" class="next">&#x203a;</label>
-									</div>
-								</li>
-
-								<input type="radio" name="radio-btn" id="img-4" />
-								<li class="slide-container">
-									<div class="slide">
-										<img
-											src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3mwbgHPPWvhTK9lRaqmsLDG3nDJ-SxqjzgPocywPCPpMghR1dNw" />
-									</div>
-									<div class="nav">
-										<label for="img-3" class="prev">&#x2039;</label> <label
-											for="img-5" class="next">&#x203a;</label>
-									</div>
-								</li>
-
-								<!-- <a> taginin içine buton koydum onun içine de img, dolayısıyle butonun yönlendirceği adresi href ile verebiliyoruz. -->
-								<input type="radio" name="radio-btn" id="img-5" />
-								<li class="slide-container">
-									<div class="slide">
-										<img src="http://i.imgur.com/If2Ma.jpg" />
-									</div>
-									<div class="nav">
-										<label for="img-4" class="prev">&#x2039;</label> <label
-											for="img-6" class="next">&#x203a;</label>
-									</div>
-								</li>
-
-								<input type="radio" name="radio-btn" id="img-6" />
-								<li class="slide-container">
-									<div class="slide">
-										<img src="http://i.imgur.com/If2Ma.jpg" />
-									</div>
-									<div class="nav">
-										<label for="img-5" class="prev">&#x2039;</label> <label
-											for="img-1" class="next">&#x203a;</label>
-									</div>
-								</li>
-
-								<li class="nav-dots"><label for="img-1" class="nav-dot"
-									id="img-dot-1"></label> <label for="img-2" class="nav-dot"
-									id="img-dot-2"></label> <label for="img-3" class="nav-dot"
-									id="img-dot-3"></label> <label for="img-4" class="nav-dot"
-									id="img-dot-4"></label> <label for="img-5" class="nav-dot"
-									id="img-dot-5"></label> <label for="img-6" class="nav-dot"
-									id="img-dot-6"></label></li>
-							</ul>
-						</div>
-						<div class="col-sm-6 col-centered">
-							<div class="panel panel-default">
-								<div class="panel-heading clearfix">
-									<h2 class="panel-title text-center" style="padding-top: 7.5px;">RATING
-									</h2>
+				<div class=row>
+					<div class="col-sm-6 col-centered">
+						<ul class="slides">
+							<input type="radio" name="radio-btn" id="img-1" checked />
+							<li class="slide-container">
+								<div class="slide">
+									<img src="${photoUrl}" />
 								</div>
-								<div class="panel-body" style="height: 270px">
+								<div class="nav">
+									<label for="img-6" class="prev">&#x2039;</label> <label
+										for="img-2" class="next">&#x203a;</label>
+								</div>
+							</li>
 
+							<input type="radio" name="radio-btn" id="img-2" />
+							<li class="slide-container">
+								<div class="slide">
+									<img
+										src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRikkxvA53g0Vc8XJuH2uIvWBMq8FGj5yFl5Gz-gLRJsk0XhwE" />
+								</div>
+								<div class="nav">
+									<label for="img-1" class="prev">&#x2039;</label> <label
+										for="img-3" class="next">&#x203a;</label>
+								</div>
+							</li>
+
+							<input type="radio" name="radio-btn" id="img-3" />
+							<li class="slide-container">
+								<div class="slide">
+									<img
+										src="http://blog.fotografium.com/wp-content/uploads/2011/09/1218.jpg" />
+								</div>
+								<div class="nav">
+									<label for="img-2" class="prev">&#x2039;</label> <label
+										for="img-4" class="next">&#x203a;</label>
+								</div>
+							</li>
+
+							<input type="radio" name="radio-btn" id="img-4" />
+							<li class="slide-container">
+								<div class="slide">
+									<img
+										src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3mwbgHPPWvhTK9lRaqmsLDG3nDJ-SxqjzgPocywPCPpMghR1dNw" />
+								</div>
+								<div class="nav">
+									<label for="img-3" class="prev">&#x2039;</label> <label
+										for="img-5" class="next">&#x203a;</label>
+								</div>
+							</li>
+
+							<!-- <a> taginin içine buton koydum onun içine de img, dolayısıyle butonun yönlendirceği adresi href ile verebiliyoruz. -->
+							<input type="radio" name="radio-btn" id="img-5" />
+							<li class="slide-container">
+								<div class="slide">
+									<img src="http://i.imgur.com/If2Ma.jpg" />
+								</div>
+								<div class="nav">
+									<label for="img-4" class="prev">&#x2039;</label> <label
+										for="img-6" class="next">&#x203a;</label>
+								</div>
+							</li>
+
+							<input type="radio" name="radio-btn" id="img-6" />
+							<li class="slide-container">
+								<div class="slide">
+									<img src="http://i.imgur.com/If2Ma.jpg" />
+								</div>
+								<div class="nav">
+									<label for="img-5" class="prev">&#x2039;</label> <label
+										for="img-1" class="next">&#x203a;</label>
+								</div>
+							</li>
+
+							<li class="nav-dots"><label for="img-1" class="nav-dot"
+								id="img-dot-1"></label> <label for="img-2" class="nav-dot"
+								id="img-dot-2"></label> <label for="img-3" class="nav-dot"
+								id="img-dot-3"></label> <label for="img-4" class="nav-dot"
+								id="img-dot-4"></label> <label for="img-5" class="nav-dot"
+								id="img-dot-5"></label> <label for="img-6" class="nav-dot"
+								id="img-dot-6"></label></li>
+						</ul>
+					</div>
+					<div class="col-sm-6 col-centered">
+
+						<div class="row">
+							<!----------------------- Rate Buttons ----------------------------->
+							<div class="btn-group btn-info "
+								style="margin: 20px 5px 5px 5px;">
+								<button type="button" class="btn btn-info btn-lg">Health</button>
+								<button type="button"
+									class="btn dropdown-toggle btn-lg btn-info" id="healthRate"
+									data-toggle="dropdown" aria-expanded="false">
+									<span class="ui-button-text"></span> <span class="caret"></span>
+									<!-- caret for arrow. ui-button-text for button text -->
+								</button>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="#">5</a></li>
+									<li><a href="#">4</a></li>
+									<li><a href="#">3</a></li>
+									<li><a href="#">2</a></li>
+									<li><a href="#">1</a></li>
+								</ul>
+							</div>
+
+							<div class="btn-group btn-danger"
+								style="margin: 20px 5px 5px 5px;">
+								<button type="button" class="btn btn-danger btn-lg">Cost</button>
+								<button type="button"
+									class="btn dropdown-toggle btn-lg btn-danger" id="costRate"
+									data-toggle="dropdown" aria-expanded="false">
+									<span class="caret"></span> <span class="ui-button-text"></span>
+									<!-- caret for arrow. ui-button-text for button text -->
+								</button>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="#">5</a></li>
+									<li><a href="#">4</a></li>
+									<li><a href="#">3</a></li>
+									<li><a href="#">2</a></li>
+									<li><a href="#">1</a></li>
+								</ul>
+							</div>
+
+							<div class="btn-group btn-warning"
+								style="margin: 20px 5px 5px 5px;">
+								<button type="button" class="btn btn-warning btn-lg">Taste</button>
+								<button type="button"
+									class="btn dropdown-toggle btn-lg btn-warning" id="tasteRate"
+									data-toggle="dropdown" aria-expanded="false">
+									<span class="caret"></span> <span class="ui-button-text"></span>
+									<!-- caret for arrow. ui-button-text for button text -->
+								</button>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="#">5</a></li>
+									<li><a href="#">4</a></li>
+									<li><a href="#">3</a></li>
+									<li><a href="#">2</a></li>
+									<li><a href="#">1</a></li>
+								</ul>
+							</div>
+
+							<div class="btn-group btn-success"
+								style="margin: 20px 5px 5px 5px;">
+								<button type="button" class="btn btn-success btn-lg">Ease</button>
+								<button type="button"
+									class="btn dropdown-toggle btn-lg btn-success" id="easeRate"
+									data-toggle="dropdown" aria-expanded="false">
+									<span class="ui-button-text"></span> <span class="caret"></span>
+									<!-- caret for arrow. ui-button-text for button text -->
+								</button>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="#">5</a></li>
+									<li><a href="#">4</a></li>
+									<li><a href="#">3</a></li>
+									<li><a href="#">2</a></li>
+									<li><a href="#">1</a></li>
+								</ul>
+							</div>
+							<!----------------------- End of Rate Buttons ----------------------------->
+						</div>
+						<div class="row">
+							<div class="panel panel-default"
+								style="margin-right: 10px; margin-top: 10px;">
+								<div class="panel-body" style="height: 200px">
 									<div class="col-sm-6 col-centered">
-										<div class="btn-group btn-info">
-											<button type="button" class="btn btn-info btn-lg">Health</button>
-											<button type="button"
-												class="btn dropdown-toggle btn-lg btn-info"
-												name="healthRate" data-toggle="dropdown"
-												aria-expanded="false">
-												<span class="caret"></span> <span class="sr-only"></span>
-											</button>
-											<ul class="dropdown-menu" role="menu">
-												<li><a href="#">Health : 5</a></li>
-												<li><a href="#">Health : 4</a></li>
-												<li><a href="#">Health : 3</a></li>
-												<li><a href="#">Health : 2</a></li>
-												<li><a href="#">Health : 1</a></li>
-											</ul>
+										<div class="progress">
+											<div class="progress-bar progress-bar-warning"
+												id="prograssbarTaste" role="progressbar" aria-valuenow="0"
+												aria-valuemin="0" aria-valuemax="100">${avgTasteRate}
+											</div>
+										</div>
+										<div class="progress">
+											<div class="progress-bar progress-bar-info"
+												id="prograssbarHealth" role="progressbar" aria-valuenow="0"
+												aria-valuemin="0" aria-valuemax="100" style="width: 40%">${avgHealthRate}</div>
+										</div>
+										<div class="progress">
+											<div class="progress-bar progress-bar-danger"
+												id="prograssbarCost" role="progressbar" aria-valuenow="0"
+												aria-valuemin="0" aria-valuemax="100">${avgCostRate}</div>
 										</div>
 
-										<br> <br>
-
-										<div class="btn-group btn-warning">
-											<button type="button" class="btn btn-warning btn-lg">Taste</button>
-											<button type="button"
-												class="btn dropdown-toggle btn-lg btn-warning"
-												name="tasteRate" data-toggle="dropdown"
-												aria-expanded="false">
-												<span class="caret"></span> <span class="sr-only"></span>
-											</button>
-											<ul class="dropdown-menu" role="menu">
-												<li><a href="#">Taste : 5</a></li>
-												<li><a href="#">Taste : 4</a></li>
-												<li><a href="#">Taste : 3</a></li>
-												<li><a href="#">Taste : 2</a></li>
-												<li><a href="#">Taste : 1</a></li>
-											</ul>
-										</div>
-
-										<br> <br>
-
-										<div class="btn-group btn-success">
-											<button type="button" class="btn btn-success btn-lg">Ease</button>
-											<button type="button"
-												class="btn dropdown-toggle btn-lg btn-success"
-												name="easeRate" data-toggle="dropdown" aria-expanded="false">
-												<span class="caret"></span> <span class="sr-only"></span>
-											</button>
-											<ul class="dropdown-menu" role="menu">
-												<li><a href="#">Ease : 5</a></li>
-												<li><a href="#">Ease : 4</a></li>
-												<li><a href="#">Ease : 3</a></li>
-												<li><a href="#">Ease : 2</a></li>
-												<li><a href="#">Ease : 1</a></li>
-											</ul>
-										</div>
-										<br> <br>
-
-
-										<div class="btn-group btn-danger">
-											<button type="button" class="btn btn-danger btn-lg">
-												Cost</button>
-											<button type="button"
-												class="btn dropdown-toggle btn-lg btn-danger"
-												name="costRate" data-toggle="dropdown" aria-expanded="false">
-												<span class="caret"></span> <span class="sr-only"></span>
-											</button>
-											<ul class="dropdown-menu" role="menu">
-												<li><a href="#">Cost : 5</a></li>
-												<li><a href="#">Cost : 4</a></li>
-												<li><a href="#">Cost : 3</a></li>
-												<li><a href="#">Cost : 2</a></li>
-												<li><a href="#">Cost : 1</a></li>
-											</ul>
-
+										<div class="progress">
+											<div class="progress-bar progress-bar-success"
+												id="prograssbarEase" role="progressbar" aria-valuenow="0"
+												aria-valuemin="0" aria-valuemax="100">${avgEaseRate}</div>
 										</div>
 									</div>
-									<div class="col-sm-6 col-centered">
-										<!-- Standard button -->
-										<button type="button" class="btn btn-default">
-											<span class="glyphicons glyphicons-ok-2"> </span> Eat
-										</button>
-										<!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
-										<button type="button" class="btn btn-primary">
-											<span class="glyphicons glyphicons-thumbs-up"></span> Like
-										</button>
-
+									<div class="col-sm-6">
+										<h5>Portion: ${recipe.portion}</h5>
+										<h5>Total Calories: ${recipe.total_calorie}</h5>
+										<h5>Likes: ${noOfLikes}</h5>
+										<h5>Eaten: ${noOfEats}</h5>
+										<h5>Created On: ${recipe.createdDate}</h5>
+										<h5>Last Updated On: ${recipe.updatedDate}</h5>
 									</div>
-									<br> <br>
-									<p>Likes: ${noOfLikes}</p>
-									<p>Eaten: ${noOfEats}</p>
-									<p>Avg Health Rate: ${avgHealthRate}</p>
-									<p>Avg Cost Rate: ${avgCostRate}</p>
-									<p>Avg Taste Rate: ${avgTasteRate}</p>
-									<p>Avg Ease Rate: ${avgEaseRate}</p>
 								</div>
 							</div>
 						</div>
 					</div>
+
+
+
 				</div>
+				<br> <br> <br>
+				<div class=row>
+					<div class="col-sm-4">
+						<div class="panel panel-default" style="margin-right: 10px;">
 
-				<div class="col-sm-4">
-					<div class="panel panel-default">
-						<div class="panel-heading clearfix">
-							<h4 class="panel-title pull-left" style="padding-top: 7.5px;">Versions</h4>
-							<input type="button" value="Create New version"
-								class="btn btn-primary" onClick="addInput('dynamicInput');"
-								style="float: right;">
-						</div>
-						<div class="panel-body">
-							<h4>Recipe Tree</h4>
-							<p>ParentId: ${parent.recipe_id}</p>
-							<p>ParentName: ${parent.name}</p>
-							<p>Children:</p>
-							<c:forEach var="child" items="${children}">
-				Child:
-   				Id: <c:out value="${child.recipe_id}" />
-   				Name: <c:out value="${child.name}" />
-								<br>
-							</c:forEach>
+							<div class="panel-heading clearfix">
+								<h4 class="panel-title pull-left" style="padding-top: 7.5px;">Versions</h4>
+								<input type="button" value="Create New version"
+									class="btn btn-primary" onClick="addInput('dynamicInput');"
+									style="float: right;">
+							</div>
 
+							<div class="panel-body">
+								<h4>Recipe Tree</h4>
+								<p>ParentId: ${parent.recipe_id}</p>
+								<p>ParentName: ${parent.name}</p>
+								<p>Children:</p>
+								<c:forEach var="child" items="${children}"> Child:  Id: <c:out
+										value="${child.recipe_id}" /> Name: <c:out
+										value="${child.name}" />
+									<br>
+								</c:forEach>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col-sm-4">
-					<div id="info-wrap">
-						<div class="info" align="center">
-							<p>&nbsp;</p>
-							<h3>Recipe Information</h3>
-							<p>Portion: ${recipe.portion}</p>
-							<p>Created On: ${recipe.createdDate}</p>
-							<p>Last Updated On: ${recipe.updatedDate}</p>
-							<p>Total Calories: ${recipe.total_calorie}</p>
 
-							<h3>Ingredients</h3>
-							<c:forEach var="ingredientAmount" items="${ingredientAmounts}">
-   				Id: <c:out value="${ingredientAmount.ing_id}" />
-   				Name: <c:out value="${ingredientAmount.ing_name}" />
-   				Amount: <c:out value="${ingredientAmount.amount}" />
-								<br>
-							</c:forEach>
+					<div class="col-sm-8">
+						<div id="info-wrap">
+							<!--<p>&nbsp;</p> </div> -->
+							<div id=recipeDetail>
+								<h3>Ingredients</h3>
+								<c:forEach var="ingredientAmount" items="${ingredientAmounts}">
+   										Amount: <c:out value="${ingredientAmount.amount}" />
+   										Name: <c:out value="${ingredientAmount.ing_name}" />
+									<br>
+								</c:forEach>
+							</div>
 
 							<h3>Description</h3>
 							<p>${recipe.description}</p>
-
-
-
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="col-sm-4">
-				<div class="panel panel-default">
-					<div class="panel-heading clearfix">
-						<h4 class="panel-title pull-left" style="padding-top: 7.5px;">Comments</h4>
-						<input type="button" value="Comment" class="btn btn-primary"
-							onClick="addInput('dynamicInput');" style="float: right;">
-					</div>
-					<div class="panel-body">
-						<div id="comments"></div>
+				<!-- end of row -->
+				<br> <br> <br>
+				<div class=row>
+					<div class="panel panel-default"
+						style="margin-right: 10px; margin-left: 10px">
+						<div class="panel-heading clearfix">
+							<h4 class="panel-title pull-left" style="padding-top: 7.5px;">Comments</h4>
+							<input type="button" value="Comment" class="btn btn-primary"
+								onClick="addInput('dynamicInput');" style="float: right;">
+						</div>
+						<div class="panel-body">
+							<div id="comments"></div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+</body>
 
 
-	<script type="text/javascript">
-		var healtRate = 0; // change recipe healthRate
-		var costRate = 0;
-		var tasteRate = 0;
-		var easeRate = 0;
 
-		$(document)
-				.ready(
-						function() {
-							if (healtRate != 0) {
-								$("#healthRate").parents('.btn-group').find(
-										'.dropdown-toggle').html(
-										rate + ' <span class="caret"></span>');
-								document.getElementById('deneme').innerHTML = newSelText[1];
-							}
-							if (costRate != 0) {
+<script type="text/javascript">
+	var healthRate = '${avgHealthRate}';
+	var costRate = '${avgCostRate}';
+	var tasteRate = '${avgTasteRate}';
+	var easeRate = '${avgEaseRate}';
+	var overall = '${avgOverall}';
 
-							}
-							if (tasteRate != 0) {
+	$(document).ready(
+			function() {
+				$('#prograssbarTaste').css('width',
+						'${avgTasteRate}' * 20 + '%').attr('aria-valuenow',
+						'${avgTasteRate}' * 20);
+				$('#prograssbarHealth').css('width',
+						'${avgHealthRate}' * 20 + '%').attr('aria-valuenow',
+						'${avgHealthRate}' * 20);
+				$('#prograssbarCost').css('width', '${avgCostRate}' * 20 + '%')
+						.attr('aria-valuenow', '${avgCostRate}' * 20);
+				$('#prograssbarEase').css('width', '${avgEaseRate}' * 20 + '%')
+						.attr('aria-valuenow', '${avgEaseRate}' * 20);
+				$(".desc").text(overall);
+				if (healthRate != 0) {
+					$("#healthRate").text(healthRate);
+				}
+				if (costRate != 0) {
+					$("#costRate").text(costRate);
+				}
+				if (tasteRate != 0) {
+					$("#tasteRate").text(tasteRate);
+				}
+				if (easeRate != 0) {
+					$("#easeRate").text(easeRate);
+				}
+			});
 
-							}
-							if (healtRate != 0) {
+	$(".dropdown-menu li a").click(
+			function(e) {
+				var selText = $(this).parents('.btn-group').find(
+						'.dropdown-toggle').attr("id");
+				var rate = $(this).text();
+				$(this).parents('.btn-group').find('.dropdown-toggle').html(
+						rate);
+				if (selText == "healthRate") {
+					healtRate = rate;
+				} else if (selText == "costRate") {
+					costRate = rate;
+				} else if (selText == "tasteRate") {
+					tasteRate = rate;
+				} else if (name == "easeRate") {
+					easeRate = rate;
+				}
+			});
 
+	$(document).ready(
+			function() {
+				$.ajax({
+					type : "POST",
+					url : "../recipeComments",
+					data : {
+						recipeId : '${recipe.recipe_id}',
+					}
+				}).done(
+						function(answer) {
+							$("#comments").html("");
+							if (answer == "") {
+								$("#comments").append("<p>No comments :(</p>");
+							} else {
+								var recipes = answer.split('|');
+								for (i = 1; i < recipes.length; i++) {
+									dummy = recipes[i].split('>');
+									$("#comments").append(
+											"<p><b>" + dummy[1] + "</b></p><p>"
+													+ dummy[0] + "</p>");
+								}
 							}
 						});
-		$(".dropdown-menu li a").click(
-				function() {
-					var selText = $(this).text();
-					var newSelText = selText.split(' : ');
-					var name = newSelText[0]
-					var rate = newSelText[1];
-					$(this).parents('.btn-group').find('.dropdown-toggle')
-							.html(rate + ' <span class="caret"></span>');
-					if (name == "Health") {
-						healtRate = rate;
-					} else if (name == "Cost") {
-						costRate = rate;
-					} else if (name == "Taste") {
-						tasteRate = rate;
-					} else if (name == "Ease") {
-						easeRate = rate;
-					}
-				});
-		
-
-		$(document).ready(function (){
-			  $.ajax({
-				  type: "POST",
-				  url: "../recipeComments",
-				  data: {  
-					  recipeId:'${recipe.recipe_id}',
-					  }
-				}) 
-				.done(function(answer) {
-					$( "#comments" ).html("");
-					if(answer == ""){
-						$( "#comments" ).append( "<p>No comments :(</p>" );
-					}else{
-						var recipes = answer.split('|');
-						for (i = 1; i < recipes.length; i++) {
-							dummy = recipes[i].split('>');
-							$( "#comments" ).append( "<p><b>" + dummy[1] + "</b></p><p>" + dummy[0] + "</p>" );
-						}
-					}
-				});
-		});
-	</script>
+			});
+</script>
 </html>
