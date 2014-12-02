@@ -66,6 +66,24 @@ public class RecipeController {
 		return "redirect:/addRecipe";
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/addRecipeREST")
+	public Message addRecipeREST(@RequestParam(value = "recipeName", required = true) String recipeName,
+							@RequestParam(value = "description", required = true) String description,
+							@RequestParam(value = "portion", required = true) int portion,
+							@RequestParam(value = "link", required = true) String link,
+							@RequestParam(value = "ingredient[]", required = true) String[] ingredients,
+							@RequestParam(value = "amount[]", required = true) double[] amounts, 
+							@RequestParam(value = "user", required = true) User u, 
+							@RequestParam(value = "tag[]", required = true) String[] tags,
+			HttpSession session) {
+		Recipe r = recipeService.createRecipe(recipeName, description, portion, link, ingredients, amounts, u, tags);
+		if(r != null){
+			return new Message(1, r, "Your recipe is successfully added to the system.");		
+		}
+		return new Message(0, null, "Your recipe couldn't added to the system.");
+	}
+	
 	@RequestMapping(value = "/recipe/{recipeId}", method = RequestMethod.GET)
 	public String viewRecipe(@PathVariable int recipeId, Model model, HttpSession session){
 		Recipe recipe = recipeService.getRecipe(recipeId);
@@ -210,10 +228,10 @@ public class RecipeController {
 		return recipeService.getSomeIngredients(filter);
 	}
 	
-	@RequestMapping(value = "/recipeComments", method = RequestMethod.POST)
+	@RequestMapping(value = "/recipeComments")
 	@ResponseBody
 	public String recipeComments(
-			int recipeId,
+			@RequestParam(value = "recipeId", required = true) int recipeId,
 			HttpSession session){
 
 		String answer = "";

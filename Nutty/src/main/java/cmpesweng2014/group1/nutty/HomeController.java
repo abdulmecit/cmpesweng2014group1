@@ -184,10 +184,10 @@ public class HomeController {
 		return "redirect:index";
 	}
 	
-	@RequestMapping(value = "/basicsearchrecipe", method = RequestMethod.POST)
+	@RequestMapping(value = "/basicsearchrecipe")
 	@ResponseBody
 	public String basicSearchRecipe(
-			String search,
+			@RequestParam(value = "search", required = true) String search,
 			HttpSession session){
 
 		String answer = "";

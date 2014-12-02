@@ -276,10 +276,10 @@ public class UserController {
 		return msg;	
 	}
 	
-	@RequestMapping(value = "/checkPassword", method = RequestMethod.POST)
+	@RequestMapping(value = "/checkPassword")
 	@ResponseBody
 	public boolean checkPassword(
-			String password,
+			@RequestParam(value = "password", required = true) String password,
 			HttpSession session){
 				
 		if (password.equals("")) {
