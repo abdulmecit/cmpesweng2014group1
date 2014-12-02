@@ -5,26 +5,46 @@ public class SuperRecipe{
 	private Recipe recipe;
 	private IngredientAmount[] ingredientAmounts;
 	private Comment[] comments;
-	private EatLikeRate[] eLikeRs;
+	private String[] commenters;
+	private int[] commentLikes;
+	private int noOfLikes;
+	private int noOfEats;
+	private double avgHealthRate;
+	private double avgCostRate;
+	private double avgTasteRate;
+	private double avgEaseRate;
 	private String photoUrl;
-	private int owner_id;
-	private int parent_recipe_id;
-	private int child_recipe_id;
+	private String owner;
+	private Recipe parent;
+	private Recipe[] children;
+	private Tag[] tags;
 	
 	public SuperRecipe() {
 		super();
 	}
 
-	public SuperRecipe(Recipe recipe, IngredientAmount[] ingredientAmounts, Comment[] comments, EatLikeRate[] eLikeRs, 
-			String photoUrl, int owner_id, int parent_recipe_id, int child_recipe_id){
-		this.setRecipe(recipe);
-		this.setIngredientAmounts(ingredientAmounts);
-		this.setComments(comments);
-		this.seteLikeRs(eLikeRs);
-		this.setPhotoUrl(photoUrl);
-		this.setOwner_id(owner_id);
-		this.setParent_recipe_id(parent_recipe_id);
-		this.setChild_recipe_id(child_recipe_id);
+	public SuperRecipe(Recipe recipe, IngredientAmount[] ingredientAmounts,
+			Comment[] comments, String[] commenters, int[] commentLikes, int noOfLikes,
+			int noOfEats, double avgHealthRate, double avgCostRate,
+			double avgTasteRate, double avgEaseRate, String photoUrl,
+			String owner, Recipe parent, Recipe[] children, Tag[] tags) {
+		super();
+		this.recipe = recipe;
+		this.ingredientAmounts = ingredientAmounts;
+		this.comments = comments;
+		this.commenters = commenters;
+		this.commentLikes = commentLikes;
+		this.noOfLikes = noOfLikes;
+		this.noOfEats = noOfEats;
+		this.avgHealthRate = avgHealthRate;
+		this.avgCostRate = avgCostRate;
+		this.avgTasteRate = avgTasteRate;
+		this.avgEaseRate = avgEaseRate;
+		this.photoUrl = photoUrl;
+		this.owner = owner;
+		this.parent = parent;
+		this.children = children;
+		this.tags = tags;
 	}
 
 	public Recipe getRecipe() {
@@ -51,12 +71,68 @@ public class SuperRecipe{
 		this.comments = comments;
 	}
 
-	public EatLikeRate[] geteLikeRs() {
-		return eLikeRs;
+	public String[] getCommenters() {
+		return commenters;
 	}
 
-	public void seteLikeRs(EatLikeRate[] eLikeRs) {
-		this.eLikeRs = eLikeRs;
+	public void setCommenters(String[] commenters) {
+		this.commenters = commenters;
+	}
+
+	public int[] getCommentLikes() {
+		return commentLikes;
+	}
+
+	public void setCommentLikes(int[] commentLikes) {
+		this.commentLikes = commentLikes;
+	}
+
+	public int getNoOfLikes() {
+		return noOfLikes;
+	}
+
+	public void setNoOfLikes(int noOfLikes) {
+		this.noOfLikes = noOfLikes;
+	}
+
+	public int getNoOfEats() {
+		return noOfEats;
+	}
+
+	public void setNoOfEats(int noOfEats) {
+		this.noOfEats = noOfEats;
+	}
+
+	public double getAvgHealthRate() {
+		return avgHealthRate;
+	}
+
+	public void setAvgHealthRate(double avgHealthRate) {
+		this.avgHealthRate = avgHealthRate;
+	}
+
+	public double getAvgCostRate() {
+		return avgCostRate;
+	}
+
+	public void setAvgCostRate(double avgCostRate) {
+		this.avgCostRate = avgCostRate;
+	}
+
+	public double getAvgTasteRate() {
+		return avgTasteRate;
+	}
+
+	public void setAvgTasteRate(double avgTasteRate) {
+		this.avgTasteRate = avgTasteRate;
+	}
+
+	public double getAvgEaseRate() {
+		return avgEaseRate;
+	}
+
+	public void setAvgEaseRate(double avgEaseRate) {
+		this.avgEaseRate = avgEaseRate;
 	}
 
 	public String getPhotoUrl() {
@@ -67,28 +143,35 @@ public class SuperRecipe{
 		this.photoUrl = photoUrl;
 	}
 
-	public int getOwner_id() {
-		return owner_id;
+	public String getOwner() {
+		return owner;
 	}
 
-	public void setOwner_id(int owner_id) {
-		this.owner_id = owner_id;
+	public void setOwner(String owner) {
+		this.owner = owner;
 	}
 
-	public int getParent_recipe_id() {
-		return parent_recipe_id;
+	public Recipe getParent() {
+		return parent;
 	}
 
-	public void setParent_recipe_id(int parent_recipe_id) {
-		this.parent_recipe_id = parent_recipe_id;
+	public void setParent(Recipe parent) {
+		this.parent = parent;
 	}
 
-	public int getChild_recipe_id() {
-		return child_recipe_id;
+	public Recipe[] getChildren() {
+		return children;
 	}
 
-	public void setChild_recipe_id(int child_recipe_id) {
-		this.child_recipe_id = child_recipe_id;
+	public void setChildren(Recipe[] children) {
+		this.children = children;
 	}
-	
+
+	public Tag[] getTags() {
+		return tags;
+	}
+
+	public void setTags(Tag[] tags) {
+		this.tags = tags;
+	}
 }

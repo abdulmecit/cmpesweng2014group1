@@ -1,7 +1,6 @@
 package cmpesweng2014.group1.nutty.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -21,6 +20,7 @@ import cmpesweng2014.group1.nutty.model.Ingredient;
 import cmpesweng2014.group1.nutty.model.IngredientAmount;
 import cmpesweng2014.group1.nutty.model.Message;
 import cmpesweng2014.group1.nutty.model.Recipe;
+import cmpesweng2014.group1.nutty.model.SuperRecipe;
 import cmpesweng2014.group1.nutty.model.Tag;
 import cmpesweng2014.group1.nutty.model.User;
 import cmpesweng2014.group1.nutty.service.RecipeService;
@@ -117,6 +117,70 @@ public class RecipeController {
 		model.addAttribute("tags", tags);
 		
 		return "Recipe";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/recipeREST/{recipeId}")
+	public SuperRecipe viewRecipeREST(@PathVariable int recipeId, Model model, HttpSession session){
+		
+		SuperRecipe sr = new SuperRecipe();
+		
+		Recipe recipe = recipeService.getRecipe(recipeId);
+		sr.setRecipe(recipe);
+		
+		IngredientAmount[] ingredientAmounts = recipeService.getIngredientAmounts(recipeId);
+		sr.setIngredientAmounts(ingredientAmounts);
+		
+		Comment[] comments = recipeService.getComments(recipeId);
+		sr.setComments(comments);
+
+		if(comments != null){
+			String[] commenters = new String[comments.length];
+			int[] commentLikes = new int[comments.length];
+			for(int i=0; i<comments.length; i++){
+				User u = userService.getUserDao().getUserById(comments[i].getUser_id());
+				commenters[i] = u.getName() + " " + u.getSurname();
+				commentLikes[i] = recipeService.numberOfLikesOfAComment(comments[i]);
+			}
+			sr.setCommenters(commenters);
+			sr.setCommentLikes(commentLikes);
+		}
+		
+		int noOfLikes = recipeService.numberOfLikes(recipeId);
+		sr.setNoOfLikes(noOfLikes);
+		
+		int noOfEats = recipeService.numberOfEats(recipeId);
+		sr.setNoOfEats(noOfEats);
+		
+		double avgHealthRate = recipeService.avgOfHealthRates(recipeId);
+		sr.setAvgHealthRate(avgHealthRate);
+		
+		double avgCostRate = recipeService.avgOfCostRates(recipeId);
+		sr.setAvgCostRate(avgCostRate);
+
+		double avgTasteRate = recipeService.avgOfTasteRates(recipeId);
+		sr.setAvgTasteRate(avgTasteRate);
+
+		double avgEaseRate = recipeService.avgOfEaseRates(recipeId);
+		sr.setAvgEaseRate(avgEaseRate);
+		
+		String photoUrl = recipeService.getRecipePhotoUrl(recipeId);
+		sr.setPhotoUrl(photoUrl);
+		
+		Long ownerId = recipeService.getRecipeOwnerId(recipeId);
+		User u = userService.getUserDao().getUserById(ownerId);
+		sr.setOwner(u.getName() + " " + u.getSurname());
+
+		Recipe parent = recipeService.getParentRecipe(recipe);
+		sr.setParent(parent);
+		
+		Recipe[] children = recipeService.getDerivedRecipes(recipe);
+		sr.setChildren(children);
+
+		Tag[] tags=recipeService.getAllTags(recipeId);
+		sr.setTags(tags);
+		
+		return sr;
 	}
 	
 	@ResponseBody
