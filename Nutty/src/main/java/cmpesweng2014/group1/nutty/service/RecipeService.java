@@ -68,7 +68,8 @@ public class RecipeService {
 		recipeDao.addOwner(recipe_id, user.getId());			
 		
 		//Add photoUrl
-		recipeDao.addPhotoUrl(photo_url, recipe_id);
+		if(photo_url != null)
+			recipeDao.addPhotoUrl(photo_url, recipe_id);
 		
 		return recipeDao.getRecipeById(recipe_id);	
 	}	
@@ -237,6 +238,13 @@ public class RecipeService {
 	public int getEaseRateForUser(int recipe_id, long user_id){
 		return recipeDao.getRatesForUser("ease_rate", recipe_id, user_id);
 	}
-
+	//get like status of the given user for the given recipe
+		public int getLikeForUser(int recipe_id, long user_id){
+			return recipeDao.getRatesForUser("likes", recipe_id, user_id);
+	}
+	//get eaten status of the given user for the given recipe
+		public int getEatenForUser(int recipe_id, long user_id){
+			return recipeDao.getRatesForUser("eats", recipe_id, user_id);
+	}
 	
 }

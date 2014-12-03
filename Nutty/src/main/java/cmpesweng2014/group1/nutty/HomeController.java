@@ -84,8 +84,7 @@ public class HomeController {
 	@RequestMapping(value = "/loginREST")
 	public Message loginREST(
 			@RequestParam(value = "inputEmail", required = true) String email,
-			@RequestParam(value = "inputPassword", required = true) String password,
-			HttpSession session) {
+			@RequestParam(value = "inputPassword", required = true) String password) {
 		if (email.equals("") || password.equals("")) {
 			return new Message(0, null, "Email and password fields cannot be empty!"); 
 		}
@@ -151,8 +150,7 @@ public class HomeController {
 			@RequestParam(value = "birthday_year", required = false) String year,
 			@RequestParam(value = "birthday_month", required = false) String month,
 			@RequestParam(value = "birthday_day", required = false) String day,
-			@RequestParam(value = "gender", required = false) Integer gender,
-			HttpSession session) throws ParseException {
+			@RequestParam(value = "gender", required = false) Integer gender) throws ParseException {
 						
 		if (name.equals("") || surname.equals("") || email.equals("") || password.equals("")) {
 			return new Message(0, null, "Name, surname, email and password fields cannot be empty!");
@@ -187,8 +185,7 @@ public class HomeController {
 	@RequestMapping(value = "/basicsearchrecipe")
 	@ResponseBody
 	public String basicSearchRecipe(
-			@RequestParam(value = "search", required = true) String search,
-			HttpSession session){
+			@RequestParam(value = "search", required = true) String search){
 
 		String answer = "";
 		List<Recipe> recipes = recipeService.getRecipeDao().searchRecipeByName(search);

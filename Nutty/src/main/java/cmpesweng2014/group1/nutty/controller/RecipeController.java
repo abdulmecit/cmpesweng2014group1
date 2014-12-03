@@ -75,8 +75,7 @@ public class RecipeController {
 							@RequestParam(value = "ingredient[]", required = true) String[] ingredients,
 							@RequestParam(value = "amount[]", required = true) double[] amounts, 
 							@RequestParam(value = "user", required = true) User u, 
-							@RequestParam(value = "tag[]", required = true) String[] tags,
-			HttpSession session) {
+							@RequestParam(value = "tag[]", required = true) String[] tags) {
 		Recipe r = recipeService.createRecipe(recipeName, description, portion, link, ingredients, amounts, u, tags);
 		if(r != null){
 			return new Message(1, r, "Your recipe is successfully added to the system.");		
@@ -89,19 +88,22 @@ public class RecipeController {
 		Recipe recipe = recipeService.getRecipe(recipeId);
 		model.addAttribute("recipe", recipe);
 		
-		User u = (User) session.getAttribute("user");
-		long user_id=u.getId();
-		
 		IngredientAmount[] ingredientAmounts = recipeService.getIngredientAmounts(recipeId);
 		model.addAttribute("ingredientAmounts", ingredientAmounts);
 		
 		Comment[] comments = recipeService.getComments(recipeId);
+		model.addAttribute("comments", comments);
+	
 		if(comments != null){
-			Map<Comment, Integer> commentsAndLikes = new HashMap<Comment, Integer>();
+			String[] commenters = new String[comments.length];
+			int[] commentLikes = new int[comments.length];
 			for(int i=0; i<comments.length; i++){
-				commentsAndLikes.put(comments[i], recipeService.numberOfLikesOfAComment(comments[i]));
+				User u = userService.getUserDao().getUserById(comments[i].getUser_id());
+				commenters[i] = u.getName() + " " + u.getSurname();
+				commentLikes[i] = recipeService.numberOfLikesOfAComment(comments[i]);
 			}
-			model.addAttribute("commentsAndLikes", commentsAndLikes);
+			model.addAttribute("commenters", commenters);
+			model.addAttribute("commentLikes", commentLikes);
 		}
 		
 		int noOfLikes = recipeService.numberOfLikes(recipeId);
@@ -137,23 +139,41 @@ public class RecipeController {
 		int numOfCostRate=recipeService.voterCountCost(recipeId);
 		model.addAttribute("numOfCostRate", numOfCostRate);
 		
-		int healthRateOfUser=recipeService.getHealthRateForUser(recipeId, user_id);
-		model.addAttribute("healthRateOfUser", healthRateOfUser);
+		Object logged = session.getAttribute("isLogged");
+		boolean isLogged = logged == null ? false : (Boolean) logged;
 		
-		int costRateOfUser=recipeService.getCostRateForUser(recipeId, user_id);
-		model.addAttribute("costRateOfUser", costRateOfUser);
-		
-		int tasteRateOfUser=recipeService.getTasteRateForUser(recipeId, user_id);
-		model.addAttribute("tasteRateOfUser", tasteRateOfUser);
-		
-		int easeRateOfUser=recipeService.getEaseRateForUser(recipeId, user_id);
-		model.addAttribute("easeRateOfUser", easeRateOfUser);
+		if(isLogged){	
+			
+			User u = (User) session.getAttribute("user");
+			long user_id=u.getId();
+			
+			int healthRateOfUser=recipeService.getHealthRateForUser(recipeId, user_id);
+			model.addAttribute("healthRateOfUser", healthRateOfUser);
+			
+			int costRateOfUser=recipeService.getCostRateForUser(recipeId, user_id);
+			model.addAttribute("costRateOfUser", costRateOfUser);
+			
+			int tasteRateOfUser=recipeService.getTasteRateForUser(recipeId, user_id);
+			model.addAttribute("tasteRateOfUser", tasteRateOfUser);
+			
+			int easeRateOfUser=recipeService.getEaseRateForUser(recipeId, user_id);
+			model.addAttribute("easeRateOfUser", easeRateOfUser);
+			
+			int likeOfUser=recipeService.getLikeForUser(recipeId, user_id);
+			model.addAttribute("likeOfUser", likeOfUser);
+			
+			int eatenOfUser=recipeService.getEatenForUser(recipeId, user_id);
+			model.addAttribute("eatenOfUser", eatenOfUser);	
+		}
 		
 		String photoUrl = recipeService.getRecipePhotoUrl(recipeId);
 		model.addAttribute("photoUrl", photoUrl);
 		
 		Long ownerId = recipeService.getRecipeOwnerId(recipeId);
 		model.addAttribute("ownerId", ownerId);
+		
+		User recipe_owner = userService.getUserDao().getUserById(ownerId);
+		model.addAttribute("ownerName", recipe_owner.getName() + " " + recipe_owner.getSurname());
 
 		Recipe parent = recipeService.getParentRecipe(recipe);
 		model.addAttribute("parent", parent);
@@ -169,7 +189,7 @@ public class RecipeController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/recipeREST/{recipeId}")
-	public SuperRecipe viewRecipeREST(@PathVariable int recipeId, Model model, HttpSession session){
+	public SuperRecipe viewRecipeREST(@PathVariable int recipeId){
 		
 		SuperRecipe sr = new SuperRecipe();
 		
@@ -232,15 +252,42 @@ public class RecipeController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(value = "/elrOfUser")
+	public Map<String,Integer> elrOfUser(@RequestParam(value = "recipeId", required = true) int recipeId, 
+			@RequestParam(value = "user_id", required = true) long user_id){
+		
+		Map<String, Integer> elr = new HashMap<String, Integer>();		
+
+		int healthRateOfUser=recipeService.getHealthRateForUser(recipeId, user_id);
+		elr.put("healthRateOfUser", healthRateOfUser);
+		
+		int costRateOfUser=recipeService.getCostRateForUser(recipeId, user_id);
+		elr.put("costRateOfUser", costRateOfUser);
+		
+		int tasteRateOfUser=recipeService.getTasteRateForUser(recipeId, user_id);
+		elr.put("tasteRateOfUser", tasteRateOfUser);
+		
+		int easeRateOfUser=recipeService.getEaseRateForUser(recipeId, user_id);
+		elr.put("easeRateOfUser", easeRateOfUser);
+		
+		int likeOfUser=recipeService.getLikeForUser(recipeId, user_id);
+		elr.put("likeOfUser", likeOfUser);
+		
+		int eatenOfUser=recipeService.getEatenForUser(recipeId, user_id);
+		elr.put("eatenOfUser", eatenOfUser);
+		
+		return elr;
+	}
+	
+	@ResponseBody
 	@RequestMapping(value = "/allIngredients")
-	public Ingredient[] allIngredients(HttpSession session) {
+	public Ingredient[] allIngredients() {
 		return recipeService.getAllIngredients();
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/someIngredients")
-	public Map<Integer, String> someIngredients(@RequestParam(value = "filter", required = true) String filter, 
-			HttpSession session) {
+	public Map<Integer, String> someIngredients(@RequestParam(value = "filter", required = true) String filter) {
 		Ingredient[] ingr = recipeService.getSomeIngredients(filter);
 		if(ingr != null){
 			Map<Integer, String> result = new HashMap<Integer, String>();
@@ -253,16 +300,14 @@ public class RecipeController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/someIngredients2")
-	public Ingredient[] someIngredients2(@RequestParam(value = "filter", required = true) String filter,
-			HttpSession session) {
+	public Ingredient[] someIngredients2(@RequestParam(value = "filter", required = true) String filter) {
 		return recipeService.getSomeIngredients(filter);
 	}
 	
 	@RequestMapping(value = "/recipeComments")
 	@ResponseBody
 	public String recipeComments(
-			@RequestParam(value = "recipeId", required = true) int recipeId,
-			HttpSession session){
+			@RequestParam(value = "recipeId", required = true) int recipeId){
 
 		String answer = "";
 		

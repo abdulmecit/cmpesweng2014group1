@@ -227,6 +227,7 @@ public class RecipeDao extends PcDao{
 				new Object[] {recipe_id,user_id}, Integer.class);
 		return rate;		
 	}
+	
 	public int getVoterCountForRate(String property, int recipe_id){
 		int voterCount=this.getTemplate().queryForObject(
 				"SELECT COUNT(*) FROM EatLikeRate WHERE recipe_id = ? AND "+property+"> 0", 

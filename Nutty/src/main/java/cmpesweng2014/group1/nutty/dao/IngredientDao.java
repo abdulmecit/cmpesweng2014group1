@@ -50,7 +50,7 @@ public class IngredientDao extends PcDao{
 	}
 	public Ingredient[] someIngredients(String filter) {
 		List<Ingredient> ingredientList = this.getTemplate().query(
-				"SELECT Shrt_Desc as ing_name, Energ_Kcal as calorie, NDB_No as id FROM ingredients WHERE Shrt_Desc LIKE \"%" + filter + "%\"",
+				"SELECT Shrt_Desc as ing_name, Energ_Kcal as calorie, NDB_No as id FROM ingredients WHERE Shrt_Desc LIKE \"%" + filter.toUpperCase() + "%\"",
 				new Object[] {}, new IngredientRowMapper());
 	
 		if (ingredientList.isEmpty()) {

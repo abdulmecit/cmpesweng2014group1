@@ -179,8 +179,8 @@ public class UserController {
 			@RequestParam(value = "birthday_year", required = false) String year,
 			@RequestParam(value = "birthday_month", required = false) String month,
 			@RequestParam(value = "birthday_day", required = false) String day,
-			@RequestParam(value = "gender", required = false) Integer gender,
-			HttpSession session) throws ParseException {
+			@RequestParam(value = "gender", required = false) Integer gender, 
+			@RequestParam(value = "user", required = true) User u) throws ParseException {
 		
 		Message msg = new Message();
 
@@ -191,7 +191,6 @@ public class UserController {
 				return msg;
 			}
 
-			User u = (User) session.getAttribute("user");
 			u.setName(name);
 			userService.getUserDao().updateUser(u);
 			msg.setIsSuccess(1);
@@ -205,7 +204,6 @@ public class UserController {
 				return msg;
 			}
 					
-			User u = (User) session.getAttribute("user");
 			u.setSurname(surname);
 			userService.getUserDao().updateUser(u);
 			msg.setIsSuccess(1);
@@ -219,7 +217,6 @@ public class UserController {
 				return msg;
 			}
 					
-			User u = (User) session.getAttribute("user");
 			u.setEmail(email);
 			userService.getUserDao().updateUser(u);
 			msg.setIsSuccess(1);
@@ -234,7 +231,6 @@ public class UserController {
 			}
 
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-			User u = (User) session.getAttribute("user");
 			u.setPassword(encoder.encode(password));
 			userService.getUserDao().updateUser(u);
 			msg.setIsSuccess(1);
@@ -252,7 +248,6 @@ public class UserController {
 			java.util.Date birthdate = formatter.parse(year + "-" + month + "-" + day);
 			java.sql.Date birthday = new java.sql.Date(birthdate.getTime());
 							
-			User u = (User) session.getAttribute("user");
 			u.setBirthday(birthday);
 			userService.getUserDao().updateUser(u);
 			msg.setIsSuccess(1);
@@ -260,7 +255,6 @@ public class UserController {
 			msg.setMessage("You've successfully changed your birthday to " + u.getBirthday());
 			
 		}else if (changed.equals("gender")){
-			User u = (User) session.getAttribute("user");
 			u.setGender(gender);
 			userService.getUserDao().updateUser(u);
 			msg.setIsSuccess(1);
@@ -287,6 +281,25 @@ public class UserController {
 		}
 				
 		User u = (User) session.getAttribute("user");
+		String realPassword = u.getPassword();
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		if(encoder.matches(password, realPassword)){
+			return true;
+		}else{
+			return false;
+		}	
+	}
+	
+	@RequestMapping(value = "/checkPasswordREST")
+	@ResponseBody
+	public boolean checkPassword(
+			@RequestParam(value = "password", required = true) String password,
+			@RequestParam(value = "user", required = true) User u){
+				
+		if (password.equals("")) {
+			return false;
+		}
+				
 		String realPassword = u.getPassword();
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		if(encoder.matches(password, realPassword)){
