@@ -234,12 +234,14 @@ body {
 				<button type="button" class="btn btn-primary" value="Eat" id="Eat"
 					style="float: right; margin-right: 15 px; margin-top: 18px;">
 					<span id="textEat" class="ui-button-text">Eat &nbsp </span>
-					<!-- caret for arrow. ui-button-text for button text -->
+					<span id="eatCheck" class="glyphicon glyphicon-check" style="visibility: hidden;"></span>
+					<!-- caret for arrow. ui-button-text for button text visible; -->
 				</button>
 
 				<button type="button" class="btn btn-primary" value="Like" id="Like"
 					style="float: right; margin-right: 15 px; margin-top: 18px;">
 					<span id="textLike" class="ui-button-text">Like &nbsp</span>
+					<span id="likeCheck" class="glyphicon glyphicon-check" style="visibility: hidden;"></span>
 					<!-- caret for arrow. ui-button-text for button text -->
 				</button>
 
@@ -598,6 +600,18 @@ body {
 						if (easeRate != 0) {
 							$("#easeRate").text(easeRate);
 						}
+						// if liked 'check' is visible
+						if (liked == 1) {
+							$("#likeCheck").css('visibility','visible');  
+						} else {
+							$("#likeCheck").css('visibility','hidden');
+						}
+						// if eat 'check' is visible
+						if (liked == 1) {
+							$("#likeCheck").css('visibility','visible');  
+						} else {
+							$("#likeCheck").css('visibility','hidden');
+						}	
 					});
 
 	$(".dropdown-menu li a").click(
@@ -621,11 +635,10 @@ body {
 	$("#Like").click(
 			function(e) {
 				if (liked == 0) {
-					$("<span class='glyphicon glyphicon-check'></span>")
-							.insertAfter("#textLike");
+					$("#likeCheck").css('visibility','visible');  
 					liked = 1;
 				} else {
-					$("#Like").text("Like")
+					$("#likeCheck").css('visibility','hidden');
 					liked = 0;
 				}
 			});
@@ -633,16 +646,12 @@ body {
 	$("#Eat").click(
 			function(e) {
 				if (eaten == 0) {
-					$("<span class='glyphicon glyphicon-check'></span>")
-							.insertAfter("#textEat");
+					$("#eatCheck").css('visibility','visible'); 
 					eaten = 1;
 				} else {
-					$("<span class='glyphicon glyphicon-check'></span>")
-							.insertAfter("#textEat");
-					$("#Eat").text("Eat")
+					$("#eatCheck").css('visibility','hidden');
 					eaten=0;
 				}
-
 			});
 
 	$(document).ready(
