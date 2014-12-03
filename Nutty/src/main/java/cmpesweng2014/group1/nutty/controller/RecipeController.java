@@ -89,6 +89,9 @@ public class RecipeController {
 		Recipe recipe = recipeService.getRecipe(recipeId);
 		model.addAttribute("recipe", recipe);
 		
+		User u = (User) session.getAttribute("user");
+		long user_id=u.getId();
+		
 		IngredientAmount[] ingredientAmounts = recipeService.getIngredientAmounts(recipeId);
 		model.addAttribute("ingredientAmounts", ingredientAmounts);
 		
@@ -118,6 +121,33 @@ public class RecipeController {
 
 		double avgEaseRate = recipeService.avgOfEaseRates(recipeId);
 		model.addAttribute("avgEaseRate", avgEaseRate);
+		
+		double avgOverall=recipeService.avgOfAllRates(recipeId);
+		model.addAttribute("avgOverall", avgOverall);
+		
+		int numOfHealthRate=recipeService.voterCountHealth(recipeId);
+		model.addAttribute("numOfHealthRate", numOfHealthRate);
+		
+		int numOfTasteRate=recipeService.voterCountTaste(recipeId);
+		model.addAttribute("numOfTasteRate", numOfTasteRate);
+		
+		int numOfEaseRate=recipeService.voterCountEase(recipeId);
+		model.addAttribute("numOfEaseRate", numOfEaseRate);
+		
+		int numOfCostRate=recipeService.voterCountCost(recipeId);
+		model.addAttribute("numOfCostRate", numOfCostRate);
+		
+		int healthRateOfUser=recipeService.getHealthRateForUser(recipeId, user_id);
+		model.addAttribute("healthRateOfUser", healthRateOfUser);
+		
+		int costRateOfUser=recipeService.getCostRateForUser(recipeId, user_id);
+		model.addAttribute("costRateOfUser", costRateOfUser);
+		
+		int tasteRateOfUser=recipeService.getTasteRateForUser(recipeId, user_id);
+		model.addAttribute("tasteRateOfUser", tasteRateOfUser);
+		
+		int easeRateOfUser=recipeService.getEaseRateForUser(recipeId, user_id);
+		model.addAttribute("easeRateOfUser", easeRateOfUser);
 		
 		String photoUrl = recipeService.getRecipePhotoUrl(recipeId);
 		model.addAttribute("photoUrl", photoUrl);

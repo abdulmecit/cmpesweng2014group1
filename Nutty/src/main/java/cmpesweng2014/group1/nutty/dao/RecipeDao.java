@@ -221,6 +221,19 @@ public class RecipeDao extends PcDao{
 			return (double)total / voterCount;
 		}
 	}
+	public int getRatesForUser(String property,int recipe_id,long user_id){
+		int rate=this.getTemplate().queryForObject(
+				"SELECT "+property+" FROM EatLikeRate WHERE recipe_id = ? AND user_id = ?", 
+				new Object[] {recipe_id,user_id}, Integer.class);
+		return rate;		
+	}
+	public int getVoterCountForRate(String property, int recipe_id){
+		int voterCount=this.getTemplate().queryForObject(
+				"SELECT COUNT(*) FROM EatLikeRate WHERE recipe_id = ? AND "+property+"> 0", 
+				new Object[] {recipe_id}, Integer.class);
+		return voterCount;
+				
+	}
 	
 	public String getPhotoUrl(int recipe_id){
 		

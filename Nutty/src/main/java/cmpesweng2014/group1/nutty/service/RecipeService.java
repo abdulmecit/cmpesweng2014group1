@@ -161,6 +161,30 @@ public class RecipeService {
 	public double avgOfEaseRates(int recipe_id){
 		return recipeDao.getAvgRateStatistic("ease_rate", recipe_id);
 	}
+	//returns total average rating for this recipe
+	public double avgOfAllRates(int recipe_id){
+		double total=recipeDao.getAvgRateStatistic("ease_rate", recipe_id)+
+				recipeDao.getAvgRateStatistic("taste_rate", recipe_id)+
+				recipeDao.getAvgRateStatistic("cost_rate", recipe_id)+
+				recipeDao.getAvgRateStatistic("health_rate", recipe_id);
+		return total/4;
+	}
+	//return voter count for health rate
+	public int voterCountHealth(int recipe_id){
+		return recipeDao.getVoterCountForRate("health_rate", recipe_id);
+	}
+	//return voter count for cost rate
+	public int voterCountCost(int recipe_id){
+		return recipeDao.getVoterCountForRate("cost_rate", recipe_id);
+	}
+	//return voter count for taste rate
+	public int voterCountTaste(int recipe_id){
+		return recipeDao.getVoterCountForRate("taste_rate", recipe_id);
+	}
+	//return voter count for ease rate
+	public int voterCountEase(int recipe_id){
+		return recipeDao.getVoterCountForRate("ease_rate", recipe_id);
+	}
 	//returns url of the recipe photo
 	public String getRecipePhotoUrl(int recipe_id){
 		return recipeDao.getPhotoUrl(recipe_id);
@@ -197,5 +221,22 @@ public class RecipeService {
 	public Tag[] getAllTags(int recipe_id){
 		return recipeDao.getAllTags(recipe_id);
 	}
+	//get health rate of the given user for the given recipe
+	public int getHealthRateForUser(int recipe_id, long user_id){
+		return recipeDao.getRatesForUser("health_rate", recipe_id, user_id);
+	}
+	//get taste rate of the given user for the given recipe
+	public int getTasteRateForUser(int recipe_id, long user_id){
+		return recipeDao.getRatesForUser("taste_rate", recipe_id, user_id);
+	}
+	//get cost rate of the given user for the given recipe
+	public int getCostRateForUser(int recipe_id, long user_id){
+		return recipeDao.getRatesForUser("cost_rate", recipe_id, user_id);
+	}
+	//get ease rate of the given user for the given recipe
+	public int getEaseRateForUser(int recipe_id, long user_id){
+		return recipeDao.getRatesForUser("ease_rate", recipe_id, user_id);
+	}
+
 	
 }
