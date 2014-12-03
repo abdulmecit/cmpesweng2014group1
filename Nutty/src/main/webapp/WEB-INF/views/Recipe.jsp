@@ -1,3 +1,5 @@
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1" import="java.sql.*"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -17,14 +19,6 @@
 	rel="stylesheet">
 <script
 	src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-<link
-	href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css"
-	rel="stylesheet">
-<link href="path/to/css/star-rating.min.css" media="all"
-	rel="stylesheet" type="text/css" />
-<script
-	src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="path/to/js/star-rating.min.js" type="text/javascript"></script>
 
 <!-- Add custom CSS here -->
 <style type="text/css">
@@ -236,15 +230,23 @@ body {
 						src="https://dl.dropboxusercontent.com/u/45511253/one-star.png" />
 					<h3 class="desc"></h3>
 				</div>
-				<input type="button" value="Like" class="btn btn-primary"
-					style="float: right; margin-right: 3 px; margin-top: 18px;">
 
-				<input type="button" value="Eat" class="btn btn-primary"
-					style="float: right; margin-left: 10px; margin-right: 10px; margin-top: 18px">
+				<button type="button" class="btn btn-primary" value="Eat" id="Eat"
+					style="float: right; margin-right: 15 px; margin-top: 18px;">
+					<span id="textEat" class="ui-button-text">Eat &nbsp </span>
+					<!-- caret for arrow. ui-button-text for button text -->
+				</button>
+
+				<button type="button" class="btn btn-primary" value="Like" id="Like"
+					style="float: right; margin-right: 15 px; margin-top: 18px;">
+					<span id="textLike" class="ui-button-text">Like &nbsp</span>
+					<!-- caret for arrow. ui-button-text for button text -->
+				</button>
 
 				<h2 class="panel-title pull-center"
 					style="margin-top: 25px; font-size: 24px">
-					${recipe.name} <small><em>by Chef ${ownerId}</em></small>
+					${recipe.name} <small><em>by <a href="profile.jsp">Chef
+								${ownerName}</a></em></small>
 				</h2>
 			</div>
 			<div class="panel-body">
@@ -331,117 +333,147 @@ body {
 						</ul>
 					</div>
 					<div class="col-sm-6 col-centered">
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<div class="row">
+									<!----------------------- Rate Buttons ----------------------------->
+									<div class="btn-group btn-info "
+										style="margin: 0px 5px 25px 22px;">
+										<button type="button" class="btn btn-info btn-lg">Health</button>
+										<button type="button"
+											class="btn dropdown-toggle btn-lg btn-info" id="healthRate"
+											data-toggle="dropdown" aria-expanded="false">
+											<span class="ui-button-text"></span> <span class="caret"></span>
+											<!-- caret for arrow. ui-button-text for button text -->
+										</button>
+										<ul class="dropdown-menu" role="menu">
+											<li><a href="#">5</a></li>
+											<li><a href="#">4</a></li>
+											<li><a href="#">3</a></li>
+											<li><a href="#">2</a></li>
+											<li><a href="#">1</a></li>
+										</ul>
+									</div>
 
-						<div class="row">
-							<!----------------------- Rate Buttons ----------------------------->
-							<div class="btn-group btn-info "
-								style="margin: 20px 5px 5px 5px;">
-								<button type="button" class="btn btn-info btn-lg">Health</button>
-								<button type="button"
-									class="btn dropdown-toggle btn-lg btn-info" id="healthRate"
-									data-toggle="dropdown" aria-expanded="false">
-									<span class="ui-button-text"></span> <span class="caret"></span>
-									<!-- caret for arrow. ui-button-text for button text -->
-								</button>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="#">5</a></li>
-									<li><a href="#">4</a></li>
-									<li><a href="#">3</a></li>
-									<li><a href="#">2</a></li>
-									<li><a href="#">1</a></li>
-								</ul>
-							</div>
+									<div class="btn-group btn-danger"
+										style="margin: 0px 5px 25px 5px;">
+										<button type="button" class="btn btn-danger btn-lg">Cost</button>
+										<button type="button"
+											class="btn dropdown-toggle btn-lg btn-danger" id="costRate"
+											data-toggle="dropdown" aria-expanded="false">
+											<span class="caret"></span> <span class="ui-button-text"></span>
+											<!-- caret for arrow. ui-button-text for button text -->
+										</button>
+										<ul class="dropdown-menu" role="menu">
+											<li><a href="#">5</a></li>
+											<li><a href="#">4</a></li>
+											<li><a href="#">3</a></li>
+											<li><a href="#">2</a></li>
+											<li><a href="#">1</a></li>
+										</ul>
+									</div>
 
-							<div class="btn-group btn-danger"
-								style="margin: 20px 5px 5px 5px;">
-								<button type="button" class="btn btn-danger btn-lg">Cost</button>
-								<button type="button"
-									class="btn dropdown-toggle btn-lg btn-danger" id="costRate"
-									data-toggle="dropdown" aria-expanded="false">
-									<span class="caret"></span> <span class="ui-button-text"></span>
-									<!-- caret for arrow. ui-button-text for button text -->
-								</button>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="#">5</a></li>
-									<li><a href="#">4</a></li>
-									<li><a href="#">3</a></li>
-									<li><a href="#">2</a></li>
-									<li><a href="#">1</a></li>
-								</ul>
-							</div>
+									<div class="btn-group btn-warning"
+										style="margin: 0px 5px 25px 5px;">
+										<button type="button" class="btn btn-warning btn-lg">Taste</button>
+										<button type="button"
+											class="btn dropdown-toggle btn-lg btn-warning" id="tasteRate"
+											data-toggle="dropdown" aria-expanded="false">
+											<span class="caret"></span> <span class="ui-button-text"></span>
+											<!-- caret for arrow. ui-button-text for button text -->
+										</button>
+										<ul class="dropdown-menu" role="menu">
+											<li><a href="#">5</a></li>
+											<li><a href="#">4</a></li>
+											<li><a href="#">3</a></li>
+											<li><a href="#">2</a></li>
+											<li><a href="#">1</a></li>
+										</ul>
+									</div>
 
-							<div class="btn-group btn-warning"
-								style="margin: 20px 5px 5px 5px;">
-								<button type="button" class="btn btn-warning btn-lg">Taste</button>
-								<button type="button"
-									class="btn dropdown-toggle btn-lg btn-warning" id="tasteRate"
-									data-toggle="dropdown" aria-expanded="false">
-									<span class="caret"></span> <span class="ui-button-text"></span>
-									<!-- caret for arrow. ui-button-text for button text -->
-								</button>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="#">5</a></li>
-									<li><a href="#">4</a></li>
-									<li><a href="#">3</a></li>
-									<li><a href="#">2</a></li>
-									<li><a href="#">1</a></li>
-								</ul>
-							</div>
+									<div class="btn-group btn-success"
+										style="margin: 0px 22px 25px 5px;">
+										<button type="button" class="btn btn-success btn-lg">Ease</button>
+										<button type="button"
+											class="btn dropdown-toggle btn-lg btn-success" id="easeRate"
+											data-toggle="dropdown" aria-expanded="false">
+											<span class="ui-button-text"></span> <span class="caret"></span>
+											<!-- caret for arrow. ui-button-text for button text -->
+										</button>
+										<ul class="dropdown-menu" role="menu">
+											<li><a href="#">5</a></li>
+											<li><a href="#">4</a></li>
+											<li><a href="#">3</a></li>
+											<li><a href="#">2</a></li>
+											<li><a href="#">1</a></li>
+										</ul>
+									</div>
+								</div>
+								<!----------------------- End of Rate Buttons ----------------------------->
+								<div class="row ">
+									<div class="col-sm-6">
+										<div class="col-sm-9">
+											<br>
+											<div id="rate"
+												style="width: 100%; height: 100%; margin-up: auto; margin-down: auto; overflow: hidden;">
 
-							<div class="btn-group btn-success"
-								style="margin: 20px 5px 5px 5px;">
-								<button type="button" class="btn btn-success btn-lg">Ease</button>
-								<button type="button"
-									class="btn dropdown-toggle btn-lg btn-success" id="easeRate"
-									data-toggle="dropdown" aria-expanded="false">
-									<span class="ui-button-text"></span> <span class="caret"></span>
-									<!-- caret for arrow. ui-button-text for button text -->
-								</button>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="#">5</a></li>
-									<li><a href="#">4</a></li>
-									<li><a href="#">3</a></li>
-									<li><a href="#">2</a></li>
-									<li><a href="#">1</a></li>
-								</ul>
-							</div>
-							<!----------------------- End of Rate Buttons ----------------------------->
-						</div>
-						<div class="row">
-							<div class="panel panel-default"
-								style="margin-right: 10px; margin-top: 10px;">
-								<div class="panel-body" style="height: 200px">
-									<div class="col-sm-6 col-centered">
-										<div class="progress">
-											<div class="progress-bar progress-bar-warning"
-												id="prograssbarTaste" role="progressbar" aria-valuenow="0"
-												aria-valuemin="0" aria-valuemax="100">${avgTasteRate}
+												<div class="progress">
+													<div class="progress-bar progress-bar-warning"
+														id="prograssbarTaste" role="progressbar" aria-valuenow="0"
+														aria-valuemin="0" aria-valuemax="100"></div>
+												</div>
+
+												<div class="progress">
+													<div class="progress-bar progress-bar-info"
+														id="prograssbarHealth" role="progressbar"
+														aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+														style="width: 40%"></div>
+												</div>
+												<div class="progress">
+													<div class="progress-bar progress-bar-danger"
+														id="prograssbarCost" role="progressbar" aria-valuenow="0"
+														aria-valuemin="0" aria-valuemax="100"></div>
+												</div>
+
+												<div class="progress">
+													<div class="progress-bar progress-bar-success"
+														id="prograssbarEase" role="progressbar" aria-valuenow="0"
+														aria-valuemin="0" aria-valuemax="100"></div>
+												</div>
 											</div>
 										</div>
-										<div class="progress">
-											<div class="progress-bar progress-bar-info"
-												id="prograssbarHealth" role="progressbar" aria-valuenow="0"
-												aria-valuemin="0" aria-valuemax="100" style="width: 40%">${avgHealthRate}</div>
-										</div>
-										<div class="progress">
-											<div class="progress-bar progress-bar-danger"
-												id="prograssbarCost" role="progressbar" aria-valuenow="0"
-												aria-valuemin="0" aria-valuemax="100">${avgCostRate}</div>
+										<div class="col-sm-3">
+											<h5 style="margin-top: 12px; text-align: left;">${numOfTasteRate}
+												users</h5>
+											<h5 style="margin-top: 12px; text-align: left;">${numOfHealthRate}
+												users</h5>
+											<h5 style="margin-top: 12px; text-align: left;">${numOfCostRate}
+												users</h5>
+											<h5 style="margin-top: 12px; text-align: left;">${numOfEaseRate}
+												users</h5>
+
 										</div>
 
-										<div class="progress">
-											<div class="progress-bar progress-bar-success"
-												id="prograssbarEase" role="progressbar" aria-valuenow="0"
-												aria-valuemin="0" aria-valuemax="100">${avgEaseRate}</div>
-										</div>
 									</div>
-									<div class="col-sm-6">
-										<h5>Portion: ${recipe.portion}</h5>
-										<h5>Total Calories: ${recipe.total_calorie}</h5>
-										<h5>Likes: ${noOfLikes}</h5>
-										<h5>Eaten: ${noOfEats}</h5>
-										<h5>Created On: ${recipe.createdDate}</h5>
-										<h5>Last Updated On: ${recipe.updatedDate}</h5>
+									<div class="col-sm-1"></div>
+									<div class="col-sm-5" style="margin: auto;">
+										<h5 style="margin-top: 20px;">
+											<b>Likes: </b> ${noOfLikes} &nbsp&nbsp Eaten: ${noOfEats}
+										</h5>
+										<h5>
+											<b>Created On:</b> ${recipe.createdDate}
+										</h5>
+										<h5>
+											<b>Last Updated On:</b> ${recipe.updatedDate}
+										</h5>
+										<h5>
+											<b>Tags:</b>
+
+											<c:forEach var="tag" items="${tags}">
+												<li><a href=""> ${tag.tag_name}</a></li>
+											</c:forEach>
+
+										</h5>
 									</div>
 								</div>
 							</div>
@@ -479,13 +511,14 @@ body {
 
 					<div class="col-sm-8">
 						<div id="info-wrap">
-							<!--<p>&nbsp;</p> </div> -->
 							<div id=recipeDetail>
+								<h3>Portion:${recipe.portion} &nbsp&nbsp Total
+									Calories:${recipe.total_calorie}</h3>
 								<h3>Ingredients</h3>
 								<c:forEach var="ingredientAmount" items="${ingredientAmounts}">
-   										Amount: <c:out value="${ingredientAmount.amount}" />
-   										Name: <c:out value="${ingredientAmount.ing_name}" />
-									<br>
+									<p>${ingredientAmount.amount}&nbsp&nbsp&nbsp
+										${ingredientAmount.ing_name}</p>
+
 								</c:forEach>
 							</div>
 
@@ -504,9 +537,9 @@ body {
 							<input type="button" value="Comment" class="btn btn-primary"
 								onClick="addInput('dynamicInput');" style="float: right;">
 						</div>
-						<div class="panel-body">
+						<ul class="list-group">
 							<div id="comments"></div>
-						</div>
+						</ul>
 					</div>
 				</div>
 			</div>
@@ -517,38 +550,55 @@ body {
 
 
 <script type="text/javascript">
-	var healthRate = '${avgHealthRate}';
-	var costRate = '${avgCostRate}';
-	var tasteRate = '${avgTasteRate}';
-	var easeRate = '${avgEaseRate}';
-	var overall = '${avgOverall}';
+	var healthRate = '${healthRateOfUser}';
+	var costRate = '${costRateOfUser}';
+	var tasteRate = '${tasteRateOfUser}';
+	var easeRate = '${easeRateOfUser}';
+	var eaten = '${eatenOfUser}';
+	var liked = '${likeOfUser}'
 
-	$(document).ready(
-			function() {
-				$('#prograssbarTaste').css('width',
-						'${avgTasteRate}' * 20 + '%').attr('aria-valuenow',
-						'${avgTasteRate}' * 20);
-				$('#prograssbarHealth').css('width',
-						'${avgHealthRate}' * 20 + '%').attr('aria-valuenow',
-						'${avgHealthRate}' * 20);
-				$('#prograssbarCost').css('width', '${avgCostRate}' * 20 + '%')
-						.attr('aria-valuenow', '${avgCostRate}' * 20);
-				$('#prograssbarEase').css('width', '${avgEaseRate}' * 20 + '%')
-						.attr('aria-valuenow', '${avgEaseRate}' * 20);
-				$(".desc").text(overall);
-				if (healthRate != 0) {
-					$("#healthRate").text(healthRate);
-				}
-				if (costRate != 0) {
-					$("#costRate").text(costRate);
-				}
-				if (tasteRate != 0) {
-					$("#tasteRate").text(tasteRate);
-				}
-				if (easeRate != 0) {
-					$("#easeRate").text(easeRate);
-				}
-			});
+	$(document)
+			.ready(
+					function() {
+						$('#prograssbarTaste').css('width',
+								'${avgTasteRate}' * 20 + '%').attr(
+								'aria-valuenow', '${avgTasteRate}' * 20);
+						$('#prograssbarTaste').text(
+								Number('${avgTasteRate}').toFixed(1));
+
+						$('#prograssbarHealth').css('width',
+								'${avgHealthRate}' * 20 + '%').attr(
+								'aria-valuenow', '${avgHealthRate}' * 20);
+						$('#prograssbarHealth').text(
+								Number('${avgHealthRate}').toFixed(1));
+
+						$('#prograssbarCost').css('width',
+								'${avgCostRate}' * 20 + '%').attr(
+								'aria-valuenow', '${avgCostRate}' * 20);
+						$('#prograssbarCost').text(
+								Number('${avgCostRate}').toFixed(1));
+
+						$('#prograssbarEase').css('width',
+								'${avgEaseRate}' * 20 + '%').attr(
+								'aria-valuenow', '${avgEaseRate}' * 20);
+						$('#prograssbarEase').text(
+								Number('${avgEaseRate}').toFixed(1));
+
+						$(".desc").text(Number('${avgOverall}').toFixed(1));
+
+						if (healthRate != 0) {
+							$("#healthRate").text(healthRate);
+						}
+						if (costRate != 0) {
+							$("#costRate").text(costRate);
+						}
+						if (tasteRate != 0) {
+							$("#tasteRate").text(tasteRate);
+						}
+						if (easeRate != 0) {
+							$("#easeRate").text(easeRate);
+						}
+					});
 
 	$(".dropdown-menu li a").click(
 			function(e) {
@@ -566,6 +616,33 @@ body {
 				} else if (name == "easeRate") {
 					easeRate = rate;
 				}
+			});
+
+	$("#Like").click(
+			function(e) {
+				if (liked == 0) {
+					$("<span class='glyphicon glyphicon-check'></span>")
+							.insertAfter("#textLike");
+					liked = 1;
+				} else {
+					$("#Like").text("Like")
+					liked = 0;
+				}
+			});
+
+	$("#Eat").click(
+			function(e) {
+				if (eaten == 0) {
+					$("<span class='glyphicon glyphicon-check'></span>")
+							.insertAfter("#textEat");
+					eaten = 1;
+				} else {
+					$("<span class='glyphicon glyphicon-check'></span>")
+							.insertAfter("#textEat");
+					$("#Eat").text("Eat")
+					eaten=0;
+				}
+
 			});
 
 	$(document).ready(
@@ -586,8 +663,9 @@ body {
 								for (i = 1; i < recipes.length; i++) {
 									dummy = recipes[i].split('>');
 									$("#comments").append(
-											"<p><b>" + dummy[1] + "</b></p><p>"
-													+ dummy[0] + "</p>");
+											"<li class='list-group-item'><b>"
+													+ dummy[1] + "</b><p>"
+													+ dummy[0] + "</p></li>");
 								}
 							}
 						});
