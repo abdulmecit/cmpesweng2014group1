@@ -33,6 +33,7 @@
 	    		<li><a href="login">Login</a></li>
 	    		<li><a href="signup">Sign Up</a></li>
 	    	<%} else {%>
+	    		<li><a href="user/profile/${user.id}">My Profile</a></li>
 	    		<li><a href="logout">Logout</a></li>
 	    		<li id="settings" class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="glyphicon glyphicon-cog"></span><i class="fa fa-caret-down"></i></a><ul role="menu" class="dropdown-menu"><li id="popular"><a href="user/homesettings">Profile Settings</a></li><li id="app"><a href="user/preferences">Food Preferences</a></li></li>
 	    	<%}%>	    				    

@@ -173,14 +173,15 @@ input[type="submit"]:active {
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href="../">Nutty</a>
+          <a class="navbar-brand" href="../../">Nutty</a>
         </div>
 <!-- 		  <ul class="nav navbar-nav navbar-search"> -->
 <!--             <input type="text" class="search-query span3" placeholder="Search..."> -->
 <!--           </ul> -->
 		  <ul class="nav navbar-nav navbar-right">
-		    <li><a href="../logout">Logout</a></li>
-		    <li id="settings" class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="glyphicon glyphicon-cog"></span><i class="fa fa-caret-down"></i></a><ul role="menu" class="dropdown-menu"><li id="popular"><a href="homesettings">Profile Settings</a></li><li id="app"><a href="preferences">Food Preferences</a></li></li>
+		    <li><a href="${user.id}">My Profile</a></li>
+		    <li><a href="../../logout">Logout</a></li>
+		    <li id="settings" class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="glyphicon glyphicon-cog"></span><i class="fa fa-caret-down"></i></a><ul role="menu" class="dropdown-menu"><li id="popular"><a href="../homesettings">Profile Settings</a></li><li id="app"><a href="../preferences">Food Preferences</a></li></li>
 		  </ul>
         
 
@@ -196,13 +197,13 @@ input[type="submit"]:active {
 	    	<br><br><br>
 	    	<h2>Best Of</h2>
 	    	<br><br>
-	    	<div id="bestOf"></div>
+	    	<div id="bestOf"><p>Loading Recipes, please wait..</p></div>
 	    </div>
 	    <div id="content-wrap">
 	        <div id="info-wrap">
 	            <div class="info" align="center">
 	            	<p>&nbsp;</p>
-	            	<h1 id="name">${user.name} ${user.surname}</h1>
+	            	<h1 id="name">${visitedUser.name} ${visitedUser.surname}</h1>
 	            	<h3>Age:</h3> <p id="age"></p>
 	            	<h3>Gender:</h3> <p id="gender">Not specified</p>
 	            	<h3>Food Intolerances:</h3> 
@@ -241,7 +242,7 @@ input[type="submit"]:active {
 	
 	<script type="text/javascript">
 	$(document).ready(function () {
-		if('${user.gender}' == 1){
+		if('${visitedUser.gender}' == 1){
 			document.getElementById('foto').innerHTML = '<img id="profilePic" alt="Photo of the User" src="http://cdn.sett.com/images/user/20140502/chef57b22ab552661a6852fe44c0e7e59e63.jpg" width="100%" height="auto"/>';	
 		}else{
 			document.getElementById('foto').innerHTML = '<img id="profilePic" alt="Photo of the User" src="http://thumbs.dreamstime.com/x/funny-chef-cracking-egg-6967190.jpg" width="100%" height="auto"/>';
@@ -249,7 +250,7 @@ input[type="submit"]:active {
 	});	
 	
 	$(document).ready(function () {
-		if('${user.gender}' == 0){
+		if('${visitedUser.gender}' == 0){
 			document.getElementById('gender').innerHTML = "Male";
 		}else{
 			document.getElementById('gender').innerHTML = "Female";
@@ -257,7 +258,7 @@ input[type="submit"]:active {
   	});	
 	
 	$(document).ready(function () {
-		  var birthday = +new Date('${user.birthday}');
+		  var birthday = +new Date('${visitedUser.birthday}');
 		  document.getElementById('age').innerHTML = ~~((Date.now() - birthday) / (31557600000));
 	});
 	
@@ -266,17 +267,22 @@ input[type="submit"]:active {
 			  type: "POST",
 			  url: "getUsersRecipes",
 			  data: {  
-  				  userId: '${user.id}',
+  				  userId: '${visitedUser.id}',
   				  }
 			})
 			.done(function(response) {
+				alert(response);
 				if(response != null){
+					$('#bestOf').empty();
 					for(var i=0; i<response.length; i++){
 						var href = "../recipe/" + response[i][0];
 						var name = response[i][1];
 						var src = response[i][2];
 						$('#bestOf').append("<a href='"+href+"'><img src='"+src+"' alt='"+name+"' width='50%' height='auto'><p>"+name+"</p></a>");
 					}
+				}else{
+					$('#bestOf').empty();
+					$('#bestOf').append("User doesn't own any recipe :(");
 				}
 			});   	
   	});	

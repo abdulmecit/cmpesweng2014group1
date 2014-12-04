@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import cmpesweng2014.group1.nutty.model.Message;
+import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.model.User;
 import cmpesweng2014.group1.nutty.service.RecipeService;
 import cmpesweng2014.group1.nutty.service.UserService;
@@ -31,18 +33,32 @@ public class UserController {
 	@Autowired
 	private RecipeService recipeService;
 	
-	@RequestMapping(value = "/profile", method = RequestMethod.GET)
-	public String viewProfile(Model model, HttpSession session) {
+	@RequestMapping(value = "/profile/{userId}", method = RequestMethod.GET)
+	public String viewProfile(@PathVariable Long userId, Model model, HttpSession session){
 		Object logged = session.getAttribute("isLogged");
 		boolean isLogged = logged == null ? false : (Boolean) logged;
 		if (isLogged) {
-			User u = (User) session.getAttribute("user");
-			model.addAttribute("user", u);
+			User u = (User) userService.getUserDao().getUserById(userId);
+			model.addAttribute("visitedUser", u);
+			
 			return "profile";
 		} else {
 			return "redirect:/login";
 		}
 	}
+	
+//	@RequestMapping(value = "/profile", method = RequestMethod.GET)
+//	public String viewProfile(Model model, HttpSession session) {
+//		Object logged = session.getAttribute("isLogged");
+//		boolean isLogged = logged == null ? false : (Boolean) logged;
+//		if (isLogged) {
+//			User u = (User) session.getAttribute("user");
+//			model.addAttribute("user", u);
+//			return "profile";
+//		} else {
+//			return "redirect:/login";
+//		}
+//	}
 	
 	@RequestMapping(value = "/preferences", method = RequestMethod.GET)
 	public String viewFoodPreferences(Model model, HttpSession session) {
