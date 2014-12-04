@@ -270,6 +270,10 @@ input[type="submit"]:active {
         
       </div><!-- /.container -->
     </nav>
+    <br><br>
+	<div class="container" id="addRecipe" align="center">
+	<p><a class="btn btn-primary btn-lg" href="addRecipe" role="button">Add Recipe</a></p>
+	</div>
     <br><br><br>
 	<form id="search-form">
         <input id="searchText" type="text">
@@ -364,6 +368,12 @@ input[type="submit"]:active {
 				}
 			});
 	  });
+		  
+	  $(document).ready(function () {
+	    	if('${isLogged}' == "false"){
+	    		$("#addRecipe").hide();	
+	    	}
+	    });
 
 	</script>	
 
