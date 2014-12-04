@@ -193,7 +193,9 @@ input[type="submit"]:active {
 	    	<div id="foto">
 <!-- 	    		<img id="profilePic" alt="Photo of the User" src="http://cdn.sett.com/images/user/20140502/chef57b22ab552661a6852fe44c0e7e59e63.jpg" width="100%" height="auto"/> -->
 	    	</div>
+	    	<br><br><br>
 	    	<h2>Best Of</h2>
+	    	<br><br>
 	    	<div id="bestOf"></div>
 	    </div>
 	    <div id="content-wrap">
@@ -268,9 +270,13 @@ input[type="submit"]:active {
   				  }
 			})
 			.done(function(response) {
-				alert(response);
 				if(response != null){
-					document.getElementById('bestOf').innerHTML = response;
+					for(var i=0; i<response.length; i++){
+						var href = "../recipe/" + response[i][0];
+						var name = response[i][1];
+						var src = response[i][2];
+						$('#bestOf').append("<a href='"+href+"'><img src='"+src+"' alt='"+name+"' width='50%' height='auto'><p>"+name+"</p></a>");
+					}
 				}
 			});   	
   	});	

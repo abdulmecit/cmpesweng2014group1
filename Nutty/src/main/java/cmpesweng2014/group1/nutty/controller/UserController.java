@@ -315,7 +315,7 @@ public class UserController {
 	
 	@RequestMapping(value = "/getUsersRecipes")
 	@ResponseBody
-	public String[] getUsersRecipes(
+	public String[][] getUsersRecipes(
 			@RequestParam(value = "userId", required = true) Long userId,
 			HttpSession session){
 				
@@ -324,12 +324,12 @@ public class UserController {
 		}
 		
 		int[] recipeIds = userService.getUserDao().getRecipes(userId);
-		String[] recipeNames = new String[recipeIds.length];
-		String[] recipePhotos = new String[recipeIds.length];
+		String[][] response = new String[recipeIds.length][3];
 		for(int i=0; i<recipeIds.length; i++){
-			recipeNames[i] = recipeService.getRecipe(recipeIds[i]).getName();
-			recipePhotos[i] = recipeService.getRecipePhotoUrl(recipeIds[i]);
+			response[i][0] = recipeIds[i] + "";
+			response[i][1] = recipeService.getRecipe(recipeIds[i]).getName();
+			response[i][2] = recipeService.getRecipePhotoUrl(recipeIds[i]);
 		}
-		return recipeNames; 
+		return response;
 	}
 }

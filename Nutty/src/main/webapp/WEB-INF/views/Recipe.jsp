@@ -239,7 +239,7 @@ body {
 
 				<h2 class="panel-title pull-center"
 					style="margin-top: 25px; font-size: 24px">
-					${recipe.name} <small><em>by <a href="profile.jsp">Chef
+					${recipe.name} <small><em>by <a href="../profile">Chef
 								${ownerName}</a></em></small>
 				</h2>
 			</div>

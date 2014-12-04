@@ -104,7 +104,6 @@ public class UserDao extends PcDao {
 		
 	}
 	
-	@SuppressWarnings("null")
 	public int[] getRecipes(Long id){
 		List<OwnsRecipe> recipes = this.getTemplate().query(
 				"SELECT * FROM OwnsRecipe WHERE user_id = ?",
