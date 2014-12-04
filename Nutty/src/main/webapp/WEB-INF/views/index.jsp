@@ -261,7 +261,7 @@ input[type="submit"]:active {
 	    	<%} else {%>
 	    		<li><a href="user/profile">My Profile</a></li>	    	
 	    		<li><a href="logout">Logout</a></li>
-	    		<li id="settings" class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="glyphicon glyphicon-cog"></span><i class="fa fa-caret-down"></i></a><ul role="menu" class="dropdown-menu"><li id="popular"><a href="/nutty/user/homesettings">Profile Settings</a></li><li id="app"><a href="/nutty/user/preferences">Food Preferences</a></li></li>
+	    		<li id="settings" class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="glyphicon glyphicon-cog"></span><i class="fa fa-caret-down"></i></a><ul role="menu" class="dropdown-menu"><li id="popular"><a href="user/homesettings">Profile Settings</a></li><li id="app"><a href="user/preferences">Food Preferences</a></li></li>
 	    	<%}%>	    				    
 		  </ul>
 <!-- 		  <ul class="nav navbar-nav navbar-search navbar-right"> -->

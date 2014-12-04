@@ -180,7 +180,7 @@ input[type="submit"]:active {
 <!--           </ul> -->
 		  <ul class="nav navbar-nav navbar-right">
 		    <li><a href="../logout">Logout</a></li>
-		    <li id="settings" class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="glyphicon glyphicon-cog"></span><i class="fa fa-caret-down"></i></a><ul role="menu" class="dropdown-menu"><li id="popular"><a href="/nutty/user/homesettings">Profile Settings</a></li><li id="app"><a href="/nutty/user/preferences">Food Preferences</a></li></li>
+		    <li id="settings" class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="glyphicon glyphicon-cog"></span><i class="fa fa-caret-down"></i></a><ul role="menu" class="dropdown-menu"><li id="popular"><a href="homesettings">Profile Settings</a></li><li id="app"><a href="preferences">Food Preferences</a></li></li>
 		  </ul>
         
 
