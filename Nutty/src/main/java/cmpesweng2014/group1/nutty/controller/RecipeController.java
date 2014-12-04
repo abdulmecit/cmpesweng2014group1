@@ -187,6 +187,21 @@ public class RecipeController {
 		return "Recipe";
 	}
 	
+	@RequestMapping(value = "/rateRecipe", method = RequestMethod.POST)
+	public String rateRecipe(
+			@RequestParam(value = "changed", required = true) String changed,
+			@RequestParam(value = "user_id", required = true) Long user_id,
+			@RequestParam(value = "recipe_id", required = true) int recipe_id,
+			@RequestParam(value = "value", required = true) int value
+			) {
+		
+		Recipe recipe = recipeService.getRecipe(recipe_id);
+		User u = userService.getUserDao().getUserById(user_id);	
+		recipeService.getRecipeDao().evaluateRecipe(changed, value, u, recipe);
+		
+		return "Recipe";
+	}
+	
 	@ResponseBody
 	@RequestMapping(value = "/recipeREST/{recipeId}")
 	public SuperRecipe viewRecipeREST(@PathVariable int recipeId){

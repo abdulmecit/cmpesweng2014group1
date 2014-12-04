@@ -224,15 +224,15 @@ public class RecipeDao extends PcDao{
 
 	public int getRatesForUser(String property,int recipe_id,long user_id){
 		int count=this.getTemplate().queryForObject(
-				"SELECT COUNT(*) FROM EatLikeRate WHERE recipe_id = ? AND user_id = ?", 
+				"SELECT COUNT(*) FROM EatLikeRate WHERE recipe_id = ? AND user_id = ? AND "+property+"> 0", 
 				new Object[] {recipe_id,user_id}, Integer.class);
 		if(count==0){
 			return 0;
 		}
 		else{
 			int rate=this.getTemplate().queryForObject(
-				"SELECT "+property+" FROM EatLikeRate WHERE recipe_id = ? AND user_id = ?", 
-				new Object[] {recipe_id,user_id}, Integer.class);
+					"SELECT "+property+" FROM EatLikeRate WHERE recipe_id = ? AND user_id = ?", 
+					new Object[] {recipe_id,user_id}, Integer.class);		
 			return rate;
 		}
 	}

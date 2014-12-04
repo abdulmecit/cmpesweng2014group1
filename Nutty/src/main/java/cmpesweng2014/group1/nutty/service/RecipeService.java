@@ -73,43 +73,7 @@ public class RecipeService {
 		
 		return recipeDao.getRecipeById(recipe_id);	
 	}	
-	
-	//likes becomes 1 in the table
-	public void likeRecipe(User user, Recipe recipe){
-		int like=1;
-		recipeDao.evaluateRecipe("likes",like,user,recipe);
-	}	
-	//dislike means getting like back, likes becomes 0 in the table
-	public void dislikeRecipe(User user, Recipe recipe){
-		int like=0;
-		recipeDao.evaluateRecipe("likes",like,user,recipe);
-	}
-	//eats becomes 1 in the table
-	public void eatRecipe(User user, Recipe recipe){
-		int eat=1;
-		recipeDao.evaluateRecipe("eats",eat,user,recipe);
-	}		
-	//getting eat back, eats becomes 0 in the table
-	public void notEatRecipe(User user, Recipe recipe){
-		int eat=0;
-		recipeDao.evaluateRecipe("eats",eat,user,recipe);
-	}
-	//sets health rate
-	public void setHealthRateRecipe(int score,User user, Recipe recipe){
-		recipeDao.evaluateRecipe("health_rate",score,user,recipe);
-	}
-	//sets cost rate
-	public void setCostRateRecipe(int score,User user, Recipe recipe){
-		recipeDao.evaluateRecipe("cost_rate",score,user,recipe);
-	}
-	//sets taste rate
-	public void setTasteRateRecipe(int score,User user, Recipe recipe){
-		recipeDao.evaluateRecipe("taste_rate",score,user,recipe);
-	}
-	//sets ease rate
-	public void setEaseRateRecipe(int score,User user, Recipe recipe){
-		recipeDao.evaluateRecipe("ease_rate",score,user,recipe);
-	}
+
 	//returns created Comment
 	public Comment commentRecipe(String text, User user, Recipe recipe){
 		int comment_id=commentDao.createComment(text,user.getId(), recipe.getRecipe_id());

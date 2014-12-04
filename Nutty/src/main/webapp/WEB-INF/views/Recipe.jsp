@@ -194,32 +194,24 @@ body {
 
 	<!------------------------ navigation bar --------------------------->
 
-	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-	<div class="container">
-		<div class="navbar-header">
-			<a class="navbar-brand" href=".">Nutty</a>
-		</div>
-		<ul class="nav navbar-nav navbar-right">
-			<%
-				if (session.getAttribute("user_id") == null
-						|| Integer.valueOf(session.getAttribute("user_id")
-								.toString()) == 0) {
-			%>
-			<li><a href="login.jsp">Login</a></li>
-			<li><a href="signup.jsp">Sign Up</a></li>
-			<%
-				} else {
-			%>
-			<li><a href="ownProfile.jsp">My Profile</a></li>
-			<li><a href="logout.jsp">Logout</a></li>
-			<%
-				}
-			%>
-		</ul>
-	</div>
-	</nav>
+   <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="../">Nutty</a>
+        </div>
+		  <ul class="nav navbar-nav navbar-right">
+		    <% 	if (session.getAttribute("isLogged") == null || ((Boolean)(session.getAttribute("isLogged")) == false)){ %>		  
+	    		<li><a href="../login">Login</a></li>
+	    		<li><a href="../signup">Sign Up</a></li>
+	    	<%} else {%>
+	    		<li><a href="../user/profile">My Profile</a></li>
+	    		<li><a href="../logout">Logout</a></li>
+	    		<li id="settings" class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="glyphicon glyphicon-cog"></span><i class="fa fa-caret-down"></i></a><ul role="menu" class="dropdown-menu"><li id="popular"><a href="/nutty/user/homesettings">Profile Settings</a></li><li id="app"><a href="/nutty/user/preferences">Food Preferences</a></li></li>
+	    	<%}%>	    				    
+		  </ul>  
 
-
+      </div><!-- /.container -->
+    </nav>
 
 	<!------------------------ star --------------------------->
 	<div class="container">
@@ -557,7 +549,8 @@ body {
 	var tasteRate = '${tasteRateOfUser}';
 	var easeRate = '${easeRateOfUser}';
 	var eaten = '${eatenOfUser}';
-	var liked = '${likeOfUser}'
+	var liked = '${likeOfUser}';
+	var isLogged = '${isLogged}';
 
 	$(document)
 			.ready(
@@ -607,50 +600,62 @@ body {
 							$("#likeCheck").css('visibility','hidden');
 						}
 						// if eat 'check' is visible
-						if (liked == 1) {
-							$("#likeCheck").css('visibility','visible');  
+						if (eaten == 1) {
+							$("#eatCheck").css('visibility','visible');  
 						} else {
-							$("#likeCheck").css('visibility','hidden');
+							$("#eatCheck").css('visibility','hidden');
 						}	
 					});
 
 	$(".dropdown-menu li a").click(
 			function(e) {
-				var selText = $(this).parents('.btn-group').find(
-						'.dropdown-toggle').attr("id");
-				var rate = $(this).text();
-				$(this).parents('.btn-group').find('.dropdown-toggle').html(
-						rate);
-				if (selText == "healthRate") {
-					healtRate = rate;
-				} else if (selText == "costRate") {
-					costRate = rate;
-				} else if (selText == "tasteRate") {
-					tasteRate = rate;
-				} else if (name == "easeRate") {
-					easeRate = rate;
+				if(isLogged == 'true'){
+					var selText = $(this).parents('.btn-group').find(
+							'.dropdown-toggle').attr("id");
+					var rate = $(this).text();
+					$(this).parents('.btn-group').find('.dropdown-toggle').html(
+							rate);
+					if (selText == "healthRate") {
+						healthRate = rate;
+						updateRate("health_rate", healthRate);
+					} else if (selText == "costRate") {
+						costRate = rate;
+						updateRate("cost_rate", costRate);
+					} else if (selText == "tasteRate") {
+						tasteRate = rate;
+						updateRate("taste_rate", tasteRate);
+					} else if (name == "easeRate") {
+						easeRate = rate;
+						updateRate("ease_rate", easeRate);
+					}
 				}
 			});
 
 	$("#Like").click(
 			function(e) {
-				if (liked == 0) {
-					$("#likeCheck").css('visibility','visible');  
-					liked = 1;
-				} else {
-					$("#likeCheck").css('visibility','hidden');
-					liked = 0;
+				if(isLogged == 'true'){
+					if (liked == 0) {
+						$("#likeCheck").css('visibility','visible');  
+						liked = 1;
+					} else {
+						$("#likeCheck").css('visibility','hidden');
+						liked = 0;
+					}	
+					updateRate("likes", liked);
 				}
 			});
 
 	$("#Eat").click(
 			function(e) {
-				if (eaten == 0) {
-					$("#eatCheck").css('visibility','visible'); 
-					eaten = 1;
-				} else {
-					$("#eatCheck").css('visibility','hidden');
-					eaten=0;
+				if(isLogged == 'true'){
+					if (eaten == 0) {
+						$("#eatCheck").css('visibility','visible'); 
+						eaten = 1;				
+					} else {
+						$("#eatCheck").css('visibility','hidden');
+						eaten=0;
+					}			
+					updateRate("eats", eaten);				
 				}
 			});
 
@@ -679,5 +684,18 @@ body {
 							}
 						});
 			});
+	
+	function updateRate(changed, value) {
+		$.ajax({
+			type : "POST",
+			url : "../rateRecipe",
+			data : {
+				changed: changed,
+				user_id : '${user.id}',
+				recipe_id : '${recipe.recipe_id}',
+				value: value
+			}
+		})	
+	};
 </script>
 </html>
