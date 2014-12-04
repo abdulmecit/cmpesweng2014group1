@@ -265,20 +265,19 @@ input[type="submit"]:active {
 	$(document).ready(function () {
     	$.ajax({
 			  type: "POST",
-			  url: "getUsersRecipes",
+			  url: "../getUsersRecipes",
 			  data: {  
   				  userId: '${visitedUser.id}',
   				  }
 			})
 			.done(function(response) {
-				alert(response);
 				if(response != null){
 					$('#bestOf').empty();
 					for(var i=0; i<response.length; i++){
 						var href = "../recipe/" + response[i][0];
 						var name = response[i][1];
 						var src = response[i][2];
-						$('#bestOf').append("<a href='"+href+"'><img src='"+src+"' alt='"+name+"' width='50%' height='auto'><p>"+name+"</p></a>");
+						$('#bestOf').append("<a href='"+href+"'><img src='"+src+"' title='"+name+"' onError='this.onerror=null;this.src=\"http://img2.wikia.nocookie.net/__cb20130511180903/legendmarielu/images/b/b4/No_image_available.jpg\";' width='50%' height='auto'><p>"+name+"</p></a>");
 					}
 				}else{
 					$('#bestOf').empty();
