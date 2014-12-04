@@ -3,6 +3,7 @@ package cmpesweng2014.group1.nutty.controller;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import cmpesweng2014.group1.nutty.model.Message;
 import cmpesweng2014.group1.nutty.model.User;
+import cmpesweng2014.group1.nutty.service.RecipeService;
 import cmpesweng2014.group1.nutty.service.UserService;
 
 @Controller
@@ -26,6 +28,8 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private RecipeService recipeService;
 	
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
 	public String viewProfile(Model model, HttpSession session) {
@@ -307,5 +311,25 @@ public class UserController {
 		}else{
 			return false;
 		}	
+	}
+	
+	@RequestMapping(value = "/getUsersRecipes")
+	@ResponseBody
+	public String[] getUsersRecipes(
+			@RequestParam(value = "userId", required = true) Long userId,
+			HttpSession session){
+				
+		if (userId == null) {
+			return null;
+		}
+		
+		int[] recipeIds = userService.getUserDao().getRecipes(userId);
+		String[] recipeNames = new String[recipeIds.length];
+		String[] recipePhotos = new String[recipeIds.length];
+		for(int i=0; i<recipeIds.length; i++){
+			recipeNames[i] = recipeService.getRecipe(recipeIds[i]).getName();
+			recipePhotos[i] = recipeService.getRecipePhotoUrl(recipeIds[i]);
+		}
+		return recipeNames; 
 	}
 }

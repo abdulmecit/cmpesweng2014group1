@@ -12,7 +12,11 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
+import cmpesweng2014.group1.nutty.dao.mapper.OwnsRecipeRowMapper;
+import cmpesweng2014.group1.nutty.dao.mapper.RecipeRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.UserRowMapper;
+import cmpesweng2014.group1.nutty.model.OwnsRecipe;
+import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.model.User;
 
 @Component
@@ -98,5 +102,18 @@ public class UserDao extends PcDao {
 	//will complete this
 	public void addFoodIntolerance(User user, int[] foodSelectionIds){
 		
+	}
+	
+	@SuppressWarnings("null")
+	public int[] getRecipes(Long id){
+		List<OwnsRecipe> recipes = this.getTemplate().query(
+				"SELECT * FROM OwnsRecipe WHERE user_id = ?",
+				new Object[] { id }, new OwnsRecipeRowMapper());
+
+		int recipeIds[] = new int[recipes.size()];
+		for(int i=0; i<recipes.size(); i++){
+			recipeIds[i] = recipes.get(i).getRecipe_id();
+		}
+		return recipeIds;
 	}
 }

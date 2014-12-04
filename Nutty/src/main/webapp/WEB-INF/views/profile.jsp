@@ -194,15 +194,7 @@ input[type="submit"]:active {
 <!-- 	    		<img id="profilePic" alt="Photo of the User" src="http://cdn.sett.com/images/user/20140502/chef57b22ab552661a6852fe44c0e7e59e63.jpg" width="100%" height="auto"/> -->
 	    	</div>
 	    	<h2>Best Of</h2>
-	    	<h2>.</h2>
-	    	<h2>.</h2>
-	    	<h2>.</h2>
-	    	<h2>.</h2>
-	    	<h2>.</h2>
-	    	<h2>.</h2>
-	    	<h2>.</h2>
-	    	<h2>.</h2>
-	    	<h2>.</h2>
+	    	<div id="bestOf"></div>
 	    </div>
 	    <div id="content-wrap">
 	        <div id="info-wrap">
@@ -266,6 +258,23 @@ input[type="submit"]:active {
 		  var birthday = +new Date('${user.birthday}');
 		  document.getElementById('age').innerHTML = ~~((Date.now() - birthday) / (31557600000));
 	});
+	
+	$(document).ready(function () {
+    	$.ajax({
+			  type: "POST",
+			  url: "getUsersRecipes",
+			  data: {  
+  				  userId: '${user.id}',
+  				  }
+			})
+			.done(function(response) {
+				alert(response);
+				if(response != null){
+					document.getElementById('bestOf').innerHTML = response;
+				}
+			});   	
+  	});	
+	
 	
 
 // 	$(document).ready(function () {

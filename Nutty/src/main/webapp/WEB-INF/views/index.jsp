@@ -12,6 +12,7 @@
 
     <!-- Bootstrap core CSS -->
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <link href="layout">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 	
@@ -288,7 +289,7 @@ input[type="submit"]:active {
 	    <li class="slide-container">
 			<div class="slide">
 				<h3 align="center">Delicious</h3>
-	        	<a href="/nutty"><button><img src="http://2.bp.blogspot.com/-fHFQXiIq6IQ/TegYuDrnq-I/AAAAAAAAQAQ/AaB71suJeFk/s1600/Kobe+Beef-0094.jpg" /></button></a>
+	        	<a href="/nutty/recipe/1"><button><img src="http://2.bp.blogspot.com/-fHFQXiIq6IQ/TegYuDrnq-I/AAAAAAAAQAQ/AaB71suJeFk/s1600/Kobe+Beef-0094.jpg" /></button></a>
 	        </div>
 			<div class="nav">
 				<label for="img-4" class="prev">&#x2039;</label>
@@ -300,7 +301,7 @@ input[type="submit"]:active {
 	    <li class="slide-container">
 	        <div class="slide">
 	        	<h3 align="center">Healthy</h3>
-	        	<a href="/nutty"><button><img src="http://sandiegobargainmama.com/wp-content/uploads/2011/09/balanced-meal.png" /></button></a>
+	        	<a href="/nutty/recipe/1"><button><img src="http://sandiegobargainmama.com/wp-content/uploads/2011/09/balanced-meal.png" /></button></a>
 	        </div>
 			<div class="nav">
 				<label for="img-1" class="prev">&#x2039;</label>
@@ -312,7 +313,7 @@ input[type="submit"]:active {
 	    <li class="slide-container">
 	        <div class="slide">
 	        	<h3 align="center">Easy</h3>
-	        	<a href="/nutty"><button><img src="http://www.damakdiyari.com.tr/content/images/thumbs/0000588_sahanda-menemen.jpeg" /></button></a>
+	        	<a href="/nutty/recipe/1"><button><img src="http://www.damakdiyari.com.tr/content/images/thumbs/0000588_sahanda-menemen.jpeg" /></button></a>
 	        </div>
 			<div class="nav">
 				<label for="img-2" class="prev">&#x2039;</label>
@@ -324,7 +325,7 @@ input[type="submit"]:active {
 	    <li class="slide-container">
 	        <div class="slide">
 				<h3 align="center">Cheap</h3>
-				<a href="/nutty"><button><img src="http://kumsaldakiizler.com/wp-content/uploads/makarna_zerrinin_mutfa%C4%9F%C4%B1_domates_biber_soslu_makarna.jpg" /></button></a>
+				<a href="/nutty/recipe/1"><button><img src="http://s3.amazonaws.com/gmi-digital-library/41e7d5f1-05de-415e-a31a-3c48d828d81a.jpg" /></button></a>
 	        </div>
 			<div class="nav">
 				<label for="img-3" class="prev">&#x2039;</label>
