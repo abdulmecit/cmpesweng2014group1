@@ -13,8 +13,10 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import cmpesweng2014.group1.nutty.dao.mapper.OwnsRecipeRowMapper;
+import cmpesweng2014.group1.nutty.dao.mapper.RecipeRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.UserRowMapper;
 import cmpesweng2014.group1.nutty.model.OwnsRecipe;
+import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.model.User;
 
 @Component
@@ -157,6 +159,32 @@ public class UserDao extends PcDao {
 		}
 		else{
 			User[] users = followingList.toArray(new User[followingList.size()]);
+			return users;
+		}
+	}
+	public List<User> searchUserByNameSurname(String search){
+		String words[] = search.split(" ");
+		String query = "SELECT * FROM User WHERE ";
+		for(int i=0; i<words.length; i++){
+			query += " name LIKE '%" + words[i] + "%' ";
+			if(i<words.length-1){
+				query += "OR";
+			}
+		}	
+		query+="UNION SELECT * FROM User WHERE";
+		for(int i=0; i<words.length; i++){
+			query += " surname LIKE '%" + words[i] + "%' ";
+			if(i<words.length-1){
+				query += "OR";
+			}
+		}	
+		List<User> users = this.getTemplate().query(
+				query,
+				new UserRowMapper());
+		
+		if (users.isEmpty()) {
+			return null;
+		} else {
 			return users;
 		}
 	}
