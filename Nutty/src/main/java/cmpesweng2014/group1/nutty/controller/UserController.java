@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import cmpesweng2014.group1.nutty.model.Comment;
+import cmpesweng2014.group1.nutty.model.FoodSelection;
+import cmpesweng2014.group1.nutty.model.Ingredient;
 import cmpesweng2014.group1.nutty.model.Message;
 import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.model.User;
@@ -39,7 +42,17 @@ public class UserController {
 		boolean isLogged = logged == null ? false : (Boolean) logged;
 		if (isLogged) {
 			User u = (User) userService.getUserDao().getUserById(userId);
-			model.addAttribute("visitedUser", u);		
+			model.addAttribute("visitedUser", u);
+			
+			Ingredient[] unpreferred = userService.getUnpreferredForUser(u);
+			model.addAttribute("unpreferred", unpreferred);
+			
+			FoodSelection[] healthCondition=userService.getHealthCondition(u);
+			model.addAttribute("healthCondition", healthCondition);
+			
+			FoodSelection[] foodIntolerance=userService.getFoodIntolerances(u);
+			model.addAttribute("foodIntolerance", foodIntolerance);
+			
 			return "profile";
 		} else {
 			return "redirect:/login";

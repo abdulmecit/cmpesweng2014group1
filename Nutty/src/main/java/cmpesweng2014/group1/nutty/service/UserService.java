@@ -7,7 +7,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import cmpesweng2014.group1.nutty.dao.FoodSelectionDao;
+import cmpesweng2014.group1.nutty.dao.IngredientDao;
 import cmpesweng2014.group1.nutty.dao.UserDao;
+import cmpesweng2014.group1.nutty.model.FoodSelection;
+import cmpesweng2014.group1.nutty.model.Ingredient;
 import cmpesweng2014.group1.nutty.model.User;
 
 @Component
@@ -17,6 +20,8 @@ public class UserService {
 	private UserDao userDao;
 	@Autowired
 	private FoodSelectionDao foodSelectionDao;
+	@Autowired
+	private IngredientDao ingredientDao;
 
 	public UserDao getUserDao() {
 		return userDao;
@@ -47,12 +52,36 @@ public class UserService {
 		}
 	}
 	
-	//not complete yet
-	public void addFoodIntolerance(User user, String[] FoodSelectionNames){
+	//add food intolerance and health condition
+	//it is the same to add food intolerance and health condition 
+	public void addFoodSelectionAndHealth(User user, String[] FoodSelectionNames){
 		int[] fs_ids=new int[FoodSelectionNames.length] ;
+		int fs_id;
 		for(int i=0; i<FoodSelectionNames.length; i++){
-			fs_ids[i]=foodSelectionDao.getFoodSelectionIdByName(FoodSelectionNames[i]);
-		}
-		userDao.addFoodIntolerance(user, fs_ids);
+			fs_id=foodSelectionDao.getFoodSelectionIdByName(FoodSelectionNames[i]);
+			fs_ids[i]=fs_id;
+			foodSelectionDao.addFoodSelection(fs_id,user.getId());
+		}		
 	}
+	//add unpreferred food 
+	public void addUnpreferredFood(User user, String[] foodNames){
+		int ing_id;
+		for(int i=0; i<foodNames.length; i++){
+			ing_id=ingredientDao.getIdByName(foodNames[i]);
+			foodSelectionDao.addUnpreferredFood(ing_id, user.getId());
+		}		
+	}	
+	//returns food intolerances for the given user as an array of foodSelection objects
+	public FoodSelection[] getFoodIntolerances(User user){
+		return foodSelectionDao.getFoodSelectionForUser(user.getId(), "food_intolerance");
+	}
+	//returns health conditions for the given user as an array of foodSelection objects
+	public FoodSelection[] getHealthCondition(User user){
+		return foodSelectionDao.getFoodSelectionForUser(user.getId(), "health_condition");
+	}
+	//returns unpreferred foods for the given user
+	public Ingredient[] getUnpreferredForUser(User user){
+		return foodSelectionDao.getUnpreferredFoodForUser(user.getId());
+	}
+	
 }
