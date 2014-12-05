@@ -250,7 +250,7 @@ public class RecipeDao extends PcDao{
 				"SELECT COUNT(*) FROM RecipePhoto a, Photo b WHERE a.photo_id = b.photo_id and recipe_id = ?",  
 				new Object[] {recipe_id}, Integer.class);
 		if(count==0){
-			return "";
+			return "http://i.imgur.com/opd2vBI.png";
 		}
 		else{
 			String photoUrl=this.getTemplate().queryForObject(

@@ -1,7 +1,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1" import="java.sql.*"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html>
 <head>
 <meta charset="utf-8">
@@ -31,6 +31,12 @@ body {
 .autocomplete-suggestion { padding: 5px 5px; white-space: nowrap; overflow: hidden; font-size:22px}
 .autocomplete-selected { background: #F0F0F0; }
 .autocomplete-suggestions strong { font-weight: bold; color: #3399FF; }
+
+.ui-autocomplete {
+	max-height: 200px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
 
 #dropArea {text-align: center; line-height: 50px; line-width: 50px; margin: auto; font-size: 15px; display: inline-block;}
 #progress {display: none}
@@ -122,7 +128,7 @@ body {
 										<div class="panel-body" style="height: 200px">
 										
 										<div id="dropArea">Drag and drop your recipe picture here! OR 
-											<button onclick="document.querySelector('#elma').click()">Choose from your computer</button>
+											<button type="button" onclick="document.querySelector('#elma').click()">Choose from your computer</button>
 										</div>
 				
 										<input id="elma" style="visibility: collapse; width: 0px;" type="file" onchange="upload(this.files[0])">
@@ -155,6 +161,7 @@ body {
 								</div>
 								<div id="dynamicInput2" class="col-sm-8" align="left">
 								</div>
+								<p> <input type='hidden' style="visibility: collapse; width: 0px;" class='form-control' id='ingredient' name='ingredient[]' value='bug'> </p>												
 							</div>
 						</div>
 					</div>
@@ -183,7 +190,8 @@ body {
 				var newdiv1 = document.createElement('div');
 				var newdiv2 = document.createElement('div');
 				newdiv1.innerHTML = "<p> <input type='text' class='form-control' id='amount' name='amount[]' placeholder='2pounds,etc'> </p>";
-				newdiv2.innerHTML = "<p> <input type='text' class='form-control' id='ingredient' name='ingredient[]' value='" + value + "'> </p>";				document.getElementById(div1).appendChild(newdiv1);
+				newdiv2.innerHTML = "<p> <input type='text' class='form-control' id='ingredient' name='ingredient[]' value='" + value + "'> </p>";				
+				document.getElementById(div1).appendChild(newdiv1);
 				document.getElementById(div2).appendChild(newdiv2);
 			}
 			

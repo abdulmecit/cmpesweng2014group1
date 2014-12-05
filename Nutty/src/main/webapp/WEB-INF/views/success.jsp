@@ -1,6 +1,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="cmpesweng2014.group1.nutty.model.Message"%>
+<!DOCTYPE HTML>
 <html>
   <head>
     <meta charset="utf-8">

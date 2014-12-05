@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-
+<!DOCTYPE HTML>
 <html>
   <head>
     <meta charset="utf-8">
@@ -370,11 +370,10 @@ input[type="submit"]:active {
 	  });
 		  
 	  $(document).ready(function () {
-	    	if('${isLogged}' == "false" || '${isLogged}'==null){
-	    		$("#addRecipe").hide();	
-	    	}else{
-	    		$("#addRecipe").show();
-	    	}
+	    	if('${isLogged}' == "true")
+	    		$("#addRecipe").show();	
+	    	else
+	    		$("#addRecipe").hide();
 	    });
 
 	</script>	

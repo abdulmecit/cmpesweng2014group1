@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.sql.*" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html>
   <head>
     <meta charset="utf-8">
@@ -274,18 +274,16 @@ input[type="submit"]:active {
 				if(response != null){
 					$('#bestOf').empty();
 					for(var i=0; i<response.length; i++){
-						var href = "../recipe/" + response[i][0];
+						var href = "../../recipe/" + response[i][0];
 						var name = response[i][1];
 						var src = response[i][2];
-						$('#bestOf').append("<a href='"+href+"'><img src='"+src+"' title='"+name+"' onError='this.onerror=null;this.src=\"http://img2.wikia.nocookie.net/__cb20130511180903/legendmarielu/images/b/b4/No_image_available.jpg\";' width='50%' height='auto'><p>"+name+"</p></a>");
-					}
+						$('#bestOf').append("<a href='"+href+"'><img src='"+src+"' title='"+name+"' onError='this.onerror=null;this.src=\"http://img2.wikia.nocookie.net/__cb20130511180903/legendmarielu/images/b/b4/No_image_available.jpg\";' width='50%' height='auto'><p>"+name+"</p></a>");					}
 				}else{
 					$('#bestOf').empty();
 					$('#bestOf').append("User doesn't own any recipe :(");
 				}
 			});   	
   	});	
-	
 	
 
 // 	$(document).ready(function () {

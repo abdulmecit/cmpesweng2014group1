@@ -13,10 +13,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import cmpesweng2014.group1.nutty.dao.mapper.OwnsRecipeRowMapper;
-import cmpesweng2014.group1.nutty.dao.mapper.RecipeRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.UserRowMapper;
 import cmpesweng2014.group1.nutty.model.OwnsRecipe;
-import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.model.User;
 
 @Component

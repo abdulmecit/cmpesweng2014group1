@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1" import="java.sql.*"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html>
 <head>
 <meta charset="utf-8">
@@ -45,8 +45,10 @@
 }
 
 .slide img {
+	max-width: 457px;
+	max-height: 315px;
 	width: 100%;
-	height: 100%;
+	height: auto;
 }
 
 .slides * {
@@ -250,7 +252,7 @@ body {
 							<input type="radio" name="radio-btn" id="img-1" checked />
 							<li class="slide-container">
 								<div class="slide">
-									<img src="${photoUrl}" />
+									<img src="${photoUrl}"/>
 								</div>
 								<div class="nav">
 									<label for="img-6" class="prev">&#x2039;</label> <label
@@ -261,7 +263,7 @@ body {
 							<input type="radio" name="radio-btn" id="img-2" />
 							<li class="slide-container">
 								<div class="slide">
-									<img
+									<img 
 										src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRikkxvA53g0Vc8XJuH2uIvWBMq8FGj5yFl5Gz-gLRJsk0XhwE" />
 								</div>
 								<div class="nav">

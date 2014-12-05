@@ -39,26 +39,12 @@ public class UserController {
 		boolean isLogged = logged == null ? false : (Boolean) logged;
 		if (isLogged) {
 			User u = (User) userService.getUserDao().getUserById(userId);
-			model.addAttribute("visitedUser", u);
-			
+			model.addAttribute("visitedUser", u);		
 			return "profile";
 		} else {
 			return "redirect:/login";
 		}
 	}
-	
-//	@RequestMapping(value = "/profile", method = RequestMethod.GET)
-//	public String viewProfile(Model model, HttpSession session) {
-//		Object logged = session.getAttribute("isLogged");
-//		boolean isLogged = logged == null ? false : (Boolean) logged;
-//		if (isLogged) {
-//			User u = (User) session.getAttribute("user");
-//			model.addAttribute("user", u);
-//			return "profile";
-//		} else {
-//			return "redirect:/login";
-//		}
-//	}
 	
 	@RequestMapping(value = "/preferences", method = RequestMethod.GET)
 	public String viewFoodPreferences(Model model, HttpSession session) {

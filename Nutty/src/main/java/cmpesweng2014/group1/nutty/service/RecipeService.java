@@ -39,8 +39,8 @@ public class RecipeService {
 	public Recipe createRecipe(String name, String description,
 			int portion, String photo_url, String[] ingredients, double[] amounts, User user, String[] tags) {
 		
-		int[] ingredient_ids=new int[ingredients.length] ;
-		int[] ingredient_calories=new int[ingredients.length]  ;
+		int[] ingredient_ids=new int[ingredients.length];
+		int[] ingredient_calories=new int[ingredients.length];
 		int ing_id;		
 		//get an array of ingredient id s for the given ingredient names
 		//get an array of calories for the given ingredients
@@ -68,8 +68,8 @@ public class RecipeService {
 		recipeDao.addOwner(recipe_id, user.getId());			
 		
 		//Add photoUrl
-		if(photo_url != null)
-			recipeDao.addPhotoUrl(photo_url, recipe_id);
+		if(photo_url != null && photo_url != "")
+		recipeDao.addPhotoUrl(photo_url, recipe_id);
 		
 		return recipeDao.getRecipeById(recipe_id);	
 	}	
