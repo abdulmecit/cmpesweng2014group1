@@ -95,13 +95,7 @@ public class UserDao extends PcDao {
 		} else {
 			return users.get(0);
 		}
-	}
-	
-	//will complete this
-	public void addFoodIntolerance(User user, int[] foodSelectionIds){
-		
-	}
-	
+	}	
 	public int[] getRecipes(Long id){
 		List<OwnsRecipe> recipes = this.getTemplate().query(
 				"SELECT * FROM OwnsRecipe WHERE user_id = ?",
@@ -112,5 +106,58 @@ public class UserDao extends PcDao {
 			recipeIds[i] = recipes.get(i).getRecipe_id();
 		}
 		return recipeIds;
+	}	
+	public void addFollower(final long follower_id, final long followed_id){
+		final String query = "INSERT INTO Follows (follower_id, followed_id) VALUES (?,?)";
+
+		KeyHolder gkh = new GeneratedKeyHolder();
+
+		this.getTemplate().update(new PreparedStatementCreator() {
+
+			@Override
+			public PreparedStatement createPreparedStatement(
+					Connection connection) throws SQLException {
+				PreparedStatement ps = connection.prepareStatement(query,
+						Statement.RETURN_GENERATED_KEYS);
+				ps.setLong(1, follower_id);
+				ps.setLong(2, followed_id);
+
+				return ps;
+			}
+		}, gkh);
+	}	
+	public void unfollow(final long follower_id, final long followed_id){
+		this.getTemplate().update("DELETE FROM Follows WHERE follower_id = ? AND followed_id=?", 
+				new Object[] { follower_id, followed_id });
+	}
+	public User[] getFollowers(long user_id){
+		List<User> followerList = this.getTemplate().query(
+				"SELECT user_id, email, password, name, surname, "
+				+ "birthday, gender, isBanned, photo FROM User, Follows "
+				+ "WHERE followed_id =? AND user_id=follower_id",
+				new Object[] { user_id  }, new UserRowMapper());
+	
+		if (followerList.isEmpty()) {
+			return null;
+		}
+		else{
+			User[] users = followerList.toArray(new User[followerList.size()]);
+			return users;
+		}
+	}
+	public User[] getFollowings(long user_id){
+		List<User> followingList = this.getTemplate().query(
+				"SELECT user_id, email, password, name, surname, "
+				+ "birthday, gender, isBanned, photo FROM User, Follows "
+				+ "WHERE follower_id =? AND user_id=followed_id",
+				new Object[] { user_id  }, new UserRowMapper());
+	
+		if (followingList.isEmpty()) {
+			return null;
+		}
+		else{
+			User[] users = followingList.toArray(new User[followingList.size()]);
+			return users;
+		}
 	}
 }

@@ -223,8 +223,8 @@ input[type="submit"]:active {
 	            	<p>&nbsp;</p>
 	            	<h2>Master Chef</h2>
 	            	<h3>&nbsp;</h3>
-	            	<h3>400 followers</h3>
-	            	<h3>120 following</h3>
+	            	<h3>${numberOfFollowers} followers</h3>
+	            	<h3>${numberOfFollowing} following</h3>
 				</div>
 		    </div>
         	<h1 align="center">News Feed</h1>

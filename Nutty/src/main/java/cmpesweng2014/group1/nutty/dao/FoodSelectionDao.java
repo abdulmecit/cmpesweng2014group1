@@ -69,9 +69,9 @@ public class FoodSelectionDao extends PcDao {
 	
 	public FoodSelection[] getFoodSelectionForUser(long user_id, String type){
 		List<FoodSelection> fsList = this.getTemplate().query(
-				"SELECT fs_id, fs_name, type FROM FoodSelection a, HasSelection b WHERE "
-				+ " user_id= ? AND a.fs_id=b.fs_id AND a.type="+type,
-				new Object[] { user_id }, new FoodSelectionRowMapper());
+				"SELECT a.fs_id, a.fs_name, a.type FROM FoodSelection a, HasSelection b WHERE "
+				+ " user_id= ? AND a.fs_id=b.fs_id AND a.type=?",
+				new Object[] { user_id, type }, new FoodSelectionRowMapper());
 
 		if (fsList.isEmpty()) {
 			return null;

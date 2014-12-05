@@ -83,5 +83,41 @@ public class UserService {
 	public Ingredient[] getUnpreferredForUser(User user){
 		return foodSelectionDao.getUnpreferredFoodForUser(user.getId());
 	}
+	//add follower
+	//for now no private users, directly added to follower list
+	public void addFollower(long follower_id, long followed_id){
+		userDao.addFollower(follower_id, followed_id);
+	}
+	//unfollow
+	//deletes the row. not sure if the query will be problematic or not?
+	public void unfollow(long follower_id, long followed_id){
+		userDao.unfollow(follower_id, followed_id);
+	}
+	//returns followers as user objects
+	public User[] getFollowerList(long user_id){
+		return userDao.getFollowers(user_id);
+	}
+	//returns following list as user objects
+	public User[] getFollowingList(long user_id){
+		return userDao.getFollowings(user_id);
+	}
+	//returns number of followers
+	public int getNumberOfFollowers(long user_id){
+		if(getFollowerList(user_id)==null){
+			return 0;
+		}
+		else{
+			return getFollowerList(user_id).length;
+		}
+	}
+	//returns number of following
+	public int getNumberOfFollowing(long user_id){
+		if(getFollowingList(user_id)==null){
+			return 0;
+		}
+		else{
+			return getFollowingList(user_id).length;
+		}
+	}
 	
 }

@@ -53,6 +53,12 @@ public class UserController {
 			FoodSelection[] foodIntolerance=userService.getFoodIntolerances(u);
 			model.addAttribute("foodIntolerance", foodIntolerance);
 			
+			int numberOfFollowers=userService.getNumberOfFollowers(u.getId());
+			model.addAttribute("numberOfFollowers", numberOfFollowers);
+			
+			int numberOfFollowing=userService.getNumberOfFollowing(u.getId());
+			model.addAttribute("numberOfFollowing", numberOfFollowing);
+			
 			return "profile";
 		} else {
 			return "redirect:/login";
