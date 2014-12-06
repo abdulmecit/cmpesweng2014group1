@@ -58,6 +58,16 @@
 		    float: left;
 		}
 		
+		#Follow {
+			display: none;
+			visibility: hidden;
+		}
+		
+		#followCheck {
+			display: none;
+			visibility: hidden;
+		}
+		
 /* 		search */
 #search-form {
 
@@ -217,7 +227,7 @@ input[type="submit"]:active {
 	        	    <button type="button" class="btn btn-primary" value="Follow" id="Follow"
 						style="float: center; margin-right: 15 px; margin-top: 18px;">
 						<span id="textFollow" class="ui-button-text">Follow &nbsp </span>
-						<span id="followCheck" class="glyphicon glyphicon-check" style="visibility: hidden;"></span>
+						<span id="followCheck" class="glyphicon glyphicon-check"></span>
 						<!-- caret for arrow. ui-button-text for button text visible; -->
 					</button>
 	        	</div>
@@ -249,6 +259,16 @@ input[type="submit"]:active {
 	</div>
 	
 	<script type="text/javascript">
+	$(document).ready(function () {
+		if('${visitedUser.id}' == '${user.id}'){
+			$("#Follow").css('display','none');
+			$("#Follow").css('visibility','hidden');  
+		}else{
+			$("#Follow").css('display','block');
+			$("#Follow").css('visibility','visible');  
+		}
+	});	
+	
 	$(document).ready(function () {
 		if('${visitedUser.gender}' == 1){
 			document.getElementById('foto').innerHTML = '<img id="profilePic" alt="Photo of the User" src="http://cdn.sett.com/images/user/20140502/chef57b22ab552661a6852fe44c0e7e59e63.jpg" width="100%" height="auto"/>';	
@@ -297,21 +317,25 @@ input[type="submit"]:active {
 	
 	$(document).ready(function () {
 		if (isFollower == 'true'){
+			$("#followCheck").css('display','inline');  
 			$("#followCheck").css('visibility','visible');  
 		}
 		else{
+			$("#followCheck").css('display','none');  
 			$("#followCheck").css('visibility','hidden');  
 		}
 	});	
     	
 	$("#Follow").click(function() {
 		if (isFollower == 'true') {
-			$("#followCheck").css('visibility','hidden'); 
+			$("#followCheck").css('display','none');  
+			$("#followCheck").css('visibility','hidden');  
 			isFollower = 'false';
 			followUser(0);
 		} else {
-			$("#followCheck").css('visibility','visible');
-			isFollower == 'true'
+			$("#followCheck").css('display','inline');  
+			$("#followCheck").css('visibility','visible');  
+			isFollower = 'true';
 			followUser(1);
 		}
 	});

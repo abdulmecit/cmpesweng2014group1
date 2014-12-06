@@ -51,7 +51,7 @@ public class UserController {
 			model.addAttribute("foodIntolerance", foodIntolerance);
 			
 			User visitingUser = (User) session.getAttribute("user");
-			boolean isFollower = userService.isFollower(u.getId(), visitingUser.getId());
+			boolean isFollower = userService.isFollower(visitingUser.getId(), u.getId());
 			model.addAttribute("isFollower", isFollower);
 			
 			int numberOfFollowers = userService.getNumberOfFollowers(u.getId());

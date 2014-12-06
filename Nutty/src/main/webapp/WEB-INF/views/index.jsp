@@ -360,6 +360,7 @@ input[type="submit"]:active {
 			  url: "basicSearch",
 			  data: {  
 				  search: $( "#searchText").val(),
+  				  searchOption: $( 'input:radio[name=searchOption]:checked' ).val()
 				  }
 			}) 
 			.done(function(answer) {

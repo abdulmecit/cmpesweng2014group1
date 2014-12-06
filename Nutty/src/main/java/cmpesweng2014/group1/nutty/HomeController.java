@@ -187,7 +187,7 @@ public class HomeController {
 	@ResponseBody
 	public String basicSearch(
 			@RequestParam(value = "search", required = true) String search,
-			@RequestParam(value = "searchOptions", required = false, defaultValue = "recipe") String searchOption){
+			@RequestParam(value = "searchOption", required = false, defaultValue = "recipe") String searchOption){
 
 		String answer = "";
 		
@@ -206,7 +206,7 @@ public class HomeController {
 			if(users == null){
 				return answer;
 			}
-			answer = searchOption;
+			answer = searchOption + "/profile";
 			for(int i=0; i<users.size(); i++){
 				answer += "|" + users.get(i).getName() + " " + users.get(i).getSurname() + ">" + users.get(i).getId();
 			}
