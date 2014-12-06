@@ -1,6 +1,7 @@
 package cmpesweng2014.group1.nutty.service;
 
 import java.sql.Date;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -118,6 +119,18 @@ public class UserService {
 		else{
 			return getFollowingList(user_id).length;
 		}
+	}
+	//determines if 
+	public boolean isFollower(long follower_id, long followed_id){
+		User[] followerList = getFollowerList(followed_id);
+		if(followerList == null){
+			return false;
+		}
+		Arrays.sort(followerList);
+		int result = Arrays.binarySearch(followerList, new User(follower_id, null, null, null, null, null, 0));
+		if (result >= 0)
+			return true;
+		return false;
 	}
 	
 }

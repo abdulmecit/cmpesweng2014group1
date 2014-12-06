@@ -3,12 +3,9 @@ package cmpesweng2014.group1.nutty.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import cmpesweng2014.group1.nutty.dao.mapper.FoodSelectionRowMapper;
@@ -32,39 +29,33 @@ public class FoodSelectionDao extends PcDao {
 	public void addFoodSelection(final int fs_id, final long user_id){
 		final String query = "INSERT INTO HasSelection (user_id, fs_id) VALUES (?,?)";
 
-		KeyHolder gkh = new GeneratedKeyHolder();
-
 		this.getTemplate().update(new PreparedStatementCreator() {
 
 			@Override
 			public PreparedStatement createPreparedStatement(
 					Connection connection) throws SQLException {
-				PreparedStatement ps = connection.prepareStatement(query,
-						Statement.RETURN_GENERATED_KEYS);
+				PreparedStatement ps = connection.prepareStatement(query);
 				ps.setLong(1, user_id);
 				ps.setInt(2, fs_id);
 				return ps;
 			}
-		}, gkh);
+		});
 	}
 	
 	public void addUnpreferredFood(final int ing_id, final long user_id){
 		final String query = "INSERT INTO Unprefer (user_id, ing_id) VALUES (?,?)";
 
-		KeyHolder gkh = new GeneratedKeyHolder();
-
 		this.getTemplate().update(new PreparedStatementCreator() {
 
 			@Override
 			public PreparedStatement createPreparedStatement(
 					Connection connection) throws SQLException {
-				PreparedStatement ps = connection.prepareStatement(query,
-						Statement.RETURN_GENERATED_KEYS);
+				PreparedStatement ps = connection.prepareStatement(query);
 				ps.setLong(1, user_id);
 				ps.setInt(2, ing_id);
 				return ps;
 			}
-		}, gkh);
+		});
 	}
 	
 	public FoodSelection[] getFoodSelectionForUser(long user_id, String type){

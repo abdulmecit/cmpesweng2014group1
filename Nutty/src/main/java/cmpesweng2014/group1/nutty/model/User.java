@@ -2,7 +2,7 @@ package cmpesweng2014.group1.nutty.model;
 
 import java.util.Date;
 
-public class User {
+public class User implements Comparable<User>{
 	private Long id;
 	private String email;
 	private String password;
@@ -115,5 +115,10 @@ public class User {
 
 	public void setPhoto(String photo) {
 		this.photo = photo;
+	}
+
+	@Override
+	public int compareTo(User other) {
+		return this.id.compareTo(other.id);
 	}
 }

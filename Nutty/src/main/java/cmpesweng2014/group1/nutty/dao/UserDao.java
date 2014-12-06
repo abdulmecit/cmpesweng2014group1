@@ -13,10 +13,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import cmpesweng2014.group1.nutty.dao.mapper.OwnsRecipeRowMapper;
-import cmpesweng2014.group1.nutty.dao.mapper.RecipeRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.UserRowMapper;
 import cmpesweng2014.group1.nutty.model.OwnsRecipe;
-import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.model.User;
 
 @Component
@@ -112,21 +110,18 @@ public class UserDao extends PcDao {
 	public void addFollower(final long follower_id, final long followed_id){
 		final String query = "INSERT INTO Follows (follower_id, followed_id) VALUES (?,?)";
 
-		KeyHolder gkh = new GeneratedKeyHolder();
-
 		this.getTemplate().update(new PreparedStatementCreator() {
 
 			@Override
 			public PreparedStatement createPreparedStatement(
 					Connection connection) throws SQLException {
-				PreparedStatement ps = connection.prepareStatement(query,
-						Statement.RETURN_GENERATED_KEYS);
+				PreparedStatement ps = connection.prepareStatement(query);
 				ps.setLong(1, follower_id);
 				ps.setLong(2, followed_id);
 
 				return ps;
 			}
-		}, gkh);
+		});
 	}	
 	public void unfollow(final long follower_id, final long followed_id){
 		this.getTemplate().update("DELETE FROM Follows WHERE follower_id = ? AND followed_id=?", 
@@ -162,6 +157,7 @@ public class UserDao extends PcDao {
 			return users;
 		}
 	}
+/*	
 	public List<User> searchUserByNameSurname(String search){
 		String words[] = search.split(" ");
 		String query = "SELECT * FROM User WHERE ";
@@ -181,6 +177,17 @@ public class UserDao extends PcDao {
 		List<User> users = this.getTemplate().query(
 				query,
 				new UserRowMapper());
+		
+		if (users.isEmpty()) {
+			return null;
+		} else {
+			return users;
+		}
+	}
+*/	
+	public List<User> searchUserByNameSurname(String search){
+		String query = "SELECT a.* FROM User a, ( SELECT user_id, concat(name, ' ', surname) as fullName FROM `User` ) b WHERE a.user_id = b.user_id AND b.fullName LIKE '%" + search + "%'";
+		List<User> users = this.getTemplate().query(query, new UserRowMapper());
 		
 		if (users.isEmpty()) {
 			return null;

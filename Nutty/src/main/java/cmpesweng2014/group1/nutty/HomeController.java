@@ -176,27 +176,42 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public String signOut(HttpSession session) {
+	public String logout(HttpSession session) {
 		session.setAttribute("isLogged", false);
 		session.setAttribute("user", null);
+		session.invalidate();
 		return "redirect:index";
 	}
 	
-	@RequestMapping(value = "/basicsearchrecipe")
+	@RequestMapping(value = "/basicSearch")
 	@ResponseBody
-	public String basicSearchRecipe(
-			@RequestParam(value = "search", required = true) String search){
+	public String basicSearch(
+			@RequestParam(value = "search", required = true) String search,
+			@RequestParam(value = "searchOptions", required = false, defaultValue = "recipe") String searchOption){
 
 		String answer = "";
-		List<Recipe> recipes = recipeService.getRecipeDao().searchRecipeByName(search);
-		if(recipes == null){
-			return answer;
+		
+		if(searchOption.equals("recipe")){
+			List<Recipe> recipes = recipeService.getRecipeDao().searchRecipeByName(search);
+			if(recipes == null){
+				return answer;
+			}
+			answer = searchOption;
+			for(int i=0; i<recipes.size(); i++){
+				answer += "|" + recipes.get(i).getName() + ">" + recipes.get(i).getRecipe_id();
+			}
 		}
-		for(int i=0; i<recipes.size(); i++){
-			answer += "|" + recipes.get(i).getName() + ">" + recipes.get(i).getRecipe_id();
+		else{
+			List<User> users = userService.getUserDao().searchUserByNameSurname(search);
+			if(users == null){
+				return answer;
+			}
+			answer = searchOption;
+			for(int i=0; i<users.size(); i++){
+				answer += "|" + users.get(i).getName() + " " + users.get(i).getSurname() + ">" + users.get(i).getId();
+			}
 		}
 		
 		return answer;
 	}
-	
 }

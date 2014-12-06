@@ -278,6 +278,13 @@ input[type="submit"]:active {
 	<form id="search-form">
         <input id="searchText" type="text">
         <input type="submit" value="Search">
+        <div class="form-group">
+		<label for="searchOptions" class="col-sm-4 control-label">Search For:</label>
+		<div class="col-sm-6">
+			<input type="radio" name="searchOption" value="recipe">Recipe
+	        <input type="radio" name="searchOption" value="user">User
+  		</div>
+	</div>
 	</form>
 	
 	<br><br>
@@ -350,9 +357,9 @@ input[type="submit"]:active {
 	      event.preventDefault();
 		  $.ajax({
 			  type: "POST",
-			  url: "basicsearchrecipe",
+			  url: "basicSearch",
 			  data: {  
-				  search: $( "#searchText" ).val(),
+				  search: $( "#searchText").val(),
 				  }
 			}) 
 			.done(function(answer) {
@@ -360,10 +367,11 @@ input[type="submit"]:active {
 				if(answer == ""){
 					$( "#searchResults" ).append( "<p>Nothing to show :(</p>" );
 				}else{
-					var recipes = answer.split('|');
-					for (i = 0; i < recipes.length; i++) {
-						dummy = recipes[i].split('>');
-						$( "#searchResults" ).append( "<a href='recipe/" + dummy[1] + "'>" + dummy[0] + "</p>" );
+					var results = answer.split('|');
+					var path = results[0];
+					for (i = 1; i < results.length; i++) {
+						dummy = results[i].split('>');
+						$( "#searchResults" ).append( "<a href='" + path + "/" + dummy[1] + "'>" + dummy[0] + "</p>" );
 					}
 				}
 			});

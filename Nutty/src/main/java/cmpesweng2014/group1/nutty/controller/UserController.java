@@ -3,7 +3,6 @@ package cmpesweng2014.group1.nutty.controller;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -18,11 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import cmpesweng2014.group1.nutty.model.Comment;
 import cmpesweng2014.group1.nutty.model.FoodSelection;
 import cmpesweng2014.group1.nutty.model.Ingredient;
 import cmpesweng2014.group1.nutty.model.Message;
-import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.model.User;
 import cmpesweng2014.group1.nutty.service.RecipeService;
 import cmpesweng2014.group1.nutty.service.UserService;
@@ -47,16 +44,20 @@ public class UserController {
 			Ingredient[] unpreferred = userService.getUnpreferredForUser(u);
 			model.addAttribute("unpreferred", unpreferred);
 			
-			FoodSelection[] healthCondition=userService.getHealthCondition(u);
+			FoodSelection[] healthCondition = userService.getHealthCondition(u);
 			model.addAttribute("healthCondition", healthCondition);
 			
-			FoodSelection[] foodIntolerance=userService.getFoodIntolerances(u);
+			FoodSelection[] foodIntolerance = userService.getFoodIntolerances(u);
 			model.addAttribute("foodIntolerance", foodIntolerance);
 			
-			int numberOfFollowers=userService.getNumberOfFollowers(u.getId());
+			User visitingUser = (User) session.getAttribute("user");
+			boolean isFollower = userService.isFollower(u.getId(), visitingUser.getId());
+			model.addAttribute("isFollower", isFollower);
+			
+			int numberOfFollowers = userService.getNumberOfFollowers(u.getId());
 			model.addAttribute("numberOfFollowers", numberOfFollowers);
 			
-			int numberOfFollowing=userService.getNumberOfFollowing(u.getId());
+			int numberOfFollowing = userService.getNumberOfFollowing(u.getId());
 			model.addAttribute("numberOfFollowing", numberOfFollowing);
 			
 			return "profile";
@@ -332,6 +333,21 @@ public class UserController {
 		}else{
 			return false;
 		}	
+	}
+	
+	@RequestMapping(value = "/followUser", method = RequestMethod.POST)
+	public String followUser(
+			@RequestParam(value = "follower_id", required = true) Long follower_id,
+			@RequestParam(value = "followed_id", required = true) Long followed_id,
+			@RequestParam(value = "value", required = true) int value
+			) {
+		
+			if(value == 0)
+				userService.unfollow(follower_id, followed_id);
+			else
+				userService.addFollower(follower_id, followed_id);
+					
+		return "profile";
 	}
 	
 	@RequestMapping(value = "/getUsersRecipes")

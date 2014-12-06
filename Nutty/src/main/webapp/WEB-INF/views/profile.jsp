@@ -213,6 +213,14 @@ input[type="submit"]:active {
 	            	<h3>Not Preferred:</h3>
 	            	<p id="not_pref"> None </p>
 	        	</div>
+	        	<div class="info" align="center">
+	        	    <button type="button" class="btn btn-primary" value="Follow" id="Follow"
+						style="float: center; margin-right: 15 px; margin-top: 18px;">
+						<span id="textFollow" class="ui-button-text">Follow &nbsp </span>
+						<span id="followCheck" class="glyphicon glyphicon-check" style="visibility: hidden;"></span>
+						<!-- caret for arrow. ui-button-text for button text visible; -->
+					</button>
+	        	</div>
             	<div class="info" align="center">
 	            	<p>&nbsp;</p>
 	            	<img alt="" src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg" width="50px" height="auto">
@@ -285,6 +293,40 @@ input[type="submit"]:active {
 			});   	
   	});	
 	
+   	var isFollower = '${isFollower}';
+	
+	$(document).ready(function () {
+		if (isFollower == 'true'){
+			$("#followCheck").css('visibility','visible');  
+		}
+		else{
+			$("#followCheck").css('visibility','hidden');  
+		}
+	});	
+    	
+	$("#Follow").click(function() {
+		if (isFollower == 'true') {
+			$("#followCheck").css('visibility','hidden'); 
+			isFollower = 'false';
+			followUser(0);
+		} else {
+			$("#followCheck").css('visibility','visible');
+			isFollower == 'true'
+			followUser(1);
+		}
+	});
+	
+	function followUser(value) {
+		$.ajax({
+			type : "POST",
+			url : "../followUser",
+			data : {
+				follower_id : '${user.id}',
+				followed_id : '${visitedUser.id}',
+				value: value
+			}
+		})	
+	};
 
 // 	$(document).ready(function () {
 //     	$.ajax({
