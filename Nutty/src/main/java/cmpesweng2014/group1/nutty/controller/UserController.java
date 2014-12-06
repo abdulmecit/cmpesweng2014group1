@@ -73,11 +73,40 @@ public class UserController {
 		if (isLogged) {
 			User u = (User) session.getAttribute("user");
 			model.addAttribute("user", u);
+			Ingredient[] unpreferred = userService.getUnpreferredForUser(u);
+			model.addAttribute("unpreferred", unpreferred);
+			
+			FoodSelection[] healthCondition = userService.getHealthCondition(u);
+			model.addAttribute("healthCondition", healthCondition);
+			
+			FoodSelection[] foodIntolerance = userService.getFoodIntolerances(u);
+			model.addAttribute("foodIntolerance", foodIntolerance);
 			return "preferences";
 		} else {
 			return "redirect:/login";
 		}
 	}
+	
+	@RequestMapping(value = "/preferences", method = RequestMethod.POST)
+	public String addFoodPreferences(
+			@RequestParam(value = "FoodIntolerance[]",required = false) String[] foodSelection,
+			@RequestParam(value = "disease[]",required = false) String[] healthCondition,
+			@RequestParam(value = "OtherPreferences[]", required = false) String[] unpreferred,
+			RedirectAttributes redirectAttrs, HttpSession session) {
+		User u = (User) session.getAttribute("user");
+		if(foodSelection!=null){
+			userService.addFoodSelectionAndHealth(u, foodSelection);
+		}
+		if(healthCondition!=null){
+			userService.addFoodSelectionAndHealth(u, healthCondition);
+		}
+		if(unpreferred!=null){
+			userService.addUnpreferredFood(u, unpreferred);
+		}
+		redirectAttrs.addFlashAttribute("message", new Message(1, null, "Your selections are successfully added to the system."));
+		return "redirect:/success";
+	}
+	
 	
 	@RequestMapping(value = "/homesettings", method = RequestMethod.GET)
 	public String viewHomeSettings(Model model, HttpSession session) {

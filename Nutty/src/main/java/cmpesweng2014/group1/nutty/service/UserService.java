@@ -61,7 +61,7 @@ public class UserService {
 		for(int i=0; i<FoodSelectionNames.length; i++){
 			fs_id=foodSelectionDao.getFoodSelectionIdByName(FoodSelectionNames[i]);
 			fs_ids[i]=fs_id;
-			foodSelectionDao.addFoodSelection(fs_id,user.getId());
+			foodSelectionDao.updateFoodSelection(fs_id,user.getId());
 		}		
 	}
 	//add unpreferred food 
@@ -69,7 +69,7 @@ public class UserService {
 		int ing_id;
 		for(int i=0; i<foodNames.length; i++){
 			ing_id=ingredientDao.getIdByName(foodNames[i]);
-			foodSelectionDao.addUnpreferredFood(ing_id, user.getId());
+			foodSelectionDao.updateUnpreferredFood(ing_id, user.getId());
 		}		
 	}	
 	//returns food intolerances for the given user as an array of foodSelection objects

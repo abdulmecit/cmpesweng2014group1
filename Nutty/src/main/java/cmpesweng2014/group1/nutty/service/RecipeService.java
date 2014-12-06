@@ -207,8 +207,15 @@ public class RecipeService {
 			return recipeDao.getRatesForUser("likes", recipe_id, user_id);
 	}
 	//get eaten status of the given user for the given recipe
-		public int getEatenForUser(int recipe_id, long user_id){
-			return recipeDao.getRatesForUser("eats", recipe_id, user_id);
+	public int getEatenForUser(int recipe_id, long user_id){
+		return recipeDao.getRatesForUser("eats", recipe_id, user_id);
 	}
-	
+	//share recipe
+	public void shareRecipe(long user_id, int recipe_id){
+		recipeDao.shareRecipe(user_id, recipe_id);
+	}	
+	//return shared recipes for the given user
+	public Recipe[] getSharedRecipes(long user_id){
+		return recipeDao.getSharedRecipes(user_id);
+	}
 }

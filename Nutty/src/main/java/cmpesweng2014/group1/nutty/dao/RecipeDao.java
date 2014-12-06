@@ -395,6 +395,38 @@ public class RecipeDao extends PcDao{
 			return recipes;
 		}
 	}
+	public void shareRecipe(final long user_id, final int recipe_id){
+		final String query = "INSERT INTO SharesRecipe (user_id, recipe_id) VALUES (?,?)";
+
+		this.getTemplate().update(new PreparedStatementCreator() {
+
+			@Override
+			public PreparedStatement createPreparedStatement(
+					Connection connection) throws SQLException {
+				PreparedStatement ps = connection.prepareStatement(query);
+				ps.setLong(1, user_id);
+				ps.setInt(2, recipe_id);
+
+				return ps;
+			}
+		});
+	}
+	
+	public Recipe[] getSharedRecipes(long user_id){
+		List<Recipe> recipeList = this.getTemplate().query(
+				"SELECT a.recipe_id, name, description, portion, created, last_updated"
+				+ "total_calorie FROM Recipe a, SharesRecipe b WHERE b.user_id =? AND "
+				+ "a.recipe_id = b.recipe_id",
+				new Object[] { user_id  }, new RecipeRowMapper());
+	
+		if (recipeList.isEmpty()) {
+			return null;
+		}
+		else{
+			Recipe[] recipes = recipeList.toArray(new Recipe[recipeList.size()]);
+			return recipes;
+		}
+	}
 	
 	
 }

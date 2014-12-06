@@ -65,58 +65,58 @@ body {
 		  </ul>
 	</div>
 	</nav>
-
+<form name="foodForm" method="post" >
 <div class="container">
 	<div id="sec2">
-		<form name="foodForm" method="post" action="FoodIntoleranceServlet">
+		
 			<h4>Select Your Food Intolerance and Allergies</h4>
 
 			<div id="section">
 				<p>
-					<input type="checkbox" name="Food Intolerance and Allergies"
+					<input type="checkbox" name="FoodIntolerance[]"
 						value="lactose intolerance" /> Lactose Intolerance
 				</p>
 				<p>
-					<input type="checkbox" name="Food Intolerance and Allergies"
+					<input type="checkbox" name="FoodIntolerance[]"
 						value="gluten intolerance" /> Gluten Intolerance
 				</p>
 				<p>
-					<input type="checkbox" name="Food Intolerance and Allergies"
+					<input type="checkbox" name="FoodIntolerance[]"
 						value="fruit allergy" /> Fruit Allergy
 				</p>
 				<p>
-					<input type="checkbox" name="Food Intolerance and Allergies"
+					<input type="checkbox" name="FoodIntolerance[]"
 						value="garlic allergy" /> Garlic Allergy
 				</p>
 				<p>
-					<input type="checkbox" name="Food Intolerance and Allergies"
+					<input type="checkbox" name="FoodIntolerance[]"
 						value="oat allergy" /> Oat Allergy
 				</p>
 				<p>
-					<input type="checkbox" name="Food Intolerance and Allergies"
+					<input type="checkbox" name="FoodIntolerance[]"
 						value="egg allergy" /> Egg Allergy
 				</p>
 			</div>
 
 			<div id="section">
 				<p>
-					<input type="checkbox" name="Food Intolerance and Allergies"
+					<input type="checkbox" name="FoodIntolerance[]"
 						value="meat allergy" /> Meat Allergy
 				</p>
 				<p>
-					<input type="checkbox" name="Food Intolerance and Allergies"
+					<input type="checkbox" name="FoodIntolerance[]"
 						value="milk allergy" /> Milk Allergy
 				</p>
 				<p>
-					<input type="checkbox" name="Food Intolerance and Allergies"
+					<input type="checkbox" name="FoodIntolerance[]"
 						value="peanut allergy" /> Peanut Allergy
 				</p>
 				<p>
-					<input type="checkbox" name="Food Intolerance and Allergies"
+					<input type="checkbox" name="FoodIntolerance[]"
 						value="fish allergy" /> Fish Allergy
 				</p>
 				<p>
-					<input type="checkbox" name="Food Intolerance and Allergies"
+					<input type="checkbox" name="FoodIntolerance[]"
 						value="soy allergy" /> Soy Allergy
 				</p>
 			</div>
@@ -124,81 +124,75 @@ body {
 			<div id="section">
 
 				<p>
-					<input type="checkbox" name="Food Intolerance and Allergies"
+					<input type="checkbox" name="FoodIntolerance[]"
 						value="tree nut allergy" /> Tree Nut Allergy
 				</p>
 				<p>
-					<input type="checkbox" name="Food Intolerance and Allergies"
+					<input type="checkbox" name="FoodIntolerance[]"
 						value="wheat allergy" /> Wheat Allergy
 				</p>
 				<p>
-					<input type="checkbox" name="Food Intolerance and Allergies"
+					<input type="checkbox" name="FoodIntolerance[]"
 						value="hot peppers allergy" /> Hot Peppers Allergy
 				</p>
 				<p>
-					<input type="checkbox" name="Food Intolerance and Allergies"
+					<input type="checkbox" name="FoodIntolerance[]"
 						value="sulfites allergy" /> Sulfites Allergy
 				</p>
 				<p>
-					<input type="checkbox" name="Food Intolerance and Allergies"
+					<input type="checkbox" name="FoodIntolerance[]"
 						value="tartrazine allergy" /> Tartrazine Allergy
 				</p>
 			</div>
 
-			<input type="submit" value="Submit" />
-			<br><br>
-			<font color="blue">${res}</font>
-		</form>
+			
+		
 	</div>
 
 
 	<div id="sec2">
-		<form name="DiseaseForm" method="post" action="HealthConditionServlet">
 			<h4>Select Your Diseases</h4>
 			<div id="section">
 				<p>
-					<input type="checkbox" name="disease" value="reflux" /> Reflux
+					<input type="checkbox" name="disease[]" value="reflux" /> Reflux
 				</p>
 				<p>
-					<input type="checkbox" name="disease" value="ulcer" /> Ulcer
+					<input type="checkbox" name="disease[]" value="ulcer" /> Ulcer
 				</p>
 				<p>
-					<input type="checkbox" name="disease" value="gastritis" />
+					<input type="checkbox" name="disease[]" value="gastritis" />
 					Gastritis
 				</p>
 			</div>
 
 			<div id="section">
 				<p>
-					<input type="checkbox" name="disease" value="diabetes" /> Diabetes
+					<input type="checkbox" name="disease[]" value="diabetes" /> Diabetes
 				</p>
 				<p>
-					<input type="checkbox" name="disease" value="cholesterol" />
+					<input type="checkbox" name="disease[]" value="cholesterol" />
 					Cholesterol
 				</p>
 			</div>
 
 			<div id="section">
 				<p>
-					<input type="checkbox" name="disease" value="heart condition" />
+					<input type="checkbox" name="disease[]" value="heart condition" />
 					Heart Condition
 				</p>
 				<p>
-					<input type="checkbox" name="disease" value="high blood pressure" />
+					<input type="checkbox" name="disease[]" value="high blood pressure" />
 					High Blood Pressure
 				</p>
 			</div>
-			<input type="submit" value="Submit" />
+			
 			<br><br>
-			<font color="blue">${res2}</font>
-		</form>
-		
 		
 		<div id="section">
-		<form name="Others" method="post" action="NonPreferredServlet">
 			<h4>Other Non-Preferred Ingredients</h4>
-			<input type="text" id="OtherPreferences" name="OtherPreferences" /> <input
-				type="submit" value="Add" />
+			<input type="text" id="OtherPreferences" name="OtherPreferences[]" />
+			 <input
+				type="submit" value="Submit" />
 			<br><br>
 			<font color="blue">${res3}</font>
 		</form>
