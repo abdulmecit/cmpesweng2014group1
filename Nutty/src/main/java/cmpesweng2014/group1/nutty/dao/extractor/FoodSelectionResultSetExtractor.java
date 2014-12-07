@@ -14,8 +14,8 @@ public class FoodSelectionResultSetExtractor implements ResultSetExtractor<FoodS
 	public FoodSelection extractData(ResultSet rs) throws SQLException,
 			DataAccessException {
 		FoodSelection foodSelection = new FoodSelection();
-		foodSelection.setFsId(rs.getInt(1));
-		foodSelection.setName(rs.getString(2));
+		foodSelection.setFs_id(rs.getInt(1));
+		foodSelection.setFs_name(rs.getString(2));
 		foodSelection.setType(rs.getString(3));	
 		return foodSelection;
 	}

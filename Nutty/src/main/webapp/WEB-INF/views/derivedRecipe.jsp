@@ -263,4 +263,6 @@ body {
 							$('#submit').attr("disabled", true);
 						}
 					});
-		</script>
+	</script>		
+  </body>
+</html>

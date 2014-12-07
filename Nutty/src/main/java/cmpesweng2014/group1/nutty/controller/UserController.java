@@ -398,4 +398,25 @@ public class UserController {
 		}
 		return response;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/foodSelectionREST", method = RequestMethod.POST)
+	public FoodSelection[] getFoodSelections(
+			@RequestParam(value = "user_id", required = true) Long user_id
+			) {
+		
+		User u = (User) userService.getUserDao().getUserById(user_id);
+		return userService.getFoodSelection(u);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/unpreferREST", method = RequestMethod.POST)
+	public Ingredient[] getUnpreferred(
+			@RequestParam(value = "user_id", required = true) Long user_id
+			) {
+		
+		User u = (User) userService.getUserDao().getUserById(user_id);
+		return userService.getUnpreferredForUser(u);
+	}
+
 }

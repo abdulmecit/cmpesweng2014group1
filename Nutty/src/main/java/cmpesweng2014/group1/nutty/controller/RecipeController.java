@@ -8,8 +8,11 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringArrayPropertyEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,6 +39,14 @@ public class RecipeController {
 	
 	@Autowired
 	private UserService userService;
+	
+	// No longer splits from comma when a single item sent as an array parameter
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+	    binder.registerCustomEditor(
+	        String[].class,
+	        new StringArrayPropertyEditor(null)); 
+	}
 
 	@RequestMapping(value = "/addRecipe", method = RequestMethod.GET)
 	public String viewAddRecipe(HttpSession session) {
@@ -54,20 +65,17 @@ public class RecipeController {
 							@RequestParam(value = "description", required = true) String description,
 							@RequestParam(value = "portion", required = true) int portion,
 							@RequestParam(value = "link", required = true) String link,
-							@RequestParam(value = "ingredient[]", required = true) String[] ingredientz,
+							@RequestParam(value = "ingredient[]", required = true) String[] ingredients,
 							@RequestParam(value = "amount[]", required = true) double[] amounts, 
 							@RequestParam(value = "tag[]", required = true) String[] tagz,
 			RedirectAttributes redirectAttrs, HttpSession session) {
 		User u = (User) session.getAttribute("user");
 		
-		//Bugfixes
-		String[] ingredients = new String[ingredientz.length-1];
-		System.arraycopy(ingredientz, 0, ingredients, 0, ingredientz.length-1);	
-		
+		//Remove empty and duplicate tags			
 		HashSet<String> tagSet = new HashSet<String>(Arrays.asList(tagz));
 		tagSet.remove(new String(""));
 		String[] tags = tagSet.toArray(new String[0]);	
-
+		
 		Recipe r = recipeService.createRecipe(recipeName, description, portion, link, ingredients, amounts, u, tags);
 		if(r != null){
 			redirectAttrs.addFlashAttribute("message", new Message(1, null, "Your recipe is successfully added to the system."));
@@ -86,7 +94,13 @@ public class RecipeController {
 							@RequestParam(value = "ingredient[]", required = true) String[] ingredients,
 							@RequestParam(value = "amount[]", required = true) double[] amounts, 
 							@RequestParam(value = "user", required = true) User u, 
-							@RequestParam(value = "tag[]", required = true) String[] tags) {
+							@RequestParam(value = "tag[]", required = true) String[] tagz) {
+		
+		//Remove empty and duplicate tags			
+		HashSet<String> tagSet = new HashSet<String>(Arrays.asList(tagz));
+		tagSet.remove(new String(""));
+		String[] tags = tagSet.toArray(new String[0]);	
+		
 		Recipe r = recipeService.createRecipe(recipeName, description, portion, link, ingredients, amounts, u, tags);
 		if(r != null){
 			return new Message(1, r, "Your recipe is successfully added to the system.");		

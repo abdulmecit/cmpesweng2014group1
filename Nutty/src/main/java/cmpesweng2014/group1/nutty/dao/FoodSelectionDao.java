@@ -23,7 +23,7 @@ public class FoodSelectionDao extends PcDao {
 		if (foodSelections.isEmpty()) {
 			return 0;
 		} else {
-			return foodSelections.get(0).getFsId();
+			return foodSelections.get(0).getFs_id();
 		}
 	}
 	public void updateFoodSelection(final int fs_id, final long user_id){
@@ -61,6 +61,20 @@ public class FoodSelectionDao extends PcDao {
 				return ps;
 			}
 		});
+	}
+	
+	public FoodSelection[] getFoodSelectionForUser(long user_id){
+		List<FoodSelection> fsList = this.getTemplate().query(
+				"SELECT a.fs_id, a.fs_name, a.type FROM FoodSelection a, HasSelection b WHERE "
+				+ " user_id= ? AND a.fs_id=b.fs_id",
+				new Object[] { user_id}, new FoodSelectionRowMapper());
+
+		if (fsList.isEmpty()) {
+			return null;
+		} else {
+			FoodSelection[] foodSelections = fsList.toArray(new FoodSelection[fsList.size()]);
+			return foodSelections;
+		}
 	}
 	
 	public FoodSelection[] getFoodSelectionForUser(long user_id, String type){

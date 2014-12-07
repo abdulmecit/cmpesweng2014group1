@@ -80,6 +80,10 @@ public class UserService {
 	public FoodSelection[] getHealthCondition(User user){
 		return foodSelectionDao.getFoodSelectionForUser(user.getId(), "health_condition");
 	}
+	//returns food intolerances and health conditions combined
+	public FoodSelection[] getFoodSelection(User user){
+		return foodSelectionDao.getFoodSelectionForUser(user.getId());
+	}
 	//returns unpreferred foods for the given user
 	public Ingredient[] getUnpreferredForUser(User user){
 		return foodSelectionDao.getUnpreferredFoodForUser(user.getId());
@@ -120,7 +124,7 @@ public class UserService {
 			return getFollowingList(user_id).length;
 		}
 	}
-	//determines if 
+	//determines if user with follower_id is a follower of the user with followed_id
 	public boolean isFollower(long follower_id, long followed_id){
 		User[] followerList = getFollowerList(followed_id);
 		if(followerList == null){

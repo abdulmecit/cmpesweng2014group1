@@ -161,7 +161,6 @@ body {
 								</div>
 								<div id="dynamicInput2" class="col-sm-8" align="left">
 								</div>
-								<p> <input type='hidden' style="visibility: collapse; width: 0px;" class='form-control' id='ingredient' name='ingredient[]' value='bug'> </p>												
 							</div>
 						</div>
 					</div>
@@ -189,7 +188,7 @@ body {
 			function addInput(div1, div2, value) {
 				var newdiv1 = document.createElement('div');
 				var newdiv2 = document.createElement('div');
-				newdiv1.innerHTML = "<p> <input type='text' class='form-control' id='amount' name='amount[]' placeholder='2pounds,etc'> </p>";
+				newdiv1.innerHTML = "<p> <input type='text' class='form-control' id='amount' name='amount[]' placeholder='only number'> </p>";
 				newdiv2.innerHTML = "<p> <input type='text' class='form-control' id='ingredient' name='ingredient[]' value='" + value + "'> </p>";				
 				document.getElementById(div1).appendChild(newdiv1);
 				document.getElementById(div2).appendChild(newdiv2);
@@ -298,4 +297,6 @@ body {
     			}
             });
              
-		</script>
+	</script>		
+  </body>
+</html>
