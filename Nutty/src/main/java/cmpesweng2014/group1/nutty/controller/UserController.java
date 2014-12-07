@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.Gson;
+
 import cmpesweng2014.group1.nutty.model.FoodSelection;
 import cmpesweng2014.group1.nutty.model.Ingredient;
 import cmpesweng2014.group1.nutty.model.Message;
@@ -417,6 +419,34 @@ public class UserController {
 		
 		User u = (User) userService.getUserDao().getUserById(user_id);
 		return userService.getUnpreferredForUser(u);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/preferencesREST", method = RequestMethod.POST)
+	public Message addFoodPreferencesREST(
+			@RequestParam(value = "FoodIntolerance[]",required = false) String foodSelectionz,
+			@RequestParam(value = "disease[]",required = false) String healthConditionz,
+			@RequestParam(value = "OtherPreferences[]", required = false) String unpreferredz,
+			@RequestParam(value = "user_id", required = true) Long user_id
+			){
+
+		//Convert from JSON String
+		Gson gson = new Gson();
+		String[] foodSelection = gson.fromJson(foodSelectionz, String[].class);
+		String[] healthCondition = gson.fromJson(healthConditionz, String[].class);
+		String[] unpreferred = gson.fromJson(unpreferredz, String[].class);
+		
+		User u = (User) userService.getUserDao().getUserById(user_id);
+		if(foodSelection!=null){
+			userService.addFoodSelectionAndHealth(u, foodSelection);
+		}
+		if(healthCondition!=null){
+			userService.addFoodSelectionAndHealth(u, healthCondition);
+		}
+		if(unpreferred!=null){
+			userService.addUnpreferredFood(u, unpreferred);
+		}
+		return new Message(1, null, "Your selections are successfully added to the system.");
 	}
 
 }

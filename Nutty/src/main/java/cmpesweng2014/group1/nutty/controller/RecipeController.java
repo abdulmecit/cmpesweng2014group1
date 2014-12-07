@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.Gson;
+
 import cmpesweng2014.group1.nutty.model.Comment;
 import cmpesweng2014.group1.nutty.model.Ingredient;
 import cmpesweng2014.group1.nutty.model.IngredientAmount;
@@ -91,15 +93,21 @@ public class RecipeController {
 							@RequestParam(value = "description", required = true) String description,
 							@RequestParam(value = "portion", required = true) int portion,
 							@RequestParam(value = "link", required = true) String link,
-							@RequestParam(value = "ingredient[]", required = true) String[] ingredients,
-							@RequestParam(value = "amount[]", required = true) double[] amounts, 
+							@RequestParam(value = "ingredient[]", required = true) String ingredientz,
+							@RequestParam(value = "amount[]", required = true) String amountz, 
 							@RequestParam(value = "user", required = true) User u, 
-							@RequestParam(value = "tag[]", required = true) String[] tagz) {
+							@RequestParam(value = "tag[]", required = true) String tagz) {
+		
+		//Convert from JSON String
+		Gson gson = new Gson();
+		String[] ingredients = gson.fromJson(ingredientz, String[].class);
+		String[] tags = gson.fromJson(tagz, String[].class);
+		double[] amounts = gson.fromJson(amountz, double[].class);
 		
 		//Remove empty and duplicate tags			
-		HashSet<String> tagSet = new HashSet<String>(Arrays.asList(tagz));
+		HashSet<String> tagSet = new HashSet<String>(Arrays.asList(tags));
 		tagSet.remove(new String(""));
-		String[] tags = tagSet.toArray(new String[0]);	
+		tags = tagSet.toArray(new String[0]);	
 		
 		Recipe r = recipeService.createRecipe(recipeName, description, portion, link, ingredients, amounts, u, tags);
 		if(r != null){
