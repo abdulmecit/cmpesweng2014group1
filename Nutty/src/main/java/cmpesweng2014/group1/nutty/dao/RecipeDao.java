@@ -427,6 +427,17 @@ public class RecipeDao extends PcDao{
 			return recipes;
 		}
 	}
+	public int isShared(long user_id, int recipe_id){
+		int count=this.getTemplate().queryForObject(
+				"SELECT COUNT(*) FROM SharesRecipe WHERE recipe_id = ? AND user_id = ?", 
+				new Object[] {recipe_id, user_id}, Integer.class);
+		if(count==0){
+			return 0;
+		}
+		else{
+			return 1;
+		}
+	}
 	
 	
 }

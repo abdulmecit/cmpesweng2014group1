@@ -181,6 +181,9 @@ public class RecipeController {
 			User u = (User) session.getAttribute("user");
 			long user_id=u.getId();
 			
+			int shareOfUser=recipeService.isShared(user_id, recipeId);
+			model.addAttribute("shareOfUser", shareOfUser);
+			
 			int healthRateOfUser=recipeService.getHealthRateForUser(recipeId, user_id);
 			model.addAttribute("healthRateOfUser", healthRateOfUser);
 			
@@ -234,6 +237,15 @@ public class RecipeController {
 		User u = userService.getUserDao().getUserById(user_id);	
 		recipeService.getRecipeDao().evaluateRecipe(changed, value, u, recipe);
 		
+		return "Recipe";
+	}
+	
+	@RequestMapping(value = "/shareRecipe", method = RequestMethod.POST)
+	public String shareRecipe(
+			@RequestParam(value = "user_id", required = true) Long user_id,
+			@RequestParam(value = "recipe_id", required = true) int recipe_id
+			) {		
+		recipeService.shareRecipe(user_id, recipe_id);		
 		return "Recipe";
 	}
 	
@@ -326,6 +338,8 @@ public class RecipeController {
 		int eatenOfUser=recipeService.getEatenForUser(recipeId, user_id);
 		elr.put("eatenOfUser", eatenOfUser);
 		
+		int shareOfUser=recipeService.isShared(user_id, recipeId);
+		elr.put("shareOfUser", shareOfUser);
 		return elr;
 	}
 	

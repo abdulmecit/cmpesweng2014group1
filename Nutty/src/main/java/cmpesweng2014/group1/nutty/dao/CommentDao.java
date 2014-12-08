@@ -74,4 +74,8 @@ public class CommentDao extends PcDao {
 				new Object[] {comment.getComment_id()}, Integer.class);
 		return total;
 	}
+	public void getBackLikeOfComment(Comment comment, User user){
+		this.getTemplate().update("DELETE FROM LikesComment WHERE user_id = ? AND comment_id = ?", 
+				new Object[] { user.getId(), comment.getComment_id()});
+	}
 }

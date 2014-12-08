@@ -178,6 +178,10 @@ public class RecipeService {
 	public void likeComment(Comment comment, User user){
 		commentDao.likeComment(comment, user);
 	}
+	//user gets back the like of a comment
+	public void getBackLikeOfAComment(Comment comment, User user){
+		commentDao.getBackLikeOfComment(comment, user);
+	}	
 	//get likes of a comment
 	public int numberOfLikesOfAComment(Comment comment){
 		return commentDao.numberOfLikes(comment);
@@ -217,5 +221,9 @@ public class RecipeService {
 	//return shared recipes for the given user
 	public Recipe[] getSharedRecipes(long user_id){
 		return recipeDao.getSharedRecipes(user_id);
+	}
+	//return true if shared, false not
+	public int isShared(long user_id, int recipe_id){
+		return recipeDao.isShared(user_id, recipe_id);
 	}
 }
