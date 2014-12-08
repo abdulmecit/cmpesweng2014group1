@@ -42,16 +42,7 @@ public class UserController {
 		if (isLogged) {
 			User u = (User) userService.getUserDao().getUserById(userId);
 			model.addAttribute("visitedUser", u);
-			
-			Ingredient[] unpreferred = userService.getUnpreferredForUser(u);
-			model.addAttribute("unpreferred", unpreferred);
-			
-			FoodSelection[] healthCondition = userService.getHealthCondition(u);
-			model.addAttribute("healthCondition", healthCondition);
-			
-			FoodSelection[] foodIntolerance = userService.getFoodIntolerances(u);
-			model.addAttribute("foodIntolerance", foodIntolerance);
-			
+
 			User visitingUser = (User) session.getAttribute("user");
 			boolean isFollower = userService.isFollower(visitingUser.getId(), u.getId());
 			model.addAttribute("isFollower", isFollower);
@@ -75,14 +66,6 @@ public class UserController {
 		if (isLogged) {
 			User u = (User) session.getAttribute("user");
 			model.addAttribute("user", u);
-			Ingredient[] unpreferred = userService.getUnpreferredForUser(u);
-			model.addAttribute("unpreferred", unpreferred);
-			
-			FoodSelection[] healthCondition = userService.getHealthCondition(u);
-			model.addAttribute("healthCondition", healthCondition);
-			
-			FoodSelection[] foodIntolerance = userService.getFoodIntolerances(u);
-			model.addAttribute("foodIntolerance", foodIntolerance);
 			return "preferences";
 		} else {
 			return "redirect:/login";
@@ -91,20 +74,22 @@ public class UserController {
 	
 	@RequestMapping(value = "/preferences", method = RequestMethod.POST)
 	public String addFoodPreferences(
-			@RequestParam(value = "FoodIntolerance[]",required = false) String[] foodSelection,
+			@RequestParam(value = "FoodIntolerance[]",required = false) String[] foodIntolerance,
 			@RequestParam(value = "disease[]",required = false) String[] healthCondition,
 			@RequestParam(value = "OtherPreferences[]", required = false) String[] unpreferred,
 			RedirectAttributes redirectAttrs, HttpSession session) {
 		User u = (User) session.getAttribute("user");
-		if(foodSelection!=null){
-			userService.addFoodSelectionAndHealth(u, foodSelection);
-		}
-		if(healthCondition!=null){
-			userService.addFoodSelectionAndHealth(u, healthCondition);
-		}
-		if(unpreferred!=null){
-			userService.addUnpreferredFood(u, unpreferred);
-		}
+		
+		//Combine foodIntolerance and healthCondition as foodSelection
+		int fiLen = foodIntolerance.length;
+		int hcLen = healthCondition.length;
+		String[] foodSelection = new String[fiLen + hcLen];
+		System.arraycopy(foodIntolerance, 0, foodSelection, 0, fiLen);
+		System.arraycopy(healthCondition, 0, foodSelection, fiLen, hcLen);
+
+		userService.addFoodSelection(u, foodSelection);
+		userService.addUnpreferredFood(u, unpreferred);
+			
 		redirectAttrs.addFlashAttribute("message", new Message(1, null, "Your selections are successfully added to the system."));
 		return "redirect:/success";
 	}
@@ -237,9 +222,10 @@ public class UserController {
 			@RequestParam(value = "birthday_month", required = false) String month,
 			@RequestParam(value = "birthday_day", required = false) String day,
 			@RequestParam(value = "gender", required = false) Integer gender, 
-			@RequestParam(value = "user", required = true) User u) throws ParseException {
+			@RequestParam(value = "user_id", required = true) Long user_id) throws ParseException {
 		
 		Message msg = new Message();
+		User u = userService.getUserDao().getUserById(user_id);
 
 		if(changed.equals("name")){
 			if (name.equals("")) {
@@ -351,12 +337,12 @@ public class UserController {
 	@ResponseBody
 	public boolean checkPassword(
 			@RequestParam(value = "password", required = true) String password,
-			@RequestParam(value = "user", required = true) User u){
+			@RequestParam(value = "user_id", required = true) Long user_id){
 				
 		if (password.equals("")) {
 			return false;
 		}
-				
+		User u = userService.getUserDao().getUserById(user_id);
 		String realPassword = u.getPassword();
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		if(encoder.matches(password, realPassword)){
@@ -412,6 +398,26 @@ public class UserController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(value = "/foodIntoleranceREST", method = RequestMethod.POST)
+	public FoodSelection[] getFoodIntolerances(
+			@RequestParam(value = "user_id", required = true) Long user_id
+			) {
+		
+		User u = (User) userService.getUserDao().getUserById(user_id);
+		return userService.getFoodIntolerances(u);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/healthConditionREST", method = RequestMethod.POST)
+	public FoodSelection[] getHealthConditions(
+			@RequestParam(value = "user_id", required = true) Long user_id
+			) {
+		
+		User u = (User) userService.getUserDao().getUserById(user_id);
+		return userService.getHealthCondition(u);
+	}
+	
+	@ResponseBody
 	@RequestMapping(value = "/unpreferREST", method = RequestMethod.POST)
 	public Ingredient[] getUnpreferred(
 			@RequestParam(value = "user_id", required = true) Long user_id
@@ -424,7 +430,7 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "/preferencesREST", method = RequestMethod.POST)
 	public Message addFoodPreferencesREST(
-			@RequestParam(value = "FoodIntolerance[]",required = false) String foodSelectionz,
+			@RequestParam(value = "FoodIntolerance[]",required = false) String foodIntolerancez,
 			@RequestParam(value = "disease[]",required = false) String healthConditionz,
 			@RequestParam(value = "OtherPreferences[]", required = false) String unpreferredz,
 			@RequestParam(value = "user_id", required = true) Long user_id
@@ -432,20 +438,21 @@ public class UserController {
 
 		//Convert from JSON String
 		Gson gson = new Gson();
-		String[] foodSelection = gson.fromJson(foodSelectionz, String[].class);
+		String[] foodIntolerance = gson.fromJson(foodIntolerancez, String[].class);
 		String[] healthCondition = gson.fromJson(healthConditionz, String[].class);
 		String[] unpreferred = gson.fromJson(unpreferredz, String[].class);
 		
+		//Combine foodIntolerance and healthCondition as foodSelection
+		int fiLen = foodIntolerance.length;
+		int hcLen = healthCondition.length;
+		String[] foodSelection = new String[fiLen + hcLen];
+		System.arraycopy(foodIntolerance, 0, foodSelection, 0, fiLen);
+		System.arraycopy(healthCondition, 0, foodSelection, fiLen, hcLen);
+		
 		User u = (User) userService.getUserDao().getUserById(user_id);
-		if(foodSelection!=null){
-			userService.addFoodSelectionAndHealth(u, foodSelection);
-		}
-		if(healthCondition!=null){
-			userService.addFoodSelectionAndHealth(u, healthCondition);
-		}
-		if(unpreferred!=null){
-			userService.addUnpreferredFood(u, unpreferred);
-		}
+		userService.addFoodSelection(u, foodSelection);
+		userService.addUnpreferredFood(u, unpreferred);
+		
 		return new Message(1, null, "Your selections are successfully added to the system.");
 	}
 

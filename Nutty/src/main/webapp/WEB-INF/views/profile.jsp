@@ -352,44 +352,68 @@ input[type="submit"]:active {
 		})	
 	};
 
-// 	$(document).ready(function () {
-//     	$.ajax({
-// 			  type: "POST",
-// 			  url: "CheckFoodIntoleranceServlet",
-// 			})
-// 			.done(function(msg) {
-// 				if(msg.length != 0 && msg.indexOf("%") > -1){
-// 					var prefs = (msg.slice(0, -1)).split("%")
-// 					document.getElementById('food_int').innerHTML = prefs;
-// 				}
-// 			});   	
-//   	});	
+ 	$(document).ready(function () {
+	 	 	$.ajax({
+				type: "POST",
+				url: "../foodIntoleranceREST",
+				data : {
+					user_id : '${user.id}'
+				}
+			})
+ 			.done(function(res) {
+			   	var len = res.length;
+				   	if(len != 0){
+				   	var prefs = "";
+				   	for (var i=0; i<len-1; i++){
+						 prefs += res[i].fs_name + ", ";
+	 				}
+				   	prefs += res[len-1].fs_name;
+	 				document.getElementById('food_int').innerHTML = prefs;
+			   	}
+ 			});   	
+   	});	
 	
-// 	$(document).ready(function () {
-//     	$.ajax({
-// 			  type: "POST",
-// 			  url: "CheckHealthConditionServlet",
-// 			})
-// 			.done(function(msg) {
-// 				if(msg.length != 0 && msg.indexOf("%") > -1){
-// 					var prefs = (msg.slice(0, -1)).split("%")
-// 					document.getElementById('health_cond').innerHTML = prefs;
-// 				}
-// 			});   	
-//   	});	
+ 	$(document).ready(function () {
+ 	 	$.ajax({
+			type: "POST",
+			url: "../healthConditionREST",
+			data : {
+				user_id : '${user.id}'
+			}
+		})
+			.done(function(res) {
+		   	var len = res.length;
+			   	if(len != 0){
+			   	var prefs = "";
+			   	for (var i=0; i<len-1; i++){
+					 prefs += res[i].fs_name + ", ";
+ 				}
+			   	prefs += res[len-1].fs_name;
+ 				document.getElementById('health_cond').innerHTML = prefs;
+		   	}
+			});   	
+	});	
 	
-// 	$(document).ready(function () {
-//     	$.ajax({
-// 			  type: "POST",
-// 			  url: "CheckNonPreferredServlet",
-// 			})
-// 			.done(function(msg) {
-// 				if(msg.length != 0 && msg.indexOf("%") > -1){
-// 					var prefs = (msg.slice(0, -1)).split("%")
-// 					document.getElementById('not_pref').innerHTML = prefs;
-// 				}
-// 			});   	
-//   	});	
+ 	$(document).ready(function () {
+ 	 	$.ajax({
+			type: "POST",
+			url: "../unpreferREST",
+			data : {
+				user_id : '${user.id}'
+			}
+		})
+			.done(function(res) {
+		   	var len = res.length;
+			   	if(len != 0){
+			   	var prefs = "";
+			   	for (var i=0; i<len-1; i++){
+					 prefs += res[i].ing_name + "<br>";
+ 				}
+			   	prefs += res[len-1].ing_name;
+ 				document.getElementById('not_pref').innerHTML = prefs;
+		   	}
+			});   	
+	});	
 	</script>
 </body>
 </html>

@@ -62,7 +62,7 @@ body {
 
 #sec2 {
 	width: 1000px;
-	height: 150px;
+	height: 200px;
 	float: none;
 	padding: 10px;
 	margin-right: 10px;
@@ -71,12 +71,13 @@ body {
 
 #sec3 {
 	width: 1000px;
-	height: 150px;
+	height: 1000px;
 	float: none;
 	padding: 10px;
 	margin-right: 10px;
 	margin-left: 4px;
 }
+
 </style>
 </head>
 
@@ -221,18 +222,21 @@ body {
 			
 		<div id="sec3">
 				<h4>Other Non-Preferred Ingredients</h4>
-				<div id="section">			
-					<input type="text" id="OtherPreferences" name="OtherPreferences[]" />
-					<br><br>
-					<input type="submit" value="Submit" />		
+				<div style="float:left; width:200px">		
+   					<input type="text" id="addPreference" />	
+				</div>	
+   				<div id="unpreferreds" style="height:300px; width:600px; float:left; overflow:auto;"></div>	
+				<div>		
+					<input type="submit" value="Submit" />	
 				</div>
-				<p>Result:</p>
-				<div id="log" style="height: 200px; width: 300px; overflow: auto;" class="ui-widget-content"></div>
-		</div>
+   		</div>
 	</div>
 	</form>
 	
 	<script>
+	
+		var table = document.getElementById("myTable");
+		var index = 0;
 	
 		$(document).ready(function () {
 	 	 	$.ajax({
@@ -261,11 +265,11 @@ body {
 			.done(function(res) {
 			   	var len = res.length;
 			   	for (var i=0; i<len; i++)
-					log("Selected: " + res[i].ing_name + " with id " + res[i].id);
+					addRow(res[i].ing_name);
 			});
 		});
 			   	
-	    $("#OtherPreferences").autocomplete({
+	    $("#addPreference").autocomplete({
 	        source: function( request, response ) {
 	        $.ajax({
 	            url: "../someIngredients2",
@@ -283,17 +287,27 @@ body {
 	        },
 	        minLength: 3,
 	        select: function(event, ui) {
-				log( ui.item ?
-						"Selected: " + ui.item.label + " with id " + ui.item.id :
-						"Nothing selected, input was " + this.label );
+				addRow(ui.item.label);
 			}
 	    });
 	    
-		function log( message ) {
-			$( "<div>" ).text( message ).prependTo( "#log" );
-			$( "#log" ).scrollTop( 0 );
+		function addRow(item) {			
+			
+			var row = document.createElement('div');
+			row.id = index;
+			row.style.height = "25px";
+			row.style.width = "600px";
+			row.innerHTML = item + "&nbsp;"	+
+			"<img id='delete' title='Delete' src='../resources/img/delete.png' height='20' width='20' onclick='deleteRow(this.parentElement.id)'></img>" +
+			"<input type='hidden' id='OtherPreferences' name='OtherPreferences[]' value='" + item + "' style='visibility: collapse; width: 0px;'/>";
+			document.getElementById("unpreferreds").appendChild(row);
+			index++;
 		}
 
+		function deleteRow(id) {
+			var row = document.getElementById(id);
+			row.parentElement.removeChild(row);
+		}
 	</script>
 </body>
 </html>

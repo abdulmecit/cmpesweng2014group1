@@ -95,7 +95,7 @@ public class RecipeController {
 							@RequestParam(value = "link", required = true) String link,
 							@RequestParam(value = "ingredient[]", required = true) String ingredientz,
 							@RequestParam(value = "amount[]", required = true) String amountz, 
-							@RequestParam(value = "user", required = true) User u, 
+							@RequestParam(value = "user_id", required = true) Long user_id,
 							@RequestParam(value = "tag[]", required = true) String tagz) {
 		
 		//Convert from JSON String
@@ -109,6 +109,7 @@ public class RecipeController {
 		tagSet.remove(new String(""));
 		tags = tagSet.toArray(new String[0]);	
 		
+		User u = userService.getUserDao().getUserById(user_id);	
 		Recipe r = recipeService.createRecipe(recipeName, description, portion, link, ingredients, amounts, u, tags);
 		if(r != null){
 			return new Message(1, r, "Your recipe is successfully added to the system.");		

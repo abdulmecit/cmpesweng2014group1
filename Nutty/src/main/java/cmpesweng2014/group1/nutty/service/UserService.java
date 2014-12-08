@@ -55,21 +55,27 @@ public class UserService {
 	
 	//add food intolerance and health condition
 	//it is the same to add food intolerance and health condition 
-	public void addFoodSelectionAndHealth(User user, String[] FoodSelectionNames){
-		int[] fs_ids=new int[FoodSelectionNames.length] ;
+	public void addFoodSelection(User user, String[] foodSelectionNames){
+		foodSelectionDao.deleteAllFoodSelection(user.getId());
+		if(foodSelectionNames == null)
+			return;	
+		int[] fs_ids=new int[foodSelectionNames.length] ;
 		int fs_id;
-		for(int i=0; i<FoodSelectionNames.length; i++){
-			fs_id=foodSelectionDao.getFoodSelectionIdByName(FoodSelectionNames[i]);
+		for(int i=0; i<foodSelectionNames.length; i++){
+			fs_id=foodSelectionDao.getFoodSelectionIdByName(foodSelectionNames[i]);
 			fs_ids[i]=fs_id;
-			foodSelectionDao.updateFoodSelection(fs_id,user.getId());
+			foodSelectionDao.addFoodSelection(fs_id,user.getId());
 		}		
 	}
 	//add unpreferred food 
 	public void addUnpreferredFood(User user, String[] foodNames){
+		foodSelectionDao.deleteAllUnpreferredFood(user.getId());
+		if(foodNames == null)
+			return;	
 		int ing_id;
 		for(int i=0; i<foodNames.length; i++){
 			ing_id=ingredientDao.getIdByName(foodNames[i]);
-			foodSelectionDao.updateUnpreferredFood(ing_id, user.getId());
+			foodSelectionDao.addUnpreferredFood(ing_id, user.getId());
 		}		
 	}	
 	//returns food intolerances for the given user as an array of foodSelection objects

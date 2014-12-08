@@ -189,7 +189,7 @@ body {
 				var newdiv1 = document.createElement('div');
 				var newdiv2 = document.createElement('div');
 				newdiv1.innerHTML = "<p> <input type='text' class='form-control' id='amount' name='amount[]' placeholder='only number'> </p>";
-				newdiv2.innerHTML = "<p> <input type='text' class='form-control' id='ingredient' name='ingredient[]' value='" + value + "'> </p>";				
+				newdiv2.innerHTML = "<p> <input type='text' class='form-control' id='ingredient' name='ingredient[]' value='" + value + "' readonly='readonly'> </p>";				
 				document.getElementById(div1).appendChild(newdiv1);
 				document.getElementById(div2).appendChild(newdiv2);
 			}

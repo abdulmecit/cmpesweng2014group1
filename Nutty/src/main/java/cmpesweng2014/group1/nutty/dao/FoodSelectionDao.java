@@ -26,10 +26,14 @@ public class FoodSelectionDao extends PcDao {
 			return foodSelections.get(0).getFs_id();
 		}
 	}
-	public void updateFoodSelection(final int fs_id, final long user_id){
+	
+	public void deleteAllFoodSelection(long user_id){
 		this.getTemplate().update("DELETE FROM HasSelection WHERE user_id = ?", 
 				new Object[] { user_id});
-			
+	}
+	
+	
+	public void addFoodSelection(final int fs_id, final long user_id){			
 		final String query = "INSERT INTO HasSelection (user_id, fs_id) VALUES (?,?)";
 
 		this.getTemplate().update(new PreparedStatementCreator() {
@@ -45,9 +49,12 @@ public class FoodSelectionDao extends PcDao {
 		});
 	}
 	
-	public void updateUnpreferredFood(final int ing_id, final long user_id){
+	public void deleteAllUnpreferredFood(long user_id){
 		this.getTemplate().update("DELETE FROM Unprefer WHERE user_id = ?", 
 				new Object[] { user_id});
+	}
+	
+	public void addUnpreferredFood(final int ing_id, final long user_id){
 		final String query = "INSERT INTO Unprefer (user_id, ing_id) VALUES (?,?)";
 
 		this.getTemplate().update(new PreparedStatementCreator() {
