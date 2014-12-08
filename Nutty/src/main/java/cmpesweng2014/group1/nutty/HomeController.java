@@ -214,4 +214,90 @@ public class HomeController {
 		
 		return answer;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/basicSearchREST")
+	public List<?> basicSearchREST(
+			@RequestParam(value = "search", required = true) String search,
+			@RequestParam(value = "searchOption", required = false, defaultValue = "recipe") String searchOption){
+		
+		if(searchOption.equals("recipe")){
+			List<Recipe> recipes = recipeService.getRecipeDao().searchRecipeByName(search);
+			return recipes;
+		}
+		else{
+			List<User> users = userService.getUserDao().searchUserByNameSurname(search);
+			return users;
+		}
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/basicSearchREST2")
+	public String[][] basicSearchREST2(
+			@RequestParam(value = "search", required = true) String search,
+			@RequestParam(value = "searchOption", required = false, defaultValue = "recipe") String searchOption){
+		
+		String[][] response;
+		
+		if(searchOption.equals("recipe")){
+			List<Recipe> recipes = recipeService.getRecipeDao().searchRecipeByName(search);
+			response = new String[recipes.size()][2];
+			for(int i=0; i<recipes.size(); i++){
+				Recipe r = recipes.get(i);
+				response[i][0] = r.getName();
+				response[i][1] = r.getRecipe_id() + "";
+			}
+		}
+		else{
+			List<User> users = userService.getUserDao().searchUserByNameSurname(search);
+			response = new String[users.size()][2];
+			for(int i=0; i<users.size(); i++){
+				User u = users.get(i);
+				response[i][0] = u.getName() + " " + u.getSurname();
+				response[i][1] = u.getId() + "";
+			}
+		}
+		return response;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/basicSearchREST3")
+	public String basicSearchREST3(
+			@RequestParam(value = "search", required = true) String search,
+			@RequestParam(value = "searchOption", required = false, defaultValue = "recipe") String searchOption){
+		
+		String answer = "";
+		
+		if(searchOption.equals("recipe")){
+			List<Recipe> recipes = recipeService.getRecipeDao().searchRecipeByName(search);
+			if(recipes == null){
+				return "[]";
+			}	
+			answer += "[";
+			for(int i=0; i<recipes.size(); i++){
+				Recipe r = recipes.get(i);
+				answer += "{\"name\":\"" + r.getName() +"\", \"id\":\"" + r.getRecipe_id() + "\"}";
+				if(i != (recipes.size()-1)) {
+					answer += ",";
+				}
+			}
+			answer += "]";
+		}
+		else{
+			List<User> users = userService.getUserDao().searchUserByNameSurname(search);
+			if(users == null){
+				return "[]";
+			}	
+			answer += "[";
+			for(int i=0; i<users.size(); i++){
+				User u = users.get(i);
+				answer += "{\"name\":\"" + u.getName() + " " + u.getSurname() +"\", \"id\":\"" + u.getId() + "\"}";
+				if(i != (users.size()-1)) {
+					answer += ",";
+				}
+			}
+			answer += "]";
+		}
+		return answer;
+	}
 }
