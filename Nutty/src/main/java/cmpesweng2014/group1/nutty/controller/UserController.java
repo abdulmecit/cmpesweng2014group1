@@ -74,18 +74,10 @@ public class UserController {
 	
 	@RequestMapping(value = "/preferences", method = RequestMethod.POST)
 	public String addFoodPreferences(
-			@RequestParam(value = "FoodIntolerance[]",required = false) String[] foodIntolerance,
-			@RequestParam(value = "disease[]",required = false) String[] healthCondition,
+			@RequestParam(value = "FoodSelection[]",required = false) String[] foodSelection,
 			@RequestParam(value = "OtherPreferences[]", required = false) String[] unpreferred,
 			RedirectAttributes redirectAttrs, HttpSession session) {
 		User u = (User) session.getAttribute("user");
-		
-		//Combine foodIntolerance and healthCondition as foodSelection
-		int fiLen = foodIntolerance.length;
-		int hcLen = healthCondition.length;
-		String[] foodSelection = new String[fiLen + hcLen];
-		System.arraycopy(foodIntolerance, 0, foodSelection, 0, fiLen);
-		System.arraycopy(healthCondition, 0, foodSelection, fiLen, hcLen);
 
 		userService.addFoodSelection(u, foodSelection);
 		userService.addUnpreferredFood(u, unpreferred);
@@ -430,24 +422,15 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "/preferencesREST", method = RequestMethod.POST)
 	public Message addFoodPreferencesREST(
-			@RequestParam(value = "FoodIntolerance[]",required = false) String foodIntolerancez,
-			@RequestParam(value = "disease[]",required = false) String healthConditionz,
+			@RequestParam(value = "FoodSelection[]",required = false) String foodSelectionz,
 			@RequestParam(value = "OtherPreferences[]", required = false) String unpreferredz,
 			@RequestParam(value = "user_id", required = true) Long user_id
 			){
 
 		//Convert from JSON String
 		Gson gson = new Gson();
-		String[] foodIntolerance = gson.fromJson(foodIntolerancez, String[].class);
-		String[] healthCondition = gson.fromJson(healthConditionz, String[].class);
+		String[] foodSelection = gson.fromJson(foodSelectionz, String[].class);
 		String[] unpreferred = gson.fromJson(unpreferredz, String[].class);
-		
-		//Combine foodIntolerance and healthCondition as foodSelection
-		int fiLen = foodIntolerance.length;
-		int hcLen = healthCondition.length;
-		String[] foodSelection = new String[fiLen + hcLen];
-		System.arraycopy(foodIntolerance, 0, foodSelection, 0, fiLen);
-		System.arraycopy(healthCondition, 0, foodSelection, fiLen, hcLen);
 		
 		User u = (User) userService.getUserDao().getUserById(user_id);
 		userService.addFoodSelection(u, foodSelection);
