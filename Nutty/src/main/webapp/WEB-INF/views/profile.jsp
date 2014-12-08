@@ -246,6 +246,7 @@ input[type="submit"]:active {
 				</div>
 		    </div>
         	<h1 align="center">News Feed</h1>
+        	<div id="sharedRecipes"><p>Loading Recipes, please wait..</p></div>
         	<h1 align="center">.</h1>
         	<h1 align="center">.</h1>
         	<h1 align="center">.</h1>
@@ -309,6 +310,29 @@ input[type="submit"]:active {
 				}else{
 					$('#bestOf').empty();
 					$('#bestOf').append("User doesn't own any recipe :(");
+				}
+			});   	
+  	});	
+    	
+	$(document).ready(function () {
+    	$.ajax({
+			  type: "POST",
+			  url: "../getSharedRecipes",
+			  data: {  
+  				  userId: '${visitedUser.id}',
+  				  }
+			})
+			.done(function(response) {
+				if(response != null){
+					$('#sharedRecipes').empty();
+					for(var i=0; i<response.length; i++){
+						var href = "../../recipe/" + response[i][0];
+						var name = response[i][1];
+						var src = response[i][2];
+						$('#sharedRecipes').append("<a href='"+href+"'><img src='"+src+"' title='"+name+"' onError='this.onerror=null;this.src=\"http://img2.wikia.nocookie.net/__cb20130511180903/legendmarielu/images/b/b4/No_image_available.jpg\";' width='50%' height='auto'><p>"+name+"</p></a>");					}
+				}else{
+					$('#sharedRecipes').empty();
+					$('#sharedRecipes').append("User hasn't shared any recipe :(");
 				}
 			});   	
   	});	

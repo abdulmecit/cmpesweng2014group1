@@ -13,9 +13,11 @@ import org.springframework.stereotype.Component;
 
 import cmpesweng2014.group1.nutty.dao.mapper.EatLikeRateRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.RecipeRowMapper;
+import cmpesweng2014.group1.nutty.dao.mapper.SharesRecipeRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.TagRowMapper;
 import cmpesweng2014.group1.nutty.model.EatLikeRate;
 import cmpesweng2014.group1.nutty.model.Recipe;
+import cmpesweng2014.group1.nutty.model.SharesRecipe;
 import cmpesweng2014.group1.nutty.model.Tag;
 import cmpesweng2014.group1.nutty.model.User;
 
@@ -412,20 +414,17 @@ public class RecipeDao extends PcDao{
 		});
 	}
 	
-	public Recipe[] getSharedRecipes(long user_id){
-		List<Recipe> recipeList = this.getTemplate().query(
-				"SELECT a.recipe_id, name, description, portion, created, last_updated"
-				+ "total_calorie FROM Recipe a, SharesRecipe b WHERE b.user_id =? AND "
-				+ "a.recipe_id = b.recipe_id",
-				new Object[] { user_id  }, new RecipeRowMapper());
-	
-		if (recipeList.isEmpty()) {
-			return null;
+	public int[] getSharedRecipes(long user_id){
+		
+		List<SharesRecipe> recipes = this.getTemplate().query(
+					"SELECT * FROM SharesRecipe WHERE user_id = ?",
+					new Object[] { user_id }, new SharesRecipeRowMapper());
+					
+		int recipeIds[] = new int[recipes.size()];
+		for(int i=0; i<recipes.size(); i++){
+			recipeIds[i] = recipes.get(i).getRecipe_id();
 		}
-		else{
-			Recipe[] recipes = recipeList.toArray(new Recipe[recipeList.size()]);
-			return recipes;
-		}
+		return recipeIds;
 	}
 	public int isShared(long user_id, int recipe_id){
 		int count=this.getTemplate().queryForObject(
@@ -437,6 +436,10 @@ public class RecipeDao extends PcDao{
 		else{
 			return 1;
 		}
+	}
+	public void cancelShare(long user_id, int recipe_id){
+		this.getTemplate().update("DELETE FROM SharesRecipe WHERE user_id = ? AND recipe_id = ?",
+				new Object[] { user_id, recipe_id});
 	}
 	
 	

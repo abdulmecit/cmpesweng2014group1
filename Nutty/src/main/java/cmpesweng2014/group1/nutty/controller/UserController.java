@@ -379,6 +379,25 @@ public class UserController {
 		return response;
 	}
 	
+	@RequestMapping(value = "/getSharedRecipes")
+	@ResponseBody
+	public String[][] getSharedRecipes(
+			@RequestParam(value = "userId", required = true) Long userId,
+			HttpSession session){
+				
+		if (userId == null) {
+			return null;
+		}		
+		int[] recipeIds = recipeService.getSharedRecipes(userId);
+		String[][] response = new String[recipeIds.length][3];
+		for(int i=0; i<recipeIds.length; i++){
+			response[i][0] = recipeIds[i] + "";
+			response[i][1] = recipeService.getRecipe(recipeIds[i]).getName();
+			response[i][2] = recipeService.getRecipePhotoUrl(recipeIds[i]);
+		}
+		return response;
+	}
+	
 	@ResponseBody
 	@RequestMapping(value = "/foodSelectionREST", method = RequestMethod.POST)
 	public FoodSelection[] getFoodSelections(

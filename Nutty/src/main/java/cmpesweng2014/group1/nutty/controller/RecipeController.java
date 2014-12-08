@@ -243,9 +243,15 @@ public class RecipeController {
 	@RequestMapping(value = "/shareRecipe", method = RequestMethod.POST)
 	public String shareRecipe(
 			@RequestParam(value = "user_id", required = true) Long user_id,
-			@RequestParam(value = "recipe_id", required = true) int recipe_id
+			@RequestParam(value = "recipe_id", required = true) int recipe_id,
+			@RequestParam(value = "value", required = true) int value
 			) {		
-		recipeService.shareRecipe(user_id, recipe_id);		
+		if(value==1){
+			recipeService.shareRecipe(user_id, recipe_id);	
+		}
+		else{
+			recipeService.cancelShare(user_id, recipe_id);
+		}
 		return "Recipe";
 	}
 	

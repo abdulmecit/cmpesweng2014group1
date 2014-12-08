@@ -705,7 +705,6 @@ body {
 				type : "POST",
 				url : "../shareRecipe",
 				data : {
-					changed : 'shares',
 					user_id : '${user.id}',
 					recipe_id : '${recipe.recipe_id}',
 					value : shared
