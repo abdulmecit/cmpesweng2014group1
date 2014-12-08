@@ -196,24 +196,39 @@ body {
 
 	<!------------------------ navigation bar --------------------------->
 
-   <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="../">Nutty</a>
-        </div>
-		  <ul class="nav navbar-nav navbar-right">
-		    <% 	if (session.getAttribute("isLogged") == null || ((Boolean)(session.getAttribute("isLogged")) == false)){ %>		  
-	    		<li><a href="../login">Login</a></li>
-	    		<li><a href="../signup">Sign Up</a></li>
-	    	<%} else {%>
-	    		<li><a href="../user/profile/${user.id}">My Profile</a></li>
-	    		<li><a href="../logout">Logout</a></li>
-	    		<li id="settings" class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="glyphicon glyphicon-cog"></span><i class="fa fa-caret-down"></i></a><ul role="menu" class="dropdown-menu"><li id="popular"><a href="../user/homesettings">Profile Settings</a></li><li id="app"><a href="../user/preferences">Food Preferences</a></li></li>
-	    	<%}%>	    				    
-		  </ul>  
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="../">Nutty</a>
+			</div>
+			<ul class="nav navbar-nav navbar-right">
+				<%
+					if (session.getAttribute("isLogged") == null
+							|| ((Boolean) (session.getAttribute("isLogged")) == false)) {
+				%>
+				<li><a href="../login">Login</a></li>
+				<li><a href="../signup">Sign Up</a></li>
+				<%
+					} else {
+				%>
+				<li><a href="../user/profile/${user.id}">My Profile</a></li>
+				<li><a href="../logout">Logout</a></li>
+				<li id="settings" class="dropdown"><a href="#"
+					data-toggle="dropdown" class="dropdown-toggle"><span
+						class="glyphicon glyphicon-cog"></span><i class="fa fa-caret-down"></i></a>
+					<ul role="menu" class="dropdown-menu">
+						<li id="popular"><a href="../user/homesettings">Profile
+								Settings</a></li>
+						<li id="app"><a href="../user/preferences">Food
+								Preferences</a></li></li>
+				<%
+					}
+				%>
+			</ul>
 
-      </div><!-- /.container -->
-    </nav>
+		</div>
+		<!-- /.container -->
+	</nav>
 
 	<!------------------------ star --------------------------->
 	<div class="container">
@@ -227,22 +242,24 @@ body {
 
 				<button type="button" class="btn btn-primary" value="Eat" id="Eat"
 					style="float: right; margin-right: 15 px; margin-top: 18px;">
-					<span id="textEat" class="ui-button-text">Eat &nbsp </span>
-					<span id="eatCheck" class="glyphicon glyphicon-check" style="visibility: hidden;"></span>
+					<span id="textEat" class="ui-button-text">Eat &nbsp </span> <span
+						id="eatCheck" class="glyphicon glyphicon-check"
+						style="visibility: hidden;"></span>
 					<!-- caret for arrow. ui-button-text for button text visible; -->
 				</button>
 
 				<button type="button" class="btn btn-primary" value="Like" id="Like"
 					style="float: right; margin-right: 15 px; margin-top: 18px;">
-					<span id="textLike" class="ui-button-text">Like &nbsp</span>
-					<span id="likeCheck" class="glyphicon glyphicon-check" style="visibility: hidden;"></span>
+					<span id="textLike" class="ui-button-text">Like &nbsp</span> <span
+						id="likeCheck" class="glyphicon glyphicon-check"
+						style="visibility: hidden;"></span>
 					<!-- caret for arrow. ui-button-text for button text -->
 				</button>
 
 				<h2 class="panel-title pull-center"
 					style="margin-top: 25px; font-size: 24px">
-					${recipe.name} <small><em>by <a href="../user/profile/${ownerId}">Chef
-								${ownerName}</a></em></small>
+					${recipe.name} <small><em>by <a
+							href="../user/profile/${ownerId}">Chef ${ownerName}</a></em></small>
 				</h2>
 			</div>
 			<div class="panel-body">
@@ -252,7 +269,7 @@ body {
 							<input type="radio" name="radio-btn" id="img-1" checked />
 							<li class="slide-container">
 								<div class="slide">
-									<img src="${photoUrl}"/>
+									<img src="${photoUrl}" />
 								</div>
 								<div class="nav">
 									<label for="img-6" class="prev">&#x2039;</label> <label
@@ -263,7 +280,7 @@ body {
 							<input type="radio" name="radio-btn" id="img-2" />
 							<li class="slide-container">
 								<div class="slide">
-									<img 
+									<img
 										src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRikkxvA53g0Vc8XJuH2uIvWBMq8FGj5yFl5Gz-gLRJsk0XhwE" />
 								</div>
 								<div class="nav">
@@ -506,7 +523,17 @@ body {
 					</div>
 
 					<div class="col-sm-8">
+
 						<div id="info-wrap">
+							<button type="button" class="btn btn-primary" value="Share"
+								id="Share"
+								style="float: right; margin-right: 15 px; margin-left: 18px;">
+								<span id="textShare" class="ui-button-text">Share &nbsp </span>
+								<span id="shareCheck" class="glyphicon glyphicon-check"
+									style="visibility: hidden;"></span>
+								<!-- caret for arrow. ui-button-text for button text visible; -->
+							</button>
+
 							<div id=recipeDetail>
 								<h3>Portion:${recipe.portion} &nbsp&nbsp Total
 									Calories:${recipe.total_calorie}</h3>
@@ -552,6 +579,7 @@ body {
 	var easeRate = '${easeRateOfUser}';
 	var eaten = '${eatenOfUser}';
 	var liked = '${likeOfUser}';
+	var shared = '${shareOfUser}';
 	var isLogged = '${isLogged}';
 
 	$(document)
@@ -597,26 +625,31 @@ body {
 						}
 						// if liked 'check' is visible
 						if (liked == 1) {
-							$("#likeCheck").css('visibility','visible');  
+							$("#likeCheck").css('visibility', 'visible');
 						} else {
-							$("#likeCheck").css('visibility','hidden');
+							$("#likeCheck").css('visibility', 'hidden');
 						}
 						// if eat 'check' is visible
 						if (eaten == 1) {
-							$("#eatCheck").css('visibility','visible');  
+							$("#eatCheck").css('visibility', 'visible');
 						} else {
-							$("#eatCheck").css('visibility','hidden');
-						}	
+							$("#eatCheck").css('visibility', 'hidden');
+						}
+						if (shared == 1) {
+							$("#shareCheck").css('visibility', 'visible');
+						} else {
+							$("#shareCheck").css('visibility', 'hidden');
+						}
 					});
 
 	$(".dropdown-menu li a").click(
 			function(e) {
-				if(isLogged == 'true'){
+				if (isLogged == 'true') {
 					var selText = $(this).parents('.btn-group').find(
 							'.dropdown-toggle').attr("id");
 					var rate = $(this).text();
-					$(this).parents('.btn-group').find('.dropdown-toggle').html(
-							rate);
+					$(this).parents('.btn-group').find('.dropdown-toggle')
+							.html(rate);
 					if (selText == "healthRate") {
 						healthRate = rate;
 						updateRate("health_rate", healthRate);
@@ -633,33 +666,54 @@ body {
 				}
 			});
 
-	$("#Like").click(
-			function(e) {
-				if(isLogged == 'true'){
-					if (liked == 0) {
-						$("#likeCheck").css('visibility','visible');  
-						liked = 1;
-					} else {
-						$("#likeCheck").css('visibility','hidden');
-						liked = 0;
-					}	
-					updateRate("likes", liked);
-				}
-			});
+	$("#Like").click(function(e) {
+		if (isLogged == 'true') {
+			if (liked == 0) {
+				$("#likeCheck").css('visibility', 'visible');
+				liked = 1;
+			} else {
+				$("#likeCheck").css('visibility', 'hidden');
+				liked = 0;
+			}
+			updateRate("likes", liked);
+		}
+	});
 
-	$("#Eat").click(
-			function(e) {
-				if(isLogged == 'true'){
-					if (eaten == 0) {
-						$("#eatCheck").css('visibility','visible'); 
-						eaten = 1;				
-					} else {
-						$("#eatCheck").css('visibility','hidden');
-						eaten=0;
-					}			
-					updateRate("eats", eaten);				
+	$("#Eat").click(function(e) {
+		if (isLogged == 'true') {
+			if (eaten == 0) {
+				$("#eatCheck").css('visibility', 'visible');
+				eaten = 1;
+			} else {
+				$("#eatCheck").css('visibility', 'hidden');
+				eaten = 0;
+			}
+			updateRate("eats", eaten);
+		}
+	});
+	
+	$("#Share").click(function(e) {
+		if (isLogged == 'true') {
+			if (shared == 0) {
+				$("#shareCheck").css('visibility', 'visible');
+				shared = 1;
+			} else {
+				$("#shareCheck").css('visibility', 'hidden');
+				shared = 0;
+			}
+			$.ajax({
+				type : "POST",
+				url : "../shareRecipe",
+				data : {
+					changed : 'shares',
+					user_id : '${user.id}',
+					recipe_id : '${recipe.recipe_id}',
+					value : shared
 				}
-			});
+			})
+		}
+	});
+	
 
 	$(document).ready(
 			function() {
@@ -686,18 +740,18 @@ body {
 							}
 						});
 			});
-	
+
 	function updateRate(changed, value) {
 		$.ajax({
 			type : "POST",
 			url : "../rateRecipe",
 			data : {
-				changed: changed,
+				changed : changed,
 				user_id : '${user.id}',
 				recipe_id : '${recipe.recipe_id}',
-				value: value
+				value : value
 			}
-		})	
+		})
 	};
 </script>
 </html>
