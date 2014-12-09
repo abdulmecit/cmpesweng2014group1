@@ -246,7 +246,8 @@ input[type="submit"]:active {
 				</div>
 		    </div>
         	<h1 align="center">News Feed</h1>
-        	<div id="sharedRecipes"><p>Loading Recipes, please wait..</p></div>
+     		<div id="sharedRecipes"><p>Loading Recipes, please wait..</p></div>
+        	
         	<h1 align="center">.</h1>
         	<h1 align="center">.</h1>
         	<h1 align="center">.</h1>
@@ -329,7 +330,9 @@ input[type="submit"]:active {
 						var href = "../../recipe/" + response[i][0];
 						var name = response[i][1];
 						var src = response[i][2];
-						$('#sharedRecipes').append("<a href='"+href+"'><img src='"+src+"' title='"+name+"' onError='this.onerror=null;this.src=\"http://img2.wikia.nocookie.net/__cb20130511180903/legendmarielu/images/b/b4/No_image_available.jpg\";' width='50%' height='auto'><p>"+name+"</p></a>");					}
+						$('#sharedRecipes').append("<div class=row><div class='panel panel-default' align='center'>");
+						$('#sharedRecipes').append("<a href='"+href+"'><img src='"+src+"' title='"+name+"' onError='this.onerror=null;this.src=\"http://img2.wikia.nocookie.net/__cb20130511180903/legendmarielu/images/b/b4/No_image_available.jpg\";' width='30%' height='auto' hspace='50px'><span style='font-size: 1.8em'>You have shared the recipe named: "+name+"</span></a>");					}
+						$('#sharedRecipes').append("</div></div>");
 				}else{
 					$('#sharedRecipes').empty();
 					$('#sharedRecipes').append("User hasn't shared any recipe :(");
