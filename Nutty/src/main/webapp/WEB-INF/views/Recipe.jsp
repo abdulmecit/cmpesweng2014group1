@@ -556,15 +556,16 @@ body {
 					<div class="panel panel-default"
 						style="margin-right: 10px; margin-left: 10px">
 						<div class="panel-heading clearfix">
-							<form id="addComment" action="../commentRecipe" method="post">
-								<input type="text" hidden="hidden" name="user_id" value='${user.id}'>
-								<input type="text" hidden="hidden" name="recipe_id" value='${recipe.recipe_id}'>
+							<form>
 								<textarea placeholder="add a comment.." class="form-control"
 									name="comment" rows="3" style="resize: none"></textarea>
 								<br>
-								<button type="submit" class="btn btn-primary" id="comment"
-									style="float: right">Comment</button>
+								<button class="btn btn-primary" type="submit" id="commentButton"
+									style="float: right" disabled>Comment</button>
 							</form>
+
+
+
 						</div>
 						<ul class="list-group">
 							<div id="comments"></div>
@@ -587,6 +588,7 @@ body {
 	var liked = '${likeOfUser}';
 	var shared = '${shareOfUser}';
 	var isLogged = '${isLogged}';
+	var commentNumber = 0;
 
 	$(document)
 			.ready(
@@ -648,6 +650,7 @@ body {
 						}
 					});
 
+	// change & save values of rate buttons
 	$(".dropdown-menu li a").click(
 			function(e) {
 				if (isLogged == 'true') {
@@ -672,6 +675,7 @@ body {
 				}
 			});
 
+	// Like button change "check" visibilty 
 	$("#Like").click(function(e) {
 		if (isLogged == 'true') {
 			if (liked == 0) {
@@ -685,6 +689,7 @@ body {
 		}
 	});
 
+	// eat button change "check" visibilty 
 	$("#Eat").click(function(e) {
 		if (isLogged == 'true') {
 			if (eaten == 0) {
@@ -698,6 +703,7 @@ body {
 		}
 	});
 
+	// share recipe
 	$("#Share").click(function(e) {
 		if (isLogged == 'true') {
 			if (shared == 0) {
@@ -720,32 +726,92 @@ body {
 		}
 	});
 
-	$(document).ready(
-			function() {
-				$.ajax({
-					type : "POST",
-					url : "../recipeComments",
-					data : {
-						recipeId : '${recipe.recipe_id}',
-					}
-				}).done(
-						function(answer) {
-							$("#comments").html("");
-							if (answer == "") {
-								$("#comments").append("<p>No comments :(</p>");
-							} else {
-								var recipes = answer.split('|');
-								for (i = 1; i < recipes.length; i++) {
-									dummy = recipes[i].split('>');
-									$("#comments").append(
-											"<li class='list-group-item'><b>"
-													+ dummy[1] + "</b><p>"
-													+ dummy[0] + "</p></li>");
-								}
-							}
-						});
-			});
+	// getting comments
+	$(document)
+			.ready(
+					function() {
+						if (isLogged == 'true') {
+							$('#commentButton').attr("disabled", false);
+							$
+									.ajax({
+										type : "POST",
+										url : "../recipeComments",
+										data : {
+											recipeId : '${recipe.recipe_id}',
+										}
+									})
+									.done(
+											function(answer) {
+												$("#comments").html("");
+												if (answer == "") {
+													$("#comments")
+															.append(
+																	"<p>No comments :(</p>");
+												} else {
+													var recipes = answer
+															.split('|');
+													for (i = 1; i < recipes.length; i++) {
+														dummy = recipes[i]
+																.split('>');
+														$("#comments")
+																.append(
+																		"<li class='list-group-item'><b>"
+																				+ dummy[1]
+																				+ "</b><p>"
+																				+ dummy[0]
+																				+ "</p>"
+																				+ "<button type='button' class='btn btn-primary btn-xs'"
+																				+ "onclick='commentLike("
+																				+ i
+																				+ ")' "
+																				+ " value='commentLike' id='commentLike"
+																				+ i
+																				+ "'style='float: left;'>"
+																				+ "<span id='textCommentLike" + i +"' class='ui-button-text'>Like &nbsp</span>"
+																				+ "<span id='commentLikeCheck"+ i +"' class='glyphicon glyphicon-check'" +
+													"style='visibility: hidden;'></span></button> **Like number** </li>");
+														//check this comment likes number
+														if (i % 2 == 0) {
+															$(
+																	"#commentLikeCheck"
+																			+ i)
+																	.css(
+																			'visibility',
+																			'visible');
+														} else {
+															$(
+																	"#commentLikeCheck"
+																			+ i)
+																	.css(
+																			'visibility',
+																			'hidden');
+														}
 
+													}
+												}
+											});
+						} else {
+							$("#comments")
+									.append(
+											"<h4 style='text-align: center; margin-bottom: 10px; margin-top: 10px '><em>please login to add and see comments</em><h4>");
+							$('#commentButton').attr("disabled", true);
+						}
+					});
+
+	//											
+
+	//Comment Like
+	function commentLike(index) {
+		if (isLogged == 'true') {
+			if (index % 2 == 1) {
+				$("#commentLikeCheck" + index).css('visibility', 'visible');
+			} else {
+				$("#commentLikeCheck" + index).css('visibility', 'hidden');
+			}
+		}
+	};
+
+	// for saving rate values
 	function updateRate(changed, value) {
 		$.ajax({
 			type : "POST",
