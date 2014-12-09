@@ -240,6 +240,19 @@ public class RecipeController {
 		return "Recipe";
 	}
 	
+	@RequestMapping(value = "/commentRecipe", method = RequestMethod.POST)
+	public String commentRecipe(
+			@RequestParam(value = "user_id", required = true) Long user_id,
+			@RequestParam(value = "recipe_id", required = true) int recipe_id,
+			@RequestParam(value = "comment", required = true) String value
+			) {
+		
+		Recipe recipe = recipeService.getRecipe(recipe_id);
+		User u = userService.getUserDao().getUserById(user_id);	
+		recipeService.commentRecipe(value, u, recipe);		
+		return "Recipe";
+	}
+	
 	@RequestMapping(value = "/shareRecipe", method = RequestMethod.POST)
 	public String shareRecipe(
 			@RequestParam(value = "user_id", required = true) Long user_id,
