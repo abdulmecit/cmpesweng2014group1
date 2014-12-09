@@ -556,7 +556,7 @@ body {
 					<div class="panel panel-default"
 						style="margin-right: 10px; margin-left: 10px">
 						<div class="panel-heading clearfix">
-							<form id="addComment" action="commentRecipe" method="post">
+							<form id="addComment" action="../commentRecipe" method="post">
 								<input type="text" hidden="hidden" name="user_id" value='${user.id}'>
 								<input type="text" hidden="hidden" name="recipe_id" value='${recipe.recipe_id}'>
 								<textarea placeholder="add a comment.." class="form-control"

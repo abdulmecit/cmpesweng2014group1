@@ -250,7 +250,7 @@ public class RecipeController {
 		Recipe recipe = recipeService.getRecipe(recipe_id);
 		User u = userService.getUserDao().getUserById(user_id);	
 		recipeService.commentRecipe(value, u, recipe);		
-		return "Recipe";
+		return "redirect:recipe/"+recipe_id;
 	}
 	
 	@RequestMapping(value = "/shareRecipe", method = RequestMethod.POST)
