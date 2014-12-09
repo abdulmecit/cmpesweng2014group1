@@ -556,9 +556,16 @@ body {
 					<div class="panel panel-default"
 						style="margin-right: 10px; margin-left: 10px">
 						<div class="panel-heading clearfix">
-							<h4 class="panel-title pull-left" style="padding-top: 7.5px;">Comments</h4>
-							<input type="button" value="Comment" class="btn btn-primary"
-								onClick="addInput('dynamicInput');" style="float: right;">
+							<form>
+								<textarea placeholder="add a comment.." class="form-control"
+									name="comment" rows="3" style="resize: none"></textarea>
+								<br>
+								<button class="btn btn-primary" type="submit" id="comment"
+									style="float: right">Comment</button>
+							</form>
+
+
+
 						</div>
 						<ul class="list-group">
 							<div id="comments"></div>
@@ -691,7 +698,7 @@ body {
 			updateRate("eats", eaten);
 		}
 	});
-	
+
 	$("#Share").click(function(e) {
 		if (isLogged == 'true') {
 			if (shared == 0) {
@@ -705,6 +712,7 @@ body {
 				type : "POST",
 				url : "../shareRecipe",
 				data : {
+					changed : 'shares',
 					user_id : '${user.id}',
 					recipe_id : '${recipe.recipe_id}',
 					value : shared
@@ -712,7 +720,6 @@ body {
 			})
 		}
 	});
-	
 
 	$(document).ready(
 			function() {
