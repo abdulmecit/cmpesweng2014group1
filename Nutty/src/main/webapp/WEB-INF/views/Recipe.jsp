@@ -753,17 +753,16 @@ body {
 															.append(
 																	"<p>No comments :(</p>");
 												} else {
-													var recipes = answer
-															.split('|');
-													for (i = 1; i < recipes.length; i++) {
-														dummy = recipes[i]
-																.split('>');
+													var comments = JSON.parse(answer);
+
+													for (i = 0; i < comments.length; i++) {
+
 														$("#comments")
 																.append(
 																		"<li class='list-group-item'><b>"
-																				+ dummy[1]
+																				+ comments[i].comment_text
 																				+ "</b><p>"
-																				+ dummy[0]
+																				+ comments[i].commenter_name
 																				+ "</p>"
 																				+ "<button type='button' class='btn btn-primary btn-xs'"
 																				+ "onclick='commentLike("

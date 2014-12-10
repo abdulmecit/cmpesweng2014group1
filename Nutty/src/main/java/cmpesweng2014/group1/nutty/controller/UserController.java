@@ -362,8 +362,7 @@ public class UserController {
 	@RequestMapping(value = "/getUsersRecipes")
 	@ResponseBody
 	public String[][] getUsersRecipes(
-			@RequestParam(value = "userId", required = true) Long userId,
-			HttpSession session){
+			@RequestParam(value = "userId", required = true) Long userId){
 				
 		if (userId == null) {
 			return null;
@@ -382,8 +381,7 @@ public class UserController {
 	@RequestMapping(value = "/getSharedRecipes")
 	@ResponseBody
 	public String[][] getSharedRecipes(
-			@RequestParam(value = "userId", required = true) Long userId,
-			HttpSession session){
+			@RequestParam(value = "userId", required = true) Long userId){
 				
 		if (userId == null) {
 			return null;

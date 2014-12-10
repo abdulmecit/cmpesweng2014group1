@@ -399,11 +399,29 @@ public class RecipeController {
 		if(comments == null || comments.length == 0){
 			return answer;
 		}
+		answer += "[";
 		for(int i=0; i<comments.length; i++){
-			String userName = userService.getUserDao().getUserById((comments[i].getUser_id())).getName() + " " + userService.getUserDao().getUserById((comments[i].getUser_id())).getSurname();
-			answer += "|" + userName + ">" + comments[i].getText();
+			answer += "{\"comment_id\":\"" + comments[i].getComment_id() +"\", \"comment_text\":\"" + comments[i].getText() + "\", ";
+			User u = userService.getUserDao().getUserById(comments[i].getUser_id());
+			answer += "\"commenter_id\":\"" + u.getId() + "\", \"commenter_name\":\"" + u.getName() + " " + u.getSurname() + "\"";
+			
+			User[] likers = recipeService.usersWhoLike(comments[i]);
+			if(likers != null){
+				answer += ", \"likers\": [";
+				for(int j=0; j<likers.length; j++){
+					answer += "{\"liker_id\":\"" + likers[j].getId() + "\", \"liker_name\":\"" + likers[j].getName() + " " + likers[j].getSurname() + "\"}";	
+					if(j != (likers.length-1)) {
+						answer += ", ";
+					}
+				}
+				answer += "]";
+			}
+			answer += "}";
+			if(i != (comments.length-1)) {
+				answer += ", ";
+			}
 		}
+		answer += "]";
 		return answer;
 	}
-
 }

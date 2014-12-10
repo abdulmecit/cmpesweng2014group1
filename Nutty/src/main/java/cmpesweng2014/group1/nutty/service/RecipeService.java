@@ -186,6 +186,10 @@ public class RecipeService {
 	public int numberOfLikesOfAComment(Comment comment){
 		return commentDao.numberOfLikes(comment);
 	}
+	//get ids of the users who like a comment
+	public User[] usersWhoLike(Comment comment){
+		return commentDao.usersWhoLikeThisComment(comment);
+	}
 	//get tags
 	public Tag[] getAllTags(int recipe_id){
 		return recipeDao.getAllTags(recipe_id);

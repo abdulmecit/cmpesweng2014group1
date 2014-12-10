@@ -12,6 +12,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import cmpesweng2014.group1.nutty.dao.mapper.CommentRowMapper;
+import cmpesweng2014.group1.nutty.dao.mapper.UserRowMapper;
 import cmpesweng2014.group1.nutty.model.Comment;
 import cmpesweng2014.group1.nutty.model.User;
 
@@ -74,6 +75,21 @@ public class CommentDao extends PcDao {
 				new Object[] {comment.getComment_id()}, Integer.class);
 		return total;
 	}
+	
+	public User[] usersWhoLikeThisComment(Comment comment) {
+		List<User> userList = this.getTemplate().query(
+				"SELECT a.* FROM User a, LikesComment b WHERE a.user_id = b.user_id AND b.comment_id =?",
+				new Object[] { comment.getComment_id() }, new UserRowMapper());
+	
+		if (userList.isEmpty()) {
+			return null;
+		}
+		else{
+			User[] users = userList.toArray(new User[userList.size()]);
+			return users;
+		}
+	}
+	
 	public void getBackLikeOfComment(Comment comment, User user){
 		this.getTemplate().update("DELETE FROM LikesComment WHERE user_id = ? AND comment_id = ?", 
 				new Object[] { user.getId(), comment.getComment_id()});
