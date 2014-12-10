@@ -225,6 +225,44 @@ public class RecipeController {
 		return "Recipe";
 	}
 	
+	@RequestMapping(value = "/derivedRecipe/{recipeId}", method = RequestMethod.GET)
+	public String fillDerivedRecipe(@PathVariable int recipeId, Model model, HttpSession session){
+		Recipe recipe = recipeService.getRecipe(recipeId);
+		model.addAttribute("recipe", recipe);
+		IngredientAmount[] ingredientAmounts = recipeService.getIngredientAmounts(recipeId);
+		model.addAttribute("ingredientAmounts", ingredientAmounts);
+		Tag[] tags=recipeService.getAllTags(recipeId);
+		if(tags != null)
+			model.addAttribute("tags", tags);
+		
+		return "derivedRecipe";
+	}
+	
+	@RequestMapping(value = "/derivedRecipe/{recipeId}", method = RequestMethod.POST)
+	public String addDerivedRecipe(@PathVariable int recipeId, @RequestParam(value = "recipeName", required = true) String recipeName,
+			@RequestParam(value = "description", required = true) String description,
+			@RequestParam(value = "portion", required = true) int portion,
+			@RequestParam(value = "link", required = true) String link,
+			@RequestParam(value = "ingredient[]", required = true) String[] ingredients,
+			@RequestParam(value = "amount[]", required = true) double[] amounts, 
+			@RequestParam(value = "tag[]", required = true) String[] tagz,
+			RedirectAttributes redirectAttrs, HttpSession session) {
+		User u = (User) session.getAttribute("user");
+
+		//Remove empty and duplicate tags
+		HashSet<String> tagSet = new HashSet<String>(Arrays.asList(tagz));
+		tagSet.remove(new String(""));
+		String[] tags = tagSet.toArray(new String[0]);
+
+		Recipe r = recipeService.deriveRecipe(recipeName, description, portion, link, ingredients, amounts, u, recipeService.getRecipe(recipeId), tags);
+		if(r != null){
+			redirectAttrs.addFlashAttribute("message", new Message(1, null, "Your new version is successfully added to the system."));
+			return "redirect:/success";
+		}
+		redirectAttrs.addFlashAttribute("message", new Message(0, null, "Your recipe couldn't added to the system."));
+		return "redirect:/deriveRecipe/"+recipeId;
+	}
+	
 	@RequestMapping(value = "/rateRecipe", method = RequestMethod.POST)
 	public String rateRecipe(
 			@RequestParam(value = "changed", required = true) String changed,
