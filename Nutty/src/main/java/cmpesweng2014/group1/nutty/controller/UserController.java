@@ -397,7 +397,7 @@ public class UserController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/foodSelectionREST", method = RequestMethod.POST)
+	@RequestMapping(value = "/foodSelectionREST", method = RequestMethod.GET)
 	public FoodSelection[] getFoodSelections(
 			@RequestParam(value = "user_id", required = true) Long user_id
 			) {
@@ -407,7 +407,7 @@ public class UserController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/foodIntoleranceREST", method = RequestMethod.POST)
+	@RequestMapping(value = "/foodIntoleranceREST", method = RequestMethod.GET)
 	public FoodSelection[] getFoodIntolerances(
 			@RequestParam(value = "user_id", required = true) Long user_id
 			) {
@@ -417,7 +417,7 @@ public class UserController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/healthConditionREST", method = RequestMethod.POST)
+	@RequestMapping(value = "/healthConditionREST", method = RequestMethod.GET)
 	public FoodSelection[] getHealthConditions(
 			@RequestParam(value = "user_id", required = true) Long user_id
 			) {
@@ -427,7 +427,7 @@ public class UserController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/unpreferREST", method = RequestMethod.POST)
+	@RequestMapping(value = "/unpreferREST", method = RequestMethod.GET)
 	public Ingredient[] getUnpreferred(
 			@RequestParam(value = "user_id", required = true) Long user_id
 			) {
