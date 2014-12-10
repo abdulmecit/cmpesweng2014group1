@@ -503,9 +503,9 @@ body {
 
 							<div class="panel-heading clearfix">
 								<h4 class="panel-title pull-left" style="padding-top: 7.5px;">Versions</h4>
-								<input type="button" value="Create New version"
-									class="btn btn-primary" onClick="addInput('dynamicInput');"
-									style="float: right;">
+								<a href="../derivedRecipe/${recipe.recipe_id}"
+									id="derivedRecipeButton" class="btn btn-primary active"
+									role="button" style="float: right;">Create New version</a>
 							</div>
 
 							<div class="panel-body">
@@ -557,16 +557,15 @@ body {
 						style="margin-right: 10px; margin-left: 10px">
 						<div class="panel-heading clearfix">
 							<form id="addComment" action="../commentRecipe" method="post">
-							<input type="text" hidden="hidden" name="user_id"
-							value='${user.id}'>
-							<input type="text" hidden="hidden" name="recipe_id" 
-							value='${recipe.recipe_id}'>
+								<input type="text" hidden="hidden" name="user_id"
+									value='${user.id}'> <input type="text" hidden="hidden"
+									name="recipe_id" value='${recipe.recipe_id}'>
 								<textarea placeholder="add a comment.." class="form-control"
 									name="comment" rows="3" style="resize: none"></textarea>
 								<br>
-									<button type="submit" class="btn btn-primary"  id="comment"
-										style="float: right">Comment</button>
-									
+								<button type="submit" class="btn btn-primary" id="comment"
+									style="float: right">Comment</button>
+
 							</form>
 
 
