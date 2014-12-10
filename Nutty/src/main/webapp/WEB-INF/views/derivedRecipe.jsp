@@ -243,7 +243,7 @@ body {
 													name="ingredient[]" value="${ingredientAmount.ing_name}"
 													readonly> <span class="input-group-btn">
 													<button type="button" class="btn btn-default"
-														onclick="deleteText(0${loop.index})" id="delingredient">
+														onclick="deleteText(${loop.index})" id="delingredient">
 														<span>&times;</span>
 													</button>
 												</span>
@@ -294,6 +294,7 @@ body {
 		}
 
 		function deleteText(i) {
+			alert(i);
 			$("#textBoxDiv" + i).remove();
 		}
 
@@ -360,11 +361,11 @@ body {
 
 		window.ondragover = function(e) {
 			e.preventDefault()
-		}
+		};
 		window.ondrop = function(e) {
 			e.preventDefault();
 			upload(e.dataTransfer.files[0]);
-		}
+		};
 
 		function upload(file) {
 			if (!file || !file.type.match(/image.*/))
@@ -384,7 +385,7 @@ body {
 			xhr.setRequestHeader('Authorization', 'Client-ID 4aaaa88af99c596');
 			xhr.send(fd);
 		}
-
+		
 		$("#addIngredient").autocomplete({
 			source : function(request, response) {
 				$.ajax({
