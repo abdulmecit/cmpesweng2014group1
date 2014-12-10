@@ -214,8 +214,8 @@ body {
 					<div class="col-sm-6">
 						<div class="panel panel-default">
 							<div class="panel-heading clearfix">
-								<h4 class="panel-title pull-left" style="padding-top: 7.5px;">Search
-									Ingredient</h4>
+								<h4 class="panel-title pull-left" style="padding-top: 7.5px; padding-bottom: 7.5px">Search
+									Ingredient:</h4>
 								<input type="text" class="form-control" id="addIngredient">
 							</div>
 
