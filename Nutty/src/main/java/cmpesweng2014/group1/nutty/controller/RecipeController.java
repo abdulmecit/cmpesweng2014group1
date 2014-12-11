@@ -260,10 +260,10 @@ public class RecipeController {
 			return "redirect:/success";
 		}
 		redirectAttrs.addFlashAttribute("message", new Message(0, null, "Your recipe couldn't added to the system."));
-		return "redirect:/deriveRecipe/"+recipeId;
+		return "redirect:/derivedRecipe/"+recipeId;
 	}
 	
-	@RequestMapping(value = "/rateRecipe", method = RequestMethod.POST)
+	@RequestMapping(value = "/rateRecipe")
 	public String rateRecipe(
 			@RequestParam(value = "changed", required = true) String changed,
 			@RequestParam(value = "user_id", required = true) Long user_id,
@@ -278,7 +278,7 @@ public class RecipeController {
 		return "Recipe";
 	}
 	
-	@RequestMapping(value = "/commentRecipe", method = RequestMethod.POST)
+	@RequestMapping(value = "/commentRecipe")
 	public String commentRecipe(
 			@RequestParam(value = "user_id", required = true) Long user_id,
 			@RequestParam(value = "recipe_id", required = true) int recipe_id,
@@ -291,7 +291,7 @@ public class RecipeController {
 		return "redirect:recipe/"+recipe_id;
 	}
 	
-	@RequestMapping(value = "/shareRecipe", method = RequestMethod.POST)
+	@RequestMapping(value = "/shareRecipe")
 	public String shareRecipe(
 			@RequestParam(value = "user_id", required = true) Long user_id,
 			@RequestParam(value = "recipe_id", required = true) int recipe_id,

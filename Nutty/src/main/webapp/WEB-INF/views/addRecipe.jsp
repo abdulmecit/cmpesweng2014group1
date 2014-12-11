@@ -75,7 +75,7 @@ body {
 </style>
 
 </head>
-
+<body>
 	<div class="container">
 		<form method="POST">
 			<div class="panel panel-default">

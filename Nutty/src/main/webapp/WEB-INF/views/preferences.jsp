@@ -62,7 +62,7 @@ body {
 
 </style>
 </head>
-
+<body>
 
 	<form name="foodForm" method="post" >
 	<div class="container">
@@ -204,7 +204,7 @@ body {
 	
 		$(document).ready(function () {
 	 	 	$.ajax({
-				type: "GET",
+				type: "POST",
 				url: "foodSelectionREST",
 				data : {
 					user_id : '${user.id}'
@@ -220,7 +220,7 @@ body {
 		
 		$(document).ready(function () {
 	 	 	$.ajax({
-				type: "GET",
+				type: "POST",
 				url: "unpreferREST",
 				data : {
 					user_id : '${user.id}'
@@ -252,6 +252,9 @@ body {
 	        minLength: 3,
 	        select: function(event, ui) {
 				addRow(ui.item.label);
+				//clear text box
+				$(this).val("");
+				return false;
 			}
 	    });
 	    

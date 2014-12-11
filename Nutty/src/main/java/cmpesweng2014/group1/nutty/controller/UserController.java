@@ -53,6 +53,12 @@ public class UserController {
 			int numberOfFollowing = userService.getNumberOfFollowing(u.getId());
 			model.addAttribute("numberOfFollowing", numberOfFollowing);
 			
+			User[] followers = userService.getFollowerList(u.getId());
+			model.addAttribute("followers", followers);
+			
+			User[] followings = userService.getFollowingList(u.getId());
+			model.addAttribute("followings", followings);
+			
 			return "profile";
 		} else {
 			return "redirect:/login";
@@ -344,7 +350,7 @@ public class UserController {
 		}	
 	}
 	
-	@RequestMapping(value = "/followUser", method = RequestMethod.POST)
+	@RequestMapping(value = "/followUser")
 	public String followUser(
 			@RequestParam(value = "follower_id", required = true) Long follower_id,
 			@RequestParam(value = "followed_id", required = true) Long followed_id,
@@ -397,7 +403,7 @@ public class UserController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/foodSelectionREST", method = RequestMethod.GET)
+	@RequestMapping(value = "/foodSelectionREST")
 	public FoodSelection[] getFoodSelections(
 			@RequestParam(value = "user_id", required = true) Long user_id
 			) {
@@ -407,7 +413,7 @@ public class UserController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/foodIntoleranceREST", method = RequestMethod.GET)
+	@RequestMapping(value = "/foodIntoleranceREST")
 	public FoodSelection[] getFoodIntolerances(
 			@RequestParam(value = "user_id", required = true) Long user_id
 			) {
@@ -417,7 +423,7 @@ public class UserController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/healthConditionREST", method = RequestMethod.GET)
+	@RequestMapping(value = "/healthConditionREST")
 	public FoodSelection[] getHealthConditions(
 			@RequestParam(value = "user_id", required = true) Long user_id
 			) {
@@ -427,7 +433,7 @@ public class UserController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/unpreferREST", method = RequestMethod.GET)
+	@RequestMapping(value = "/unpreferREST")
 	public Ingredient[] getUnpreferred(
 			@RequestParam(value = "user_id", required = true) Long user_id
 			) {
@@ -437,7 +443,7 @@ public class UserController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/preferencesREST", method = RequestMethod.POST)
+	@RequestMapping(value = "/preferencesREST")
 	public Message addFoodPreferencesREST(
 			@RequestParam(value = "FoodSelection[]",required = false) String foodSelectionz,
 			@RequestParam(value = "OtherPreferences[]", required = false) String unpreferredz,
