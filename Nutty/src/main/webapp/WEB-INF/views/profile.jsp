@@ -411,7 +411,7 @@ input[type="submit"]:active {
 	});	
  	
  	$("#showFollowers").click(function() {		
- 		var followerWindow = window.open("", "_blank", "left=500, top=350, width=200, height=150");
+ 		var followerWindow = window.open("", "_blank", "left=500, top=350, width=200, height=150, resizable=1, scrollbars=1");
  		
 		var followers = [];
  		<c:forEach var="follower" items="${followers}">
@@ -424,8 +424,7 @@ input[type="submit"]:active {
  		}
  		else{
  			for(var i = 0; i < followers.length; i++){
- 				content += "<li class='list-group-item'><a href='javascript:;' onclick='window.opener.location.replace(" + followers[i].user_id + "); window.close();'>" + followers[i].name + " " + followers[i].surname + "</p></li>"; 			
- 			}
+ 				content += "<li class='list-group-item'><a href='javascript:;' onclick='window.opener.location.href = " + followers[i].user_id + "; window.close();'>" + followers[i].name + " " + followers[i].surname + "</p></li>"; 	 			}
  		}
 		content += "<button type='button' onclick='window.close()'> Close </button>";
 		followerWindow.document.write(content);	
@@ -433,7 +432,7 @@ input[type="submit"]:active {
  	});
  			
  	$("#showFollowings").click(function() {		
- 		var followingWindow = window.open("", "_blank", "left=500, top=350, width=200, height=150");
+ 		var followingWindow = window.open("", "_blank", "left=500, top=350, width=200, height=150, resizable=1, scrollbars=1");
  		
 		var followings = [];
  		<c:forEach var="following" items="${followings}">
@@ -446,8 +445,7 @@ input[type="submit"]:active {
  		}
  		else{
  			for(var i = 0; i < followings.length; i++){
- 				content += "<li class='list-group-item'><a href='javascript:;' onclick='window.opener.location.replace(" + followings[i].user_id + "); window.close();'>" + followings[i].name + " " + followings[i].surname + "</p></li>"; 							
- 			}
+ 				content += "<li class='list-group-item'><a href='javascript:;' onclick='window.opener.location.href =" + followings[i].user_id + "; window.close();'>" + followings[i].name + " " + followings[i].surname + "</p></li>";  			}
  		}
 		content += "<button type='button' onclick='window.close()'> Close </button>";
 		followingWindow.document.write(content);

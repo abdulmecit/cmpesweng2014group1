@@ -176,7 +176,7 @@ body {
 
 
 </head>
-
+<body>
 
 <!------------------------ star --------------------------->
 <div class="container">
@@ -679,6 +679,9 @@ body {
 		}
 	});
 
+	var comments = [];
+	var commentsILike = [];
+	
 	// getting comments
 	$(document)
 			.ready(
@@ -701,10 +704,17 @@ body {
 															.append(
 																	"<h4 style='text-align: center; margin-bottom: 10px; margin-top: 10px '>No comments :(<h4>");
 												} else {
-													var comments = JSON
-															.parse(answer);
+													comments = JSON.parse(answer);
 
 													for (i = 0; i < comments.length; i++) {
+														
+														var likers = comments[i].likers;													
+														var likersCount = ((likers == null) ? 0 : likers.length);
+														
+														var likerIds = [];
+														for(var j = 0; j < likersCount; j++){
+															likerIds[j] = likers[j].liker_id; 
+														}
 
 														$("#comments")
 																.append(
@@ -713,6 +723,7 @@ body {
 																				+ "</b><p>by <a href='../user/profile/1'>"
 																				+ comments[i].commenter_name
 																				+ "</a></p>"
+																				+ "<input type='hidden' id='commentId" + i + "' value='" + comments[i].comment_id + "' style='visibility: collapse; width: 0px;'/>"
 																				+ "<button type='button' class='btn btn-primary btn-xs'"
 																				+ "onclick='commentLike("
 																				+ i
@@ -721,10 +732,13 @@ body {
 																				+ i
 																				+ "'style='float: left;'>"
 																				+ "<span id='textCommentLike" + i +"' class='ui-button-text'>Like &nbsp</span>"
-																				+ "<span id='commentLikeCheck"+ i +"' class='glyphicon glyphicon-check'" +
-													"style='visibility: hidden;'></span></button> **Like number** </li>");
+																				+ "<span id='commentLikeCheck"+ i +"' class='glyphicon glyphicon-check'"
+																				+ "style='visibility: hidden;'></span></button>"
+																				+ "<a id='showLikers' title='Click to see them' onclick='showLikers(" + i + ")'>" 
+																				+ "&nbsp" + likersCount + " likes </a></li>");
 														//check this comment likes number
-														if (i % 2 == 0) {
+														if ($.inArray('${user.id}', likerIds) > -1) {
+															commentsILike[i] = 1;
 															$(
 																	"#commentLikeCheck"
 																			+ i)
@@ -732,6 +746,7 @@ body {
 																			'visibility',
 																			'visible');
 														} else {
+															commentsILike[i] = 0;
 															$(
 																	"#commentLikeCheck"
 																			+ i)
@@ -756,11 +771,22 @@ body {
 	//Comment Like
 	function commentLike(index) {
 		if (isLogged == 'true') {
-			if (index % 2 == 1) {
+			if (commentsILike[index] == 0) {
+				commentsILike[index] = 1;
 				$("#commentLikeCheck" + index).css('visibility', 'visible');
 			} else {
+				commentsILike[index] = 0;
 				$("#commentLikeCheck" + index).css('visibility', 'hidden');
 			}
+			$.ajax({
+				type : "POST",
+				url : "../likeComment",
+				data : {
+					user_id : '${user.id}',
+					comment_id : $("#commentId" + index).val(),
+					value : commentsILike[index]
+				}
+			})
 		}
 	};
 
@@ -776,6 +802,25 @@ body {
 				value : value
 			}
 		})
+	};
+	
+	function showLikers(index) {
+ 		var likersWindow = window.open("", "_blank", "left=500, top=350, width=200, height=150, resizable=1, scrollbars=1");
+ 		
+ 		var likers = comments[index].likers;
+ 		 		
+ 		var content = "<h3>Likers: </h3>";
+ 		if(likers == null || likers.length == 0){
+ 			content += "<p>Sorry! No likes here :(</p>";
+ 		}
+ 		else{
+ 			for(var i = 0; i < likers.length; i++){
+ 				content += "<li class='list-group-item'><a href='javascript:;' onclick='window.opener.location.href = \"../user/profile/" + likers[i].liker_id + "\"; window.close();'>" + likers[i].liker_name + "</p></li>"; 							
+ 			}
+ 		}
+		content += "<button type='button' onclick='window.close()'> Close </button>";
+		likersWindow.document.write(content);
+		return false;
 	};
 </script>
 </html>
