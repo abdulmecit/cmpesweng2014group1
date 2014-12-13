@@ -204,7 +204,7 @@ body {
 	
 		$(document).ready(function () {
 	 	 	$.ajax({
-				type: "POST",
+				type: "GET",
 				url: "foodSelectionREST",
 				data : {
 					user_id : '${user.id}'
@@ -220,7 +220,7 @@ body {
 		
 		$(document).ready(function () {
 	 	 	$.ajax({
-				type: "POST",
+				type: "GET",
 				url: "unpreferREST",
 				data : {
 					user_id : '${user.id}'
