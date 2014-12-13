@@ -5,8 +5,8 @@
 <jsp:include page="header.jsp" flush="true"/>
     <title>Nutty</title>
     
-  </head>
-       
+</head>
+<body>    
    <div class="container">
       <div class="row">
         <div class="col-md-offset-3 col-md-6 well">

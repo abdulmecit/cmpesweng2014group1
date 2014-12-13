@@ -234,6 +234,7 @@ input[type="submit"]:active {
     </style>
 
   </head>
+  <body>
 
       <br><br>
 	<div class="container" id="addRecipe" align="center" style="display: none;">

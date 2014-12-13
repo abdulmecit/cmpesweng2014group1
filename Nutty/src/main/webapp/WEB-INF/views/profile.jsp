@@ -166,7 +166,7 @@ input[type="submit"]:active {
     </style>
 
   </head>
-    
+  <body>    
 	<div id="main-wrap">
 	    <div id="sidebar" align="center">
 	    	<div id="foto">
@@ -209,8 +209,8 @@ input[type="submit"]:active {
 	            	<p>&nbsp;</p>
 	            	<h2>Master Chef</h2>
 	            	<h3>&nbsp;</h3>
-	            	<h3>${numberOfFollowers} followers</h3>
-	            	<h3>${numberOfFollowing} following</h3>
+	            	<h3><a id="showFollowers" title="Click to see them"> ${numberOfFollowers} followers </a></h3>
+	            	<h3><a id="showFollowings" title="Click to see them"> ${numberOfFollowing} following </a></h3>
 				</div>
 		    </div>
         	<h1 align="center">News Feed</h1>
@@ -409,6 +409,50 @@ input[type="submit"]:active {
 		   	}
 			});   	
 	});	
+ 	
+ 	$("#showFollowers").click(function() {		
+ 		var followerWindow = window.open("", "_blank", "left=500, top=350, width=200, height=150");
+ 		
+		var followers = [];
+ 		<c:forEach var="follower" items="${followers}">
+ 	    followers.push({user_id: "${follower.id}", name: "${follower.name}", surname: "${follower.surname}"});
+ 	 	</c:forEach>
+ 		
+ 		var content = "<h3>Followers: </h3>";
+ 		if(followers == null || followers.length == 0){
+ 			content += "<p>Sorry! No follower is found :(</p>";
+ 		}
+ 		else{
+ 			for(var i = 0; i < followers.length; i++){
+ 				content += "<li class='list-group-item'><a href='javascript:;' onclick='window.opener.location.replace(" + followers[i].user_id + "); window.close();'>" + followers[i].name + " " + followers[i].surname + "</p></li>"; 			
+ 			}
+ 		}
+		content += "<button type='button' onclick='window.close()'> Close </button>";
+		followerWindow.document.write(content);	
+		return false;
+ 	});
+ 			
+ 	$("#showFollowings").click(function() {		
+ 		var followingWindow = window.open("", "_blank", "left=500, top=350, width=200, height=150");
+ 		
+		var followings = [];
+ 		<c:forEach var="following" items="${followings}">
+ 	    followings.push({user_id: "${following.id}", name: "${following.name}", surname: "${following.surname}"});
+ 	 	</c:forEach>
+ 		
+ 		var content = "<h3>Following: </h3>";
+ 		if(followings == null || followings.length == 0){
+ 			content += "<p>Sorry! You are not following anyone :(</p>";
+ 		}
+ 		else{
+ 			for(var i = 0; i < followings.length; i++){
+ 				content += "<li class='list-group-item'><a href='javascript:;' onclick='window.opener.location.replace(" + followings[i].user_id + "); window.close();'>" + followings[i].name + " " + followings[i].surname + "</p></li>"; 							
+ 			}
+ 		}
+		content += "<button type='button' onclick='window.close()'> Close </button>";
+		followingWindow.document.write(content);
+		return false;
+ 	});	
 	</script>
 </body>
 </html>

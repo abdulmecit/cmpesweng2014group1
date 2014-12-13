@@ -1,6 +1,5 @@
 package cmpesweng2014.group1.nutty.service;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -186,7 +185,7 @@ public class RecipeService {
 	public int numberOfLikesOfAComment(Comment comment){
 		return commentDao.numberOfLikes(comment);
 	}
-	//get ids of the users who like a comment
+	//get users who like a particular comment
 	public User[] usersWhoLike(Comment comment){
 		return commentDao.usersWhoLikeThisComment(comment);
 	}

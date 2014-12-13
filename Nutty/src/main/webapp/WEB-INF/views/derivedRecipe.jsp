@@ -14,7 +14,7 @@ body {
 }
 
 .ui-autocomplete-loading {
-	background: white url("./resources/img/ui-anim_basic_16x16.gif") right
+	background: white url("../resources/img/ui-anim_basic_16x16.gif") right
 		center no-repeat;
 }
 
@@ -77,13 +77,14 @@ body {
 </style>
 
 </head>
+<body>
 <%
 	if (session.getAttribute("isLogged") == null
 			|| ((Boolean) (session.getAttribute("isLogged")) == false)) {
 %>
-<h4 style='text-align: center; margin-bottom: 10px; margin-top: 10px'>
+	<h4 style='text-align: center; margin-bottom: 10px; margin-top: 10px'>
 	<em>please login to see this page</em>
-	<h4>
+	</h4>
 		<%
 			} else {
 		%>
@@ -349,7 +350,7 @@ body {
 			$("#addIngredient").autocomplete({
 				source : function(request, response) {
 					$.ajax({
-						url : "someIngredients2",
+						url : "../someIngredients2",
 						dataType : "json",
 						data : {
 							filter : request.term
@@ -373,5 +374,5 @@ body {
 				}
 			});
 		</script>
-		</body>
+	</body>		
 </html>
