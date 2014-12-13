@@ -1,20 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1" import="java.sql.*" %>
-<!DOCTYPE HTML>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
+<html lang="en">
+<jsp:include page="header.jsp" flush="true"/>
     <title>Nutty</title>
-
-    <!-- Bootstrap core CSS -->
-    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
-	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-	
 
     <!-- Add custom CSS here -->
     <style>
@@ -177,27 +166,6 @@ input[type="submit"]:active {
     </style>
 
   </head>
-
-  <body>
-
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="../../">Nutty</a>
-        </div>
-<!-- 		  <ul class="nav navbar-nav navbar-search"> -->
-<!--             <input type="text" class="search-query span3" placeholder="Search..."> -->
-<!--           </ul> -->
-		  <ul class="nav navbar-nav navbar-right">
-		    <li><a href="${user.id}">My Profile</a></li>
-		    <li><a href="../../logout">Logout</a></li>
-		    <li id="settings" class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="glyphicon glyphicon-cog"></span><i class="fa fa-caret-down"></i></a><ul role="menu" class="dropdown-menu"><li id="popular"><a href="../homesettings">Profile Settings</a></li><li id="app"><a href="../preferences">Food Preferences</a></li></li>
-		  </ul>
-        
-
-      </div><!-- /.container -->
-    </nav>
-
     
 	<div id="main-wrap">
 	    <div id="sidebar" align="center">
@@ -381,7 +349,7 @@ input[type="submit"]:active {
 
  	$(document).ready(function () {
 	 	 	$.ajax({
-				type: "POST",
+				type: "GET",
 				url: "../foodIntoleranceREST",
 				data : {
 					user_id : '${user.id}'
@@ -402,7 +370,7 @@ input[type="submit"]:active {
 	
  	$(document).ready(function () {
  	 	$.ajax({
-			type: "POST",
+			type: "GET",
 			url: "../healthConditionREST",
 			data : {
 				user_id : '${user.id}'
@@ -423,7 +391,7 @@ input[type="submit"]:active {
 	
  	$(document).ready(function () {
  	 	$.ajax({
-			type: "POST",
+			type: "GET",
 			url: "../unpreferREST",
 			data : {
 				user_id : '${user.id}'
