@@ -306,6 +306,23 @@ public class RecipeController {
 		return "Recipe";
 	}
 	
+	@RequestMapping(value = "/likeComment")
+	public String likeComment(
+			@RequestParam(value = "user_id", required = true) Long user_id,
+			@RequestParam(value = "comment_id", required = true) int comment_id,
+			@RequestParam(value = "value", required = true) int value
+			) {
+		Comment comment = recipeService.getCommentDao().getCommentById(comment_id);
+		User u = userService.getUserDao().getUserById(user_id);	
+		if(value==1){
+			recipeService.likeComment(comment, u);
+		}
+		else{
+			recipeService.getBackLikeOfAComment(comment, u);;
+		}
+		return "Recipe";
+	}
+	
 	@ResponseBody
 	@RequestMapping(value = "/recipeREST/{recipeId}")
 	public SuperRecipe viewRecipeREST(@PathVariable int recipeId){

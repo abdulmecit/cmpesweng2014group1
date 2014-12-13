@@ -33,6 +33,30 @@ public class RecipeService {
 	public void setRecipeDao(RecipeDao recipeDao) {
 		this.recipeDao = recipeDao;
 	}
+	public IngredientDao getIngredientDao() {
+		return ingredientDao;
+	}
+
+	public void setIngredientDao(IngredientDao ingredientDao) {
+		this.ingredientDao = ingredientDao;
+	}
+
+	public IngredientAmountDao getIngredientAmountDao() {
+		return ingredientAmountDao;
+	}
+
+	public void setIngredientAmountDao(IngredientAmountDao ingredientAmountDao) {
+		this.ingredientAmountDao = ingredientAmountDao;
+	}
+
+	public CommentDao getCommentDao() {
+		return commentDao;
+	}
+
+	public void setCommentDao(CommentDao commentDao) {
+		this.commentDao = commentDao;
+	}
+
 	//returns created recipe object 
 	//give the user also to the function
 	public Recipe createRecipe(String name, String description,
