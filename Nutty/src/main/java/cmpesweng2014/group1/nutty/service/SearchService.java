@@ -83,15 +83,14 @@ public class SearchService {
 	
 	//takes the tags given by the user as a parameter, does semantic search and
 	//returns sorted Recipe array according to the similarity.
-	public Recipe[] semanticSearch(String[] tags){
+	public Recipe[] semanticSearch(String tag){
+		//original tags
+		String tags[] = tag.split(" ");
 		int relatedTagsIndex=tags.length;
-		for(int k=0; k<tags.length;k++){
-			String[] related=getRelatedTerms(tags[k]);
-			for(int i=0; i<related.length;i++){
-				tags[tags.length+i]=related[i];
-			}
+		String[] related=getRelatedTerms(tag);
+		for(int i=0; i<related.length;i++){
+			tags[relatedTagsIndex+i]=related[i];
 		}
-		//there might be same tags in tags array
 		Recipe[] foundRecipes=recipeDao.searchByAllTags(tags, relatedTagsIndex);
 		return foundRecipes;
 	}
