@@ -6,7 +6,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -19,7 +21,7 @@ import cmpesweng2014.group1.nutty.dao.mapper.SharesRecipeRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.TagRowMapper;
 import cmpesweng2014.group1.nutty.model.EatLikeRate;
 import cmpesweng2014.group1.nutty.model.Recipe;
-import cmpesweng2014.group1.nutty.model.RecipeRate;
+import cmpesweng2014.group1.nutty.model.RecipeTag;
 import cmpesweng2014.group1.nutty.model.SharesRecipe;
 import cmpesweng2014.group1.nutty.model.Tag;
 import cmpesweng2014.group1.nutty.model.User;
@@ -458,5 +460,87 @@ public class RecipeDao extends PcDao{
 			Recipe[] recipes = recList.toArray(new Recipe[recList.size()]);
 			return recipes;		
 		}
+	}
+	
+	public Recipe[] searchByAllTags(String[] tags, int relatedTagsIndex){		
+		List<RecipeTag> recTags = new ArrayList<RecipeTag>();
+		
+		//recipe id - value mapping
+		//value will be increased by one for found original tags, by 0.5 for found related tags
+		Map<Integer, Double> recValue = new HashMap<Integer, Double>();
+		//deal with original tags
+		for(int i=0; i<relatedTagsIndex;i++){
+			Recipe[] foundRecipes=searchRecipesForATag(tags[i]);
+			for(int k=0; k<foundRecipes.length;k++){
+				int recipe_id=foundRecipes[k].getRecipe_id();
+				Double value = recValue.get(recipe_id);
+				//if this recipe was added before, increase the value
+				if (value != null) {
+					value=value+1;
+					recValue.put(recipe_id, value);
+				}
+				//if this recipe wasn't added.
+				else{
+					recValue.put(recipe_id, 1.0);
+				}
+			}
+		}
+		//deal with related tags
+		for(int i=relatedTagsIndex; i<tags.length;i++){
+			Recipe[] foundRecipes2=searchRecipesForATag(tags[i]);
+			for(int k=0; k<foundRecipes2.length;k++){
+				int recipe_id=foundRecipes2[k].getRecipe_id();
+				Double value2 = recValue.get(recipe_id);
+				//if this recipe was added before, increase the value
+				if (value2 != null) {
+					value2=value2+0.5;
+					recValue.put(recipe_id, value2);
+				}
+				//if this recipe wasn't added.
+				else{
+					recValue.put(recipe_id, 0.5);
+				}
+			}
+		}
+		//now store all the information in RecipeTag object, to do sorting according to
+		//value/total number of tags ratio
+		for(Integer key : recValue.keySet()) {
+            Double value = recValue.get(key);
+            RecipeTag recTag=new RecipeTag();
+            recTag.setRecipe_id(key);
+            recTag.setValueOfFound(value);
+            recTag.setNumberOfTags(getNumberOfTags(key));
+            recTag.setRatio(value/getNumberOfTags(key));
+            recTags.add(recTag);
+        }
+		Collections.sort(recTags);
+		Recipe[] rec=new Recipe[recTags.size()];
+		for(int i=0; i<recTags.size();i++){
+			rec[i]= getRecipeById(recTags.get(i).getRecipe_id());
+		}
+		return rec;		
+	}
+	
+	//return recipes for the given tag
+	public Recipe[] searchRecipesForATag(String tag){
+		List<Recipe> recList = this.getTemplate().query(
+				"SELECT a.recipe_id, a.name, a.description, a.portion, a.created,"
+						+ "a.last_updated,a.total_calorie  FROM Recipe a, HasTag b,"
+						+ "Tag c WHERE c.tag_name=? AND b.tag_id=c.tag_id AND"
+						+ "a.recipe_id=b.recipe_id ",
+						new Object[] { tag }, new RecipeRowMapper());
+		if (recList.isEmpty()) {
+			return null;
+		} else {
+			Recipe[] recipes = recList.toArray(new Recipe[recList.size()]);
+			return recipes;		
+		}
+	}
+	//return number of tags for a given recipe
+	public int getNumberOfTags(int recipe_id){
+		int count=this.getTemplate().queryForObject(
+				"SELECT COUNT(*) FROM HasTag WHERE recipe_id = ?", 
+				new Object[] {recipe_id}, Integer.class);
+		return count;
 	}
 }
