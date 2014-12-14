@@ -8,8 +8,11 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringArrayPropertyEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,6 +36,14 @@ public class HomeController {
 	private UserService userService;
 	@Autowired
 	private RecipeService recipeService;
+	
+	// No longer splits from comma when a single item sent as an array parameter
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+	    binder.registerCustomEditor(
+	        String[].class,
+	        new StringArrayPropertyEditor(null)); 
+	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(HttpSession session) {

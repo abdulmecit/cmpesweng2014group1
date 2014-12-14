@@ -7,9 +7,12 @@ import java.text.SimpleDateFormat;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringArrayPropertyEditor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,6 +37,14 @@ public class UserController {
 	private UserService userService;
 	@Autowired
 	private RecipeService recipeService;
+	
+	// No longer splits from comma when a single item sent as an array parameter
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+	    binder.registerCustomEditor(
+	        String[].class,
+	        new StringArrayPropertyEditor(null)); 
+	}
 	
 	@RequestMapping(value = "/profile/{userId}", method = RequestMethod.GET)
 	public String viewProfile(@PathVariable Long userId, Model model, HttpSession session){

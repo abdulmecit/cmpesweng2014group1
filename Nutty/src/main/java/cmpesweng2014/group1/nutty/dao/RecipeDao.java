@@ -459,24 +459,4 @@ public class RecipeDao extends PcDao{
 			return recipes;		
 		}
 	}
-	
-	//descending order
-	public Recipe[] sortByRate(Recipe[] recipes, String rateType){
-		List<RecipeRate> recRates = new ArrayList<RecipeRate>();
-		for(int i=0; i<recipes.length;i++){
-			double rate=getAvgRateStatistic(rateType, recipes[i].getRecipe_id());
-			RecipeRate r=new RecipeRate();
-			r.setRate(rate);
-			r.setRecipe_id(recipes[i].getRecipe_id());
-			recRates.add(r);
-		}
-		Collections.sort(recRates);
-		Recipe[] rec=new Recipe[recipes.length];
-		for(int i=0; i<recRates.size();i++){
-			rec[i]=getRecipeById(recRates.get(i).getRecipe_id());
-		}
-		return rec;		
-	}
-	
-	
 }
