@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -17,6 +19,7 @@ import cmpesweng2014.group1.nutty.dao.mapper.SharesRecipeRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.TagRowMapper;
 import cmpesweng2014.group1.nutty.model.EatLikeRate;
 import cmpesweng2014.group1.nutty.model.Recipe;
+import cmpesweng2014.group1.nutty.model.RecipeRate;
 import cmpesweng2014.group1.nutty.model.SharesRecipe;
 import cmpesweng2014.group1.nutty.model.Tag;
 import cmpesweng2014.group1.nutty.model.User;
@@ -440,6 +443,39 @@ public class RecipeDao extends PcDao{
 	public void cancelShare(long user_id, int recipe_id){
 		this.getTemplate().update("DELETE FROM SharesRecipe WHERE user_id = ? AND recipe_id = ?",
 				new Object[] { user_id, recipe_id});
+	}
+	
+	public Recipe[] mustHaveIngredient(String ing_name){
+		List<Recipe> recList = this.getTemplate().query(
+				"SELECT a.recipe_id, a.name, a.description, a.portion, a.created,"
+						+ "a.last_updated,a.total_calorie  FROM Recipe a, HasIngredient b,"
+						+ "ingredients c WHERE c.Shrt_Desc=? AND b.ing_id=c.NDB_No AND"
+						+ "a.recipe_id=b.recipe_id ",
+						new Object[] { ing_name }, new RecipeRowMapper());
+		if (recList.isEmpty()) {
+			return null;
+		} else {
+			Recipe[] recipes = recList.toArray(new Recipe[recList.size()]);
+			return recipes;		
+		}
+	}
+	
+	//descending order
+	public Recipe[] sortByRate(Recipe[] recipes, String rateType){
+		List<RecipeRate> recRates = new ArrayList<RecipeRate>();
+		for(int i=0; i<recipes.length;i++){
+			double rate=getAvgRateStatistic(rateType, recipes[i].getRecipe_id());
+			RecipeRate r=new RecipeRate();
+			r.setRate(rate);
+			r.setRecipe_id(recipes[i].getRecipe_id());
+			recRates.add(r);
+		}
+		Collections.sort(recRates);
+		Recipe[] rec=new Recipe[recipes.length];
+		for(int i=0; i<recRates.size();i++){
+			rec[i]=getRecipeById(recRates.get(i).getRecipe_id());
+		}
+		return rec;		
 	}
 	
 	
