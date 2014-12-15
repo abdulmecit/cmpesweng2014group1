@@ -600,6 +600,7 @@ public class RecipeDao extends PcDao{
 				new Object[] {recipe_id}, Integer.class);
 		return count;
 	}
+<<<<<<< HEAD
 	//empty check for user recipe score relation
 	//if it is true, we need to insert 
 	//if it is false, update this relations score
@@ -614,6 +615,9 @@ public class RecipeDao extends PcDao{
 			return false;
 		}
 	}
+=======
+	
+>>>>>>> 2584ffb99c49737709e9531ea40fa30a0167dca1
 	public Recipe[] getAllRecipes(){
 		List<Recipe> recList = this.getTemplate().query(
 				"SELECT * FROM Recipe",
@@ -622,7 +626,11 @@ public class RecipeDao extends PcDao{
 			return null;
 		} else {
 			Recipe[] recipes = recList.toArray(new Recipe[recList.size()]);
+<<<<<<< HEAD
 			return recipes;
+=======
+			return recipes;		
+>>>>>>> 2584ffb99c49737709e9531ea40fa30a0167dca1
 		}
 	}
 }

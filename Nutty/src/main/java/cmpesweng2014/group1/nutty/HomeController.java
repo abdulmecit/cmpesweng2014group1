@@ -321,7 +321,7 @@ public class HomeController {
 		}
 		return answer;
 	}
-	/* TODO: Uncomment after getAllRecipes() method is implemented
+	
 	@RequestMapping(value = "/advancedSearch")
 	public String advancedSearch(
 			@RequestParam(value = "search", required = false) String search,
@@ -341,7 +341,7 @@ public class HomeController {
 		User u = (User) session.getAttribute("user");
 		
 		Recipe[] recipes;
-		if(search == null && search.isEmpty()){
+		if(search == null || search.isEmpty()){
 			 recipes = recipeService.getRecipeDao().getAllRecipes();
 		}
 		else{
@@ -398,5 +398,5 @@ public class HomeController {
 		}
 		redirectAttrs.addFlashAttribute("message", new Message(1, recipes, "Search was successful, here are the results."));
 		return "redirect:searchResults";
-	}*/
+	}
 }

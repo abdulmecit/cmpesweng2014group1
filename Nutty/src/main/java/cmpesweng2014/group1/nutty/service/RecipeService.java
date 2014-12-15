@@ -1,8 +1,8 @@
 package cmpesweng2014.group1.nutty.service;
 
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -262,8 +262,8 @@ public class RecipeService {
 		recipeDao.cancelShare(user_id, recipe_id);
 	}
 	public Recipe[] findIntersection(Recipe[] recipes1, Recipe[] recipes2){
-		Set<Recipe> recipeSet = new TreeSet<Recipe>(Arrays.asList(recipes1));
-		Set<Recipe> intersection = new TreeSet<Recipe>();
+		Set<Recipe> recipeSet = new LinkedHashSet<Recipe>(Arrays.asList(recipes1));
+		Set<Recipe> intersection = new LinkedHashSet<Recipe>();
 
 		for(int i=0; i<recipes2.length; i++){
 			if(recipeSet.contains(recipes2[i]))
