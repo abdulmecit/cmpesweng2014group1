@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -23,6 +24,9 @@ import cmpesweng2014.group1.nutty.model.User;
 
 @Component
 public class RecipeDao extends PcDao{
+	
+	@Autowired
+	private UserDao userDao;
 	
 	public int createRecipe(final String name, final String description,
 			final int portion, final double total_calorie) {
@@ -107,7 +111,24 @@ public class RecipeDao extends PcDao{
 				ps.setInt(2, recipe_id);
 				return ps;
 			}
-		}, gkh);	
+		}, gkh);
+		final double score=2.0;
+		final String query2 = "INSERT INTO UserRecipeScore (user_id, recipe_id, add_score) VALUES (?,?,?)";
+		KeyHolder gkh2 = new GeneratedKeyHolder();
+
+		this.getTemplate().update(new PreparedStatementCreator() {
+
+			@Override
+			public PreparedStatement createPreparedStatement(
+					Connection connection) throws SQLException {
+				PreparedStatement ps = connection.prepareStatement(query2,
+						Statement.RETURN_GENERATED_KEYS);
+				ps.setLong(1, user_id);
+				ps.setInt(2, recipe_id);
+				ps.setDouble(3, score); //2 points for adding this recipe
+				return ps;
+			}
+		}, gkh2);
 	}
 	
 	public void addPhotoUrl(final String photoUrl, final int recipe_id) {
@@ -145,12 +166,11 @@ public class RecipeDao extends PcDao{
 
 	public void evaluateRecipe(final String column,final int value,final User user, final Recipe recipe){
 		if (emptyCheckUserRecipeRelation(user,recipe)) {
-			//add this recipe user relation to the table with eats value		
+			//add this recipe user relation to the table with eats value
 			final String query = "INSERT INTO EatLikeRate (user_id, recipe_id,"+column+") VALUES (?,?,?)";
 			KeyHolder gkh = new GeneratedKeyHolder();
 
 			this.getTemplate().update(new PreparedStatementCreator() {
-
 				@Override
 				public PreparedStatement createPreparedStatement(
 						Connection connection) throws SQLException {
@@ -161,9 +181,10 @@ public class RecipeDao extends PcDao{
 					ps.setInt(3, value);
 					return ps;
 				}
-			}, gkh);	
+			}, gkh);
 		} else {
-			//update eats value
+
+		//update eats value
 			final String query = "UPDATE EatLikeRate SET "+column+"=? WHERE user_id=? AND recipe_id=?";
 			KeyHolder gkh = new GeneratedKeyHolder();
 			this.getTemplate().update(new PreparedStatementCreator() {
@@ -178,10 +199,63 @@ public class RecipeDao extends PcDao{
 					ps.setInt(3, recipe.getRecipe_id());
 					return ps;
 				}
-			}, gkh);	
-		}	
+			}, gkh);
+		}
+		//score part
+		String newColumn=column+"_score";
+		double score=0;
+		if(column.equals("likes")){
+			score=2.5;
+		}
+		else if(column.equals("eats")){
+			score=2;
+		}
+		else{
+			if(value<3){
+				score=0;
+			}
+			else{
+				score=value/2.0;
+			}
+		}
+		//it this user- recipe relation does not exist in UserRecipeScore table,
+		//insert this.
+		final double insertScore=score;
+		if(emptyCheckUserRecipeScore(user,recipe)){
+			final String query2 = "INSERT INTO UserRecipeScore (user_id, recipe_id, "+newColumn+") VALUES (?,?,?)";
+			KeyHolder gkh2 = new GeneratedKeyHolder();
+
+			this.getTemplate().update(new PreparedStatementCreator() {
+				@Override
+				public PreparedStatement createPreparedStatement(
+						Connection connection) throws SQLException {
+					PreparedStatement ps = connection.prepareStatement(query2,
+							Statement.RETURN_GENERATED_KEYS);
+					ps.setLong(1, user.getId());
+					ps.setInt(2, recipe.getRecipe_id());
+					ps.setDouble(3, insertScore);
+					return ps;
+				}
+			}, gkh2);
+		}
+		else{
+			final String query2 = "UPDATE UserRecipeScore SET "+newColumn+"=? WHERE user_id=? AND recipe_id=?";
+			KeyHolder gkh = new GeneratedKeyHolder();
+			this.getTemplate().update(new PreparedStatementCreator() {
+				@Override
+				public PreparedStatement createPreparedStatement(
+						Connection connection) throws SQLException {
+					PreparedStatement ps = connection.prepareStatement(query2,
+							Statement.RETURN_GENERATED_KEYS);
+					ps.setDouble(1, insertScore);
+					ps.setLong(2, user.getId());
+					ps.setInt(3, recipe.getRecipe_id());
+					return ps;
+				}
+			}, gkh);
+		}
 	}
-	
+
 	public boolean emptyCheckUserRecipeRelation(User user, Recipe recipe){
 		List<EatLikeRate> eLikeR = this.getTemplate().query(
 				"SELECT * FROM EatLikeRate WHERE recipe_id =? AND user_id=?",
@@ -412,6 +486,43 @@ public class RecipeDao extends PcDao{
 				return ps;
 			}
 		});
+		//score part
+		//it this user- recipe relation does not exist in UserRecipeScore table,
+		//insert this.
+		final double insertScore=2.0;
+		if(emptyCheckUserRecipeScore(userDao.getUserById(user_id),getRecipeById(recipe_id))){
+			final String query2 = "INSERT INTO UserRecipeScore (user_id, recipe_id, share_score) VALUES (?,?,?)";
+			KeyHolder gkh2 = new GeneratedKeyHolder();
+			this.getTemplate().update(new PreparedStatementCreator() {
+				@Override
+				public PreparedStatement createPreparedStatement(
+						Connection connection) throws SQLException {
+					PreparedStatement ps = connection.prepareStatement(query2,
+							Statement.RETURN_GENERATED_KEYS);
+					ps.setLong(1, user_id);
+					ps.setInt(2, recipe_id);
+					ps.setDouble(3, insertScore);
+					return ps;
+				}
+			}, gkh2);
+		}
+		else{
+			final String query2 = "UPDATE UserRecipeScore SET share_score=? WHERE user_id=? AND recipe_id=?";
+			KeyHolder gkh = new GeneratedKeyHolder();
+				this.getTemplate().update(new PreparedStatementCreator() {
+					@Override
+					public PreparedStatement createPreparedStatement(
+							Connection connection) throws SQLException {
+						PreparedStatement ps = connection.prepareStatement(query2,
+								Statement.RETURN_GENERATED_KEYS);
+						ps.setDouble(1, insertScore);
+						ps.setLong(2, user_id);
+						ps.setInt(3, recipe_id);
+						return ps;
+					}
+				}, gkh);
+		}		
+		
 	}
 	
 	public int[] getSharedRecipes(long user_id){
@@ -488,5 +599,30 @@ public class RecipeDao extends PcDao{
 				"SELECT COUNT(*) FROM HasTag WHERE recipe_id = ?", 
 				new Object[] {recipe_id}, Integer.class);
 		return count;
+	}
+	//empty check for user recipe score relation
+	//if it is true, we need to insert 
+	//if it is false, update this relations score
+	public boolean emptyCheckUserRecipeScore(User user, Recipe recipe){
+		int count = this.getTemplate().queryForObject(
+				"SELECT COUNT(*) FROM UserRecipeScore WHERE recipe_id =? AND user_id=?",
+				new Object[] { recipe.getRecipe_id(), user.getId()  },  Integer.class);
+		if (count==0) {
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	public Recipe[] getAllRecipes(){
+		List<Recipe> recList = this.getTemplate().query(
+				"SELECT * FROM Recipe",
+				new Object[] {}, new RecipeRowMapper());
+		if (recList.isEmpty()) {
+			return null;
+		} else {
+			Recipe[] recipes = recList.toArray(new Recipe[recList.size()]);
+			return recipes;
+		}
 	}
 }
