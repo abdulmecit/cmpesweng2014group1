@@ -186,8 +186,8 @@ public class UserDao extends PcDao {
 	}
 */	
 	public List<User> searchUserByNameSurname(String search){
-		String query = "SELECT a.* FROM User a, ( SELECT user_id, concat(name, ' ', surname) as fullName FROM `User` ) b WHERE a.user_id = b.user_id AND b.fullName LIKE '%" + search + "%'";
-		List<User> users = this.getTemplate().query(query, new UserRowMapper());
+		String query = "SELECT a.* FROM User a, ( SELECT user_id, concat(name, ' ', surname) as fullName FROM `User` ) b WHERE a.user_id = b.user_id AND b.fullName LIKE ?";
+		List<User> users = this.getTemplate().query(query,new Object[] { "%" + search + "%"  }, new UserRowMapper());
 		
 		if (users.isEmpty()) {
 			return null;

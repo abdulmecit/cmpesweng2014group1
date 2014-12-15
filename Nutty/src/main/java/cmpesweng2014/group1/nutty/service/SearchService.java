@@ -3,7 +3,9 @@ package cmpesweng2014.group1.nutty.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import cmpesweng2014.group1.nutty.dao.RecipeDao;
 import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.model.RecipeRate;
+import cmpesweng2014.group1.nutty.model.RecipeTag;
 
 @Component
 public class SearchService {
@@ -91,7 +94,65 @@ public class SearchService {
 		for(int i=0; i<related.length;i++){
 			tags[relatedTagsIndex+i]=related[i];
 		}
-		Recipe[] foundRecipes=recipeDao.searchByAllTags(tags, relatedTagsIndex);
+		Recipe[] foundRecipes=searchByAllTags(tags, relatedTagsIndex);
 		return foundRecipes;
+	}
+	public Recipe[] searchByAllTags(String[] tags, int relatedTagsIndex){		
+		List<RecipeTag> recTags = new ArrayList<RecipeTag>();
+		
+		//recipe id - value mapping
+		//value will be increased by one for found original tags, by 0.5 for found related tags
+		Map<Integer, Double> recValue = new HashMap<Integer, Double>();
+		//deal with original tags
+		for(int i=0; i<relatedTagsIndex;i++){
+			Recipe[] foundRecipes=recipeDao.searchRecipesForATag(tags[i]);
+			for(int k=0; k<foundRecipes.length;k++){
+				int recipe_id=foundRecipes[k].getRecipe_id();
+				Double value = recValue.get(recipe_id);
+				//if this recipe was added before, increase the value
+				if (value != null) {
+					value=value+1;
+					recValue.put(recipe_id, value);
+				}
+				//if this recipe wasn't added.
+				else{
+					recValue.put(recipe_id, 1.0);
+				}
+			}
+		}
+		//deal with related tags
+		for(int i=relatedTagsIndex; i<tags.length;i++){
+			Recipe[] foundRecipes2=recipeDao.searchRecipesForATag(tags[i]);
+			for(int k=0; k<foundRecipes2.length;k++){
+				int recipe_id=foundRecipes2[k].getRecipe_id();
+				Double value2 = recValue.get(recipe_id);
+				//if this recipe was added before, increase the value
+				if (value2 != null) {
+					value2=value2+0.5;
+					recValue.put(recipe_id, value2);
+				}
+				//if this recipe wasn't added.
+				else{
+					recValue.put(recipe_id, 0.5);
+				}
+			}
+		}
+		//now store all the information in RecipeTag object, to do sorting according to
+		//value/total number of tags ratio
+		for(Integer key : recValue.keySet()) {
+            Double value = recValue.get(key);
+            RecipeTag recTag=new RecipeTag();
+            recTag.setRecipe_id(key);
+            recTag.setValueOfFound(value);
+            recTag.setNumberOfTags(recipeDao.getNumberOfTags(key));
+            recTag.setRatio(value/recipeDao.getNumberOfTags(key));
+            recTags.add(recTag);
+        }
+		Collections.sort(recTags);
+		Recipe[] rec=new Recipe[recTags.size()];
+		for(int i=0; i<recTags.size();i++){
+			rec[i]= recipeDao.getRecipeById(recTags.get(i).getRecipe_id());
+		}
+		return rec;		
 	}
 }
