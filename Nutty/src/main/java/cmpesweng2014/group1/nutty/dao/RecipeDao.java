@@ -489,4 +489,16 @@ public class RecipeDao extends PcDao{
 				new Object[] {recipe_id}, Integer.class);
 		return count;
 	}
+	
+	public Recipe[] getAllRecipes(){
+		List<Recipe> recList = this.getTemplate().query(
+				"SELECT * FROM Recipe",
+				new Object[] {}, new RecipeRowMapper());
+		if (recList.isEmpty()) {
+			return null;
+		} else {
+			Recipe[] recipes = recList.toArray(new Recipe[recList.size()]);
+			return recipes;		
+		}
+	}
 }
