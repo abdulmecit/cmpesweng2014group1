@@ -455,7 +455,7 @@ public class RecipeDao extends PcDao{
 			return recipes;		
 		}
 	}
-	public Recipe[] caloriesBetween(int upperlimit, int lowerlimit){
+	public Recipe[] caloriesBetween(double upperlimit, double lowerlimit){
 		List<Recipe> recList = this.getTemplate().query(
 				"SELECT * FROM Recipe WHERE total_calorie > ? AND total_calorie < ? ",
 				new Object[] { lowerlimit, upperlimit }, new RecipeRowMapper());

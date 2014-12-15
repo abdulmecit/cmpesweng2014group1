@@ -3,6 +3,7 @@ package cmpesweng2014.group1.nutty;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -23,6 +24,8 @@ import cmpesweng2014.group1.nutty.model.Message;
 import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.model.User;
 import cmpesweng2014.group1.nutty.service.RecipeService;
+import cmpesweng2014.group1.nutty.service.RecommendationService;
+import cmpesweng2014.group1.nutty.service.SearchService;
 import cmpesweng2014.group1.nutty.service.UserService;
 
 /**
@@ -34,8 +37,15 @@ public class HomeController {
 
 	@Autowired
 	private UserService userService;
+	
 	@Autowired
 	private RecipeService recipeService;
+	
+	@Autowired
+	private SearchService searchService;
+	
+	@Autowired
+	private RecommendationService recommService;
 	
 	// No longer splits from comma when a single item sent as an array parameter
 	@InitBinder
@@ -311,4 +321,82 @@ public class HomeController {
 		}
 		return answer;
 	}
+	/* TODO: Uncomment after getAllRecipes() method is implemented
+	@RequestMapping(value = "/advancedSearch")
+	public String advancedSearch(
+			@RequestParam(value = "search", required = false) String search,
+			@RequestParam(value = "disableSemantic", required = true) boolean disableSemantic,		
+			@RequestParam(value = "enableFoodSelection", required = true) boolean enableFoodSelection,
+			@RequestParam(value = "enableEaten", required = true) boolean enableEaten,
+			@RequestParam(value = "mustHaveIngredients", required = false) String[] mustHaveIngredients,
+			@RequestParam(value = "calorieIntervalLow", required = false) Double calorieIntervalLow,
+			@RequestParam(value = "calorieIntervalHigh", required = false) Double calorieIntervalHigh,
+			RedirectAttributes redirectAttrs, HttpSession session){
+		
+		Object logged = session.getAttribute("isLogged");
+		boolean isLogged = logged == null ? false : (Boolean) logged;
+		if (!isLogged) {
+			return "redirect:login";
+		} 	
+		User u = (User) session.getAttribute("user");
+		
+		Recipe[] recipes;
+		if(search == null && search.isEmpty()){
+			 recipes = recipeService.getRecipeDao().getAllRecipes();
+		}
+		else{
+			if(disableSemantic){
+				List<Recipe> recipez = recipeService.getRecipeDao().searchRecipeByName(search);				
+				if(recipez == null){
+					recipes = null;
+				}
+				recipes = recipez.toArray(new Recipe[recipez.size()]);
+			}
+			else{
+				recipes = searchService.semanticSearch(search);
+			}
+		}
+		if(recipes != null){
+			if(mustHaveIngredients != null){				
+				for(int i=0; i<mustHaveIngredients.length; i++){
+					Recipe[] temp = recipeService.getRecipeDao().mustHaveIngredient(mustHaveIngredients[i]);
+					recipes = recipeService.findIntersection(recipes, temp);
+				}
+			}
+			if(calorieIntervalLow != null && calorieIntervalHigh != null){
+				if(calorieIntervalLow >= 0 && calorieIntervalHigh >= calorieIntervalLow){
+					Recipe[] temp = recipeService.getRecipeDao().caloriesBetween(calorieIntervalHigh, calorieIntervalLow);
+					recipes = recipeService.findIntersection(recipes, temp);
+				}
+				else{
+					redirectAttrs.addFlashAttribute("message", new Message(0, null, "Incorrect interval values."));
+					return "redirect:advancedSearch";
+				}
+			}
+			if(enableFoodSelection){
+				List<Recipe> recipez = new ArrayList<Recipe>();
+				for(int i=0; i<recipes.length;i++){
+					if(recommService.canEat(recipes[i].getRecipe_id(), u.getId())){
+						recipez.add(recipes[i]);
+					}
+				}
+				recipes = recipez.toArray(new Recipe[recipez.size()]);
+			}
+			if(enableEaten){
+				List<Recipe> recipez = new ArrayList<Recipe>();
+				for(int i=0; i<recipes.length;i++){
+					if(!recommService.isEaten(recipes[i].getRecipe_id(), u.getId())){
+						recipez.add(recipes[i]);
+					}
+				}
+				recipes = recipez.toArray(new Recipe[recipez.size()]);
+			}
+		}
+		else{
+			redirectAttrs.addFlashAttribute("message", new Message(1, null, "Search was successful, but no recipe found according to given criteria."));
+			return "redirect:searchResults";
+		}
+		redirectAttrs.addFlashAttribute("message", new Message(1, recipes, "Search was successful, here are the results."));
+		return "redirect:searchResults";
+	}*/
 }

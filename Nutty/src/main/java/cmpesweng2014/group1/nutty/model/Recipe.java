@@ -2,7 +2,7 @@ package cmpesweng2014.group1.nutty.model;
 
 import java.util.Date;
 
-public class Recipe {
+public class Recipe implements Comparable<Recipe>{
 
 	private int recipe_id;
 	private String name;
@@ -76,5 +76,10 @@ public class Recipe {
 
 	public void setTotal_calorie(double total_calorie) {
 		this.total_calorie = total_calorie;
+	}
+
+	@Override
+	public int compareTo(Recipe other) {
+		return (int)(this.recipe_id - other.recipe_id);
 	}
 }
