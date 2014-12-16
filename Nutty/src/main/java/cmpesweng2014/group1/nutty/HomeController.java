@@ -322,7 +322,13 @@ public class HomeController {
 		return answer;
 	}
 	
-	@RequestMapping(value = "/advancedSearch")
+	@RequestMapping(value = "/advancedSearch", method = RequestMethod.GET)
+	public String advancedSearch(HttpSession session) {
+		
+		return "advancedSearch";
+	}
+	
+	@RequestMapping(value = "/advancedSearch", method = RequestMethod.POST)
 	public String advancedSearch(
 			@RequestParam(value = "search", required = false) String search,
 			@RequestParam(value = "disableSemantic", required = true) boolean disableSemantic,		
