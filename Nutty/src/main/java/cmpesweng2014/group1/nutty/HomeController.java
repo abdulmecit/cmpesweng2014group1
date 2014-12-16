@@ -324,12 +324,17 @@ public class HomeController {
 	
 	@RequestMapping(value = "/advancedSearch", method = RequestMethod.GET)
 	public String advancedSearch(HttpSession session) {
-		
+		Object logged = session.getAttribute("isLogged");
+		boolean isLogged = logged == null ? false : (Boolean) logged;
+		if (!isLogged) {
+			return "redirect:login";
+		} 
 		return "advancedSearch";
 	}
 	
-	@RequestMapping(value = "/advancedSearch", method = RequestMethod.POST)
-	public String advancedSearch(
+	@RequestMapping(value = "/advancedSearchResult")
+	@ResponseBody
+	public Recipe[] advancedSearch(
 			@RequestParam(value = "search", required = false) String search,
 			@RequestParam(value = "disableSemantic", required = true) boolean disableSemantic,		
 			@RequestParam(value = "enableFoodSelection", required = true) boolean enableFoodSelection,
@@ -339,11 +344,6 @@ public class HomeController {
 			@RequestParam(value = "calorieIntervalHigh", required = false) Double calorieIntervalHigh,
 			RedirectAttributes redirectAttrs, HttpSession session){
 		
-		Object logged = session.getAttribute("isLogged");
-		boolean isLogged = logged == null ? false : (Boolean) logged;
-		if (!isLogged) {
-			return "redirect:login";
-		} 	
 		User u = (User) session.getAttribute("user");
 		
 		Recipe[] recipes;
@@ -375,8 +375,7 @@ public class HomeController {
 					recipes = recipeService.findIntersection(recipes, temp);
 				}
 				else{
-					redirectAttrs.addFlashAttribute("message", new Message(0, null, "Incorrect interval values."));
-					return "redirect:advancedSearch";
+					return null;
 				}
 			}
 			if(enableFoodSelection){
@@ -399,10 +398,8 @@ public class HomeController {
 			}
 		}
 		else{
-			redirectAttrs.addFlashAttribute("message", new Message(1, null, "Search was successful, but no recipe found according to given criteria."));
-			return "redirect:searchResults";
+			return null;
 		}
-		redirectAttrs.addFlashAttribute("message", new Message(1, recipes, "Search was successful, here are the results."));
-		return "redirect:searchResults";
+		return recipes;
 	}
 }
