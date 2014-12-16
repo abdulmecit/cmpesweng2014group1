@@ -40,6 +40,35 @@
         <div class="navbar-header">
           <a class="navbar-brand" href=/nutty>Nutty</a>
         </div>
+        
+        
+        
+        <ul class="nav navbar-nav">	    
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Recipe<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Recipe</a></li>
+            <li><a href="#">Person</a></li>
+          </ul>
+        </li>
+     
+      <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+        
+        </ul>
+        
+        
+        
+        
+        
+        
+        
+        
+        
 		  <ul class="nav navbar-nav navbar-right">
 		    <% 	if (session.getAttribute("isLogged") == null || ((Boolean)(session.getAttribute("isLogged")) == false)){ %>		  
 	    		<li><a href="/nutty/login">Login</a></li>
@@ -48,7 +77,29 @@
 	    		<li><a href="/nutty/user/profile/${user.id}">My Profile</a></li>	    	
 	    		<li><a href="/nutty/logout">Logout</a></li>
 	    		<li id="settings" class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="glyphicon glyphicon-cog"></span><i class="fa fa-caret-down"></i></a><ul role="menu" class="dropdown-menu"><li id="popular"><a href="/nutty/user/homesettings">Profile Settings</a></li><li id="app"><a href="/nutty/user/preferences">Food Preferences</a></li></li>
-	    	<%}%>	    				    
+	    	<%}%>
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+	    		    				    
 		  </ul>
 <!-- 		  <ul class="nav navbar-nav navbar-search navbar-right"> -->
 <!--             <input type="text" class="search-query span3" placeholder="Search"><ins>&nbsp;&nbsp;&nbsp;&nbsp;</ins> -->
