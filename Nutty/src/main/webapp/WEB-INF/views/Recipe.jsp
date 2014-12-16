@@ -621,7 +621,7 @@ body {
 					} else if (selText == "tasteRate") {
 						tasteRate = rate;
 						updateRate("taste_rate", tasteRate);
-					} else if (name == "easeRate") {
+					} else if (selText == "easeRate") {
 						easeRate = rate;
 						updateRate("ease_rate", easeRate);
 					}

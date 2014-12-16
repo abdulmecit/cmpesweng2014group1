@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -19,6 +20,11 @@ import cmpesweng2014.group1.nutty.model.User;
 @Component
 public class CommentDao extends PcDao {
 
+	@Autowired
+	private UserDao userDao;
+	@Autowired
+	private RecipeDao recipeDao;
+	
 	public int createComment(final String text, final long user_id, final int recipe_id){
 		final String query = "INSERT INTO Comment (text, user_id, recipe_id) VALUES (?,?,?)";
 		KeyHolder gkh = new GeneratedKeyHolder();
@@ -37,7 +43,44 @@ public class CommentDao extends PcDao {
 		}, gkh);
 
 		int newItemId = gkh.getKey().intValue();
-		return newItemId;
+		
+		//score part
+		//it this user- recipe relation does not exist in UserRecipeScore table,
+		//insert this.
+		final double insertScore=1.0;
+		if(recipeDao.emptyCheckUserRecipeScore(userDao.getUserById(user_id),recipeDao.getRecipeById(recipe_id))){
+				final String query2 = "INSERT INTO UserRecipeScore (user_id, recipe_id, comment_score) VALUES (?,?,?)";
+				KeyHolder gkh2 = new GeneratedKeyHolder();
+				this.getTemplate().update(new PreparedStatementCreator() {
+					@Override
+					public PreparedStatement createPreparedStatement(
+							Connection connection) throws SQLException {
+						PreparedStatement ps = connection.prepareStatement(query2,
+								Statement.RETURN_GENERATED_KEYS);
+						ps.setLong(1, user_id);
+						ps.setInt(2, recipe_id);
+						ps.setDouble(3, insertScore);
+						return ps;
+					}
+				}, gkh2);
+		}
+		else{
+			final String query2 = "UPDATE UserRecipeScore SET comment_score=? WHERE user_id=? AND recipe_id=?";
+			KeyHolder gkh2 = new GeneratedKeyHolder();
+				this.getTemplate().update(new PreparedStatementCreator() {
+					@Override
+					public PreparedStatement createPreparedStatement(
+							Connection connection) throws SQLException {
+						PreparedStatement ps = connection.prepareStatement(query2,
+								Statement.RETURN_GENERATED_KEYS);
+						ps.setDouble(1, insertScore);
+						ps.setLong(2, user_id);
+						ps.setInt(3, recipe_id);
+						return ps;
+					}
+				}, gkh2);
+		}		
+		return newItemId;		
 	}
 	public Comment getCommentById(int comment_id){
 		List<Comment> comments = this.getTemplate().query(

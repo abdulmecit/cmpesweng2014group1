@@ -1,5 +1,6 @@
 package cmpesweng2014.group1.nutty.controller;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -269,7 +270,7 @@ public class RecipeController {
 			@RequestParam(value = "user_id", required = true) Long user_id,
 			@RequestParam(value = "recipe_id", required = true) int recipe_id,
 			@RequestParam(value = "value", required = true) int value
-			) {
+			){
 		
 		Recipe recipe = recipeService.getRecipe(recipe_id);
 		User u = userService.getUserDao().getUserById(user_id);	

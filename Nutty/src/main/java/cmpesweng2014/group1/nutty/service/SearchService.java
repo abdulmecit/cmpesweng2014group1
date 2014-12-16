@@ -1,5 +1,6 @@
 package cmpesweng2014.group1.nutty.service;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,6 +27,9 @@ public class SearchService {
 	
 	@Autowired
 	private RecipeService recipeService;
+	
+	@Autowired
+	private RecommendationService recommService;
 	
 	public String[] getRelatedTerms(String searchString){
 		
@@ -155,4 +159,7 @@ public class SearchService {
 		}
 		return rec;		
 	}
+	
+	
+	
 }

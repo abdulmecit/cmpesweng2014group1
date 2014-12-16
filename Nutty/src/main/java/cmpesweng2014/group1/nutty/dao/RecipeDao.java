@@ -1,11 +1,25 @@
 package cmpesweng2014.group1.nutty.dao;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+import org.apache.mahout.cf.taste.common.TasteException;
+import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
+import org.apache.mahout.cf.taste.impl.neighborhood.ThresholdUserNeighborhood;
+import org.apache.mahout.cf.taste.impl.recommender.GenericUserBasedRecommender;
+import org.apache.mahout.cf.taste.impl.similarity.PearsonCorrelationSimilarity;
+import org.apache.mahout.cf.taste.model.DataModel;
+import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
+import org.apache.mahout.cf.taste.recommender.RecommendedItem;
+import org.apache.mahout.cf.taste.recommender.UserBasedRecommender;
+import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -16,11 +30,14 @@ import cmpesweng2014.group1.nutty.dao.mapper.EatLikeRateRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.RecipeRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.SharesRecipeRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.TagRowMapper;
+import cmpesweng2014.group1.nutty.dao.mapper.UserRecipeScoreRowMapper;
 import cmpesweng2014.group1.nutty.model.EatLikeRate;
 import cmpesweng2014.group1.nutty.model.Recipe;
+import cmpesweng2014.group1.nutty.model.RecipeTag;
 import cmpesweng2014.group1.nutty.model.SharesRecipe;
 import cmpesweng2014.group1.nutty.model.Tag;
 import cmpesweng2014.group1.nutty.model.User;
+import cmpesweng2014.group1.nutty.model.UserRecipeScore;
 
 @Component
 public class RecipeDao extends PcDao{
@@ -165,6 +182,8 @@ public class RecipeDao extends PcDao{
 	}
 
 	public void evaluateRecipe(final String column,final int value,final User user, final Recipe recipe){
+		
+		
 		if (emptyCheckUserRecipeRelation(user,recipe)) {
 			//add this recipe user relation to the table with eats value
 			final String query = "INSERT INTO EatLikeRate (user_id, recipe_id,"+column+") VALUES (?,?,?)";
@@ -600,7 +619,7 @@ public class RecipeDao extends PcDao{
 				new Object[] {recipe_id}, Integer.class);
 		return count;
 	}
-<<<<<<< HEAD
+
 	//empty check for user recipe score relation
 	//if it is true, we need to insert 
 	//if it is false, update this relations score
@@ -615,9 +634,7 @@ public class RecipeDao extends PcDao{
 			return false;
 		}
 	}
-=======
-	
->>>>>>> 2584ffb99c49737709e9531ea40fa30a0167dca1
+
 	public Recipe[] getAllRecipes(){
 		List<Recipe> recList = this.getTemplate().query(
 				"SELECT * FROM Recipe",
@@ -626,11 +643,57 @@ public class RecipeDao extends PcDao{
 			return null;
 		} else {
 			Recipe[] recipes = recList.toArray(new Recipe[recList.size()]);
-<<<<<<< HEAD
 			return recipes;
-=======
-			return recipes;		
->>>>>>> 2584ffb99c49737709e9531ea40fa30a0167dca1
+	
+
+		}
+	}
+	
+	public List<Recipe> calculateRecommendation(long user_id) throws IOException, TasteException{
+		List<UserRecipeScore> scoreList = this.getTemplate().query(
+				"SELECT user_id,recipe_id, "
+				+ "COALESCE(eats_score,0)+COALESCE(health_rate_score,0) + "
+				+ "COALESCE(add_score,0)+COALESCE(likes_score,0)+COALESCE(share_score,0)+"
+				+ "COALESCE(ease_rate_score,0)+COALESCE(taste_rate_score,0)+"
+				+ "COALESCE(comment_score,0) +COALESCE(cost_rate_score,0) "
+				+ "AS 'score' FROM UserRecipeScore",
+				new Object[] {}, new UserRecipeScoreRowMapper());
+
+		String dataToWrite="";
+		if (scoreList.isEmpty()) {
+			return null;
+		} else {
+			for(int i=0; i<scoreList.size();i++){
+				dataToWrite+=scoreList.get(i).getUser_id()+","+scoreList.get(i).getRecipe_id()+","+scoreList.get(i).getScore()+"\n";
+			}
+			File f = new File("score.txt");
+			f.createNewFile();
+			OutputStream out = new FileOutputStream(f);
+			out.write(dataToWrite.getBytes());
+			out.close();
+			/*
+			DataModel model = new FileDataModel(new File("score.txt"));
+			UserSimilarity similarity = new PearsonCorrelationSimilarity(model);
+			UserNeighborhood neighborhood = new ThresholdUserNeighborhood(0.1, similarity, model);
+			UserBasedRecommender recommender = new GenericUserBasedRecommender(model, neighborhood, similarity);
+			List<RecommendedItem> recommendations = recommender.recommend(1, 3);
+			List<Recipe> recipes=new ArrayList<Recipe>();
+			
+			//for checking
+			File f2 = new File("results.txt");
+			f2.createNewFile();
+			OutputStream out2 = new FileOutputStream(f);
+			
+			
+			for (RecommendedItem recommendation : recommendations) {
+				out2.write((int)recommendation.getItemID());
+				Recipe recipe=getRecipeById((int)recommendation.getItemID());
+				recipes.add(recipe);
+			}
+		
+			out2.close();*/
+			return null;
+
 		}
 	}
 }
