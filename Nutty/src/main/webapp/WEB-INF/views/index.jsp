@@ -197,6 +197,12 @@ input#img-1:checked ~ .nav-dots label#img-dot-1, input#img-2:checked ~
 		</ul>
 	</div>
 
+
+	<%
+		if (session.getAttribute("isLogged") == null
+				|| ((Boolean) (session.getAttribute("isLogged")) == false)) {
+		} else {
+	%>
 	<div class="panel panel-default"
 		style="margin-right: 80px; margin-left: 80px">
 		<div class="panel-body">
@@ -206,17 +212,15 @@ input#img-1:checked ~ .nav-dots label#img-dot-1, input#img-2:checked ~
 					<div>
 						<ul class="nav nav-tabs nav-justified">
 							<li role="presentation" class="filter active" id="overall"><a
-								class="btn btn-link">My Recipe</a></li>
-							<li role="presentation" class="filter" id="like"><a
-								class="btn btn-link">Shared Recipe</a></li>
+								class="btn btn-link">News Feed</a></li>
+								<li role="presentation" class="filter" id="overall"><a
+								class="btn btn-link">Recommendations</a></li>
 							<li role="presentation" class="filter" id="taste"><a
-								class="btn btn-link">Taste Rate</a></li>
+								class="btn btn-link">My Recipe</a></li>
 							<li role="presentation" class="filter" id="healht"><a
-								class="btn btn-link">Health Rate </a></li>
+								class="btn btn-link">Recipe From My Friends</a></li>
 							<li role="presentation" class="filter" id="cost"><a
-								class="btn btn-link">Cost Rate</a></li>
-							<li role="presentation" class="filter" id="ease"><a
-								class="btn btn-link">Ease Rate</a></li>
+								class="btn btn-link">Shared Recipes</a></li>
 						</ul>
 						<div id="results"></div>
 					</div>
@@ -230,5 +234,15 @@ input#img-1:checked ~ .nav-dots label#img-dot-1, input#img-2:checked ~
 			</div>
 		</div>
 	</div>
+	<%
+		}
+	%>
 </body>
+<script type="text/javascript">
+	var searchFilter;
+	$(".filter").click(function() {
+		$(this).addClass("active").siblings().removeClass("active");
+		searchFilter = this.id;
+	});
+</script>
 </html>

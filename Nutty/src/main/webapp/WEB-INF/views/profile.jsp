@@ -2,126 +2,198 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <html lang="en">
-<jsp:include page="header.jsp" flush="true"/>
-    <title>Nutty</title>
+<jsp:include page="header.jsp" flush="true" />
+<title>Nutty</title>
 
-    <!-- Add custom CSS here -->
-    <style>
-        body {margin-top: 50px;}
-			#main-wrap > div { min-height: 450px; }
-		.info { min-height: 80px; }
-		
-		/* layout */
-		#main-wrap {
-		    /* overflow to handle inner floating block */
-		    overflow: hidden;
-		}
-		
-		#sidebar {
-		    float: left;
-		    width: 40%;
-		    height: 100%;
-		    background: #eeeeee;
-		}
-		
-		#foto {
-			float: center;
-		    width: 40%;
-		    height: auto;
-		    background: #eeeeee;
-		    margin-top: 50px;
-		}
-		
-		#content-wrap {
-		    float: right;
-		    width: 60%;
-		}
-		
-		#info-wrap {
-		    /* overflow to handle inner floating block */
-		    overflow: hidden;
-		}
-		
-		.info {
-		    width: 50%;
-		    float: left;
-		}
-		
-		#Follow {
-			display: none;
-			visibility: hidden;
-		}
-		
-		#followCheck {
-			display: none;
-			visibility: hidden;
-		} 
-    </style>
+<!-- Add custom CSS here -->
+<style>
+body {
+	margin-top: 50px;
+}
 
-  </head>
-  <body>    
+#main-wrap>div {
+	min-height: 450px;
+}
+
+.info {
+	min-height: 80px;
+}
+
+/* layout */
+#main-wrap {
+	/* overflow to handle inner floating block */
+	overflow: hidden;
+}
+
+#sidebar {
+	float: left;
+	width: 40%;
+	height: 100%;
+	background: #eeeeee;
+}
+
+#foto {
+	float: center;
+	width: 40%;
+	height: auto;
+	background: #eeeeee;
+	margin-top: 50px;
+}
+
+#content-wrap {
+	float: right;
+	width: 60%;
+}
+
+#info-wrap {
+	/* overflow to handle inner floating block */
+	overflow: hidden;
+}
+
+.info {
+	width: 50%;
+	float: left;
+}
+
+#Follow {
+	display: none;
+	visibility: hidden;
+}
+
+#followCheck {
+	display: none;
+	visibility: hidden;
+}
+</style>
+
+</head>
+<body>
 	<div id="main-wrap">
-	    <div id="sidebar" align="center">
-	    	<div id="foto">
-<!-- 	    		<img id="profilePic" alt="Photo of the User" src="http://cdn.sett.com/images/user/20140502/chef57b22ab552661a6852fe44c0e7e59e63.jpg" width="100%" height="auto"/> -->
-	    	</div>
-	    	<br><br><br>
-	    	<h2>Best Of</h2>
-	    	<br><br>
-	    	<div id="bestOf"><p>Loading Recipes, please wait..</p></div>
-	    </div>
-	    <div id="content-wrap">
-	        <div id="info-wrap">
-	            <div class="info" align="center">
-	            	<p>&nbsp;</p>
-	            	<h1 id="name">${visitedUser.name} ${visitedUser.surname}</h1>
-	            	<h3>Age:</h3> <p id="age"></p>
-	            	<h3>Gender:</h3> <p id="gender">Not specified</p>
-	            	<h3>Food Intolerances:</h3> 
-	            	<p id="food_int"> None </p>
-	            	<h3>Health Conditions:</h3>
-	            	<p id="health_cond"> None </p>
-	            	<h3>Not Preferred:</h3>
-	            	<p id="not_pref"> None </p>
-	        	</div>
-	        	<div class="info" align="center">
-	        	    <button type="button" class="btn btn-primary" value="Follow" id="Follow"
+		<div id="sidebar" align="center">
+			<div id="foto">
+				<!-- 	    		<img id="profilePic" alt="Photo of the User" src="http://cdn.sett.com/images/user/20140502/chef57b22ab552661a6852fe44c0e7e59e63.jpg" width="100%" height="auto"/> -->
+			</div>
+			<br>
+			<br>
+			<br>
+			<h2>Best Of</h2>
+			<br>
+			<br>
+			<div id="bestOf">
+				<p>Loading Recipes, please wait..</p>
+			</div>
+		</div>
+		<div id="content-wrap">
+			<div id="info-wrap">
+				<div class="info" align="center">
+					<p>&nbsp;</p>
+					<h1 id="name">${visitedUser.name}${visitedUser.surname}</h1>
+					<h3>Age:</h3>
+					<p id="age"></p>
+					<h3>Gender:</h3>
+					<p id="gender">Not specified</p>
+					<h3>Food Intolerances:</h3>
+					<p id="food_int">None</p>
+					<h3>Health Conditions:</h3>
+					<p id="health_cond">None</p>
+					<h3>Not Preferred:</h3>
+					<p id="not_pref">None</p>
+				</div>
+				<div class="info" align="center">
+					<button type="button" class="btn btn-primary" value="Follow"
+						id="Follow"
 						style="float: center; margin-right: 15 px; margin-top: 18px;">
 						<span id="textFollow" class="ui-button-text">Follow &nbsp </span>
 						<span id="followCheck" class="glyphicon glyphicon-check"></span>
 						<!-- caret for arrow. ui-button-text for button text visible; -->
 					</button>
-	        	</div>
-            	<div class="info" align="center">
-	            	<p>&nbsp;</p>
-	            	<img alt="" src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg" width="50px" height="auto">
-	            	<img alt="" src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg" width="50px" height="auto">
-	            	<img alt="" src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg" width="50px" height="auto">
-	            	<img alt="" src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg" width="50px" height="auto">
-	            	<img alt="" src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg" width="50px" height="auto">
-	            	<p>&nbsp;</p>
-	            	<h2>Master Chef</h2>
-	            	<h3>&nbsp;</h3>
-	            	<h3><a id="showFollowers" title="Click to see them"> ${numberOfFollowers} followers </a></h3>
-	            	<h3><a id="showFollowings" title="Click to see them"> ${numberOfFollowing} following </a></h3>
 				</div>
-		    </div>
-        	<h1 align="center">News Feed</h1>
-     		<div id="sharedRecipes"><p>Loading Recipes, please wait..</p></div>
-        	
-        	<h1 align="center">.</h1>
-        	<h1 align="center">.</h1>
-        	<h1 align="center">.</h1>
-        	<h1 align="center">.</h1>
-        	<h1 align="center">.</h1>
-        	<h1 align="center">.</h1>
-        	<h1 align="center">.</h1>
-        	<h1 align="center">.</h1>
-        	<h1 align="center">.</h1>
+				<div class="info" align="center">
+					<p>&nbsp;</p>
+					<img alt=""
+						src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"
+						width="50px" height="auto"> <img alt=""
+						src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"
+						width="50px" height="auto"> <img alt=""
+						src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"
+						width="50px" height="auto"> <img alt=""
+						src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"
+						width="50px" height="auto"> <img alt=""
+						src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"
+						width="50px" height="auto">
+					<p>&nbsp;</p>
+					<h2>Master Chef</h2>
+					<h3>&nbsp;</h3>
+					<h3>
+						<a id="showFollowers" title="Click to see them">
+							${numberOfFollowers} followers </a>
+					</h3>
+					<h3>
+						<a id="showFollowings" title="Click to see them">
+							${numberOfFollowing} following </a>
+					</h3>
+				</div>
+			</div>
+			<h1 align="center">News Feed</h1>
+			<div id="sharedRecipes">
+				<p>Loading Recipes, please wait..</p>
+			</div>
+
+			<div class="panel panel-default"
+				style="margin-right: 80px; margin-left: 80px">
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-sm-9">
+
+							<div>
+								<ul class="nav nav-tabs nav-justified">
+									<li role="presentation" class="filter active" id="overall"><a
+										class="btn btn-link">My Recipe</a></li>
+									<li role="presentation" class="filter" id="like"><a
+										class="btn btn-link">Shared Recipe</a></li>
+									<li role="presentation" class="filter" id="taste"><a
+										class="btn btn-link">Taste Rate</a></li>
+									<li role="presentation" class="filter" id="healht"><a
+										class="btn btn-link">Health Rate </a></li>
+									<li role="presentation" class="filter" id="cost"><a
+										class="btn btn-link">Cost Rate</a></li>
+									<li role="presentation" class="filter" id="ease"><a
+										class="btn btn-link">Ease Rate</a></li>
+								</ul>
+								<div id="results">
+									<h1 align="center">.</h1>
+									<h1 align="center">.</h1>
+									<h1 align="center">.</h1>
+									<h1 align="center">.</h1>
+									<h1 align="center">.</h1>
+									<h1 align="center">.</h1>
+									<h1 align="center">.</h1>
+									<h1 align="center">.</h1>
+									<h1 align="center">.</h1>
+
+								</div>
+							</div>
+
+						</div>
+						<div class="col-sm-3">
+							<div class="panel panel-default">
+								<div class="panel-body"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
-	
+
 	<script type="text/javascript">
+	var searchFilter;
+	$(".filter").click(function() {
+		$(this).addClass("active").siblings().removeClass("active");
+		searchFilter = this.id;
+		$("#results").append(searchFilter);
+	});
+	
 	$(document).ready(function () {
 		if('${visitedUser.id}' == '${user.id}'){
 			$("#Follow").css('display','none');
