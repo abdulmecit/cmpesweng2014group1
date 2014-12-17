@@ -574,9 +574,9 @@ public class RecipeDao extends PcDao{
 	
 	public Recipe[] mustHaveIngredient(String ing_name){
 		List<Recipe> recList = this.getTemplate().query(
-				"SELECT a.recipe_id, a.name, a.description, a.portion, a.created,"
-						+ "a.last_updated,a.total_calorie  FROM Recipe a, HasIngredient b,"
-						+ "ingredients c WHERE c.Shrt_Desc LIKE ? AND b.ing_id=c.NDB_No AND"
+				"SELECT a.recipe_id, a.name, a.description, a.portion, a.created, "
+						+ "a.last_updated,a.total_calorie  FROM Recipe a, HasIngredient b, "
+						+ "ingredients c WHERE c.Shrt_Desc LIKE ? AND b.ing_id=c.NDB_No AND "
 						+ "a.recipe_id=b.recipe_id ",new Object[] { "%" + ing_name + "%" }, new RecipeRowMapper());
 		if (recList.isEmpty()) {
 			return null;
@@ -600,9 +600,9 @@ public class RecipeDao extends PcDao{
 	//return recipes for the given tag
 	public Recipe[] searchRecipesForATag(String tag){
 		List<Recipe> recList = this.getTemplate().query(
-				"SELECT a.recipe_id, a.name, a.description, a.portion, a.created,"
-						+ "a.last_updated,a.total_calorie  FROM Recipe a, HasTag b,"
-						+ "Tag c WHERE c.tag_name=? AND b.tag_id=c.tag_id AND"
+				"SELECT a.recipe_id, a.name, a.description, a.portion, a.created, "
+						+ "a.last_updated,a.total_calorie  FROM Recipe a, HasTag b, "
+						+ "Tag c WHERE c.tag_name=? AND b.tag_id=c.tag_id AND "
 						+ "a.recipe_id=b.recipe_id ",
 						new Object[] { tag }, new RecipeRowMapper());
 		if (recList.isEmpty()) {

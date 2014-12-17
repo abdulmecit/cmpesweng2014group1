@@ -26,8 +26,9 @@
 					<div class="input-group">
 						<input type="text" class="form-control" id="searchKey" name="search"
 							placeholder="tags"> <span class="input-group-btn">
-							<button class="btn btn-primary" type="submit" id="search"
-								disabled="disabled">Search!</button>
+							<button class="btn btn-primary" type="submit" id="search">
+						<!-- 		disabled="disabled" -->
+								Search!</button>
 						</span>
 					</div>
 
@@ -60,10 +61,6 @@
 									<input type="text" class="form-control" id="ingredient"
 										name="mustHaveIngredients[]" placeholder="sugar,etc.">
 								</p>
-								<p>
-									<input type="text" class="form-control" id="ingredient"
-										name="mustHaveIngredients[]" placeholder="sugar,etc.">
-								</p>
 							</div>
 						</div>
 					</div>
@@ -72,7 +69,7 @@
 						<div class="col-sm-7">
 							<div class="checkbox">
 								<label> <input type="checkbox" id="foodPreferences"
-									name="enableFoodSelection" value=""> <b>Consider my food preferences</b>
+									name="enableFoodSelection" value="true"> <b>Consider my food preferences</b>
 								</label>
 							</div>
 						</div>
@@ -82,7 +79,7 @@
 						<div class="col-sm-7">
 							<div class="checkbox">
 								<label> <input type="checkbox" id="eatenRecipes" name="enableEaten"
-									value=""> <b>Don't show eaten recipes</b>
+									value="true"> <b>Don't show eaten recipes</b>
 								</label>
 							</div>
 						</div>
@@ -92,7 +89,7 @@
 						<div class="col-sm-7">
 							<div class="checkbox">
 								<label> <input type="checkbox" id="JustMyTags" name="disableSemantic"
-									value=""> <b>Just use my tags</b>
+									value="true"> <b>Just use my tags</b>
 								</label>
 							</div>
 						</div>
@@ -138,7 +135,7 @@
 			document.getElementById(divName).appendChild(newdiv);
 			counter++;
 		}
-
+/*
 		$("#searchKey").keyup(function(event) {
 			if ($("#searchKey").val().length != 0) {
 				$('#search').attr("disabled", false);
@@ -146,6 +143,7 @@
 				$('#search').attr("disabled", true);
 			}
 		});
+*/
 	</script>
 </body>
 </html>

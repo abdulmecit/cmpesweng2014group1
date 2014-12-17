@@ -349,7 +349,7 @@ input[type="submit"]:active {
 
  	$(document).ready(function () {
 	 	 	$.ajax({
-				type: "GET",
+				type: "POST",
 				url: "../foodIntoleranceREST",
 				data : {
 					user_id : '${user.id}'
@@ -370,7 +370,7 @@ input[type="submit"]:active {
 	
  	$(document).ready(function () {
  	 	$.ajax({
-			type: "GET",
+			type: "POST",
 			url: "../healthConditionREST",
 			data : {
 				user_id : '${user.id}'
@@ -391,7 +391,7 @@ input[type="submit"]:active {
 	
  	$(document).ready(function () {
  	 	$.ajax({
-			type: "GET",
+			type: "POST",
 			url: "../unpreferREST",
 			data : {
 				user_id : '${user.id}'

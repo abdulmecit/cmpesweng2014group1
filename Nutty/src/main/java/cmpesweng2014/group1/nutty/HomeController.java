@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.Gson;
+
 import cmpesweng2014.group1.nutty.model.Message;
 import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.model.User;
@@ -332,23 +334,28 @@ public class HomeController {
 		return "advancedSearch";
 	}
 	
-	@RequestMapping(value = "/advancedSearchResult")
 	@ResponseBody
+	@RequestMapping(value = "/advancedSearchResults")
 	public Recipe[] advancedSearch(
 			@RequestParam(value = "search", required = false) String search,
-			@RequestParam(value = "disableSemantic", required = true) boolean disableSemantic,		
-			@RequestParam(value = "enableFoodSelection", required = true) boolean enableFoodSelection,
-			@RequestParam(value = "enableEaten", required = true) boolean enableEaten,
-			@RequestParam(value = "mustHaveIngredients", required = false) String[] mustHaveIngredients,
+			@RequestParam(value = "disableSemantic", required = false) boolean disableSemantic,		
+			@RequestParam(value = "enableFoodSelection", required = false) boolean enableFoodSelection,
+			@RequestParam(value = "enableEaten", required = false) boolean enableEaten,
+			@RequestParam(value = "mustHaveIngredients[]", required = false) String mustHaveIngredientz,
 			@RequestParam(value = "calorieIntervalLow", required = false) Double calorieIntervalLow,
 			@RequestParam(value = "calorieIntervalHigh", required = false) Double calorieIntervalHigh,
-			RedirectAttributes redirectAttrs, HttpSession session){
+			@RequestParam(value = "user_id", required = true) Long user_id){
 		
-		User u = (User) session.getAttribute("user");
+		User u = userService.getUserDao().getUserById(user_id);
+		
+		//Convert from JSON String
+		Gson gson = new Gson();
+		String[] mustHaveIngredients = gson.fromJson(mustHaveIngredientz, String[].class);
 		
 		Recipe[] recipes;
 		if(search == null || search.isEmpty()){
 			 recipes = recipeService.getRecipeDao().getAllRecipes();
+			 System.out.println("Here");
 		}
 		else{
 			if(disableSemantic){
@@ -367,6 +374,7 @@ public class HomeController {
 				for(int i=0; i<mustHaveIngredients.length; i++){
 					Recipe[] temp = recipeService.getRecipeDao().mustHaveIngredient(mustHaveIngredients[i]);
 					recipes = recipeService.findIntersection(recipes, temp);
+					System.out.println("Here2 " + mustHaveIngredients.length);
 				}
 			}
 			if(calorieIntervalLow != null && calorieIntervalHigh != null){
@@ -375,10 +383,12 @@ public class HomeController {
 					recipes = recipeService.findIntersection(recipes, temp);
 				}
 				else{
+					System.out.println("Here3");
 					return null;
 				}
 			}
 			if(enableFoodSelection){
+				System.out.println("Here4");
 				List<Recipe> recipez = new ArrayList<Recipe>();
 				for(int i=0; i<recipes.length;i++){
 					if(recommService.canEat(recipes[i].getRecipe_id(), u.getId())){
@@ -388,6 +398,7 @@ public class HomeController {
 				recipes = recipez.toArray(new Recipe[recipez.size()]);
 			}
 			if(enableEaten){
+				System.out.println("Here5");
 				List<Recipe> recipez = new ArrayList<Recipe>();
 				for(int i=0; i<recipes.length;i++){
 					if(!recommService.isEaten(recipes[i].getRecipe_id(), u.getId())){
@@ -398,6 +409,7 @@ public class HomeController {
 			}
 		}
 		else{
+			System.out.println("Here6");
 			return null;
 		}
 		return recipes;
