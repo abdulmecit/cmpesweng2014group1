@@ -243,11 +243,11 @@ body {
 				var newDiv = document.createElement('div');
 				newDiv.id = 'textBoxDiv' + counter;
 				newDiv.innerHTML = "<p><div class='col-sm-4' align='left'> <input type='text' class='form-control' id='amount' name='amount[]' placeholder='only number'> </div>"
-						+ "<div class='col-sm-8'> <div class='input-group'> <input type='text' class='form-control' id='ingredient name='ingredient[]' value='" + value + "'  readonly>"
+						+ "<div class='col-sm-8'> <div class='input-group'> <input type='text' class='form-control' id='ingredient' name='ingredient[]' value='" + value + "'  readonly>"
 						+ "<span class='input-group-btn'> <button type='button' class='btn btn-default' onclick='deleteText("
 						+ counter
 						+ ")'"
-						+ "id='delingredient"
+						+ "id='delingredient'"
 						+ counter
 						+ "'><span id='den'>&times;</span></button> </span></div></div></p><br><br>";
 				document.getElementById(div).appendChild(newDiv);

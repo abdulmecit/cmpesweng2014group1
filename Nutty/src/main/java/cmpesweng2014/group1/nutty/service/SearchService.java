@@ -92,13 +92,16 @@ public class SearchService {
 	//returns sorted Recipe array according to the similarity.
 	public Recipe[] semanticSearch(String tag){
 		//original tags
-		String tags[] = tag.split(" ");
-		int relatedTagsIndex=tags.length;
-		String[] related=getRelatedTerms(tag);
-		for(int i=0; i<related.length;i++){
-			tags[relatedTagsIndex+i]=related[i];
-		}
-		Recipe[] foundRecipes=searchByAllTags(tags, relatedTagsIndex);
+		String tagz[] = tag.split(" ");
+		int relatedTagsIndex = tagz.length;
+		String[] related = getRelatedTerms(tag);
+		int relatedTagsLength = related.length;
+		
+		String tags[] = new String[relatedTagsIndex + relatedTagsLength];
+		System.arraycopy(tagz, 0, tags, 0, relatedTagsIndex);
+		System.arraycopy(related, 0, tags, relatedTagsIndex, relatedTagsLength);
+		
+		Recipe[] foundRecipes = searchByAllTags(tags, relatedTagsIndex);
 		return foundRecipes;
 	}
 	public Recipe[] searchByAllTags(String[] tags, int relatedTagsIndex){		
@@ -127,17 +130,19 @@ public class SearchService {
 		//deal with related tags
 		for(int i=relatedTagsIndex; i<tags.length;i++){
 			Recipe[] foundRecipes2=recipeDao.searchRecipesForATag(tags[i]);
-			for(int k=0; k<foundRecipes2.length;k++){
-				int recipe_id=foundRecipes2[k].getRecipe_id();
-				Double value2 = recValue.get(recipe_id);
-				//if this recipe was added before, increase the value
-				if (value2 != null) {
-					value2=value2+0.5;
-					recValue.put(recipe_id, value2);
-				}
-				//if this recipe wasn't added.
-				else{
-					recValue.put(recipe_id, 0.5);
+			if(foundRecipes2 != null){
+				for(int k=0; k<foundRecipes2.length;k++){
+					int recipe_id=foundRecipes2[k].getRecipe_id();
+					Double value2 = recValue.get(recipe_id);
+					//if this recipe was added before, increase the value
+					if (value2 != null) {
+						value2=value2+0.5;
+						recValue.put(recipe_id, value2);
+					}
+					//if this recipe wasn't added.
+					else{
+						recValue.put(recipe_id, 0.5);
+					}
 				}
 			}
 		}

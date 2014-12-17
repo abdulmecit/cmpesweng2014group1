@@ -575,7 +575,7 @@ public class RecipeDao extends PcDao{
 				"SELECT a.recipe_id, a.name, a.description, a.portion, a.created, "
 						+ "a.last_updated,a.total_calorie  FROM Recipe a, HasIngredient b, "
 						+ "ingredients c WHERE c.Shrt_Desc LIKE ? AND b.ing_id=c.NDB_No AND "
-						+ "a.recipe_id=b.recipe_id ",new Object[] { "%" + ing_name + "%" }, new RecipeRowMapper());
+						+ "a.recipe_id=b.recipe_id ",new Object[] { "%" + ing_name.toUpperCase() + "%" }, new RecipeRowMapper());
 		if (recList.isEmpty()) {
 			return null;
 		} else {

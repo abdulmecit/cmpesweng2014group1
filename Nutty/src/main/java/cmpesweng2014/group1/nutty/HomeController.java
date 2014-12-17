@@ -359,34 +359,37 @@ public class HomeController {
 		}
 		else{
 			if(disableSemantic){
-				List<Recipe> recipez = recipeService.getRecipeDao().searchRecipeByName(search);				
-				if(recipez == null){
-					recipes = null;
-				}
-				recipes = recipez.toArray(new Recipe[recipez.size()]);
+				String[] tags = search.split(" ");
+				recipes = searchService.searchByAllTags(tags, tags.length);
 			}
 			else{
 				recipes = searchService.semanticSearch(search);
 			}
 		}
 		if(recipes != null){
+			System.out.println("Here2 " + mustHaveIngredients.length);
 			if(mustHaveIngredients != null){				
 				for(int i=0; i<mustHaveIngredients.length; i++){
-					Recipe[] temp = recipeService.getRecipeDao().mustHaveIngredient(mustHaveIngredients[i]);
-					recipes = recipeService.findIntersection(recipes, temp);
-					System.out.println("Here2 " + mustHaveIngredients.length);
+					if(!mustHaveIngredients[i].isEmpty()){
+						Recipe[] temp = recipeService.getRecipeDao().mustHaveIngredient(mustHaveIngredients[i]);
+						recipes = recipeService.findIntersection(recipes, temp);
+					}
 				}
 			}
+		}
+		if(recipes != null){
 			if(calorieIntervalLow != null && calorieIntervalHigh != null){
+				System.out.println("Here3");
 				if(calorieIntervalLow >= 0 && calorieIntervalHigh >= calorieIntervalLow){
 					Recipe[] temp = recipeService.getRecipeDao().caloriesBetween(calorieIntervalHigh, calorieIntervalLow);
 					recipes = recipeService.findIntersection(recipes, temp);
 				}
 				else{
-					System.out.println("Here3");
 					return null;
 				}
 			}
+		}
+		if(recipes != null){
 			if(enableFoodSelection){
 				System.out.println("Here4");
 				List<Recipe> recipez = new ArrayList<Recipe>();
@@ -397,6 +400,8 @@ public class HomeController {
 				}
 				recipes = recipez.toArray(new Recipe[recipez.size()]);
 			}
+		}
+		if(recipes != null){
 			if(enableEaten){
 				System.out.println("Here5");
 				List<Recipe> recipez = new ArrayList<Recipe>();
@@ -408,10 +413,7 @@ public class HomeController {
 				recipes = recipez.toArray(new Recipe[recipez.size()]);
 			}
 		}
-		else{
-			System.out.println("Here6");
-			return null;
-		}
 		return recipes;
 	}
 }
+

@@ -262,6 +262,9 @@ public class RecipeService {
 		recipeDao.cancelShare(user_id, recipe_id);
 	}
 	public Recipe[] findIntersection(Recipe[] recipes1, Recipe[] recipes2){
+		if(recipes1 == null || recipes2 == null)
+			return null;
+		
 		Set<Recipe> recipeSet = new LinkedHashSet<Recipe>(Arrays.asList(recipes1));
 		Set<Recipe> intersection = new LinkedHashSet<Recipe>();
 
