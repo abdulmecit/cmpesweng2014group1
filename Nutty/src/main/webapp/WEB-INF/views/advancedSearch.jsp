@@ -146,16 +146,6 @@
 		$(".filter").click(function() {
 			$(this).addClass("active").siblings().removeClass("active");
 			searchFilter = this.id;
-			
-			$.ajax({
-				type : "POST",
-				url : "../rateRecipe",
-				data : {
-					changed : changed,
-					user_id : '${user.id}',
-					recipe_id : '${recipe.recipe_id}',
-					value : value
-				}
 			})
 			$("#results").append(searchFilter);
 		});
@@ -179,7 +169,7 @@
 						}}).done(function(answer) {
 									//$("#searchResults").html("");
 									if (answer == "") {
-										$("#searchResults")
+										$("#results")
 												.append(
 														"<p>Nothing to show :(</p>");
 									} else {
@@ -197,71 +187,6 @@
 								});
 			});
 		
-		
-		/*
-		$('#AdvSearch')
-		.submit(
-				function(event) {
-					event.preventDefault();
-					$
-							.ajax(
-									{
-										type : "POST",
-										url : "basicSearch",
-										data : {
-											search : $("#searchText")
-													.val(),
-											searchOption : $(
-													'input:radio[name=searchOption]:checked')
-													.val()
-										}
-									})
-							.done(
-									function(answer) {
-										$("#searchResults").html("");
-										if (answer == "") {
-											$("#searchResults")
-													.append(
-															"<p>Nothing to show :(</p>");
-										} else {
-											var results = answer
-													.split('|');
-											var path = results[0];
-											for (i = 1; i < results.length; i++) {
-												dummy = results[i]
-														.split('>');
-												$("#searchResults")
-														.append(
-																"<a href='" + path + "/" + dummy[1] + "'>"
-																		+ dummy[0]
-																		+ "</p>");
-											}
-										}
-									});
-				});
-					
-					
-					
-					
-				$.ajax({
-					type : "POST",
-					url : "../advancedSearchResults",
-					data : {
-						search: search,
-						calorieIntervalLow : calorieIntervalLow,
-						calorieIntervalHigh : calorieIntervalHigh,
-						mustHaveIngredients : mustHaveIngredients,
-						enableFoodSelection : enableFoodSelection,
-						enableEaten : enableEaten,
-						disableSemantic : disableSemantic,
-						user_id : '${user_id}',
-					}}		
-					
-					
-		
-
-*/
-
 	</script>
 </body>
 </html>
