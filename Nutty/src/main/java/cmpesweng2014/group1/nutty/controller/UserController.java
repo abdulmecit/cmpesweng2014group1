@@ -25,6 +25,8 @@ import com.google.gson.Gson;
 import cmpesweng2014.group1.nutty.model.FoodSelection;
 import cmpesweng2014.group1.nutty.model.Ingredient;
 import cmpesweng2014.group1.nutty.model.Message;
+import cmpesweng2014.group1.nutty.model.Recipe;
+import cmpesweng2014.group1.nutty.model.SuperUser;
 import cmpesweng2014.group1.nutty.model.User;
 import cmpesweng2014.group1.nutty.service.RecipeService;
 import cmpesweng2014.group1.nutty.service.UserService;
@@ -472,5 +474,76 @@ public class UserController {
 		
 		return new Message(1, null, "Your selections are successfully added to the system.");
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/isFollowerREST")
+	public boolean isFollower(
+			@RequestParam(value = "visiting_user_id", required = true) Long visiting_user_id,
+			@RequestParam(value = "visited_user_id", required = true) Long visited_user_id
+			) {
+		
+		return userService.isFollower(visiting_user_id, visited_user_id);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/getFollowerListREST")
+	public User[] getFollowerList(
+			@RequestParam(value = "user_id", required = true) Long user_id
+			) {
+		
+		return userService.getFollowerList(user_id);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/getFollowingListREST")
+	public User[] getFollowingList(
+			@RequestParam(value = "user_id", required = true) Long user_id
+			) {
+		
+		return userService.getFollowingList(user_id);
+	}
 
+	@ResponseBody
+	@RequestMapping(value = "/userREST/{userId}")
+	public SuperUser viewUserREST(@PathVariable Long visited_user_id){
+		
+		SuperUser su = new SuperUser();
+		
+		User visited_user = userService.getUserDao().getUserById(visited_user_id);
+		su.setUser(visited_user);
+		
+		User[] followerList = userService.getFollowerList(visited_user_id);
+		su.setFollowerList(followerList);
+		
+		User[] followingList = userService.getFollowingList(visited_user_id);
+		su.setFollowingList(followingList);		
+		
+		int[] ownedRecipeIds = userService.getUserDao().getRecipes(visited_user_id);
+		int recipeCount = ownedRecipeIds.length;
+		Recipe[] ownedRecipes = new Recipe[recipeCount];
+		String[] ownedRecipePictures = new String[recipeCount];
+		
+		for(int i=0; i<recipeCount; i++){
+			ownedRecipes[i] = recipeService.getRecipe(ownedRecipeIds[i]);
+			ownedRecipePictures[i] = recipeService.getRecipePhotoUrl(ownedRecipeIds[i]);
+		}
+		
+		su.setOwnedRecipes(ownedRecipes);
+		su.setOwnedRecipePictures(ownedRecipePictures);
+
+		int[] sharedRecipeIds = recipeService.getSharedRecipes(visited_user_id);
+		recipeCount = sharedRecipeIds.length;
+		Recipe[] sharedRecipes = new Recipe[recipeCount];
+		String[] sharedRecipePictures = new String[recipeCount];
+		
+		for(int i=0; i<recipeCount; i++){
+			sharedRecipes[i] = recipeService.getRecipe(sharedRecipeIds[i]);
+			sharedRecipePictures[i] = recipeService.getRecipePhotoUrl(sharedRecipeIds[i]);
+		}
+		
+		su.setOwnedRecipes(sharedRecipes);
+		su.setOwnedRecipePictures(sharedRecipePictures);
+		
+		return su;
+	}
 }
