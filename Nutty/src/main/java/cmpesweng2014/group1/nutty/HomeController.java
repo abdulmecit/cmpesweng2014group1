@@ -63,9 +63,29 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public String index(HttpSession session) {
+	public String index(Model model, HttpSession session) {
+		Object logged = session.getAttribute("isLogged");
+		boolean isLogged = logged == null ? false : (Boolean) logged;
+		if (isLogged) {
+			User u = (User) session.getAttribute("user");
+			Recipe[] recipes = null;
+			try {
+				recipes = recommService.getRecommendation(u.getId());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			if(recipes != null){
+				model.addAttribute("recommendedRecipes", recipes);
+				String[] recipePhotos = new String[recipes.length];
+				for(int i=0; i<recipes.length; i++){
+					recipePhotos[i] = recipeService.getRecipePhotoUrl(recipes[i].getRecipe_id());
+				}
+				model.addAttribute("recommendedRecipesPhotos", recipePhotos);
+			}
+		} 
 			return "index";
 	}
+
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String viewLogin(Model model, HttpSession session) {
