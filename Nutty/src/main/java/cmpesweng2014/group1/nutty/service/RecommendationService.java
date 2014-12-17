@@ -45,11 +45,10 @@ public class RecommendationService {
 	}
 	
 	public Recipe[] getRecommendation(long user_id) throws Exception{
-		Recipe[] recipes;
 		List<Recipe> recList=recipeDao.calculateRecommendation(user_id);
 		Recipe[] rec=recList.toArray(new Recipe[recList.size()]);
-		
-		if(rec==null){
+
+		if(recList.size()==0){
 			rec = recipeService.getRecipeDao().getAllRecipes();
 		}
 		List<Recipe> selList=new ArrayList<Recipe>();
@@ -64,8 +63,13 @@ public class RecommendationService {
 				finalList.add(selList.get(i));
 			}
 		}
-		return finalList.toArray(new Recipe[finalList.size()]);		
-	}
-	
-	
+		if(finalList.size()==0){
+			//no recipe found, return without any filter
+			return recipeService.getRecipeDao().getAllRecipes();
+		}
+		else{
+			return finalList.toArray(new Recipe[finalList.size()]);
+		}
+
+	}	
 }
