@@ -121,10 +121,6 @@ body {
 
 			</div>
 
-
-
-
-
 			<ul class="nav navbar-nav navbar-right">
 				<%
 					if (session.getAttribute("isLogged") == null
@@ -147,28 +143,21 @@ body {
 						<li id="popular"><a href="/nutty/user/homesettings">Profile
 								Settings</a></li>
 						<li id="app"><a href="/nutty/user/preferences">Food
-								Preferences</a></li></ul></li>
-			
-			<%
-				}
-			%>
+								Preferences</a></li>
+					</ul></li>
 
-			<!-- 		  <ul class="nav navbar-nav navbar-search navbar-right"> -->
-			<!--             <input type="text" class="search-query span3" placeholder="Search"><ins>&nbsp;&nbsp;&nbsp;&nbsp;</ins> -->
-			<!--           </ul> -->
+				<%
+					}
+				%>
 
+				<!-- 		  <ul class="nav navbar-nav navbar-search navbar-right"> -->
+				<!--             <input type="text" class="search-query span3" placeholder="Search"><ins>&nbsp;&nbsp;&nbsp;&nbsp;</ins> -->
+				<!--           </ul> -->
 		</div>
 		<!-- /.container -->
 	</nav>
 
 	<script type="text/javascript">
-		var searchFilter;
-		$(".filter").click(function() {
-			$(this).addClass("active").siblings().removeClass("active");
-			searchFilter = this.id;
-			$("#results").append(searchFilter);
-		});
-
 		$('#search-form')
 				.submit(
 						function(event) {
@@ -190,10 +179,33 @@ body {
 											function(answer) {
 												$("#searchResults").html("");
 												if (answer == "") {
-													$("#searchResults")
-															.append(
-																	"<p>Nothing to show :(</p>");
+													alert("Sorry, Nothing to show :(");
 												} else {
+													showResult(answer);
+												}
+											})
+								});
+
+				function showResult(answer) {
+					var resultsWindow  = window.open("", "_blank", "left=500, top=350, width=200, height=150, resizable=1, scrollbars=1");
+					var results = answer.split('|');
+					var path = results[0];
+					var content = "<h3>Results:</h3>";
+					for (i = 1; i < results.length; i++) {
+						dummy = results[i].split('>');
+						content += "<li class='list-group-item'><a href='javascript:;' onclick='window.opener.location.href = \" " + path + "/" + dummy[1] +"  \"; window.close();'>" + dummy[0] + "</p></li>";
+					}
+					content += "<button type='button' onclick='window.close()'> Close </button>";
+					
+					resultsWindow.document.write(content);
+					return false;
+				}
+		             	/*	
+							$("#searchResults").html("");
+												if (answer == "") {
+													alert("Sorry, Nothing to show :(");
+												} else {
+													window.location = "../basicSearchResult";
 													var results = answer
 															.split('|');
 													var path = results[0];
@@ -204,11 +216,10 @@ body {
 																.append(
 																		"<a href='" + path + "/" + dummy[1] + "'>"
 																				+ dummy[0]
-																				+ "</p>");
-													}
-												}
-											});
-						});
+																				+ "</p>");*/
+													
+							
+							
 	</script>
 </body>
 </html>
