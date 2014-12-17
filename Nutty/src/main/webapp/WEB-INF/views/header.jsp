@@ -1,109 +1,214 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE HTML>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
 
-    <title>Nutty</title>
+<title>Nutty</title>
 
-	<!-- Bootstrap core CSS -->
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
-	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-	
-	<!-- Autocomplete CSS -->	
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
-	<style type="text/css">
-		@import url(http://fonts.googleapis.com/css?family=Varela+Round);
-	</style>
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet"
+	href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script
+	src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 
-	<!-- Add custom CSS here -->
-	<style>
-	
-	body {
-		margin-top: 80px;
-	}
-	
-	</style>
-  </head>
+<!-- Autocomplete CSS -->
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+<style type="text/css">
+@import url(http://fonts.googleapis.com/css?family=Varela+Round);
+</style>
 
-  <body>
+<!-- Add custom CSS here -->
+<style>
+body {
+	margin-top: 80px;
+}
 
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <a class="navbar-brand" href=/nutty>Nutty</a>
-        </div>
-        
-        
-        
-        <ul class="nav navbar-nav">	    
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Recipe<span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Recipe</a></li>
-            <li><a href="#">Person</a></li>
-          </ul>
-        </li>
-     
-      <form class="navbar-form navbar-left" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form>
-        
-        </ul>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-		  <ul class="nav navbar-nav navbar-right">
-		    <% 	if (session.getAttribute("isLogged") == null || ((Boolean)(session.getAttribute("isLogged")) == false)){ %>		  
-	    		<li><a href="/nutty/login">Login</a></li>
-	    		<li><a href="/nutty/signup">Sign Up</a></li>
-	    	<%} else {%>
-	    		<li><a href="/nutty/user/profile/${user.id}">My Profile</a></li>	    	
-	    		<li><a href="/nutty/logout">Logout</a></li>
-	    		<li id="settings" class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="glyphicon glyphicon-cog"></span><i class="fa fa-caret-down"></i></a><ul role="menu" class="dropdown-menu"><li id="popular"><a href="/nutty/user/homesettings">Profile Settings</a></li><li id="app"><a href="/nutty/user/preferences">Food Preferences</a></li></li>
-	    	<%}%>
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
+/****************************************
+	CSS 3 SEARCH FORM BY CAMERON BANEY
+    Design Blog: http://blog.cameronbaney.com 
+	Twitter: @cameronbaney
+****************************************/
+#search-form {
+	margin: 0 auto;
+	width: 515px;
+	/* Rounded Corners */
+	border-radius: 17px;
+	-webkit-border-radius: 17px;
+	-moz-border-radius: 17px;
+	/* Shadows */
+	box-shadow: 1px 1px 2px rgba(0, 0, 0, .3), 0 0 2px rgba(0, 0, 0, .3);
+	-webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .3), 0 0 2px
+		rgba(0, 0, 0, .3);
+	-moz-box-shadow: 1px 1px 2px rgba(0, 0, 0, .3), 0 0 2px
+		rgba(0, 0, 0, .3);
+}
 
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
-	    		    				    
-		  </ul>
-<!-- 		  <ul class="nav navbar-nav navbar-search navbar-right"> -->
-<!--             <input type="text" class="search-query span3" placeholder="Search"><ins>&nbsp;&nbsp;&nbsp;&nbsp;</ins> -->
-<!--           </ul> -->
-        
-      </div><!-- /.container -->
-    </nav>
+/*** TEXT BOX ***/
+#searchText {
+	background: #fafafa; /* Fallback color for non-css3 browsers */
+	/* Gradients */
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgb(250,
+		250, 250)), color-stop(1, rgb(230, 230, 230)));
+	background: -moz-linear-gradient(center top, rgb(250, 250, 250) 0%,
+		rgb(230, 230, 230) 100%);
+	border: 0;
+	border-bottom: 1px solid #fff;
+	border-right: 1px solid rgba(255, 255, 255, .8);
+	font-size: 16px;
+	margin: 4px;
+	padding: 5px;
+	width: 400px;
+	/* Rounded Corners */
+	border-radius: 17px;
+	-webkit-border-radius: 17px;
+	-moz-border-radius: 17px;
+	/* Shadows */
+	box-shadow: -1px -1px 2px rgba(0, 0, 0, .3), 0 0 1px rgba(0, 0, 0, .2);
+	-webkit-box-shadow: -1px -1px 2px rgba(0, 0, 0, .3), 0 0 1px
+		rgba(0, 0, 0, .2);
+	-moz-box-shadow: -1px -1px 2px rgba(0, 0, 0, .3), 0 0 1px
+		rgba(0, 0, 0, .2);
+}
+</style>
+</head>
+
+<body>
+
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header navbar-left">
+				<a class="navbar-brand" href=/nutty>Nutty</a>
+			</div>
+
+
+			<div style="margin-top: 7px; margin-left: 100px; margin-right: 100px">
+				<form id="search-form" class="navbar-form navbar-left" role="search">
+					<div class="form-group">
+						<input id="searchText" type="text" class="form-control"
+							placeholder="Search">
+					</div>
+					<input type="submit" class="btn btn-default" value="Search">
+
+					<%
+						if (session.getAttribute("isLogged") == null
+								|| ((Boolean) (session.getAttribute("isLogged")) == false)) {
+						} else {
+					%>
+					<div class="form-group">
+						<label for="searchOptions" class="col-sm-3 control-label"
+							style="color: gray;">For:</label>
+						<div class="col-sm-9">
+							<input id="searchOption" type="radio" name="searchOption"
+								value="recipe"><label style="color: gray;">&nbsp;
+								Recipe &nbsp; </label> <input id="searchOption" type="radio"
+								name="searchOption" value="user"><label
+								style="color: gray;">&nbsp;User</label>
+						</div>
+					</div>
+					<%
+						}
+					%>
+				</form>
+
+			</div>
+
+
+
+
+
+			<ul class="nav navbar-nav navbar-right">
+				<%
+					if (session.getAttribute("isLogged") == null
+							|| ((Boolean) (session.getAttribute("isLogged")) == false)) {
+				%>
+				<li><a href="/nutty/login">Login</a></li>
+				<li><a href="/nutty/signup">Sign Up</a></li>
+				<%
+					} else {
+				%>
+				<li><a href="/nutty/advancedSearch">Advanced<br />&nbsp;&nbsp;Search
+				</a></li>
+				<li><a href="/nutty/addRecipe">Add Recipe</a></li>
+				<li><a href="/nutty/user/profile/${user.id}">My Profile</a></li>
+				<li><a href="/nutty/logout">Logout</a></li>
+				<li id="settings" class="dropdown"><a href="#"
+					data-toggle="dropdown" class="dropdown-toggle"><span
+						class="glyphicon glyphicon-cog"></span><i class="fa fa-caret-down"></i></a>
+					<ul role="menu" class="dropdown-menu">
+						<li id="popular"><a href="/nutty/user/homesettings">Profile
+								Settings</a></li>
+						<li id="app"><a href="/nutty/user/preferences">Food
+								Preferences</a></li></ul></li>
+			
+			<%
+				}
+			%>
+
+			<!-- 		  <ul class="nav navbar-nav navbar-search navbar-right"> -->
+			<!--             <input type="text" class="search-query span3" placeholder="Search"><ins>&nbsp;&nbsp;&nbsp;&nbsp;</ins> -->
+			<!--           </ul> -->
+
+		</div>
+		<!-- /.container -->
+	</nav>
+
+	<script type="text/javascript">
+		var searchFilter;
+		$(".filter").click(function() {
+			$(this).addClass("active").siblings().removeClass("active");
+			searchFilter = this.id;
+			$("#results").append(searchFilter);
+		});
+
+		$('#search-form')
+				.submit(
+						function(event) {
+							event.preventDefault();
+							$
+									.ajax(
+											{
+												type : "POST",
+												url : "basicSearch",
+												data : {
+													search : $("#searchText")
+															.val(),
+													searchOption : $(
+															'input:radio[name=searchOption]:checked')
+															.val()
+												}
+											})
+									.done(
+											function(answer) {
+												$("#searchResults").html("");
+												if (answer == "") {
+													$("#searchResults")
+															.append(
+																	"<p>Nothing to show :(</p>");
+												} else {
+													var results = answer
+															.split('|');
+													var path = results[0];
+													for (i = 1; i < results.length; i++) {
+														dummy = results[i]
+																.split('>');
+														$("#searchResults")
+																.append(
+																		"<a href='" + path + "/" + dummy[1] + "'>"
+																				+ dummy[0]
+																				+ "</p>");
+													}
+												}
+											});
+						});
+	</script>
+</body>
+</html>

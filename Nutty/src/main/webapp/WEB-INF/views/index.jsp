@@ -11,123 +11,6 @@ body {
 	margin-top: 60px;
 }
 
-/****************************************
-	CSS 3 SEARCH FORM BY CAMERON BANEY
-    Design Blog: http://blog.cameronbaney.com 
-	Twitter: @cameronbaney
-****************************************/
-#search-form {
-	margin: 0 auto;
-	background: #e1e1e1; /* Fallback color for non-css3 browsers */
-	width: 515px;
-	/* Gradients */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgb(243,
-		243, 243)), color-stop(1, rgb(225, 225, 225)));
-	background: -moz-linear-gradient(center top, rgb(243, 243, 243) 0%,
-		rgb(225, 225, 225) 100%);
-	/* Rounded Corners */
-	border-radius: 17px;
-	-webkit-border-radius: 17px;
-	-moz-border-radius: 17px;
-	/* Shadows */
-	box-shadow: 1px 1px 2px rgba(0, 0, 0, .3), 0 0 2px rgba(0, 0, 0, .3);
-	-webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .3), 0 0 2px
-		rgba(0, 0, 0, .3);
-	-moz-box-shadow: 1px 1px 2px rgba(0, 0, 0, .3), 0 0 2px
-		rgba(0, 0, 0, .3);
-}
-
-/*** TEXT BOX ***/
-input[type="text"] {
-	background: #fafafa; /* Fallback color for non-css3 browsers */
-	/* Gradients */
-	background: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgb(250,
-		250, 250)), color-stop(1, rgb(230, 230, 230)));
-	background: -moz-linear-gradient(center top, rgb(250, 250, 250) 0%,
-		rgb(230, 230, 230) 100%);
-	border: 0;
-	border-bottom: 1px solid #fff;
-	border-right: 1px solid rgba(255, 255, 255, .8);
-	font-size: 16px;
-	margin: 4px;
-	padding: 5px;
-	width: 400px;
-	/* Rounded Corners */
-	border-radius: 17px;
-	-webkit-border-radius: 17px;
-	-moz-border-radius: 17px;
-	/* Shadows */
-	box-shadow: -1px -1px 2px rgba(0, 0, 0, .3), 0 0 1px rgba(0, 0, 0, .2);
-	-webkit-box-shadow: -1px -1px 2px rgba(0, 0, 0, .3), 0 0 1px
-		rgba(0, 0, 0, .2);
-	-moz-box-shadow: -1px -1px 2px rgba(0, 0, 0, .3), 0 0 1px
-		rgba(0, 0, 0, .2);
-}
-
-/*** USER IS FOCUSED ON TEXT BOX ***/
-input[type="text"]:focus {
-	outline: none;
-	background: #fff; /* Fallback color for non-css3 browsers */
-	/* Gradients */
-	background: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgb(255,
-		255, 255)), color-stop(1, rgb(235, 235, 235)));
-	background: -moz-linear-gradient(center top, rgb(255, 255, 255) 0%,
-		rgb(235, 235, 235) 100%);
-}
-
-/*** SEARCH BUTTON ***/
-input[type="submit"] {
-	background: #44921f; /* Fallback color for non-css3 browsers */
-	/* Gradients */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgb(79,
-		188, 32)), color-stop(0.15, rgb(73, 157, 34)),
-		color-stop(0.88, rgb(62, 135, 28)), color-stop(1, rgb(49, 114, 21)));
-	background: -moz-linear-gradient(center top, rgb(79, 188, 32) 0%,
-		rgb(73, 157, 34) 15%, rgb(62, 135, 28) 88%, rgb(49, 114, 21) 100%);
-	border: 0;
-	color: #eee;
-	cursor: pointer;
-	float: right;
-	font: 16px Arial, Helvetica, sans-serif;
-	font-weight: bold;
-	height: 30px;
-	margin: 4px 4px 0;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, .3);
-	width: 84px;
-	outline: none;
-	/* Rounded Corners */
-	border-radius: 30px;
-	-webkit-border-radius: 30px;
-	-moz-border-radius: 30px;
-	/* Shadows */
-	box-shadow: -1px -1px 1px rgba(255, 255, 255, .5), 1px 1px 0
-		rgba(0, 0, 0, .4);
-	-moz-box-shadow: -1px -1px 1px rgba(255, 255, 255, .5), 1px 1px 0
-		rgba(0, 0, 0, .2);
-	-webkit-box-shadow: -1px -1px 1px rgba(255, 255, 255, .5), 1px 1px 0
-		rgba(0, 0, 0, .4);
-}
-/*** SEARCH BUTTON HOVER ***/
-input[type="submit"]:hover {
-	background: #4ea923; /* Fallback color for non-css3 browsers */
-	/* Gradients */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgb(89,
-		222, 27)), color-stop(0.15, rgb(83, 179, 38)),
-		color-stop(0.8, rgb(66, 143, 27)), color-stop(1, rgb(54, 120, 22)));
-	background: -moz-linear-gradient(center top, rgb(89, 222, 27) 0%,
-		rgb(83, 179, 38) 15%, rgb(66, 143, 27) 80%, rgb(54, 120, 22) 100%);
-}
-
-input[type="submit"]:active {
-	background: #4ea923; /* Fallback color for non-css3 browsers */
-	/* Gradients */
-	background: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgb(89,
-		222, 27)), color-stop(0.15, rgb(83, 179, 38)),
-		color-stop(0.8, rgb(66, 143, 27)), color-stop(1, rgb(54, 120, 22)));
-	background: -moz-linear-gradient(center bottom, rgb(89, 222, 27) 0%,
-		rgb(83, 179, 38) 15%, rgb(66, 143, 27) 80%, rgb(54, 120, 22) 100%);
-}
-
 @import url(http://fonts.googleapis.com/css?family=Varela+Round);
 
 .slides {
@@ -246,48 +129,11 @@ input#img-1:checked ~ .nav-dots label#img-dot-1, input#img-2:checked ~
 
 </head>
 <body>
-
-
-
-	<br>
-	<br>
-	<div class="container" id="addRecipe" align="center"
-		style="display: none;">
-		<p>
-			<a class="btn btn-primary btn-lg" href="addRecipe" role="button">Add
-				Recipe</a>
-		</p>
-	</div>
-	<br>
-	<br>
-	<br>
-	<form id="search-form">
-		<input id="searchText" type="text"> <input type="submit"
-			value="Search">
-		<div class="form-group">
-			<label for="searchOptions" class="col-sm-4 control-label">Search
-				For:</label>
-			<div class="col-sm-6">
-				<input type="radio" name="searchOption" value="recipe">Recipe
-				<input type="radio" name="searchOption" value="user">User
-			</div>
-		</div>
-	</form>
-
-	<br>
-	<br>
 	<div class="container" id="searchResults"
 		style="background-color: #eeeeee;"></div>
 
 	<br>
 	<br>
-
-
-
-
-
-
-
 
 	<div class="container" style="height: 400px">
 		<ul class="slides">
@@ -358,13 +204,11 @@ input#img-1:checked ~ .nav-dots label#img-dot-1, input#img-2:checked ~
 				<div class="col-sm-9">
 
 					<div>
-
-
 						<ul class="nav nav-tabs nav-justified">
 							<li role="presentation" class="filter active" id="overall"><a
-								class="btn btn-link">Overall</a></li>
+								class="btn btn-link">My Recipe</a></li>
 							<li role="presentation" class="filter" id="like"><a
-								class="btn btn-link">Like</a></li>
+								class="btn btn-link">Shared Recipe</a></li>
 							<li role="presentation" class="filter" id="taste"><a
 								class="btn btn-link">Taste Rate</a></li>
 							<li role="presentation" class="filter" id="healht"><a
@@ -375,17 +219,7 @@ input#img-1:checked ~ .nav-dots label#img-dot-1, input#img-2:checked ~
 								class="btn btn-link">Ease Rate</a></li>
 						</ul>
 						<div id="results"></div>
-
-
-
-
-
-
 					</div>
-
-
-
-
 
 				</div>
 				<div class="col-sm-3">
@@ -396,62 +230,5 @@ input#img-1:checked ~ .nav-dots label#img-dot-1, input#img-2:checked ~
 			</div>
 		</div>
 	</div>
-
-	<script type="text/javascript">
-		var searchFilter;
-		$(".filter").click(function() {
-			$(this).addClass("active").siblings().removeClass("active");
-			searchFilter = this.id;
-			$("#results").append(searchFilter);
-		});
-
-		$('#search-form')
-				.submit(
-						function(event) {
-							event.preventDefault();
-							$
-									.ajax(
-											{
-												type : "POST",
-												url : "basicSearch",
-												data : {
-													search : $("#searchText")
-															.val(),
-													searchOption : $(
-															'input:radio[name=searchOption]:checked')
-															.val()
-												}
-											})
-									.done(
-											function(answer) {
-												$("#searchResults").html("");
-												if (answer == "") {
-													$("#searchResults")
-															.append(
-																	"<p>Nothing to show :(</p>");
-												} else {
-													var results = answer
-															.split('|');
-													var path = results[0];
-													for (i = 1; i < results.length; i++) {
-														dummy = results[i]
-																.split('>');
-														$("#searchResults")
-																.append(
-																		"<a href='" + path + "/" + dummy[1] + "'>"
-																				+ dummy[0]
-																				+ "</p>");
-													}
-												}
-											});
-						});
-		$(document).ready(function() {
-			if ('${isLogged}' == "true")
-				$("#addRecipe").show();
-			else
-				$("#addRecipe").hide();
-		});
-	</script>
-
 </body>
 </html>

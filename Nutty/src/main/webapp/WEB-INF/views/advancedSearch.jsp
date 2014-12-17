@@ -20,15 +20,13 @@
 			</div>
 
 			<div class="panel-body">
-				<form method="POST">
+				<form id="AdvSearch" method="POST">
 
 					<!-- /input-group -->
 					<div class="input-group">
 						<input type="text" class="form-control" id="searchKey" name="search"
 							placeholder="tags"> <span class="input-group-btn">
-							<button class="btn btn-primary" type="submit" id="search">
-						<!-- 		disabled="disabled" -->
-								Search!</button>
+							<button class="btn btn-primary" type="submit" id="search">Search!</button>
 						</span>
 					</div>
 
@@ -113,21 +111,18 @@
 						<li role="presentation" class="filter" id="ease"><a
 							class="btn btn-link">Ease Rate</a></li>
 					</ul>
-					<div id="results"></div>
+				
+					<ul id="results" class="list-group" style="overflow:scroll;">
+							
+			
+				    </ul>
 				</div>
-
 			</div>
 		</div>
 	</div>
 
 	<script type="text/javascript">
-		var searchFilter;
-		$(".filter").click(function() {
-			$(this).addClass("active").siblings().removeClass("active");
-			searchFilter = this.id;
-			$("#results").append(searchFilter);
-		});
-
+	   // to add new input text
 		var counter = 1;
 		function addInput(divName) {
 			var newdiv = document.createElement('div');
@@ -135,7 +130,8 @@
 			document.getElementById(divName).appendChild(newdiv);
 			counter++;
 		}
-/*
+
+		/* to enable search button
 		$("#searchKey").keyup(function(event) {
 			if ($("#searchKey").val().length != 0) {
 				$('#search').attr("disabled", false);
@@ -143,7 +139,129 @@
 				$('#search').attr("disabled", true);
 			}
 		});
+		*/
+		
+		// 
+		var searchFilter;
+		$(".filter").click(function() {
+			$(this).addClass("active").siblings().removeClass("active");
+			searchFilter = this.id;
+			
+			$.ajax({
+				type : "POST",
+				url : "../rateRecipe",
+				data : {
+					changed : changed,
+					user_id : '${user.id}',
+					recipe_id : '${recipe.recipe_id}',
+					value : value
+				}
+			})
+			$("#results").append(searchFilter);
+		});
+
+		$('#AdvSearch')
+		.submit(
+				function(event) {
+					event.preventDefault();
+					$.ajax({
+						type : "POST",
+						url : "../advancedSearchResults",
+						data : {
+							search: search,
+							calorieIntervalLow : calorieIntervalLow,
+							calorieIntervalHigh : calorieIntervalHigh,
+							mustHaveIngredients : mustHaveIngredients,
+							enableFoodSelection : enableFoodSelection,
+							enableEaten : enableEaten,
+							disableSemantic : disableSemantic,
+							user_id : '${user.id}',
+						}}).done(function(answer) {
+									//$("#searchResults").html("");
+									if (answer == "") {
+										$("#searchResults")
+												.append(
+														"<p>Nothing to show :(</p>");
+									} else {
+										var results = answer
+												.split('|');
+										var path = results[0];
+										for (i = 1; i < results.length; i++) {
+											dummy = results[i]
+													.split('>');
+											$("#results")
+													.append("<a href='../recipe/" + ${recipe.recipe_id} + "' class='list-group-item'>"
+															 +" <h5 class='list-group-item-heading'> RecipeName </h5></a>");
+										}
+									}
+								});
+			});
+		
+		
+		/*
+		$('#AdvSearch')
+		.submit(
+				function(event) {
+					event.preventDefault();
+					$
+							.ajax(
+									{
+										type : "POST",
+										url : "basicSearch",
+										data : {
+											search : $("#searchText")
+													.val(),
+											searchOption : $(
+													'input:radio[name=searchOption]:checked')
+													.val()
+										}
+									})
+							.done(
+									function(answer) {
+										$("#searchResults").html("");
+										if (answer == "") {
+											$("#searchResults")
+													.append(
+															"<p>Nothing to show :(</p>");
+										} else {
+											var results = answer
+													.split('|');
+											var path = results[0];
+											for (i = 1; i < results.length; i++) {
+												dummy = results[i]
+														.split('>');
+												$("#searchResults")
+														.append(
+																"<a href='" + path + "/" + dummy[1] + "'>"
+																		+ dummy[0]
+																		+ "</p>");
+											}
+										}
+									});
+				});
+					
+					
+					
+					
+				$.ajax({
+					type : "POST",
+					url : "../advancedSearchResults",
+					data : {
+						search: search,
+						calorieIntervalLow : calorieIntervalLow,
+						calorieIntervalHigh : calorieIntervalHigh,
+						mustHaveIngredients : mustHaveIngredients,
+						enableFoodSelection : enableFoodSelection,
+						enableEaten : enableEaten,
+						disableSemantic : disableSemantic,
+						user_id : '${user_id}',
+					}}		
+					
+					
+		
+
 */
+
 	</script>
 </body>
 </html>
