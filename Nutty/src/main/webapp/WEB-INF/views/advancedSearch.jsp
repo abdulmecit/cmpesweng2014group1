@@ -66,8 +66,8 @@
 						<div class="col-sm-4"></div>
 						<div class="col-sm-7">
 							<div class="checkbox">
-								<label> <input type="checkbox" id="foodPreferences"
-									name="enableFoodSelection" value="true"> <b>Consider my food preferences</b>
+								<label> <input type="checkbox" id="foodPreferences" name="enableFoodSelection"> 
+									<b>Consider my food preferences</b>
 								</label>
 							</div>
 						</div>
@@ -76,8 +76,8 @@
 						<div class="col-sm-4"></div>
 						<div class="col-sm-7">
 							<div class="checkbox">
-								<label> <input type="checkbox" id="eatenRecipes" name="enableEaten"
-									value="true"> <b>Don't show eaten recipes</b>
+								<label> <input type="checkbox" id="eatenRecipes" name="enableEaten"> 
+								<b>Don't show eaten recipes</b>
 								</label>
 							</div>
 						</div>
@@ -86,8 +86,8 @@
 						<div class="col-sm-4"></div>
 						<div class="col-sm-7">
 							<div class="checkbox">
-								<label> <input type="checkbox" id="JustMyTags" name="disableSemantic"
-									value="true"> <b>Just use my tags</b>
+								<label> <input type="checkbox" id="JustMyTags" name="disableSemantic"> 
+								<b>Just use my tags</b>
 								</label>
 							</div>
 						</div>
@@ -146,45 +146,35 @@
 		$(".filter").click(function() {
 			$(this).addClass("active").siblings().removeClass("active");
 			searchFilter = this.id;
-			})
 			$("#results").append(searchFilter);
 		});
 
-		$('#AdvSearch')
-		.submit(
-				function(event) {
-					event.preventDefault();
-					$.ajax({
-						type : "POST",
-						url : "../advancedSearchResults",
-						data : {
-							search: search,
-							calorieIntervalLow : calorieIntervalLow,
-							calorieIntervalHigh : calorieIntervalHigh,
-							mustHaveIngredients : mustHaveIngredients,
-							enableFoodSelection : enableFoodSelection,
-							enableEaten : enableEaten,
-							disableSemantic : disableSemantic,
-							user_id : '${user.id}',
-						}}).done(function(answer) {
-									//$("#searchResults").html("");
-									if (answer == "") {
-										$("#results")
-												.append(
-														"<p>Nothing to show :(</p>");
-									} else {
-										var results = answer
-												.split('|');
-										var path = results[0];
-										for (i = 1; i < results.length; i++) {
-											dummy = results[i]
-													.split('>');
-											$("#results")
-													.append("<a href='../recipe/" + ${recipe.recipe_id} + "' class='list-group-item'>"
-															 +" <h5 class='list-group-item-heading'> RecipeName </h5></a>");
-										}
-									}
-								});
+		$('#AdvSearch').submit(
+			function(event) {
+				var array = document.getElementsByName("mustHaveIngredients[]");
+				alert(JSON.stringify(array));
+				event.preventDefault();
+				$.ajax({
+					type : "POST",
+					url : "/advancedSearchResults",
+					data : {
+						search: $("#searchKey").val(),
+						calorieIntervalLow : $("#caloriesMin").val(),
+						calorieIntervalHigh : $("#caloriesMax").val(),
+						mustHaveIngredientz : JSON.stringify(array),
+						enableFoodSelection : $("#foodPreferences").prop('checked') ? 'true' : 'false',
+						enableEaten : $("#eatenRecipes").prop('checked') ? 'true' : 'false',
+						disableSemantic : $("#JustMyTags").prop('checked') ? 'true' : 'false',
+						user_id : '${user.id}'
+					}}).done(function(answer) {
+						if (answer == "") {
+							$("#results").append("<p>Nothing to show :(</p>");
+						} else {
+							alert(answer);
+						}
+					}).fail(function (){
+						alert("Ajax call was unsuccessfull :(");			
+					});
 			});
 		
 	</script>
