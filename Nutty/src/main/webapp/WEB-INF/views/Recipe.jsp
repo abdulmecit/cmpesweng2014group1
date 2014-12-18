@@ -12,7 +12,7 @@
 .slides {
 	padding: 0;
 	width: 457px;
-	height: 315px;
+	height: 300px;
 	display: block;
 	margin: 0 auto;
 	position: relative;
@@ -22,7 +22,7 @@
 	top: 0;
 	opacity: 0;
 	width: 457px;
-	height: 315px;
+	height: 300px;
 	display: block;
 	position: absolute;
 	transform: scale(0);
@@ -31,9 +31,9 @@
 
 .slide img {
 	max-width: 457px;
-	max-height: 315px;
+	max-height: 300px;
 	width: 100%;
-	height: auto;
+	height: auto;  
 }
 
 .slides * {
@@ -133,6 +133,7 @@ body {
 #info-wrap {
 	/* overflow to handle inner floating block */
 	overflow: hidden;
+	margin-left: 40px
 }
 
 .info {
@@ -295,11 +296,11 @@ body {
 				<div class="col-sm-6 col-centered">
 					<div class="panel panel-default">
 						<div class="panel-body"
-							style="max-height: 310px; overflow: scroll;">
+							style="height: 300px; overflow: scroll;">
 							<div class="row">
 								<!----------------------- Rate Buttons ----------------------------->
 								<div class="btn-group btn-info "
-									style="margin: 0px 0px 25px 15px;">
+									style="margin: 0px 0px 15px 15px;">
 									<button type="button" class="btn btn-info btn-lg">Health</button>
 									<button type="button"
 										class="btn dropdown-toggle btn-lg btn-info" id="healthRate"
@@ -308,16 +309,16 @@ body {
 										<!-- caret for arrow. ui-button-text for button text -->
 									</button>
 									<ul class="dropdown-menu" role="menu">
-										<li><a href="#">5</a></li>
+										<li><a href="#">5 : Healthy</a></li>
 										<li><a href="#">4</a></li>
 										<li><a href="#">3</a></li>
 										<li><a href="#">2</a></li>
-										<li><a href="#">1</a></li>
+										<li><a href="#">1 : Unhealthy</a></li>
 									</ul>
 								</div>
 
 								<div class="btn-group btn-danger"
-									style="margin: 0px 0px 25px 15px;">
+									style="margin: 0px 0px 15px 15px;">
 									<button type="button" class="btn btn-danger btn-lg">Cost</button>
 									<button type="button"
 										class="btn dropdown-toggle btn-lg btn-danger" id="costRate"
@@ -326,16 +327,16 @@ body {
 										<!-- caret for arrow. ui-button-text for button text -->
 									</button>
 									<ul class="dropdown-menu" role="menu">
-										<li><a href="#">5</a></li>
+										<li><a href="#">5 : Wallet Friendly</a></li>
 										<li><a href="#">4</a></li>
 										<li><a href="#">3</a></li>
 										<li><a href="#">2</a></li>
-										<li><a href="#">1</a></li>
+										<li><a href="#">1 : Pricy</a></li>
 									</ul>
 								</div>
 
 								<div class="btn-group btn-warning"
-									style="margin: 0px 0px 25px 15px;">
+									style="margin: 0px 0px 15px 15px;">
 									<button type="button" class="btn btn-warning btn-lg">Taste</button>
 									<button type="button"
 										class="btn dropdown-toggle btn-lg btn-warning" id="tasteRate"
@@ -344,16 +345,16 @@ body {
 										<!-- caret for arrow. ui-button-text for button text -->
 									</button>
 									<ul class="dropdown-menu" role="menu">
-										<li><a href="#">5</a></li>
+										<li><a href="#">5 : Yummy</a></li>
 										<li><a href="#">4</a></li>
 										<li><a href="#">3</a></li>
 										<li><a href="#">2</a></li>
-										<li><a href="#">1</a></li>
+										<li><a href="#">1 : Tasteless</a></li>
 									</ul>
 								</div>
 
 								<div class="btn-group btn-success"
-									style="margin: 0px 15px 25px 15px;">
+									style="margin: 0px 15px 15px 15px;">
 									<button type="button" class="btn btn-success btn-lg">Ease</button>
 									<button type="button"
 										class="btn dropdown-toggle btn-lg btn-success" id="easeRate"
@@ -362,11 +363,11 @@ body {
 										<!-- caret for arrow. ui-button-text for button text -->
 									</button>
 									<ul class="dropdown-menu" role="menu">
-										<li><a href="#">5</a></li>
+										<li><a href="#">5 : Easy</a></li>
 										<li><a href="#">4</a></li>
 										<li><a href="#">3</a></li>
 										<li><a href="#">2</a></li>
-										<li><a href="#">1</a></li>
+										<li><a href="#">1 : Difficult</a></li>
 									</ul>
 								</div>
 							</div>
@@ -376,8 +377,7 @@ body {
 									<div class="col-sm-9">
 										<br>
 										<div id="rate"
-											style="width: 100%; height: 100%; margin-up: auto; margin-down: auto; overflow: hidden;">
-
+											style="width: 100%; margin-up: auto; margin-down: auto; overflow: hidden;">
 											<div class="progress">
 												<div class="progress-bar progress-bar-warning"
 													id="prograssbarTaste" role="progressbar" aria-valuenow="0"
@@ -417,7 +417,7 @@ body {
 								</div>
 								<div class="col-sm-1"></div>
 								<div class="col-sm-5" style="margin: auto;">
-									<h5 style="margin-top: 20px;">
+									<h5 style="margin-top: 15px;">
 										<b>Likes: </b> ${noOfLikes} &nbsp&nbsp Eaten: ${noOfEats}
 									</h5>
 									<h5>
@@ -440,41 +440,11 @@ body {
 					</div>
 				</div>
 			</div>
-			<br>
+			<br><br>
 			<div class=row>
-				<div class="col-sm-4">
-					<div class="panel panel-default" style="margin-right: 10px; max-height: 300px; overflow: scroll;">
-
-						<div class="panel-heading clearfix">
-							<h4 class="panel-title pull-left" style="padding-top: 7.5px;">Versions</h4>
-							<a href="../derivedRecipe/${recipe.recipe_id}"
-								id="derivedRecipeButton" class="btn btn-primary active"
-								role="button" style="float: right;">Create New version</a>
-						</div>
-
-						<div class="panel-body" >
-							<p>Parent: <a href="../recipe/${parent.recipe_id}" class="navbar-link">${parent.name}</a></p>
-							<p>Children:</p>
-
-							<ul class="list-group" style="overflow:hidden;">
-								<c:forEach var="child" items="${children}">
-							 <a href="../recipe/${child.recipe_id}" class="list-group-item">
-							 <h5 class="list-group-item-heading">${child.name}</h5></a>
-								</c:forEach>
-							</ul>
-
-
-
-
-
-						</div>
-					</div>
-				</div>
-
 				<div class="col-sm-8">
-
 					<div id="info-wrap">
-						<button type="button" class="btn btn-primary" value="Share"
+						<button type="button" class="btn btn-primary" value="Share Recipe"
 							id="Share"
 							style="float: right; margin-right: 15 px; margin-left: 18px;">
 							<span id="textShare" class="ui-button-text">Share &nbsp </span> <span
@@ -484,7 +454,7 @@ body {
 						</button>
 
 						<div id=recipeDetail>
-							<h3>Portion:${recipe.portion} &nbsp&nbsp Total
+							<h3 style="margin-top: 0px">Portion:${recipe.portion} &nbsp&nbsp Total
 								Calories:${recipe.total_calorie}</h3>
 							<h3>Ingredients</h3>
 							<c:forEach var="ingredientAmount" items="${ingredientAmounts}">
@@ -498,6 +468,30 @@ body {
 						<p>${recipe.description}</p>
 					</div>
 				</div>
+								<div class="col-sm-4">
+					<div class="panel panel-default" style="margin-right: 10px; max-height: 300px; overflow: scroll;">
+
+						<div class="panel-heading clearfix">
+							<h4 class="panel-title pull-left" style="padding-top: 7.5px;">Versions</h4>
+							<a href="../derivedRecipe/${recipe.recipe_id}"
+								id="derivedRecipeButton" class="btn btn-primary active"
+								role="button" style="float: right;">Derived New Recipe</a>
+						</div>
+
+						<div class="panel-body" >
+							<p>Original: <a href="../recipe/${parent.recipe_id}" class="navbar-link">${parent.name}</a></p>
+							<p>Derived Recipes:</p>
+
+							<ul class="list-group" style="overflow:hidden;">
+								<c:forEach var="child" items="${children}">
+							 <a href="../recipe/${child.recipe_id}" class="list-group-item">
+							 <h5 class="list-group-item-heading">${child.name}</h5></a>
+								</c:forEach>
+							</ul>
+						</div>
+					</div>
+				</div>
+				
 			</div>
 			<!-- end of row -->
 			<br> <br> <br>
@@ -516,9 +510,6 @@ body {
 								style="float: right">Comment</button>
 
 						</form>
-
-
-
 					</div>
 					<ul class="list-group">
 						<div id="comments"></div>
@@ -529,8 +520,6 @@ body {
 	</div>
 </div>
 </body>
-
-
 
 <script type="text/javascript">
 	var healthRate = '${healthRateOfUser}';
@@ -609,20 +598,20 @@ body {
 				if (isLogged == 'true') {
 					var selText = $(this).parents('.btn-group').find(
 							'.dropdown-toggle').attr("id");
-					var rate = $(this).text();
+					var rate = $(this).text().split(" : ");
 					$(this).parents('.btn-group').find('.dropdown-toggle')
-							.html(rate);
+							.html(rate[0]);
 					if (selText == "healthRate") {
-						healthRate = rate;
+						healthRate = rate[0];
 						updateRate("health_rate", healthRate);
 					} else if (selText == "costRate") {
-						costRate = rate;
+						costRate = rate[0];
 						updateRate("cost_rate", costRate);
 					} else if (selText == "tasteRate") {
-						tasteRate = rate;
+						tasteRate = rate[0];
 						updateRate("taste_rate", tasteRate);
 					} else if (selText == "easeRate") {
-						easeRate = rate;
+						easeRate = rate[0];
 						updateRate("ease_rate", easeRate);
 					}
 				}

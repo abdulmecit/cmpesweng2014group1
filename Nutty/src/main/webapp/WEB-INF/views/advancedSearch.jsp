@@ -111,10 +111,7 @@
 						<li role="presentation" class="filter" id="ease"><a
 							class="btn btn-link">Ease Rate</a></li>
 					</ul>
-				
 					<ul id="results" class="list-group" style="overflow:scroll;">
-							
-			
 				    </ul>
 				</div>
 			</div>
@@ -174,12 +171,7 @@
 							for (i = 1; i < resultsRec.length; i++) {
 								dummy = resultsRec[i].split('>');
 								$("#results").append( "<li class='list-group-item'><a href= '/nutty/recipe/"  + dummy[1] +"'>" + dummy[0] + "</p></li>");
-								
-								}
-							
-							
-							
-							
+								}			
 						}
 					}).fail(function (){
 						alert("Ajax call was unsuccessfull :(");			

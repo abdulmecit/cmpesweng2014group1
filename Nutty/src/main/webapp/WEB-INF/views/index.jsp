@@ -225,16 +225,12 @@ input#img-1:checked ~ .nav-dots label#img-dot-1, input#img-2:checked ~
 								class="btn btn-link">Shared Recipes</a></li>
 						</ul>
 						<div id="results">
-							
-							
 							<c:forEach var="recRecipes" items="$recommendedRecipes">
 								<a href="../recipe/${recRecipes.recipe_id}"
 									class="list-group-item">
 									<h5 class="list-group-item-heading">${recRecipes.name}</h5>
 								</a>
 							</c:forEach>
-							
-							
 						</div>
 					</div>
 
@@ -303,7 +299,5 @@ input#img-1:checked ~ .nav-dots label#img-dot-1, input#img-2:checked ~
 		} else if (searchFilter == "sharedRecipe") {
 		} else {
 		} */
-
-	
 </script>
 </html>

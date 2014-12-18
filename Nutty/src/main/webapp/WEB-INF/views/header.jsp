@@ -18,7 +18,8 @@
 	src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 
 <!-- Bootbox CSS -->
-<script src="https://raw.githubusercontent.com/makeusabrew/bootbox/master/bootbox.js"></script>
+<script
+	src="https://raw.githubusercontent.com/makeusabrew/bootbox/master/bootbox.js"></script>
 
 
 <!-- Autocomplete CSS -->
@@ -130,7 +131,6 @@ body {
 					if (session.getAttribute("isLogged") == null
 							|| ((Boolean) (session.getAttribute("isLogged")) == false)) {
 				%>
-				<button onclick="deneme()">click</button>
 				<li><a href="/nutty/login">Login</a></li>
 				<li><a href="/nutty/signup">Sign Up</a></li>
 				<%
@@ -181,32 +181,29 @@ body {
 												}
 											}).done(function(answer) {
 										$("#searchResults").html("");
-										if (answer == "") {
-											alert("Sorry, Nothing to show :(");
-										} else {
-											//showResult(answer);
-											deneme(answer, $("#searchText").val());
-										}
+										showResult(answer);
 									})
 						});
 
-						function deneme(answer,searchText){
-							var results = answer.split('|');
-							var path = results[0];
-							var content="";
-							for (i = 1; i < results.length; i++) {
-							dummy = results[i].split('>');
-							//content +=  dummy[1] +'</p>'+ dummy[0] + '</p>';
-							//content += '<li class="list-group-item"><a href="' + path + '/' + dummy[1] +'>' + dummy[0] + '</a></li>';
-							content += '<a href="' + path + '/' + dummy[1] +'">' + dummy[0] + '</a></p>';
-							}
-								
-							bootbox.dialog({
-								title:"Results of " + searchText,
-								message: content,
-								}
-								); }
-						
+		function showResult(answer) {
+			var content = "";
+			if (answer == "") {
+				content +="<p>Sorry, Nothing to show :(</p>";
+			} else {
+				var results = answer.split('|');
+				var path = results[0];
+				for (i = 1; i < results.length; i++) {
+					dummy = results[i].split('>');
+					//content += '<li class="list-group-item"><a href="' + path + '/' + dummy[1] +'>' + dummy[0] + '</a></li>';
+					content += '<a href="' + path + '/' + dummy[1] +'">'
+							+ dummy[0] + '</a></p>';
+				}}
+				bootbox.dialog({
+					title : "Results",
+					message : content,
+					onEscape: function() {},
+				});
+		}
 		/*		
 		function showResult(answer) {
 		var resultsWindow  = window.open("", "_blank", "left=500, top=350, width=200, height=150, resizable=1, scrollbars=1");
