@@ -341,7 +341,7 @@ public class HomeController {
 			@RequestParam(value = "disableSemantic", required = false) boolean disableSemantic,		
 			@RequestParam(value = "enableFoodSelection", required = false) boolean enableFoodSelection,
 			@RequestParam(value = "enableEaten", required = false) boolean enableEaten,
-			@RequestParam(value = "mustHaveIngredients[]", required = false) String mustHaveIngredientz,
+			@RequestParam(value = "mustHaveIngredientz", required = false) String mustHaveIngredientz,
 			@RequestParam(value = "calorieIntervalLow", required = false) Double calorieIntervalLow,
 			@RequestParam(value = "calorieIntervalHigh", required = false) Double calorieIntervalHigh,
 			@RequestParam(value = "user_id", required = true) Long user_id){
@@ -351,11 +351,9 @@ public class HomeController {
 		//Convert from JSON String
 		Gson gson = new Gson();
 		String[] mustHaveIngredients = gson.fromJson(mustHaveIngredientz, String[].class);
-		
 		Recipe[] recipes;
 		if(search == null || search.isEmpty()){
 			 recipes = recipeService.getRecipeDao().getAllRecipes();
-			 System.out.println("Here");
 		}
 		else{
 			if(disableSemantic){

@@ -151,17 +151,15 @@
 
 		$('#AdvSearch').submit(
 			function(event) {
-				var array = document.getElementsByName("mustHaveIngredients[]");
-				alert(JSON.stringify(array));
 				event.preventDefault();
 				$.ajax({
 					type : "POST",
-					url : "/advancedSearchResults",
+					url : "advancedSearchResults",
 					data : {
 						search: $("#searchKey").val(),
 						calorieIntervalLow : $("#caloriesMin").val(),
 						calorieIntervalHigh : $("#caloriesMax").val(),
-						mustHaveIngredientz : JSON.stringify(array),
+						//mustHaveIngredientz : JSON.stringify(), //Bu fonksiyonun icine array verince calismasi lazim teorik olarak
 						enableFoodSelection : $("#foodPreferences").prop('checked') ? 'true' : 'false',
 						enableEaten : $("#eatenRecipes").prop('checked') ? 'true' : 'false',
 						disableSemantic : $("#JustMyTags").prop('checked') ? 'true' : 'false',
