@@ -213,13 +213,15 @@ input#img-1:checked ~ .nav-dots label#img-dot-1, input#img-2:checked ~
 						<ul class="nav nav-tabs nav-justified">
 							<li role="presentation" class="filter active" id="overall"><a
 								class="btn btn-link">News Feed</a></li>
-								<li role="presentation" class="filter" id="overall"><a
+
+							<li role="presentation" class="filter" id="recommendation"><a
 								class="btn btn-link">Recommendations</a></li>
-							<li role="presentation" class="filter" id="taste"><a
+
+							<li role="presentation" class="filter" id="myRecipe"><a
 								class="btn btn-link">My Recipe</a></li>
-							<li role="presentation" class="filter" id="healht"><a
+							<li role="presentation" class="filter" id="myFriendsRecipe"><a
 								class="btn btn-link">Recipe From My Friends</a></li>
-							<li role="presentation" class="filter" id="cost"><a
+							<li role="presentation" class="filter" id="sharedRecipe"><a
 								class="btn btn-link">Shared Recipes</a></li>
 						</ul>
 						<div id="results"></div>
@@ -240,9 +242,55 @@ input#img-1:checked ~ .nav-dots label#img-dot-1, input#img-2:checked ~
 </body>
 <script type="text/javascript">
 	var searchFilter;
+	var user_id = '${user.id}';
+
 	$(".filter").click(function() {
 		$(this).addClass("active").siblings().removeClass("active");
 		searchFilter = this.id;
+		$('#results').empty();
+		if (searchFilter == "recommendation") {
+			//$('#results').append("recommendation");
+		} else if (searchFilter == "myRecipe") {
+			/* $('#results').append(user_id);
+			$
+					.ajax({
+						type : "POST",
+						url : "user/getUsersRecipes",
+						data : {
+							userId : '${user.id}',
+						}
+					})
+					.done(
+							function(response) {
+								if (response != null) {
+									for (var i = 0; i < response.length; i++) {
+										var href = "../../recipe/"
+												+ response[i][0];
+										var name = response[i][1];
+										var src = response[i][2];
+										$('#results')
+												.append(
+														"<a href='"+href+"'><img src='"
+																+ src
+																+ "' title='"
+																+ name
+																+ "' onError='this.onerror=null;this.src=\"http://img2.wikia.nocookie.net/__cb20130511180903/legendmarielu/images/b/b4/No_image_available.jpg\";' width='50%' height='auto'><p>"
+																+ name
+																+ "</p></a>");
+									}
+								} else {
+									$('#results').empty();
+									$('#results')
+											.append(
+													"User doesn't own any recipe :(");
+								}
+					}); */
+
+		} else if (searchFilter == "myFriendsRecipe") {
+		} else if (searchFilter == "sharedRecipe") {
+		} else {
+		}
+
 	});
 </script>
 </html>

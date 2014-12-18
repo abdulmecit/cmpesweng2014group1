@@ -73,12 +73,9 @@ body {
 			<div id="foto">
 				<!-- 	    		<img id="profilePic" alt="Photo of the User" src="http://cdn.sett.com/images/user/20140502/chef57b22ab552661a6852fe44c0e7e59e63.jpg" width="100%" height="auto"/> -->
 			</div>
-			<br>
-			<br>
-			<br>
+			<br> <br> <br>
 			<h2>Best Of</h2>
-			<br>
-			<br>
+			<br> <br>
 			<div id="bestOf">
 				<p>Loading Recipes, please wait..</p>
 			</div>
@@ -134,57 +131,41 @@ body {
 					</h3>
 				</div>
 			</div>
-			<h1 align="center">News Feed</h1>
-			<div id="sharedRecipes">
-				<p>Loading Recipes, please wait..</p>
-			</div>
 
 			<div class="panel panel-default"
 				style="margin-right: 80px; margin-left: 80px">
 				<div class="panel-body">
-					<div class="row">
-						<div class="col-sm-9">
+					<div>
+						<ul class="nav nav-tabs nav-justified">
+							<li role="presentation" class="filter active" id="overall"><a
+								class="btn btn-link">News Feed</a></li>
 
-							<div>
-								<ul class="nav nav-tabs nav-justified">
-									<li role="presentation" class="filter active" id="overall"><a
-										class="btn btn-link">My Recipe</a></li>
-									<li role="presentation" class="filter" id="like"><a
-										class="btn btn-link">Shared Recipe</a></li>
-									<li role="presentation" class="filter" id="taste"><a
-										class="btn btn-link">Taste Rate</a></li>
-									<li role="presentation" class="filter" id="healht"><a
-										class="btn btn-link">Health Rate </a></li>
-									<li role="presentation" class="filter" id="cost"><a
-										class="btn btn-link">Cost Rate</a></li>
-									<li role="presentation" class="filter" id="ease"><a
-										class="btn btn-link">Ease Rate</a></li>
-								</ul>
-								<div id="results">
-									<h1 align="center">.</h1>
-									<h1 align="center">.</h1>
-									<h1 align="center">.</h1>
-									<h1 align="center">.</h1>
-									<h1 align="center">.</h1>
-									<h1 align="center">.</h1>
-									<h1 align="center">.</h1>
-									<h1 align="center">.</h1>
-									<h1 align="center">.</h1>
-
-								</div>
-							</div>
-
-						</div>
-						<div class="col-sm-3">
-							<div class="panel panel-default">
-								<div class="panel-body"></div>
-							</div>
-						</div>
+							<li role="presentation" class="filter" id="recommendation"><a
+								class="btn btn-link">Shared Recipe</a></li>
+						</ul>
+						<ul id="sharedRecipes" class="list-group" style="overflow:scroll;">
+						<p>Loading Recipes, please wait..</p>
+						</ul>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
+
+	<div id="results">
+		<h1 align="center">.</h1>
+		<h1 align="center">.</h1>
+		<h1 align="center">.</h1>
+		<h1 align="center">.</h1>
+		<h1 align="center">.</h1>
+		<h1 align="center">.</h1>
+		<h1 align="center">.</h1>
+		<h1 align="center">.</h1>
+		<h1 align="center">.</h1>
+
+	</div>
+
 
 	<script type="text/javascript">
 	var searchFilter;
@@ -263,15 +244,15 @@ body {
 						var href = "../../recipe/" + response[i][0];
 						var name = response[i][1];
 						var src = response[i][2];
-						$('#sharedRecipes').append("<div class=row><div class='panel panel-default' align='center'>");
-						$('#sharedRecipes').append("<a href='"+href+"'><img src='"+src+"' title='"+name+"' onError='this.onerror=null;this.src=\"http://img2.wikia.nocookie.net/__cb20130511180903/legendmarielu/images/b/b4/No_image_available.jpg\";' width='30%' height='auto' hspace='50px'><span style='font-size: 1.8em'>You have shared the recipe named: "+name+"</span></a>");					}
-						$('#sharedRecipes').append("</div></div>");
+					//	$('#sharedRecipes').append("<div class=row><div class='panel panel-default' align='center'>");
+						$('#sharedRecipes').append("<a href='"+href+"'class='list-group-item'><img src='"+src+"' title='"+name+"' onError='this.onerror=null;this.src=\"http://img2.wikia.nocookie.net/__cb20130511180903/legendmarielu/images/b/b4/No_image_available.jpg\";' width='30%' height='auto' hspace='50px'><span style='font-size: 1.2em'>"+name+"</span></a>");					}
+					//	$('#sharedRecipes').append("</div></div>");
 				}else{
 					$('#sharedRecipes').empty();
 					$('#sharedRecipes').append("User hasn't shared any recipe :(");
 				}
 			});   	
-  	});	
+  	});	    	
 	
    	var isFollower = '${isFollower}';
 	
