@@ -356,7 +356,7 @@ public class HomeController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/advancedSearchResults")
-	public Recipe[] advancedSearch(
+	public String advancedSearch(
 			@RequestParam(value = "search", required = false) String search,
 			@RequestParam(value = "disableSemantic", required = false) boolean disableSemantic,		
 			@RequestParam(value = "enableFoodSelection", required = false) boolean enableFoodSelection,
@@ -372,6 +372,7 @@ public class HomeController {
 		Gson gson = new Gson();
 		String[] mustHaveIngredients = gson.fromJson(mustHaveIngredientz, String[].class);
 		Recipe[] recipes;
+		String answer = "";
 		if(search == null || search.isEmpty()){
 			 recipes = recipeService.getRecipeDao().getAllRecipes();
 		}
@@ -384,7 +385,7 @@ public class HomeController {
 				recipes = searchService.semanticSearch(search);
 			}
 		}
-		if(recipes != null){
+		if(recipes != null && mustHaveIngredients != null){
 			System.out.println("Here2 " + mustHaveIngredients.length);
 			if(mustHaveIngredients != null){				
 				for(int i=0; i<mustHaveIngredients.length; i++){
@@ -431,7 +432,12 @@ public class HomeController {
 				recipes = recipez.toArray(new Recipe[recipez.size()]);
 			}
 		}
-		return recipes;
+		if(recipes!=null){
+			for(int i=0;i<recipes.length;i++){
+				answer += "|" + recipes[i].getName() + ">" + recipes[i].getRecipe_id();
+			}
+		}
+		return answer;
 	}
 }
 

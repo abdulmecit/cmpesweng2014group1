@@ -17,6 +17,10 @@
 <script
 	src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 
+<!-- Bootbox CSS -->
+<script src="https://raw.githubusercontent.com/makeusabrew/bootbox/master/bootbox.js"></script>
+
+
 <!-- Autocomplete CSS -->
 <link rel="stylesheet"
 	href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
@@ -126,6 +130,7 @@ body {
 					if (session.getAttribute("isLogged") == null
 							|| ((Boolean) (session.getAttribute("isLogged")) == false)) {
 				%>
+				<button onclick="deneme()">click</button>
 				<li><a href="/nutty/login">Login</a></li>
 				<li><a href="/nutty/signup">Sign Up</a></li>
 				<%
@@ -174,52 +179,66 @@ body {
 															'input:radio[name=searchOption]:checked')
 															.val()
 												}
-											})
-									.done(
-											function(answer) {
-												$("#searchResults").html("");
-												if (answer == "") {
-													alert("Sorry, Nothing to show :(");
-												} else {
-													showResult(answer);
-												}
-											})
-								});
+											}).done(function(answer) {
+										$("#searchResults").html("");
+										if (answer == "") {
+											alert("Sorry, Nothing to show :(");
+										} else {
+											//showResult(answer);
+											deneme(answer, $("#searchText").val());
+										}
+									})
+						});
 
-				function showResult(answer) {
-					var resultsWindow  = window.open("", "_blank", "left=500, top=350, width=200, height=150, resizable=1, scrollbars=1");
-					var results = answer.split('|');
-					var path = results[0];
-					var content = "<h3>Results:</h3>";
-					for (i = 1; i < results.length; i++) {
-						dummy = results[i].split('>');
-						content += "<li class='list-group-item'><a href='javascript:;' onclick='window.opener.location.href = \" " + path + "/" + dummy[1] +"  \"; window.close();'>" + dummy[0] + "</p></li>";
-					}
-					content += "<button type='button' onclick='window.close()'> Close </button>";
-					
-					resultsWindow.document.write(content);
-					return false;
-				}
-		             	/*	
-							$("#searchResults").html("");
-												if (answer == "") {
-													alert("Sorry, Nothing to show :(");
-												} else {
-													window.location = "../basicSearchResult";
-													var results = answer
-															.split('|');
-													var path = results[0];
-													for (i = 1; i < results.length; i++) {
-														dummy = results[i]
-																.split('>');
-														$("#searchResults")
-																.append(
-																		"<a href='" + path + "/" + dummy[1] + "'>"
-																				+ dummy[0]
-																				+ "</p>");*/
-													
-							
-							
+						function deneme(answer,searchText){
+							var results = answer.split('|');
+							var path = results[0];
+							var content="";
+							for (i = 1; i < results.length; i++) {
+							dummy = results[i].split('>');
+							//content +=  dummy[1] +'</p>'+ dummy[0] + '</p>';
+							//content += '<li class="list-group-item"><a href="' + path + '/' + dummy[1] +'>' + dummy[0] + '</a></li>';
+							content += '<a href="' + path + '/' + dummy[1] +'">' + dummy[0] + '</a></p>';
+							}
+								
+							bootbox.dialog({
+								title:"Results of " + searchText,
+								message: content,
+								}
+								); }
+						
+		/*		
+		function showResult(answer) {
+		var resultsWindow  = window.open("", "_blank", "left=500, top=350, width=200, height=150, resizable=1, scrollbars=1");
+		var results = answer.split('|');
+		var path = results[0];
+		var content = "<h3>Results:</h3>";
+		for (i = 1; i < results.length; i++) {
+		dummy = results[i].split('>');
+		content += "<li class='list-group-item'><a href='javascript:;' onclick='window.opener.location.href = \" " + path + "/" + dummy[1] +"  \"; window.close();'>" + dummy[0] + "</p></li>";
+		}
+		content += "<button type='button' onclick='window.close()'> Close </button>";
+		
+		resultsWindow.document.write(content);
+		return false;
+		}
+		
+		$("#searchResults").html("");
+						if (answer == "") {
+							alert("Sorry, Nothing to show :(");
+						} else {
+							window.location = "../basicSearchResult";
+							var results = answer
+									.split('|');
+							var path = results[0];
+							for (i = 1; i < results.length; i++) {
+								dummy = results[i]
+										.split('>');
+								$("#searchResults")
+										.append(
+												"<a href='" + path + "/" + dummy[1] + "'>"
+														+ dummy[0]
+														+ "</p>");*/
 	</script>
 </body>
 </html>

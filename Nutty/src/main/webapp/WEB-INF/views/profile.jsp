@@ -152,27 +152,11 @@ body {
 		</div>
 	</div>
 
-
-	<div id="results">
-		<h1 align="center">.</h1>
-		<h1 align="center">.</h1>
-		<h1 align="center">.</h1>
-		<h1 align="center">.</h1>
-		<h1 align="center">.</h1>
-		<h1 align="center">.</h1>
-		<h1 align="center">.</h1>
-		<h1 align="center">.</h1>
-		<h1 align="center">.</h1>
-
-	</div>
-
-
 	<script type="text/javascript">
 	var searchFilter;
 	$(".filter").click(function() {
 		$(this).addClass("active").siblings().removeClass("active");
 		searchFilter = this.id;
-		$("#results").append(searchFilter);
 	});
 	
 	$(document).ready(function () {

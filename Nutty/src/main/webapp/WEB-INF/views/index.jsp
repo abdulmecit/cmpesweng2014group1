@@ -224,7 +224,18 @@ input#img-1:checked ~ .nav-dots label#img-dot-1, input#img-2:checked ~
 							<li role="presentation" class="filter" id="sharedRecipe"><a
 								class="btn btn-link">Shared Recipes</a></li>
 						</ul>
-						<div id="results"></div>
+						<div id="results">
+							
+							
+							<c:forEach var="recRecipes" items="$recommendedRecipes">
+								<a href="../recipe/${recRecipes.recipe_id}"
+									class="list-group-item">
+									<h5 class="list-group-item-heading">${recRecipes.name}</h5>
+								</a>
+							</c:forEach>
+							
+							
+						</div>
 					</div>
 
 				</div>
@@ -247,11 +258,13 @@ input#img-1:checked ~ .nav-dots label#img-dot-1, input#img-2:checked ~
 	$(".filter").click(function() {
 		$(this).addClass("active").siblings().removeClass("active");
 		searchFilter = this.id;
-		$('#results').empty();
+	});
+		
+		/*
 		if (searchFilter == "recommendation") {
 			//$('#results').append("recommendation");
 		} else if (searchFilter == "myRecipe") {
-			/* $('#results').append(user_id);
+			 $('#results').append(user_id);
 			$
 					.ajax({
 						type : "POST",
@@ -284,13 +297,13 @@ input#img-1:checked ~ .nav-dots label#img-dot-1, input#img-2:checked ~
 											.append(
 													"User doesn't own any recipe :(");
 								}
-					}); */
+					});
 
 		} else if (searchFilter == "myFriendsRecipe") {
 		} else if (searchFilter == "sharedRecipe") {
 		} else {
-		}
+		} */
 
-	});
+	
 </script>
 </html>

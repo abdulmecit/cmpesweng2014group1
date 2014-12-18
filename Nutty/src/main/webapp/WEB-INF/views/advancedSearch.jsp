@@ -168,7 +168,18 @@
 						if (answer == "") {
 							$("#results").append("<p>Nothing to show :(</p>");
 						} else {
-							alert(answer);
+							//alert(answer);
+							var resultsRec = answer.split('|');
+							var path = resultsRec[0];
+							for (i = 1; i < resultsRec.length; i++) {
+								dummy = resultsRec[i].split('>');
+								$("#results").append( "<li class='list-group-item'><a href= '/nutty/recipe/"  + dummy[1] +"'>" + dummy[0] + "</p></li>");
+								
+								}
+							
+							
+							
+							
 						}
 					}).fail(function (){
 						alert("Ajax call was unsuccessfull :(");			
