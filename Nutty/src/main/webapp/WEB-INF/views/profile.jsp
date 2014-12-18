@@ -2,233 +2,198 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <html lang="en">
-<jsp:include page="header.jsp" flush="true"/>
-    <title>Nutty</title>
+<jsp:include page="header.jsp" flush="true" />
+<title>Nutty</title>
 
-    <!-- Add custom CSS here -->
-    <style>
-        body {margin-top: 50px;}
-			#main-wrap > div { min-height: 450px; }
-		.info { min-height: 80px; }
-		
-		/* layout */
-		#main-wrap {
-		    /* overflow to handle inner floating block */
-		    overflow: hidden;
-		}
-		
-		#sidebar {
-		    float: left;
-		    width: 40%;
-		    height: 100%;
-		    background: #eeeeee;
-		}
-		
-		#foto {
-			float: center;
-		    width: 40%;
-		    height: auto;
-		    background: #eeeeee;
-		    margin-top: 50px;
-		}
-		
-		#content-wrap {
-		    float: right;
-		    width: 60%;
-		}
-		
-		#info-wrap {
-		    /* overflow to handle inner floating block */
-		    overflow: hidden;
-		}
-		
-		.info {
-		    width: 50%;
-		    float: left;
-		}
-		
-		#Follow {
-			display: none;
-			visibility: hidden;
-		}
-		
-		#followCheck {
-			display: none;
-			visibility: hidden;
-		}
-		
-/* 		search */
-#search-form {
-
-    margin: 0 auto;
-    
-	background: #e1e1e1; /* Fallback color for non-css3 browsers */
-	width: 515px;
-	
-	/* Gradients */
-	background: -webkit-gradient( linear,left top, left bottom, color-stop(0, rgb(243,243,243)), color-stop(1, rgb(225,225,225)));
-	background: -moz-linear-gradient( center top, rgb(243,243,243) 0%, rgb(225,225,225) 100%);
-	
-	/* Rounded Corners */
-	border-radius: 17px; 
-	-webkit-border-radius: 17px;
-	-moz-border-radius: 17px;
-	
-	/* Shadows */
-	box-shadow: 1px 1px 2px rgba(0,0,0,.3), 0 0 2px rgba(0,0,0,.3); 
-	-webkit-box-shadow: 1px 1px 2px rgba(0,0,0,.3), 0 0 2px rgba(0,0,0,.3);
-	-moz-box-shadow: 1px 1px 2px rgba(0,0,0,.3), 0 0 2px rgba(0,0,0,.3);
+<!-- Add custom CSS here -->
+<style>
+body {
+	margin-top: 50px;
 }
 
-/*** TEXT BOX ***/
-input[type="text"]{
-	background: #fafafa; /* Fallback color for non-css3 browsers */
-	
-	/* Gradients */
-	background: -webkit-gradient( linear, left bottom, left top, color-stop(0, rgb(250,250,250)), color-stop(1, rgb(230,230,230)));
-	background: -moz-linear-gradient( center top, rgb(250,250,250) 0%, rgb(230,230,230) 100%);
-	
-	border: 0;
-	border-bottom: 1px solid #fff;
-	border-right: 1px solid rgba(255,255,255,.8);
-	font-size: 16px;
-	margin: 10px;
-	padding: 5px;
-	width: 400px;
-	
-	/* Rounded Corners */
-	border-radius: 17px; 
-	-webkit-border-radius: 17px;
-	-moz-border-radius: 17px;
-	
-	/* Shadows */
-	box-shadow: -1px -1px 2px rgba(0,0,0,.3), 0 0 1px rgba(0,0,0,.2);
-	-webkit-box-shadow: -1px -1px 2px rgba(0,0,0,.3), 0 0 1px rgba(0,0,0,.2);
-	-moz-box-shadow: -1px -1px 2px rgba(0,0,0,.3), 0 0 1px rgba(0,0,0,.2);
+#main-wrap>div {
+	min-height: 450px;
 }
 
-/*** USER IS FOCUSED ON TEXT BOX ***/
-input[type="text"]:focus{
-	outline: none;
-	background: #fff; /* Fallback color for non-css3 browsers */
-	
-	/* Gradients */
-	background: -webkit-gradient( linear, left bottom, left top, color-stop(0, rgb(255,255,255)), color-stop(1, rgb(235,235,235)));
-	background: -moz-linear-gradient( center top, rgb(255,255,255) 0%, rgb(235,235,235) 100%);
+.info {
+	min-height: 80px;
 }
 
-/*** SEARCH BUTTON ***/
-input[type="submit"]{
-	background: #44921f;/* Fallback color for non-css3 browsers */
-	
-	/* Gradients */
-	background: -webkit-gradient( linear, left top, left bottom, color-stop(0, rgb(79,188,32)), color-stop(0.15, rgb(73,157,34)), color-stop(0.88, rgb(62,135,28)), color-stop(1, rgb(49,114,21)));
-	background: -moz-linear-gradient( center top, rgb(79,188,32) 0%, rgb(73,157,34) 15%, rgb(62,135,28) 88%, rgb(49,114,21) 100%);
-	
-	border: 0;
-	color: #eee;
-	cursor: pointer;
+/* layout */
+#main-wrap {
+	/* overflow to handle inner floating block */
+	overflow: hidden;
+}
+
+#sidebar {
+	float: left;
+	width: 40%;
+	height: 100%;
+	background: #eeeeee;
+}
+
+#foto {
+	float: center;
+	width: 40%;
+	height: auto;
+	background: #eeeeee;
+	margin-top: 50px;
+}
+
+#content-wrap {
 	float: right;
-	font: 16px Arial, Helvetica, sans-serif;
-	font-weight: bold;
-	height: 30px;
-	margin: 4px 4px 0;
-	text-shadow: 0 -1px 0 rgba(0,0,0,.3);
-	width: 84px;
-	outline: none;
-	
-	/* Rounded Corners */
-	border-radius: 30px; 
-	-webkit-border-radius: 30px;
-	-moz-border-radius: 30px;
-	
-	/* Shadows */
-	box-shadow: -1px -1px 1px rgba(255,255,255,.5), 1px 1px 0 rgba(0,0,0,.4);
-	-moz-box-shadow: -1px -1px 1px rgba(255,255,255,.5), 1px 1px 0 rgba(0,0,0,.2);
-	-webkit-box-shadow: -1px -1px 1px rgba(255,255,255,.5), 1px 1px 0 rgba(0,0,0,.4);
+	width: 60%;
 }
-/*** SEARCH BUTTON HOVER ***/
-input[type="submit"]:hover {
-	background: #4ea923; /* Fallback color for non-css3 browsers */
-	
-	/* Gradients */
-	background: -webkit-gradient( linear, left top, left bottom, color-stop(0, rgb(89,222,27)), color-stop(0.15, rgb(83,179,38)), color-stop(0.8, rgb(66,143,27)), color-stop(1, rgb(54,120,22)));
-	background: -moz-linear-gradient( center top, rgb(89,222,27) 0%, rgb(83,179,38) 15%, rgb(66,143,27) 80%, rgb(54,120,22) 100%);
-}
-input[type="submit"]:active {
-	background: #4ea923; /* Fallback color for non-css3 browsers */
-	
-	/* Gradients */
-	background: -webkit-gradient( linear, left bottom, left top, color-stop(0, rgb(89,222,27)), color-stop(0.15, rgb(83,179,38)), color-stop(0.8, rgb(66,143,27)), color-stop(1, rgb(54,120,22)));
-	background: -moz-linear-gradient( center bottom, rgb(89,222,27) 0%, rgb(83,179,38) 15%, rgb(66,143,27) 80%, rgb(54,120,22) 100%);
-}
- 
-    </style>
 
-  </head>
-  <body>    
+#info-wrap {
+	/* overflow to handle inner floating block */
+	overflow: hidden;
+}
+
+.info {
+	width: 50%;
+	float: left;
+}
+
+#Follow {
+	display: none;
+	visibility: hidden;
+}
+
+#followCheck {
+	display: none;
+	visibility: hidden;
+}
+</style>
+
+</head>
+<body>
 	<div id="main-wrap">
-	    <div id="sidebar" align="center">
-	    	<div id="foto">
-<!-- 	    		<img id="profilePic" alt="Photo of the User" src="http://cdn.sett.com/images/user/20140502/chef57b22ab552661a6852fe44c0e7e59e63.jpg" width="100%" height="auto"/> -->
-	    	</div>
-	    	<br><br><br>
-	    	<h2>Best Of</h2>
-	    	<br><br>
-	    	<div id="bestOf"><p>Loading Recipes, please wait..</p></div>
-	    </div>
-	    <div id="content-wrap">
-	        <div id="info-wrap">
-	            <div class="info" align="center">
-	            	<p>&nbsp;</p>
-	            	<h1 id="name">${visitedUser.name} ${visitedUser.surname}</h1>
-	            	<h3>Age:</h3> <p id="age"></p>
-	            	<h3>Gender:</h3> <p id="gender">Not specified</p>
-	            	<h3>Food Intolerances:</h3> 
-	            	<p id="food_int"> None </p>
-	            	<h3>Health Conditions:</h3>
-	            	<p id="health_cond"> None </p>
-	            	<h3>Not Preferred:</h3>
-	            	<p id="not_pref"> None </p>
-	        	</div>
-	        	<div class="info" align="center">
-	        	    <button type="button" class="btn btn-primary" value="Follow" id="Follow"
+		<div id="sidebar" align="center">
+			<div id="foto">
+				<!-- 	    		<img id="profilePic" alt="Photo of the User" src="http://cdn.sett.com/images/user/20140502/chef57b22ab552661a6852fe44c0e7e59e63.jpg" width="100%" height="auto"/> -->
+			</div>
+			<br>
+			<br>
+			<br>
+			<h2>Best Of</h2>
+			<br>
+			<br>
+			<div id="bestOf">
+				<p>Loading Recipes, please wait..</p>
+			</div>
+		</div>
+		<div id="content-wrap">
+			<div id="info-wrap">
+				<div class="info" align="center">
+					<p>&nbsp;</p>
+					<h1 id="name">${visitedUser.name}${visitedUser.surname}</h1>
+					<h3>Age:</h3>
+					<p id="age"></p>
+					<h3>Gender:</h3>
+					<p id="gender">Not specified</p>
+					<h3>Food Intolerances:</h3>
+					<p id="food_int">None</p>
+					<h3>Health Conditions:</h3>
+					<p id="health_cond">None</p>
+					<h3>Not Preferred:</h3>
+					<p id="not_pref">None</p>
+				</div>
+				<div class="info" align="center">
+					<button type="button" class="btn btn-primary" value="Follow"
+						id="Follow"
 						style="float: center; margin-right: 15 px; margin-top: 18px;">
 						<span id="textFollow" class="ui-button-text">Follow &nbsp </span>
 						<span id="followCheck" class="glyphicon glyphicon-check"></span>
 						<!-- caret for arrow. ui-button-text for button text visible; -->
 					</button>
-	        	</div>
-            	<div class="info" align="center">
-	            	<p>&nbsp;</p>
-	            	<img alt="" src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg" width="50px" height="auto">
-	            	<img alt="" src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg" width="50px" height="auto">
-	            	<img alt="" src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg" width="50px" height="auto">
-	            	<img alt="" src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg" width="50px" height="auto">
-	            	<img alt="" src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg" width="50px" height="auto">
-	            	<p>&nbsp;</p>
-	            	<h2>Master Chef</h2>
-	            	<h3>&nbsp;</h3>
-	            	<h3><a id="showFollowers" title="Click to see them"> ${numberOfFollowers} followers </a></h3>
-	            	<h3><a id="showFollowings" title="Click to see them"> ${numberOfFollowing} following </a></h3>
 				</div>
-		    </div>
-        	<h1 align="center">News Feed</h1>
-     		<div id="sharedRecipes"><p>Loading Recipes, please wait..</p></div>
-        	
-        	<h1 align="center">.</h1>
-        	<h1 align="center">.</h1>
-        	<h1 align="center">.</h1>
-        	<h1 align="center">.</h1>
-        	<h1 align="center">.</h1>
-        	<h1 align="center">.</h1>
-        	<h1 align="center">.</h1>
-        	<h1 align="center">.</h1>
-        	<h1 align="center">.</h1>
+				<div class="info" align="center">
+					<p>&nbsp;</p>
+					<img alt=""
+						src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"
+						width="50px" height="auto"> <img alt=""
+						src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"
+						width="50px" height="auto"> <img alt=""
+						src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"
+						width="50px" height="auto"> <img alt=""
+						src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"
+						width="50px" height="auto"> <img alt=""
+						src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"
+						width="50px" height="auto">
+					<p>&nbsp;</p>
+					<h2>Master Chef</h2>
+					<h3>&nbsp;</h3>
+					<h3>
+						<a id="showFollowers" title="Click to see them">
+							${numberOfFollowers} followers </a>
+					</h3>
+					<h3>
+						<a id="showFollowings" title="Click to see them">
+							${numberOfFollowing} following </a>
+					</h3>
+				</div>
+			</div>
+			<h1 align="center">News Feed</h1>
+			<div id="sharedRecipes">
+				<p>Loading Recipes, please wait..</p>
+			</div>
+
+			<div class="panel panel-default"
+				style="margin-right: 80px; margin-left: 80px">
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-sm-9">
+
+							<div>
+								<ul class="nav nav-tabs nav-justified">
+									<li role="presentation" class="filter active" id="overall"><a
+										class="btn btn-link">My Recipe</a></li>
+									<li role="presentation" class="filter" id="like"><a
+										class="btn btn-link">Shared Recipe</a></li>
+									<li role="presentation" class="filter" id="taste"><a
+										class="btn btn-link">Taste Rate</a></li>
+									<li role="presentation" class="filter" id="healht"><a
+										class="btn btn-link">Health Rate </a></li>
+									<li role="presentation" class="filter" id="cost"><a
+										class="btn btn-link">Cost Rate</a></li>
+									<li role="presentation" class="filter" id="ease"><a
+										class="btn btn-link">Ease Rate</a></li>
+								</ul>
+								<div id="results">
+									<h1 align="center">.</h1>
+									<h1 align="center">.</h1>
+									<h1 align="center">.</h1>
+									<h1 align="center">.</h1>
+									<h1 align="center">.</h1>
+									<h1 align="center">.</h1>
+									<h1 align="center">.</h1>
+									<h1 align="center">.</h1>
+									<h1 align="center">.</h1>
+
+								</div>
+							</div>
+
+						</div>
+						<div class="col-sm-3">
+							<div class="panel panel-default">
+								<div class="panel-body"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
-	
+
 	<script type="text/javascript">
+	var searchFilter;
+	$(".filter").click(function() {
+		$(this).addClass("active").siblings().removeClass("active");
+		searchFilter = this.id;
+		$("#results").append(searchFilter);
+	});
+	
 	$(document).ready(function () {
 		if('${visitedUser.id}' == '${user.id}'){
 			$("#Follow").css('display','none');
