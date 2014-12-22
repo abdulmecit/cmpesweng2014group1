@@ -64,7 +64,7 @@ public class RecipeService {
 	//returns created recipe object 
 	//give the user also to the function
 	public Recipe createRecipe(String name, String description,
-			int portion, String photo_url, String[] ingredients, double[] amounts, User user, String[] tags) {
+			int portion, String photo_url, String[] ingredients, double[] amounts, String[] meas_types, User user, String[] tags) {
 		
 		int[] ingredient_ids=new int[ingredients.length];
 		int[] ingredient_calories=new int[ingredients.length];
@@ -77,9 +77,7 @@ public class RecipeService {
 			ingredient_calories[i]=ingredientDao.getCalorieById(ing_id);
 		}		
 		//get total calorie value for the recipe
-		//for now assumed given amount is in gram and the database calorie has value for 100 gram
-		double total_calorie=recipeDao.calculateTotalCalorie(ingredient_calories, amounts);		
-		//double total_calorie=100;
+		double total_calorie = calculateTotalCalorie(ingredient_ids, ingredient_calories, amounts, meas_types);		
 		
 		//create new recipe
 		int recipe_id=recipeDao.createRecipe(name, description, portion, total_calorie);
@@ -100,6 +98,21 @@ public class RecipeService {
 		
 		return recipeDao.getRecipeById(recipe_id);	
 	}	
+	
+	//calculates total calorie of a recipe
+	public double calculateTotalCalorie(int ingredient_ids[], int[] ingredient_calories, double[] amounts, String[] meas_types){
+		double total=0;
+		for(int i=0; i<ingredient_calories.length; i++){
+			if(meas_types[i].equals("gr")){
+				total += (ingredient_calories[i]/100.0) * amounts[i];
+			}
+			else{
+				double weight = recipeDao.getWeightByMeasType(ingredient_ids[i], meas_types[i]);
+				total += (ingredient_calories[i]/weight) * amounts[i];
+			}
+		}		
+		return total;
+	}
 
 	//returns created Comment
 	public Comment commentRecipe(String text, User user, Recipe recipe){
@@ -186,10 +199,10 @@ public class RecipeService {
 	}
 	//creates and returns the derived recipe
 	public Recipe deriveRecipe(String name, String description,
-			int portion, String photo_url, String[] ingredients, double[] amounts, User user, 
+			int portion, String photo_url, String[] ingredients, double[] amounts, String[] meas_types, User user, 
 			Recipe originalRecipe, String[] tags){
 		Recipe createdRecipe=createRecipe(name, description,
-				portion, photo_url,ingredients,amounts,user,tags);
+				portion, photo_url,ingredients,amounts, meas_types, user, tags);
 		recipeDao.addDerivedFrom(originalRecipe, createdRecipe);
 		return createdRecipe;
 	}	

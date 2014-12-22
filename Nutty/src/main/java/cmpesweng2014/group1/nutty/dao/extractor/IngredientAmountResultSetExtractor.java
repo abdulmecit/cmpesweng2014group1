@@ -16,7 +16,8 @@ public class IngredientAmountResultSetExtractor implements ResultSetExtractor<In
 		ingredientAmount.setRecipe_id(rs.getInt(1));
 		ingredientAmount.setIng_id(rs.getInt(2));
 		ingredientAmount.setIng_name(rs.getString(3));
-		ingredientAmount.setAmount(rs.getDouble(4));	
+		ingredientAmount.setAmount(rs.getDouble(4));
+		ingredientAmount.setMeas_type(rs.getString(5));
 		return ingredientAmount;
 	}
 }

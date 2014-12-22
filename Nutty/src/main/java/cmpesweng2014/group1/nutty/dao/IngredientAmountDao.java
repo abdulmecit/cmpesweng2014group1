@@ -12,7 +12,7 @@ public class IngredientAmountDao extends PcDao{
 
 	public IngredientAmount[] allIngredientAmounts(int recipe_id){
 		List<IngredientAmount> ingredientAmountList = this.getTemplate().query(
-				"SELECT recipe_id, ing_id, Shrt_Desc as ing_name, amount FROM HasIngredient, ingredients WHERE ing_id = NDB_No and recipe_id =?",
+				"SELECT recipe_id, ing_id, Shrt_Desc as ing_name, amount, meas_type FROM HasIngredient, ingredients WHERE ing_id = NDB_No and recipe_id =?",
 				new Object[] { recipe_id  }, new IngredientAmountRowMapper());
 	
 		if (ingredientAmountList.isEmpty()) {

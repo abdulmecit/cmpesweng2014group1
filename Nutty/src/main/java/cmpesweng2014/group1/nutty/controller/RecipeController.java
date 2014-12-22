@@ -1,6 +1,5 @@
 package cmpesweng2014.group1.nutty.controller;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -69,7 +68,8 @@ public class RecipeController {
 							@RequestParam(value = "portion", required = true) int portion,
 							@RequestParam(value = "link", required = true) String link,
 							@RequestParam(value = "ingredient[]", required = true) String[] ingredients,
-							@RequestParam(value = "amount[]", required = true) double[] amounts, 
+							@RequestParam(value = "amount[]", required = true) double[] amounts,
+							@RequestParam(value = "measType[]", required = true) String[] meas_types, 
 							@RequestParam(value = "tag[]", required = true) String[] tagz,
 			RedirectAttributes redirectAttrs, HttpSession session) {
 		User u = (User) session.getAttribute("user");
@@ -79,7 +79,7 @@ public class RecipeController {
 		tagSet.remove(new String(""));
 		String[] tags = tagSet.toArray(new String[0]);	
 		
-		Recipe r = recipeService.createRecipe(recipeName, description, portion, link, ingredients, amounts, u, tags);
+		Recipe r = recipeService.createRecipe(recipeName, description, portion, link, ingredients, amounts, meas_types, u, tags);
 		if(r != null){
 			redirectAttrs.addFlashAttribute("message", new Message(1, null, "Your recipe is successfully added to the system."));
 			return "redirect:/success";
@@ -95,7 +95,8 @@ public class RecipeController {
 							@RequestParam(value = "portion", required = true) int portion,
 							@RequestParam(value = "link", required = true) String link,
 							@RequestParam(value = "ingredient[]", required = true) String ingredientz,
-							@RequestParam(value = "amount[]", required = true) String amountz, 
+							@RequestParam(value = "amount[]", required = true) String amountz,
+							@RequestParam(value = "measType[]", required = true) String meas_typez, 
 							@RequestParam(value = "user_id", required = true) Long user_id,
 							@RequestParam(value = "tag[]", required = true) String tagz) {
 		
@@ -104,6 +105,8 @@ public class RecipeController {
 		String[] ingredients = gson.fromJson(ingredientz, String[].class);
 		String[] tags = gson.fromJson(tagz, String[].class);
 		double[] amounts = gson.fromJson(amountz, double[].class);
+		String[] meas_types = gson.fromJson(meas_typez, String[].class);
+
 		
 		//Remove empty and duplicate tags			
 		HashSet<String> tagSet = new HashSet<String>(Arrays.asList(tags));
@@ -111,7 +114,7 @@ public class RecipeController {
 		tags = tagSet.toArray(new String[0]);	
 		
 		User u = userService.getUserDao().getUserById(user_id);	
-		Recipe r = recipeService.createRecipe(recipeName, description, portion, link, ingredients, amounts, u, tags);
+		Recipe r = recipeService.createRecipe(recipeName, description, portion, link, ingredients, amounts, meas_types, u, tags);
 		if(r != null){
 			return new Message(1, r, "Your recipe is successfully added to the system.");		
 		}
@@ -245,7 +248,8 @@ public class RecipeController {
 			@RequestParam(value = "portion", required = true) int portion,
 			@RequestParam(value = "link", required = true) String link,
 			@RequestParam(value = "ingredient[]", required = true) String[] ingredients,
-			@RequestParam(value = "amount[]", required = true) double[] amounts, 
+			@RequestParam(value = "amount[]", required = true) double[] amounts,
+			@RequestParam(value = "measType[]", required = true) String[] meas_types,
 			@RequestParam(value = "tag[]", required = true) String[] tagz,
 			RedirectAttributes redirectAttrs, HttpSession session) {
 		User u = (User) session.getAttribute("user");
@@ -255,7 +259,7 @@ public class RecipeController {
 		tagSet.remove(new String(""));
 		String[] tags = tagSet.toArray(new String[0]);
 
-		Recipe r = recipeService.deriveRecipe(recipeName, description, portion, link, ingredients, amounts, u, recipeService.getRecipe(recipeId), tags);
+		Recipe r = recipeService.deriveRecipe(recipeName, description, portion, link, ingredients, amounts, meas_types, u, recipeService.getRecipe(recipeId), tags);
 		if(r != null){
 			redirectAttrs.addFlashAttribute("message", new Message(1, null, "Your new version is successfully added to the system."));
 			return "redirect:/success";

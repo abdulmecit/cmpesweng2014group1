@@ -83,13 +83,11 @@ public class RecipeDao extends PcDao{
 		}
 	}
 	
-	//can be changed, assumed gram value is given by the user and database has value for 100 gram
-	public double calculateTotalCalorie(int[] ingredient_calories, double[] amounts){
-		double total=0;
-		for(int k=0; k<ingredient_calories.length; k++){
-			total+=ingredient_calories[k]/100*amounts[k];
-		}		
-		return total;
+	public double getWeightByMeasType(int ing_id, String meas_type){
+		double id=this.getTemplate().queryForObject(
+				"SELECT Gm_Wgt FROM IngredientWeight WHERE NDB_No = ? and Msre_Desc = ?", 
+				new Object[] {ing_id, meas_type}, Double.class);
+		return id;
 	}
 	
 	public void addIngredient(final int ingredient_id, final int recipe_id, final double amount){
