@@ -116,16 +116,20 @@ public class FoodSelectionDao extends PcDao {
 
 	//return true if there is an ingredient in the given array, that the user should not eat
 	public boolean hasSelection(IngredientAmount[] ingredientAmounts, long user_id) {
-		List<Ingredient> ingredientList=getFoodSelectionIngredients(user_id);
-		ingredientList.addAll(getUnpreferredIngredients(user_id));
+		List<Ingredient> ingredientList = getFoodSelectionIngredients(user_id);
+		List<Ingredient> unpreferredList = getUnpreferredIngredients(user_id);
+		if(unpreferredList != null)
+			ingredientList.addAll(unpreferredList);
 		//now we have all the ingredient list
-		List<Integer> ingredientIds=new ArrayList<Integer>();
-		for(int i=0; i<ingredientList.size();i++){
-			ingredientIds.add(ingredientList.get(i).getId());
-		}
-		for(int i=0; i<ingredientAmounts.length;i++){
-			if(ingredientIds.contains(ingredientAmounts[i].getIng_id())){
-				return true;
+		List<Integer> ingredientIds = new ArrayList<Integer>();
+		if(ingredientList != null){
+			for(int i=0; i<ingredientList.size();i++){
+				ingredientIds.add(ingredientList.get(i).getId());
+			}
+			for(int i=0; i<ingredientAmounts.length;i++){
+				if(ingredientIds.contains(ingredientAmounts[i].getIng_id())){
+					return true;
+				}
 			}
 		}
 		return false;
@@ -136,15 +140,21 @@ public class FoodSelectionDao extends PcDao {
 		FoodSelection[] foodIntolerance=getFoodSelectionForUser(user_id, "food_intolerance");
 		FoodSelection[] healthCondition=getFoodSelectionForUser(user_id, "health_condition");
 
-		//all ingredients that the user should not eat
 		List<Ingredient> ingredientList = new ArrayList<Ingredient>();
-		for(int i=0; i<foodIntolerance.length; i++){
-			List<Ingredient> ingList=getIngredientsForSelection(foodIntolerance[i]);
-			ingredientList.addAll(ingList);
+		//all ingredients that the user should not eat
+		if(foodIntolerance != null){
+			for(int i=0; i<foodIntolerance.length; i++){
+				List<Ingredient> ingList=getIngredientsForSelection(foodIntolerance[i]);
+				if(ingList != null)
+					ingredientList.addAll(ingList);
+			}
 		}
-		for(int i=0; i<healthCondition.length; i++){
-			List<Ingredient> ingList=getIngredientsForSelection(healthCondition[i]);
-			ingredientList.addAll(ingList);
+		if(healthCondition != null){
+			for(int i=0; i<healthCondition.length; i++){
+				List<Ingredient> ingList=getIngredientsForSelection(healthCondition[i]);
+				if(ingList != null)
+					ingredientList.addAll(ingList);
+			}
 		}
 		return ingredientList;
 	}
@@ -168,7 +178,7 @@ public class FoodSelectionDao extends PcDao {
 	public List<Ingredient> getIngredientsForSelection(FoodSelection foodSelection){
 		List<Ingredient> ingList = this.getTemplate().query(
 				"SELECT Shrt_Desc as ing_name, Energ_Kcal as calorie, NDB_No as id "
-				+ "FROM ingredients a, Should(Not)Eat b  WHERE "
+				+ "FROM ingredients a, `Should(Not)Eat` b  WHERE "
 				+ " b.avoid_suggest=1 AND b.fs_id= ? AND a.NDB_No=b.ing_id",
 				new Object[] { foodSelection.getFs_id() }, new IngredientRowMapper());
 		if (ingList.isEmpty()) {

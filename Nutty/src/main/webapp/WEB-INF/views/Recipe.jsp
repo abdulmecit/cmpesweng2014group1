@@ -458,7 +458,7 @@ body {
 								Calories:${recipe.total_calorie}</h3>
 							<h3>Ingredients</h3>
 							<c:forEach var="ingredientAmount" items="${ingredientAmounts}">
-								<p>${ingredientAmount.amount}&nbsp&nbsp&nbsp
+								<p>${ingredientAmount.amount}&nbsp${ingredientAmount.meas_type}&nbsp
 									${ingredientAmount.ing_name}</p>
 
 							</c:forEach>

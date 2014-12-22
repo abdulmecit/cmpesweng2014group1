@@ -46,11 +46,11 @@ public class RecommendationService {
 	
 	public Recipe[] getRecommendation(long user_id) throws Exception{
 		List<Recipe> recList=recipeDao.calculateRecommendation(user_id);
-		Recipe[] rec=recList.toArray(new Recipe[recList.size()]);
-
-		if(recList.size()==0){
+		Recipe[] rec;
+		if(recList == null || recList.size()==0)
 			rec = recipeService.getRecipeDao().getAllRecipes();
-		}
+		else
+			rec = recList.toArray(new Recipe[recList.size()]);
 		List<Recipe> selList=new ArrayList<Recipe>();
 		for(int i=0; i<rec.length;i++){
 			if(canEat(rec[i].getRecipe_id(), user_id)){

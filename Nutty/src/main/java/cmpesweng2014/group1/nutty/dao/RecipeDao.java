@@ -90,6 +90,19 @@ public class RecipeDao extends PcDao{
 		return id;
 	}
 	
+	public String[] getMeasTypesByIngId(int ing_id) {
+		List<String> measTypeList = this.getTemplate().queryForList(
+				"SELECT Msre_Desc FROM IngredientWeight WHERE NDB_No = ?",
+				new Object[] { ing_id  }, String.class);
+	
+		if (measTypeList.isEmpty()) {
+			return null;
+		}
+		else{
+			return measTypeList.toArray(new String[measTypeList.size()]);
+		}
+	}
+	
 	public void addIngredient(final int ingredient_id, final int recipe_id, final double amount){
 		final String query = "INSERT INTO HasIngredient (recipe_id, ing_id, amount) VALUES (?,?,?)";
 		KeyHolder gkh = new GeneratedKeyHolder();
