@@ -447,6 +447,12 @@ public class RecipeController {
 		return recipeService.getSomeIngredients(filter);
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/measTypesOfIngr")
+	public String[] measTypesOfIngr(@RequestParam(value = "ing_id", required = true) int ing_id) {
+		return recipeService.getRecipeDao().getMeasTypesByIngId(ing_id);
+	}	
+	
 	@RequestMapping(value = "/recipeComments")
 	@ResponseBody
 	public String recipeComments(

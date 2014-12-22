@@ -194,15 +194,21 @@ body {
 	<!---------------------------  Functions  ------------------------------>
 	<script type="text/javascript">
 		var counter = 1;
-		function addInput(div, value) {
+		function addInput(div, ing_name, meas_types) {
 			var newDiv = document.createElement('div');
 			newDiv.id = 'textBoxDiv' + counter;
-			newDiv.innerHTML = "<p><div class='col-sm-4' align='left'> <input type='text' class='form-control' id='amount' name='amount[]' placeholder='only number'> </div>"
-		    + "<div class='col-sm-8'> <div class='input-group'> <input type='text' class='form-control' id='ingredient' name='ingredient[]' value='" + value + "'  readonly>"
+			var content = "<p><div class='col-sm-4' align='left'> <input type='text' class='form-control' id='amount' name='amount[]' placeholder='only number'> </div>"
+			+ "<div class='col-sm-4' align='left'> <select> <option value='gr' selected>gr</option>";
+			for(var i=0; i<meas_types.length; i++){
+				content += "<option value='" + meas_types[i] + "'>" + meas_types[i] + "</option>";
+			}			
+			content += "</select> </div> <br><br>"
+			+ "<div class='col-sm-8'> <div class='input-group'> <input type='text' class='form-control' id='ingredient' name='ingredient[]' value='" + ing_name + "'  readonly>"
 			+ "<span class='input-group-btn'> <button type='button' class='btn btn-default' onclick='deleteText("+counter+")'"
 			+ "id='delingredient'"
 			+ counter
 			+ "'><span id='den'>&times;</span></button> </span></div></div></p><br><br>";
+			newDiv.innerHTML = content;
 			document.getElementById(div).appendChild(newDiv);
 			counter++;
 		}
@@ -319,11 +325,19 @@ body {
 				});
 			},
 			minLength : 3,
-			select : function(event, ui) {
-				addInput('dynamicInput', ui.item.label);
+			select : function(event, ui) {			
+				$.ajax({
+					type : "POST",
+					url : "measTypesOfIngr",
+					data : {
+						ing_id : ui.item.id
+					}
+				}).done(function(meas_types) {
+					addInput('dynamicInput', ui.item.label, meas_types);
+				});
 				//clear text box
-				 $(this).val("");
-				 return false;
+				$(this).val("");
+				return false;
 			}
 		});
 	</script>
