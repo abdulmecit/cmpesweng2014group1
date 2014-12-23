@@ -2,9 +2,9 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <html lang="en">
-<jsp:include page="header.jsp" flush="true"/>
-    <title>Nutty</title>
-    
+<jsp:include page="header.jsp" flush="true" />
+<title>Nutty</title>
+
 <!-- Add custom CSS here -->
 <style>
 body {
@@ -88,95 +88,80 @@ body {
 				</div>
 
 				<div class="panel-body">
-					<div class="col-sm-12">
-						<div class="panel panel-default">
-							<div class="panel-heading clearfix">
-								<h2 class="panel-title pull-left" style="padding-top: 7.5px;">Name,
-									Portion, Tags & Photo</h2>
+					<div class="row">
+						<!------------------------  Get Name & Portion  --------------------------->
+						<div class="col-xs-8">
+							<div class="col-xs-12">
+								Name:<input type="text" class="form-control" id="recipeName"
+									name="recipeName" placeholder="Name of Recipe...">
 							</div>
-							<div class="panel-body">
-								<div class="row">
-									<div class="col-xs-9">
-										<input type="text" class="form-control" id="recipeName"
-											name="recipeName" placeholder="Name of Recipe...">
-									</div>
-									<div class="col-xs-3">
-										<input type="text" class="form-control" id="portion"
-											name="portion" placeholder="portion">
-									</div>
-								</div>
-								<br>
-								<div id="dynamicInput3" class="col-sm-3" align="left">
-									<input type="text" class="form-control" id="tag" name="tag[]"
-										placeholder=" Write Tags of Recipe"> <br> <input
-										type="text" class="form-control" id="tag" name="tag[]"
-										placeholder="italian cuisine..."> <br> <input
-										type="text" class="form-control" id="tag" name="tag[]"
-										placeholder="chicken..."> <br> <input type="text"
-										class="form-control" id="tag" name="tag[]"
-										placeholder="soup...">
-								</div>
-								<div id="dynamicInput3" class="col-sm-3" align="left">
-									<input type="text" class="form-control" id="tag" name="tag[]"
-										placeholder="soy sauce..."> <br> <input
-										type="text" class="form-control" id="tag" name="tag[]"
-										placeholder=" chilli sauce..."> <br> <input
-										type="text" class="form-control" id="tag" name="tag[]"
-										placeholder="easy..."> <br> <input type="text"
-										class="form-control" name="tag[]" id="tag"
-										placeholder="cheap...">
-								</div>
-								<div id="dynamicInput3" class="col-sm-6" align="left">
+							<br> <br> <br> <br>
+							<div class="col-xs-2">
+								Portion:<input type="text" class="form-control" id="portion"
+									name="portion" placeholder="portion">
+							</div>
+							<br> <br> <br> <br> <br>
+							<!------------------------  Get Ingredients  --------------------------->
+							<div class="row">
+								<div class="col-xs-12">
 									<div class="panel panel-default">
-
-										<!------------------------  Photo  --------------------------->
-										<div class="panel-body" style="height: 200px">
-
-											<div id="dropArea">
-												Drag and drop your recipe picture here! OR
-												<button type="button"
-													onclick="document.querySelector('#elma').click()">Choose
-													from your computer</button>
+										<div class="panel-heading clearfix">
+											<h4 class="panel-title pull-left"
+												style="padding-top: 7.5px; padding-bottom: 7.5px">Search
+												Ingredient:</h4>
+											<div class="col-xs-9">
+												<input type="text" class="form-control" id="addIngredient">
 											</div>
-
-											<input id="elma" style="visibility: collapse; width: 0px;"
-												type="file" onchange="upload(this.files[0])"> <input
-												type="hidden" class="form-control" id="link" name="link"></input>
-
-											<p id="progress">Uploading...</p>
-
 										</div>
-										<!----------------------- Ends of photo --------------------------->
+										<div class="panel-body" style="min-height: 50px">
+											<div id="dynamicInput"></div>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
 
-					<!------------------------  Get Ingredients  --------------------------->
-					<div class="col-sm-6">
-						<div class="panel panel-default">
-							<div class="panel-heading clearfix">
-								<h4 class="panel-title pull-left" style="padding-top: 7.5px; padding-bottom: 7.5px">Search
-									Ingredient:</h4>
-								<input type="text" class="form-control" id="addIngredient">
-							</div>
+						<div class="col-xs-4">
+							<!------------------------  Photo  --------------------------->
+							<div class="panel panel-default">
+								<div class="panel-body" style="height: 158px">
 
-							<div class="panel-body">
-								<div class="panel-heading clearfix">
-									<h4 class="panel-title pull-left" style="padding-top: 7.5px;">Amount
-										/ Ingredients</h4>
+									<div id="dropArea">
+										Drag and drop your recipe picture here! OR
+										<button type="button"
+											onclick="document.querySelector('#elma').click()">Choose
+											from your computer</button>
+									</div>
+
+									<input id="elma" style="visibility: collapse; width: 0px;"
+										type="file" onchange="upload(this.files[0])"> <input
+										type="hidden" class="form-control" id="link" name="link"></input>
+
+									<p id="progress">Uploading...</p>
 								</div>
-								<div id="dynamicInput"></div>
+							</div>
+							<!------------------------ Get Tags  --------------------------->
+							<div class="panel panel-default">
+								<div class="panel-heading clearfix">
+									<div class="input-group">
+										<input type="text" id="myTag" class="form-control"
+											placeholder="tags..."> <span class="input-group-btn">
+											<button class="btn btn-default" type="button"
+												onclick="addTag('dynamicTag')">Add Tag</button>
+										</span>
+									</div>
+								</div>
+								<div class="panel-body" style="min-height: 50px">
+									<div id="dynamicTag"></div>
+								</div>
 							</div>
 						</div>
 					</div>
-
-
-
-					<!------------------------  Get Directions  --------------------------->
-
-					<div class="col-sm-6">
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-xs-12">
+						<!------------------------  Get Directions  --------------------------->
 						<div class="panel panel-default">
 							<div class="panel-heading clearfix">
 								<h4 class="panel-title " style="padding-top: 7.5px;">Directions</h4>
@@ -189,34 +174,61 @@ body {
 					</div>
 				</div>
 			</div>
-		</form>
+	</div>
+	</form>
 	</div>
 	<!---------------------------  Functions  ------------------------------>
 	<script type="text/javascript">
 		var counter = 1;
+		var tagCounter = 1;
+
 		function addInput(div, ing_name, meas_types) {
 			var newDiv = document.createElement('div');
 			newDiv.id = 'textBoxDiv' + counter;
-			var content = "<p><div class='col-sm-4' align='left'> <input type='text' class='form-control' id='amount' name='amount[]' placeholder='only number'> </div>"
-			+ "<div class='col-sm-4' align='left'> <select name='measType[]'> <option value='gr' selected>gr</option>";
-			for(var i=0; i<meas_types.length; i++){
-				content += "<option value='" + meas_types[i] + "'>" + meas_types[i] + "</option>";
-			}			
-			content += "</select> </div> <br><br>"
-			+ "<div class='col-sm-8'> <div class='input-group'> <input type='text' class='form-control' id='ingredient' name='ingredient[]' value='" + ing_name + "'  readonly>"
-			+ "<span class='input-group-btn'> <button type='button' class='btn btn-default' onclick='deleteText("+counter+")'"
-			+ "id='delingredient'"
-			+ counter
-			+ "'><span id='den'>&times;</span></button> </span></div></div></p><br><br>";
+			var content = "<p><div class='col-sm-2' align='left'> <input type='text' class='form-control' id='amount' name='amount[]' placeholder='number'> </div>"
+					+ "<div class='col-sm-3' align='left'> <select name='measType[]' style='width:100%; height:35px; line-height:35px; overflow:hidden;'> <option value='gr' selected>gr</option>";
+			for (var i = 0; i < meas_types.length; i++) {
+				content += "<option value='" + meas_types[i] + "'>"
+						+ meas_types[i] + "</option>";
+			}
+			content += "</select> </div>"
+					+ "<div class='col-sm-7'> <div class='input-group'> <input type='text' class='form-control' id='ingredient' name='ingredient[]' value='" + ing_name + "'  readonly>"
+					+ "<span class='input-group-btn'> <button type='button' class='btn btn-default' onclick='deleteText("
+					+ counter
+					+ ")'"
+					+ "id='delingredient'"
+					+ counter
+					+ "'><span id='den'>&times;</span></button> </span></div></div></p><br><br>";
 			newDiv.innerHTML = content;
 			document.getElementById(div).appendChild(newDiv);
 			counter++;
 		}
-		
+
+		function addTag(div) {
+			var tagValue = document.getElementById("myTag").value;
+			//var tagValue = "s";
+			var newDiv = document.createElement('div');
+			newDiv.id = 'tagDiv' + tagCounter;
+			var content = "<div class='input-group'> <input type='text' class='form-control' id='tag' name='tag[]' value='" + tagValue + "' readonly>"
+					+ "<span class='input-group-btn'> <button type='button' class='btn btn-default' onclick='deleteTag("
+					+ tagCounter
+					+ ")'"
+					+ "id='deltag'"
+					+ tagCounter
+					+ "'><span id='den'>&times;</span></button></span></div><br>";
+			newDiv.innerHTML = content;
+			document.getElementById(div).appendChild(newDiv);
+			tagCounter++;
+			$("#myTag").val("");
+		}
+
+		function deleteTag(i) {
+			$("#tagDiv" + i).remove();
+		}
+
 		function deleteText(i) {
 			$("#textBoxDiv" + i).remove();
 		}
-		
 
 		$("#recipeName").keyup(
 				function(event) {
@@ -325,7 +337,7 @@ body {
 				});
 			},
 			minLength : 3,
-			select : function(event, ui) {			
+			select : function(event, ui) {
 				$.ajax({
 					type : "POST",
 					url : "measTypesOfIngr",
