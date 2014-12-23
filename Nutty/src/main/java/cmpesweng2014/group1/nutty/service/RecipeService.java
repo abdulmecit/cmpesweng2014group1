@@ -1,5 +1,6 @@
 package cmpesweng2014.group1.nutty.service;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -87,7 +88,7 @@ public class RecipeService {
 		}		
 		//ingredients are added to HasIngredient table
 		for(int i=0; i<ingredients.length; i++){
-			recipeDao.addIngredient(ingredient_ids[i], recipe_id, amounts[i]);
+			recipeDao.addIngredient(ingredient_ids[i], recipe_id, amounts[i], meas_types[i]);
 		}		
 		//Added to OwnsRecipe table
 		recipeDao.addOwner(recipe_id, user.getId());			
@@ -111,7 +112,7 @@ public class RecipeService {
 				total += (ingredient_calories[i]/weight) * amounts[i];
 			}
 		}		
-		return total;
+		return new BigDecimal(String.valueOf(total)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 	}
 
 	//returns created Comment

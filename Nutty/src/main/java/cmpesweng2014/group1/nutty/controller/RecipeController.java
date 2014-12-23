@@ -235,9 +235,18 @@ public class RecipeController {
 		model.addAttribute("recipe", recipe);
 		IngredientAmount[] ingredientAmounts = recipeService.getIngredientAmounts(recipeId);
 		model.addAttribute("ingredientAmounts", ingredientAmounts);
+		Map<Integer, String[]> measTypesMap = new HashMap<Integer, String[]>();
+		for(int i=0; i<ingredientAmounts.length; i++){
+			int ing_id = ingredientAmounts[i].getIng_id();
+			String[] meas_types = recipeService.getRecipeDao().getMeasTypesByIngId(ing_id);
+			measTypesMap.put(i, meas_types);
+		}
+		model.addAttribute("measTypesMap", measTypesMap);
 		Tag[] tags=recipeService.getAllTags(recipeId);
 		if(tags != null)
 			model.addAttribute("tags", tags);
+		String photoUrl = recipeService.getRecipePhotoUrl(recipeId);
+		model.addAttribute("photoUrl", photoUrl);
 		
 		return "derivedRecipe";
 	}

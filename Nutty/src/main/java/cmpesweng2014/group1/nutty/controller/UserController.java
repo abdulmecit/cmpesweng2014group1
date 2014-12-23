@@ -541,8 +541,8 @@ public class UserController {
 			sharedRecipePictures[i] = recipeService.getRecipePhotoUrl(sharedRecipeIds[i]);
 		}
 		
-		su.setOwnedRecipes(sharedRecipes);
-		su.setOwnedRecipePictures(sharedRecipePictures);
+		su.setSharedRecipes(sharedRecipes);
+		su.setSharedRecipePictures(sharedRecipePictures);
 		
 		return su;
 	}

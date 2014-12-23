@@ -475,7 +475,7 @@ body {
 							<h4 class="panel-title pull-left" style="padding-top: 7.5px;">Versions</h4>
 							<a href="../derivedRecipe/${recipe.recipe_id}"
 								id="derivedRecipeButton" class="btn btn-primary active"
-								role="button" style="float: right;">Derived New Recipe</a>
+								role="button" style="float: right;">Derive New Recipe</a>
 						</div>
 
 						<div class="panel-body" >

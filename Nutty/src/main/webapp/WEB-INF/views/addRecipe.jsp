@@ -198,7 +198,7 @@ body {
 			var newDiv = document.createElement('div');
 			newDiv.id = 'textBoxDiv' + counter;
 			var content = "<p><div class='col-sm-4' align='left'> <input type='text' class='form-control' id='amount' name='amount[]' placeholder='only number'> </div>"
-			+ "<div class='col-sm-4' align='left'> <select> <option value='gr' selected>gr</option>";
+			+ "<div class='col-sm-4' align='left'> <select name='measType[]'> <option value='gr' selected>gr</option>";
 			for(var i=0; i<meas_types.length; i++){
 				content += "<option value='" + meas_types[i] + "'>" + meas_types[i] + "</option>";
 			}			

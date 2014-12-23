@@ -123,23 +123,23 @@ body {
 									</div>
 									<br>
 									<div id="dynamicInput3" class="col-sm-3" align="left">
-										<input type="text" class="form-control" id="tag" name="tag[]"
+										<input type="text" class="form-control" id="tag" name="tag[]" value="${tags[0].tag_name}"
 											placeholder=" Write Tags of Recipe"> <br> <input
-											type="text" class="form-control" id="tag" name="tag[]"
+											type="text" class="form-control" id="tag" name="tag[]" value="${tags[1].tag_name}"
 											placeholder="italian cuisine..."> <br> <input
-											type="text" class="form-control" id="tag" name="tag[]"
+											type="text" class="form-control" id="tag" name="tag[]" value="${tags[2].tag_name}"
 											placeholder="chicken..."> <br> <input
-											type="text" class="form-control" id="tag" name="tag[]"
+											type="text" class="form-control" id="tag" name="tag[]" value="${tags[3].tag_name}"
 											placeholder="soup...">
 									</div>
 									<div id="dynamicInput3" class="col-sm-3" align="left">
-										<input type="text" class="form-control" id="tag" name="tag[]"
+										<input type="text" class="form-control" id="tag" name="tag[]" value="${tags[4].tag_name}"
 											placeholder="soy sauce..."> <br> <input
-											type="text" class="form-control" id="tag" name="tag[]"
+											type="text" class="form-control" id="tag" name="tag[]" value="${tags[5].tag_name}"
 											placeholder=" chilli sauce..."> <br> <input
-											type="text" class="form-control" id="tag" name="tag[]"
+											type="text" class="form-control" id="tag" name="tag[]" value="${tags[6].tag_name}"
 											placeholder="easy..."> <br> <input type="text"
-											class="form-control" name="tag[]" id="tag"
+											class="form-control" name="tag[]" id="tag" value="${tags[7].tag_name}"
 											placeholder="cheap...">
 									</div>
 									<div id="dynamicInput3" class="col-sm-6" align="left">
@@ -157,7 +157,7 @@ body {
 
 												<input id="elma" style="visibility: collapse; width: 0px;"
 													type="file" onchange="upload(this.files[0])"> <input
-													type="hidden" class="form-control" id="link" name="link"></input>
+													type="hidden" class="form-control" id="link" name="link" value="${photoUrl}"></input>
 
 												<p id="progress">Uploading...</p>
 
@@ -194,7 +194,15 @@ body {
 													<input type="text" class="form-control" id="amount"
 														name="amount[]" value="${ingredientAmount.amount}">
 												</div>
-
+												<div class='col-sm-4' align='left'> 
+													<select name='measType[]'> 
+														<option value='gr' <c:if test ="${ingredientAmount.meas_type == 'gr'}">selected</c:if>>gr</option>
+														<c:forEach var="item" items="${measTypesMap[loop.index]}">
+															<option value="${item}" <c:if test ="${ingredientAmount.meas_type == item}">selected</c:if>>${item}</option>
+														</c:forEach>
+													</select>
+												</div>
+												<br><br>
 												<div class="col-sm-8">
 													<div class="input-group">
 														<input type="text" class="form-control" id="ingredient"
@@ -239,17 +247,21 @@ body {
 		<!---------------------------  Functions  ------------------------------>
 		<script type="text/javascript">
 			var counter = 1;
-			function addInput(div, value) {
+			function addInput(div, ing_name, meas_types) {
 				var newDiv = document.createElement('div');
 				newDiv.id = 'textBoxDiv' + counter;
-				newDiv.innerHTML = "<p><div class='col-sm-4' align='left'> <input type='text' class='form-control' id='amount' name='amount[]' placeholder='only number'> </div>"
-						+ "<div class='col-sm-8'> <div class='input-group'> <input type='text' class='form-control' id='ingredient' name='ingredient[]' value='" + value + "'  readonly>"
-						+ "<span class='input-group-btn'> <button type='button' class='btn btn-default' onclick='deleteText("
-						+ counter
-						+ ")'"
-						+ "id='delingredient'"
-						+ counter
-						+ "'><span id='den'>&times;</span></button> </span></div></div></p><br><br>";
+				var content = "<p><div class='col-sm-4' align='left'> <input type='text' class='form-control' id='amount' name='amount[]' placeholder='only number'> </div>"
+				+ "<div class='col-sm-4' align='left'> <select name='measType[]'> <option value='gr' selected>gr</option>";
+				for(var i=0; i<meas_types.length; i++){
+					content += "<option value='" + meas_types[i] + "'>" + meas_types[i] + "</option>";
+				}			
+				content += "</select> </div> <br><br>"
+				+ "<div class='col-sm-8'> <div class='input-group'> <input type='text' class='form-control' id='ingredient' name='ingredient[]' value='" + ing_name + "'  readonly>"
+				+ "<span class='input-group-btn'> <button type='button' class='btn btn-default' onclick='deleteText("+counter+")'"
+				+ "id='delingredient'"
+				+ counter
+				+ "'><span id='den'>&times;</span></button> </span></div></div></p><br><br>";
+				newDiv.innerHTML = content;
 				document.getElementById(div).appendChild(newDiv);
 				counter++;
 			}
@@ -367,7 +379,15 @@ body {
 				},
 				minLength : 3,
 				select : function(event, ui) {
-					addInput('dynamicInput', ui.item.label);
+					$.ajax({
+						type : "POST",
+						url : "../measTypesOfIngr",
+						data : {
+							ing_id : ui.item.id
+						}
+					}).done(function(meas_types) {
+						addInput('dynamicInput', ui.item.label, meas_types);
+					});
 					//clear text box
 					$(this).val("");
 					return false;

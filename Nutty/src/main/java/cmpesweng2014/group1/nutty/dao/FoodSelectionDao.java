@@ -126,6 +126,8 @@ public class FoodSelectionDao extends PcDao {
 			for(int i=0; i<ingredientList.size();i++){
 				ingredientIds.add(ingredientList.get(i).getId());
 			}
+		}	
+		if(ingredientAmounts != null){
 			for(int i=0; i<ingredientAmounts.length;i++){
 				if(ingredientIds.contains(ingredientAmounts[i].getIng_id())){
 					return true;

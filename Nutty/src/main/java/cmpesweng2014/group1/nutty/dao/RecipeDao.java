@@ -84,10 +84,10 @@ public class RecipeDao extends PcDao{
 	}
 	
 	public double getWeightByMeasType(int ing_id, String meas_type){
-		double id=this.getTemplate().queryForObject(
+		double weight = this.getTemplate().queryForObject(
 				"SELECT Gm_Wgt FROM IngredientWeight WHERE NDB_No = ? and Msre_Desc = ?", 
 				new Object[] {ing_id, meas_type}, Double.class);
-		return id;
+		return weight;
 	}
 	
 	public String[] getMeasTypesByIngId(int ing_id) {
@@ -103,8 +103,8 @@ public class RecipeDao extends PcDao{
 		}
 	}
 	
-	public void addIngredient(final int ingredient_id, final int recipe_id, final double amount){
-		final String query = "INSERT INTO HasIngredient (recipe_id, ing_id, amount) VALUES (?,?,?)";
+	public void addIngredient(final int ingredient_id, final int recipe_id, final double amount, final String meas_type){
+		final String query = "INSERT INTO HasIngredient (recipe_id, ing_id, amount, meas_type) VALUES (?,?,?,?)";
 		KeyHolder gkh = new GeneratedKeyHolder();
 
 		this.getTemplate().update(new PreparedStatementCreator() {
@@ -117,6 +117,7 @@ public class RecipeDao extends PcDao{
 				ps.setInt(1, recipe_id);
 				ps.setInt(2, ingredient_id);
 				ps.setDouble(3, amount);
+				ps.setString(4, meas_type);
 				return ps;
 			}
 		}, gkh);
