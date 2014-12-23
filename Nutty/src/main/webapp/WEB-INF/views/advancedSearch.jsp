@@ -149,6 +149,12 @@
 		$('#AdvSearch').submit(
 			function(event) {
 				event.preventDefault();
+				$("#results").empty();
+				var nodeList = document.getElementsByName("mustHaveIngredients[]");
+				var nodeArray = [];
+				for (var i = 0; i < nodeList.length; i++){
+				    nodeArray[i] = nodeList[i].value;
+				}
 				$.ajax({
 					type : "POST",
 					url : "advancedSearchResults",
@@ -156,22 +162,19 @@
 						search: $("#searchKey").val(),
 						calorieIntervalLow : $("#caloriesMin").val(),
 						calorieIntervalHigh : $("#caloriesMax").val(),
-						//mustHaveIngredientz : JSON.stringify(), //Bu fonksiyonun icine array verince calismasi lazim teorik olarak
+						mustHaveIngredientz : JSON.stringify(nodeArray),
 						enableFoodSelection : $("#foodPreferences").prop('checked') ? 'true' : 'false',
 						enableEaten : $("#eatenRecipes").prop('checked') ? 'true' : 'false',
 						disableSemantic : $("#JustMyTags").prop('checked') ? 'true' : 'false',
 						user_id : '${user.id}'
 					}}).done(function(answer) {
-						if (answer == "") {
+						if ((answer == "") || (answer == "[]")) {
 							$("#results").append("<p>Nothing to show :(</p>");
 						} else {
-							//alert(answer);
-							var resultsRec = answer.split('|');
-							var path = resultsRec[0];
-							for (i = 1; i < resultsRec.length; i++) {
-								dummy = resultsRec[i].split('>');
-								$("#results").append( "<li class='list-group-item'><a href= '/nutty/recipe/"  + dummy[1] +"'>" + dummy[0] + "</p></li>");
-								}			
+							var resultsRec = JSON.parse(answer);
+							for (i = 0; i < resultsRec.length; i++) {
+								$("#results").append( "<li class='list-group-item'><a href= '/nutty/recipe/"  + resultsRec[i].id +"'>" + resultsRec[i].name + "</p></li>");
+							}			
 						}
 					}).fail(function (){
 						alert("Ajax call was unsuccessfull :(");			

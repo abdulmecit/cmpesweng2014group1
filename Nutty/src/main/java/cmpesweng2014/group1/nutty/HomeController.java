@@ -371,6 +371,7 @@ public class HomeController {
 		//Convert from JSON String
 		Gson gson = new Gson();
 		String[] mustHaveIngredients = gson.fromJson(mustHaveIngredientz, String[].class);
+		
 		Recipe[] recipes;
 		String answer = "";
 		if(search == null || search.isEmpty()){
@@ -427,9 +428,14 @@ public class HomeController {
 			}
 		}
 		if(recipes != null){
+			answer += "[";
 			for(int i=0; i<recipes.length; i++){
-				answer += "|" + recipes[i].getName() + ">" + recipes[i].getRecipe_id();
+				answer += "{\"name\":\"" + recipes[i].getName() +"\", \"id\":\"" + recipes[i].getRecipe_id() + "\"}";
+				if(i != (recipes.length-1)) {
+					answer += ",";
+				}
 			}
+			answer += "]";
 		}
 		return answer;
 	}

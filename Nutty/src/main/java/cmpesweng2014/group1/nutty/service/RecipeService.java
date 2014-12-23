@@ -109,7 +109,7 @@ public class RecipeService {
 			}
 			else{
 				double weight = recipeDao.getWeightByMeasType(ingredient_ids[i], meas_types[i]);
-				total += (ingredient_calories[i]/weight) * amounts[i];
+				total += (ingredient_calories[i]/100.0) * weight * amounts[i];
 			}
 		}		
 		return new BigDecimal(String.valueOf(total)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();

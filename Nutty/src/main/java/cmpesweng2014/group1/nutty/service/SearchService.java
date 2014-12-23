@@ -51,9 +51,9 @@ public class SearchService {
 		String result = restTemplate.getForObject("http://conceptnet5.media.mit.edu/data/5.2/assoc/list/en/{queryTerms}?filter=/c/en&limit=10", String.class, queryString);
 
 		List<String> relatedTerms = new ArrayList<String>();
-		Matcher m = Pattern.compile("\\/c\\/en\\/(.*)").matcher(result);
+		Matcher m = Pattern.compile("\\/c\\/en\\/(.*?)[\",\\/]").matcher(result);
 		while (m.find()) {
-			String term = m.group();
+			String term = m.group(1);
 			if(!searchTerms.contains(term))
 				relatedTerms.add(term);
 		}
