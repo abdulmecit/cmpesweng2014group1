@@ -157,6 +157,7 @@ public class HomeController {
 			@RequestParam(value = "birthday_month", required = false) String month,
 			@RequestParam(value = "birthday_day", required = false) String day,
 			@RequestParam(value = "gender", required = false) Integer gender,
+			@RequestParam(value = "photo", required = false) String photo,
 			RedirectAttributes redirectAttrs, HttpSession session) throws ParseException {
 						
 		if (name.equals("") || surname.equals("") || email.equals("") || password.equals("")) {
@@ -171,7 +172,7 @@ public class HomeController {
 			birthday = new java.sql.Date(birthdate.getTime());
 		}	
 		
-		Message m = userService.createUser(email, password, name, surname, birthday, gender);
+		Message m = userService.createUser(email, password, name, surname, birthday, gender, photo);
 		
 		if (m.getIsSuccess() == 1) {
 			User u = (User) m.getData();
@@ -197,7 +198,8 @@ public class HomeController {
 			@RequestParam(value = "birthday_year", required = false) String year,
 			@RequestParam(value = "birthday_month", required = false) String month,
 			@RequestParam(value = "birthday_day", required = false) String day,
-			@RequestParam(value = "gender", required = false) Integer gender) throws ParseException {
+			@RequestParam(value = "gender", required = false) Integer gender,
+			@RequestParam(value = "photo", required = false) String photo) throws ParseException {
 						
 		if (name.equals("") || surname.equals("") || email.equals("") || password.equals("")) {
 			return new Message(0, null, "Name, surname, email and password fields cannot be empty!");
@@ -210,7 +212,7 @@ public class HomeController {
 			birthday = new java.sql.Date(birthdate.getTime());
 		}
 				
-		Message m = userService.createUser(email, password, name, surname, birthday, gender);
+		Message m = userService.createUser(email, password, name, surname, birthday, gender, photo);
 		
 		if (m.getIsSuccess() == 1) {
 			User u = (User) m.getData();			

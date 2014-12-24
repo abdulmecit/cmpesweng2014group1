@@ -130,6 +130,7 @@ public class UserController {
 			@RequestParam(value = "birthday_month", required = false) String month,
 			@RequestParam(value = "birthday_day", required = false) String day,
 			@RequestParam(value = "gender", required = false) Integer gender,
+			@RequestParam(value = "photo", required = false) String photo,
 			RedirectAttributes redirectAttrs, HttpSession session) throws ParseException {
 		
 		Message msg = new Message();
@@ -222,8 +223,22 @@ public class UserController {
 			msg.setIsSuccess(1);
 			msg.setMessage("You've successfully changed your gender!");
 			
-		}
-		else{
+		}else if (changed.equals("photo")){
+			/*
+			if (photo.equals("")) {
+				msg.setIsSuccess(0);
+				msg.setMessage("Photo cannot be empty!");
+				redirectAttrs.addFlashAttribute("message", msg);
+				return "redirect:/user/homesettings";
+			}
+				*/	
+			User u = (User) session.getAttribute("user");
+			u.setPhoto(photo);
+			userService.getUserDao().updateUser(u);
+			msg.setIsSuccess(1);
+			msg.setMessage("You've successfully changed your photo!");
+			
+		}else{
 			msg.setIsSuccess(0);
 			msg.setMessage("A problem has occurred when attempting to change your " + changed);	
 		}
@@ -244,6 +259,7 @@ public class UserController {
 			@RequestParam(value = "birthday_month", required = false) String month,
 			@RequestParam(value = "birthday_day", required = false) String day,
 			@RequestParam(value = "gender", required = false) Integer gender, 
+			@RequestParam(value = "photo", required = false) String photo,
 			@RequestParam(value = "user_id", required = true) Long user_id) throws ParseException {
 		
 		Message msg = new Message();
@@ -332,8 +348,21 @@ public class UserController {
 			msg.setData(u);
 			msg.setMessage("You've successfully changed your gender!");
 			
-		}
-		else{
+		}else if (changed.equals("photo")){
+			/*
+			if (photo.equals("")) {
+				msg.setIsSuccess(0);
+				msg.setMessage("Photo cannot be empty!");
+				return msg;
+			}
+				*/	
+			u.setPhoto(photo);
+			userService.getUserDao().updateUser(u);
+			msg.setIsSuccess(1);
+			msg.setData(u);
+			msg.setMessage("You've successfully changed your photo!");
+			
+		}else{
 			msg.setIsSuccess(0);
 			msg.setMessage("A problem has occurred when attempting to change your " + changed);	
 		}

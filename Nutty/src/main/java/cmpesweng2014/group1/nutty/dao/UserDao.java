@@ -21,8 +21,8 @@ import cmpesweng2014.group1.nutty.model.User;
 public class UserDao extends PcDao {
 
 	public Long createUser(final String email, final String password,
-			final String name, final String surname, final Date birthday, final Integer gender) {
-		final String query = "INSERT INTO User (email, password, name, surname, birthday, gender, isBanned) VALUES (?,?,?,?,?,?,?)";
+			final String name, final String surname, final Date birthday, final Integer gender,final String photo) {
+		final String query = "INSERT INTO User (email, password, name, surname, birthday, gender, isBanned, photo) VALUES (?,?,?,?,?,?,?,?)";
 
 		KeyHolder gkh = new GeneratedKeyHolder();
 
@@ -43,7 +43,7 @@ public class UserDao extends PcDao {
 				else
 					ps.setInt(6, gender);
 				ps.setInt(7, 0);
-
+				ps.setString(8, photo);
 				return ps;
 			}
 		}, gkh);
@@ -54,7 +54,7 @@ public class UserDao extends PcDao {
 	}
 	
 	public void updateUser(final User u){
-		final String query = "UPDATE User SET name=?, surname=?, email=?, password=?, birthday=?, gender=?, isBanned=? WHERE user_id=?";
+		final String query = "UPDATE User SET name=?, surname=?, email=?, password=?, birthday=?, gender=?, isBanned=?, photo=? WHERE user_id=?";
 
 		this.getTemplate().update(new PreparedStatementCreator() {
 
@@ -72,7 +72,9 @@ public class UserDao extends PcDao {
 				else
 					ps.setInt(6,u.getGender());
 				ps.setInt(7, u.getIsBanned());
-				ps.setLong(8, u.getId());
+				ps.setString(8, u.getPhoto());
+				ps.setLong(9, u.getId());
+				
 
 				return ps;
 			}

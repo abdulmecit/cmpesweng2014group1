@@ -154,6 +154,7 @@ body {
 	</div>
 
 	<script type="text/javascript">
+		var photo = '${visitedUser.photo}';
 		var searchFilter;
 		$(".filter").click(function() {
 			$(this).addClass("active").siblings().removeClass("active");
@@ -173,11 +174,16 @@ body {
 		$(document)
 				.ready(
 						function() {
+							document.getElementById('foto').innerHTML = '<img id="profilePic" alt="Photo of the User" src='
+									+ photo + ' width="100%" height="auto"/>';
+							//document.getElementById('foto').innerHTML = '${photo}';
+							/*
 							if ('${visitedUser.gender}' == 1) {
 								document.getElementById('foto').innerHTML = '<img id="profilePic" alt="Photo of the User" src="http://cdn.sett.com/images/user/20140502/chef57b22ab552661a6852fe44c0e7e59e63.jpg" width="100%" height="auto"/>';
 							} else {
 								document.getElementById('foto').innerHTML = '<img id="profilePic" alt="Photo of the User" src="http://thumbs.dreamstime.com/x/funny-chef-cracking-egg-6967190.jpg" width="100%" height="auto"/>';
 							}
+							 */
 						});
 
 		$(document).ready(function() {
@@ -414,7 +420,6 @@ body {
 							return false;
 						});
 
-
 		$("#showFollowings")
 				.click(
 						function() {
@@ -441,7 +446,7 @@ body {
 											+ "</p></li>";
 								}
 							}
-							content+="</ul>"
+							content += "</ul>"
 							bootbox.dialog({
 								title : "Following",
 								message : content,

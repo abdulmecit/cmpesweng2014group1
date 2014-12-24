@@ -34,12 +34,12 @@ public class UserService {
 	}
 
 	public Message createUser(String email, String password, String name,
-			String surname, Date birthday, Integer gender) {
+			String surname, Date birthday, Integer gender, String photo) {
 		if(userDao.getUserByEmail(email) != null)
 			return new Message(0, null, "This email address is already registered.");
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		User u = userDao.getUserById(userDao.createUser(email, encoder.encode(password), 
-				name, surname, birthday, gender));
+				name, surname, birthday, gender, photo));
 		return new Message(1, u, "Signup is successful.");
 	}
 	
