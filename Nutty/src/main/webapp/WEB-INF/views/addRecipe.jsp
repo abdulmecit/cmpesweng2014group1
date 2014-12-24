@@ -195,12 +195,13 @@ body {
 					+ "<span class='input-group-btn'> <button type='button' class='btn btn-default' onclick='deleteText("
 					+ counter
 					+ ")'"
-					+ "id='delingredient'"
+					+ "id='delingredient"
 					+ counter
 					+ "'><span id='den'>&times;</span></button> </span></div></div></p><br><br>";
 			newDiv.innerHTML = content;
 			document.getElementById(div).appendChild(newDiv);
 			counter++;
+	        formCheck();
 		}
 
 		function addTag(div) {
@@ -212,7 +213,7 @@ body {
 					+ "<span class='input-group-btn'> <button type='button' class='btn btn-default' onclick='deleteTag("
 					+ tagCounter
 					+ ")'"
-					+ "id='deltag'"
+					+ "id='deltag"
 					+ tagCounter
 					+ "'><span id='den'>&times;</span></button></span></div><br>";
 			newDiv.innerHTML = content;
@@ -227,68 +228,46 @@ body {
 
 		function deleteText(i) {
 			$("#textBoxDiv" + i).remove();
+	        formCheck();
 		}
 
-		$("#recipeName").keyup(
-				function(event) {
-					if ($("#recipeName").val().length != 0
-							&& $("#portion").val().length != 0
-							&& $("#ingredient").val().length != 0
-							&& $("#amount").val().length != 0
-							&& $("#description").val().length != 0) {
-						$('#submit').attr("disabled", false);
-					} else {
-						$('#submit').attr("disabled", true);
-					}
-				});
-		$("#portion").keyup(
-				function(event) {
-					if ($("#recipeName").val().length != 0
-							&& $("#portion").val().length != 0
-							&& $("#ingredient").val().length != 0
-							&& $("#amount").val().length != 0
-							&& $("#description").val().length != 0) {
-						$('#submit').attr("disabled", false);
-					} else {
-						$('#submit').attr("disabled", true);
-					}
-				});
-		$("#ingredient").keyup(
-				function(event) {
-					if ($("#recipeName").val().length != 0
-							&& $("#portion").val().length != 0
-							&& $("#ingredient").val().length != 0
-							&& $("#amount").val().length != 0
-							&& $("#description").val().length != 0) {
-						$('#submit').attr("disabled", false);
-					} else {
-						$('#submit').attr("disabled", true);
-					}
-				});
-		$("#amount").keyup(
-				function(event) {
-					if ($("#recipeName").val().length != 0
-							&& $("#portion").val().length != 0
-							&& $("#ingredient").val().length != 0
-							&& $("#amount").val().length != 0
-							&& $("#description").val().length != 0) {
-						$('#submit').attr("disabled", false);
-					} else {
-						$('#submit').attr("disabled", true);
-					}
-				});
-		$("#description").keyup(
-				function(event) {
-					if ($("#recipeName").val().length != 0
-							&& $("#portion").val().length != 0
-							&& $("#ingredient").val().length != 0
-							&& $("#amount").val().length != 0
-							&& $("#description").val().length != 0) {
-						$('#submit').attr("disabled", false);
-					} else {
-						$('#submit').attr("disabled", true);
-					}
-				});
+	    $(document).on("keyup change", "#recipeName, #portion, #description, #amount", function() {
+	        formCheck();
+	    });
+	
+		function formCheck(){
+			var ingredientz = document.getElementsByName("ingredient[]");
+			var amountz = document.getElementsByName("amount[]");
+			var ingredients = [];
+			var amounts = [];
+			if ((ingredientz != null) && (amountz != null)){
+				transferValues(ingredientz, ingredients);
+				transferValues(amountz, amounts);
+			}
+			if( ($("#recipeName").val().length != 0)
+				&& ($("#portion").val().length != 0)
+				&& ($("#description").val().length != 0)
+				&& (ingredients.length != 0)
+				&& (amounts.length != 0)
+				&& (ingredients.length == amounts.length) )
+			{
+				$('#submit').attr("disabled", false);
+			} else {
+				$('#submit').attr("disabled", true);
+			}
+		}	
+
+		function transferValues(src, dest) {
+			for (var i = 0; i < src.length; i++){
+				var item = src[i].value;
+				if(!isBlank(item))
+					dest.push(item);
+			}
+		}
+		
+		function isBlank(str) {
+		    return (!str || /^\s*$/.test(str));
+		}
 
 		window.ondragover = function(e) {
 			e.preventDefault()

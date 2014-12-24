@@ -164,13 +164,17 @@ public class HomeController {
 			return "redirect:signup";
 		}
 		
-		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		java.util.Date birthdate = formatter.parse(year + "-" + month + "-" + day);
-		java.sql.Date birthday = new java.sql.Date(birthdate.getTime());
-				
-		User u = userService.createUser(email, password, name, surname, birthday, gender);
+		java.sql.Date birthday = null;
+		if((Integer.valueOf(year) != 0) && (Integer.valueOf(month) != 0) && (Integer.valueOf(day) != 0)){
+			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			java.util.Date birthdate = formatter.parse(year + "-" + month + "-" + day);
+			birthday = new java.sql.Date(birthdate.getTime());
+		}	
 		
-		if (u != null) {
+		Message m = userService.createUser(email, password, name, surname, birthday, gender);
+		
+		if (m.getIsSuccess() == 1) {
+			User u = (User) m.getData();
 			session.setAttribute("user", u);
 			session.setAttribute("isLogged", true);
 					
@@ -178,7 +182,7 @@ public class HomeController {
 			return "redirect:success";
 		} 
 		else {
-			redirectAttrs.addFlashAttribute("message",new Message(0, null, "Signup failed."));
+			redirectAttrs.addFlashAttribute("message", m);
 			return "redirect:signup";
 		}
 	}
@@ -199,17 +203,21 @@ public class HomeController {
 			return new Message(0, null, "Name, surname, email and password fields cannot be empty!");
 		}
 		
-		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		java.util.Date birthdate = formatter.parse(year + "-" + month + "-" + day);
-		java.sql.Date birthday = new java.sql.Date(birthdate.getTime());
+		java.sql.Date birthday = null;
+		if((Integer.valueOf(year) != 0) && (Integer.valueOf(month) != 0) && (Integer.valueOf(day) != 0)){
+			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			java.util.Date birthdate = formatter.parse(year + "-" + month + "-" + day);
+			birthday = new java.sql.Date(birthdate.getTime());
+		}
 				
-		User u = userService.createUser(email, password, name, surname, birthday, gender);
+		Message m = userService.createUser(email, password, name, surname, birthday, gender);
 		
-		if (u != null) {		
+		if (m.getIsSuccess() == 1) {
+			User u = (User) m.getData();			
 			return new Message(1, u, "You've successfully signed up, " + u.getName() + ".");
 		} 
 		else {
-			return new Message(0, null, "Signup failed."); 
+			return m; 
 		}
 	}
 	

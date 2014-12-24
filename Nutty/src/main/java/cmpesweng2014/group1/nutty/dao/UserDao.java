@@ -21,7 +21,7 @@ import cmpesweng2014.group1.nutty.model.User;
 public class UserDao extends PcDao {
 
 	public Long createUser(final String email, final String password,
-			final String name, final String surname, final Date birthday, final int gender) {
+			final String name, final String surname, final Date birthday, final Integer gender) {
 		final String query = "INSERT INTO User (email, password, name, surname, birthday, gender, isBanned) VALUES (?,?,?,?,?,?,?)";
 
 		KeyHolder gkh = new GeneratedKeyHolder();
@@ -38,7 +38,10 @@ public class UserDao extends PcDao {
 				ps.setString(3, name);
 				ps.setString(4, surname);
 				ps.setDate(5, birthday);
-				ps.setInt(6,gender);
+				if(gender == null)
+					ps.setNull(6, java.sql.Types.TINYINT);
+				else
+					ps.setInt(6, gender);
 				ps.setInt(7, 0);
 
 				return ps;
@@ -64,7 +67,10 @@ public class UserDao extends PcDao {
 				ps.setString(3, u.getEmail());
 				ps.setString(4, u.getPassword());
 				ps.setDate(5, (Date) u.getBirthday());
-				ps.setInt(6,u.getGender());
+				if(u.getGender() == null)
+					ps.setNull(6, java.sql.Types.TINYINT);
+				else
+					ps.setInt(6,u.getGender());
 				ps.setInt(7, u.getIsBanned());
 				ps.setLong(8, u.getId());
 

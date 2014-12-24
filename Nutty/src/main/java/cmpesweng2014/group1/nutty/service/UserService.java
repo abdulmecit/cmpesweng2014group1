@@ -12,6 +12,7 @@ import cmpesweng2014.group1.nutty.dao.IngredientDao;
 import cmpesweng2014.group1.nutty.dao.UserDao;
 import cmpesweng2014.group1.nutty.model.FoodSelection;
 import cmpesweng2014.group1.nutty.model.Ingredient;
+import cmpesweng2014.group1.nutty.model.Message;
 import cmpesweng2014.group1.nutty.model.User;
 
 @Component
@@ -32,11 +33,14 @@ public class UserService {
 		this.userDao = userDao;
 	}
 
-	public User createUser(String email, String password, String name,
-			String surname, Date birthday, int gender) {
+	public Message createUser(String email, String password, String name,
+			String surname, Date birthday, Integer gender) {
+		if(userDao.getUserByEmail(email) != null)
+			return new Message(0, null, "This email address is already registered.");
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		return userDao.getUserById(userDao.createUser(email, encoder.encode(password), 
+		User u = userDao.getUserById(userDao.createUser(email, encoder.encode(password), 
 				name, surname, birthday, gender));
+		return new Message(1, u, "Signup is successful.");
 	}
 	
 	public User canLogin(String email, String password) {

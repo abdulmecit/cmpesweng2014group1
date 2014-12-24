@@ -86,7 +86,7 @@ body {
 					<p>&nbsp;</p>
 					<h1 id="name">${visitedUser.name}${visitedUser.surname}</h1>
 					<h3>Age:</h3>
-					<p id="age"></p>
+					<p id="age">Not specified</p>
 					<h3>Gender:</h3>
 					<p id="gender">Not specified</p>
 					<h3>Food Intolerances:</h3>
@@ -178,16 +178,20 @@ body {
 	});	
 	
 	$(document).ready(function () {
-		if('${visitedUser.gender}' == 0){
-			document.getElementById('gender').innerHTML = "Male";
-		}else{
-			document.getElementById('gender').innerHTML = "Female";
-		}  	
+		if('${visitedUser.gender}'){
+			if('${visitedUser.gender}' == 0){
+				document.getElementById('gender').innerHTML = "Male";
+			}else{
+				document.getElementById('gender').innerHTML = "Female";
+			} 
+		}
   	});	
 	
 	$(document).ready(function () {
+		if('${visitedUser.birthday}'){
 		  var birthday = +new Date('${visitedUser.birthday}');
 		  document.getElementById('age').innerHTML = ~~((Date.now() - birthday) / (31557600000));
+		}
 	});
 	
 	$(document).ready(function () {

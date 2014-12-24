@@ -9,7 +9,7 @@ public class User implements Comparable<User>{
 	private String name;
 	private String surname;
 	private Date birthday;
-	private int gender;
+	private Integer gender;
 	private int isBanned;
 	private String photo;
 	
@@ -18,7 +18,7 @@ public class User implements Comparable<User>{
 	}
 
 	public User(Long id, String email, String password, String name,
-			String surname, Date birthday, int gender) {
+			String surname, Date birthday, Integer gender) {
 		super();
 		this.id = id;
 		this.email = email;
@@ -32,7 +32,7 @@ public class User implements Comparable<User>{
 	}
 	
 	public User(Long id, String email, String password, String name,
-			String surname, Date birthday, int gender, int isBanned, String photo) {
+			String surname, Date birthday, Integer gender, int isBanned, String photo) {
 		super();
 		this.id = id;
 		this.email = email;
@@ -93,11 +93,11 @@ public class User implements Comparable<User>{
 		this.birthday = birthday;
 	}
 
-	public int getGender() {
+	public Integer getGender() {
 		return gender;
 	}
 
-	public void setGender(int gender) {
+	public void setGender(Integer gender) {
 		this.gender = gender;
 	}
 	

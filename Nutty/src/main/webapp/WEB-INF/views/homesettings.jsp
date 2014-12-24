@@ -5,13 +5,18 @@
 <jsp:include page="header.jsp" flush="true"/>
     <title>Nutty</title>
     
-    <script type="text/javascript">
+<script type="text/javascript">
     $(document).ready(function () {
-    	if('${user.gender}' == 0){
-    		document.getElementById('genderString').innerHTML = "Male";
-    	}else{
-    		document.getElementById('genderString').innerHTML = "Female";
-    	}
+		if('${user.gender}'){
+		   	if('${user.gender}' == 0){
+		   		document.getElementById('genderString').innerHTML = "Male";
+		   	}else{
+		   		document.getElementById('genderString').innerHTML = "Female";
+		   	}
+		}
+		if('${user.birthday}'){
+			document.getElementById('birthday').innerHTML = "${user.birthday}";
+		}
     });
 	
 </script>
@@ -106,8 +111,8 @@
 			</form:form>
 		  </div>
 		  <div>
-		  	<h3>Birthday <span style="cursor:pointer"><a id="changeBitrhday"><span class="glyphicon glyphicon-pencil"></span></a></span></h3>
-		    <p id="birthday">${user.birthday}</p>
+		  	<h3>Birthday <span style="cursor:pointer"><a id="changeBirthday"><span class="glyphicon glyphicon-pencil"></span></a></span></h3>
+		    <p id="birthday">Not specified</p>
 		  	<form:form class="form-horizontal" action="homesettings/updateUser" method="POST" modelAttribute="user">
 		    	<div class="formBirthday">
 		    		<div class="form-group" align="center">
@@ -124,7 +129,7 @@
 		  </div>
 		  <div>
 		  	<h3>Gender <span style="cursor:pointer"><a id="changeGender"><span class="glyphicon glyphicon-pencil"></span></a></span></h3>	
-		    <p id="gender"><span id="genderString"> ${user.gender}</span></p>
+		    <p id="gender"><span id="genderString">Not specified</span></p>
 		  	<form:form class="form-horizontal" action="homesettings/updateUser" method="POST" modelAttribute="user">
 		    	<div class="formGender">
 		    		<div class="form-group" align="center">
@@ -159,14 +164,16 @@
 	});
 	
 	$(document).ready(function () {
-		var bday = '${user.birthday}';
-		var arr = bday.split("-");
-		var year = arr[0];
-		var month = arr[1];
-		var day = arr[2];
-		$("#day").val(day);
-		$("#month").val(month);
-		$("#year").val(year);
+		if('${user.birthday}'){
+			var bday = '${user.birthday}';
+			var arr = bday.split("-");
+			var year = parseInt(arr[0]);
+			var month = parseInt(arr[1]);
+			var day = parseInt(arr[2]);
+			$("#day").val(day);
+			$("#month").val(month);
+			$("#year").val(year);
+		}
 	});
 
 	var changeNameOpen;	

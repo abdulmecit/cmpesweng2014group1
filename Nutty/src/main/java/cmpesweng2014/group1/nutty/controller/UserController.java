@@ -138,6 +138,7 @@ public class UserController {
 			if (name.equals("")) {
 				msg.setIsSuccess(0);
 				msg.setMessage("Name cannot be empty!");
+				redirectAttrs.addFlashAttribute("message", msg);
 				return "redirect:/user/homesettings";
 			}
 
@@ -151,6 +152,7 @@ public class UserController {
 			if (surname.equals("")) {
 				msg.setIsSuccess(0);
 				msg.setMessage("Surname cannot be empty!");
+				redirectAttrs.addFlashAttribute("message", msg);
 				return "redirect:/user/homesettings";
 			}
 					
@@ -164,9 +166,16 @@ public class UserController {
 			if (email.equals("")) {
 				msg.setIsSuccess(0);
 				msg.setMessage("Email cannot be empty!");
+				redirectAttrs.addFlashAttribute("message", msg);
 				return "redirect:/user/homesettings";
 			}
-					
+			if(userService.getUserDao().getUserByEmail(email) != null){
+				msg.setIsSuccess(0);
+				msg.setMessage("This email address is already registered.");
+				redirectAttrs.addFlashAttribute("message", msg);
+				return "redirect:/user/homesettings";
+			}
+			
 			User u = (User) session.getAttribute("user");
 			u.setEmail(email);
 			userService.getUserDao().updateUser(u);
@@ -177,6 +186,7 @@ public class UserController {
 			if (password.equals("")) {
 				msg.setIsSuccess(0);
 				msg.setMessage("Password cannot be empty!");
+				redirectAttrs.addFlashAttribute("message", msg);
 				return "redirect:/user/homesettings";
 			}
 
@@ -188,9 +198,10 @@ public class UserController {
 			msg.setMessage("You've successfully changed your password!");
 			
 		}else if (changed.equals("birthday")){
-			if(Integer.parseInt(year) == 0 || Integer.parseInt(month) == 0 || Integer.parseInt(day) == 0){
+			if(Integer.valueOf(year) == 0 || Integer.valueOf(month) == 0 || Integer.valueOf(day) == 0){
 				msg.setIsSuccess(0);
-				msg.setMessage("0 is not a valid value");
+				msg.setMessage("You haven't selected all birthday fields!");
+				redirectAttrs.addFlashAttribute("message", msg);
 				return "redirect:/user/homesettings";
 			}
 			
@@ -214,7 +225,7 @@ public class UserController {
 		}
 		else{
 			msg.setIsSuccess(0);
-			msg.setMessage("A problem occured" + changed);	
+			msg.setMessage("A problem has occurred when attempting to change your " + changed);	
 		}
 		
 		redirectAttrs.addFlashAttribute("message", msg);
@@ -270,6 +281,12 @@ public class UserController {
 				msg.setMessage("Email cannot be empty!");
 				return msg;
 			}
+			
+			if(userService.getUserDao().getUserByEmail(email) != null){
+				msg.setIsSuccess(0);
+				msg.setMessage("This email address is already registered.");
+				return msg;
+			}
 					
 			u.setEmail(email);
 			userService.getUserDao().updateUser(u);
@@ -292,9 +309,9 @@ public class UserController {
 			msg.setMessage("You've successfully changed your password!");
 			
 		}else if (changed.equals("birthday")){
-			if(Integer.parseInt(year) == 0 || Integer.parseInt(month) == 0 || Integer.parseInt(day) == 0){
+			if(Integer.valueOf(year) == 0 || Integer.valueOf(month) == 0 || Integer.valueOf(day) == 0){
 				msg.setIsSuccess(0);
-				msg.setMessage("0 is not a valid value");
+				msg.setMessage("You haven't selected all birthday fields!");
 				return msg;
 			}
 			
@@ -318,7 +335,7 @@ public class UserController {
 		}
 		else{
 			msg.setIsSuccess(0);
-			msg.setMessage("A problem occured" + changed);	
+			msg.setMessage("A problem has occurred when attempting to change your " + changed);	
 		}
 		
 		return msg;	
