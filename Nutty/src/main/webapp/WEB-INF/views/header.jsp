@@ -19,8 +19,7 @@
 
 <!-- Bootbox CSS -->
 <script
-	src="https://raw.githubusercontent.com/makeusabrew/bootbox/master/bootbox.js"></script>
-
+	src="/nutty/resources/bootbox.js"></script>
 
 <!-- Autocomplete CSS -->
 <link rel="stylesheet"
