@@ -33,7 +33,7 @@
 	max-width: 457px;
 	max-height: 300px;
 	width: 100%;
-	height: auto;  
+	height: auto;
 }
 
 .slides * {
@@ -179,346 +179,352 @@ body {
 </head>
 <body>
 
-<!------------------------ star --------------------------->
-<div class="container">
-	<div class="panel panel-default">
-		<div class="panel-heading clearfix">
-			<div class="wrap">
-				<img src="https://dl.dropboxusercontent.com/u/45511253/one-star.png" />
-				<h3 class="desc"></h3>
-			</div>
-
-			<button type="button" class="btn btn-primary" value="Eat" id="Eat"
-				style="float: right; margin-right: 15 px; margin-top: 18px;">
-				<span id="textEat" class="ui-button-text">Eat &nbsp </span> <span
-					id="eatCheck" class="glyphicon glyphicon-check"
-					style="visibility: hidden;"></span>
-				<!-- caret for arrow. ui-button-text for button text visible; -->
-			</button>
-
-			<button type="button" class="btn btn-primary" value="Like" id="Like"
-				style="float: right; margin-right: 15 px; margin-top: 18px;">
-				<span id="textLike" class="ui-button-text">Like &nbsp</span> <span
-					id="likeCheck" class="glyphicon glyphicon-check"
-					style="visibility: hidden;"></span>
-				<!-- caret for arrow. ui-button-text for button text -->
-			</button>
-
-			<h2 class="panel-title pull-center"
-				style="margin-top: 25px; font-size: 24px">
-				${recipe.name} <small><em>by <a
-						href="../user/profile/${ownerId}">Chef ${ownerName}</a></em></small>
-			</h2>
-		</div>
-		<div class="panel-body">
-			<div class=row>
-				<div class="col-sm-6 col-centered">
-					<ul class="slides">
-						<input type="radio" name="radio-btn" id="img-1" checked />
-						<li class="slide-container">
-							<div class="slide">
-								<img src="${photoUrl}" />
-							</div>
-							<div class="nav">
-								<label for="img-6" class="prev">&#x2039;</label> <label
-									for="img-2" class="next">&#x203a;</label>
-							</div>
-						</li>
-
-						<input type="radio" name="radio-btn" id="img-2" />
-						<li class="slide-container">
-							<div class="slide">
-								<img
-									src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRikkxvA53g0Vc8XJuH2uIvWBMq8FGj5yFl5Gz-gLRJsk0XhwE" />
-							</div>
-							<div class="nav">
-								<label for="img-1" class="prev">&#x2039;</label> <label
-									for="img-3" class="next">&#x203a;</label>
-							</div>
-						</li>
-
-						<input type="radio" name="radio-btn" id="img-3" />
-						<li class="slide-container">
-							<div class="slide">
-								<img
-									src="http://blog.fotografium.com/wp-content/uploads/2011/09/1218.jpg" />
-							</div>
-							<div class="nav">
-								<label for="img-2" class="prev">&#x2039;</label> <label
-									for="img-4" class="next">&#x203a;</label>
-							</div>
-						</li>
-
-						<input type="radio" name="radio-btn" id="img-4" />
-						<li class="slide-container">
-							<div class="slide">
-								<img
-									src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3mwbgHPPWvhTK9lRaqmsLDG3nDJ-SxqjzgPocywPCPpMghR1dNw" />
-							</div>
-							<div class="nav">
-								<label for="img-3" class="prev">&#x2039;</label> <label
-									for="img-5" class="next">&#x203a;</label>
-							</div>
-						</li>
-
-						<!-- <a> taginin içine buton koydum onun içine de img, dolayısıyle butonun yönlendirceği adresi href ile verebiliyoruz. -->
-						<input type="radio" name="radio-btn" id="img-5" />
-						<li class="slide-container">
-							<div class="slide">
-								<img src="http://i.imgur.com/If2Ma.jpg" />
-							</div>
-							<div class="nav">
-								<label for="img-4" class="prev">&#x2039;</label> <label
-									for="img-6" class="next">&#x203a;</label>
-							</div>
-						</li>
-
-						<input type="radio" name="radio-btn" id="img-6" />
-						<li class="slide-container">
-							<div class="slide">
-								<img src="http://i.imgur.com/If2Ma.jpg" />
-							</div>
-							<div class="nav">
-								<label for="img-5" class="prev">&#x2039;</label> <label
-									for="img-1" class="next">&#x203a;</label>
-							</div>
-						</li>
-
-						<li class="nav-dots"><label for="img-1" class="nav-dot"
-							id="img-dot-1"></label> <label for="img-2" class="nav-dot"
-							id="img-dot-2"></label> <label for="img-3" class="nav-dot"
-							id="img-dot-3"></label> <label for="img-4" class="nav-dot"
-							id="img-dot-4"></label> <label for="img-5" class="nav-dot"
-							id="img-dot-5"></label> <label for="img-6" class="nav-dot"
-							id="img-dot-6"></label></li>
-					</ul>
+	<!------------------------ star --------------------------->
+	<div class="container">
+		<div class="panel panel-default">
+			<div class="panel-heading clearfix">
+				<div class="wrap">
+					<img
+						src="https://dl.dropboxusercontent.com/u/45511253/one-star.png" />
+					<h3 class="desc"></h3>
 				</div>
-				<div class="col-sm-6 col-centered">
-					<div class="panel panel-default">
-						<div class="panel-body"
-							style="height: 300px; overflow: scroll;">
-							<div class="row">
-								<!----------------------- Rate Buttons ----------------------------->
-								<div class="btn-group btn-info "
-									style="margin: 0px 0px 15px 15px;">
-									<button type="button" class="btn btn-info btn-lg">Health</button>
-									<button type="button"
-										class="btn dropdown-toggle btn-lg btn-info" id="healthRate"
-										data-toggle="dropdown" aria-expanded="false">
-										<span class="ui-button-text"></span> <span class="caret"></span>
-										<!-- caret for arrow. ui-button-text for button text -->
-									</button>
-									<ul class="dropdown-menu" role="menu">
-										<li><a href="#">5 : Healthy</a></li>
-										<li><a href="#">4</a></li>
-										<li><a href="#">3</a></li>
-										<li><a href="#">2</a></li>
-										<li><a href="#">1 : Unhealthy</a></li>
-									</ul>
+
+				<button type="button" class="btn btn-primary" value="Eat" id="Eat"
+					style="float: right; margin-right: 15 px; margin-top: 18px;">
+					<span id="textEat" class="ui-button-text">Eat &nbsp </span> <span
+						id="eatCheck" class="glyphicon glyphicon-check"
+						style="visibility: hidden;"></span>
+					<!-- caret for arrow. ui-button-text for button text visible; -->
+				</button>
+
+				<button type="button" class="btn btn-primary" value="Like" id="Like"
+					style="float: right; margin-right: 15 px; margin-top: 18px;">
+					<span id="textLike" class="ui-button-text">Like &nbsp</span> <span
+						id="likeCheck" class="glyphicon glyphicon-check"
+						style="visibility: hidden;"></span>
+					<!-- caret for arrow. ui-button-text for button text -->
+				</button>
+
+				<h2 class="panel-title pull-center"
+					style="margin-top: 25px; font-size: 24px">
+					${recipe.name} <small><em>by <a
+							href="../user/profile/${ownerId}">Chef ${ownerName}</a></em></small>
+				</h2>
+			</div>
+			<div class="panel-body">
+				<div class=row>
+					<div class="col-sm-6 col-centered">
+						<ul class="slides">
+							<input type="radio" name="radio-btn" id="img-1" checked />
+							<li class="slide-container">
+								<div class="slide">
+									<img src="${photoUrl}" />
 								</div>
-
-								<div class="btn-group btn-danger"
-									style="margin: 0px 0px 15px 15px;">
-									<button type="button" class="btn btn-danger btn-lg">Cost</button>
-									<button type="button"
-										class="btn dropdown-toggle btn-lg btn-danger" id="costRate"
-										data-toggle="dropdown" aria-expanded="false">
-										<span class="caret"></span> <span class="ui-button-text"></span>
-										<!-- caret for arrow. ui-button-text for button text -->
-									</button>
-									<ul class="dropdown-menu" role="menu">
-										<li><a href="#">5 : Wallet Friendly</a></li>
-										<li><a href="#">4</a></li>
-										<li><a href="#">3</a></li>
-										<li><a href="#">2</a></li>
-										<li><a href="#">1 : Pricy</a></li>
-									</ul>
+								<div class="nav">
+									<label for="img-6" class="prev">&#x2039;</label> <label
+										for="img-2" class="next">&#x203a;</label>
 								</div>
+							</li>
 
-								<div class="btn-group btn-warning"
-									style="margin: 0px 0px 15px 15px;">
-									<button type="button" class="btn btn-warning btn-lg">Taste</button>
-									<button type="button"
-										class="btn dropdown-toggle btn-lg btn-warning" id="tasteRate"
-										data-toggle="dropdown" aria-expanded="false">
-										<span class="caret"></span> <span class="ui-button-text"></span>
-										<!-- caret for arrow. ui-button-text for button text -->
-									</button>
-									<ul class="dropdown-menu" role="menu">
-										<li><a href="#">5 : Yummy</a></li>
-										<li><a href="#">4</a></li>
-										<li><a href="#">3</a></li>
-										<li><a href="#">2</a></li>
-										<li><a href="#">1 : Tasteless</a></li>
-									</ul>
+							<input type="radio" name="radio-btn" id="img-2" />
+							<li class="slide-container">
+								<div class="slide">
+									<img
+										src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRikkxvA53g0Vc8XJuH2uIvWBMq8FGj5yFl5Gz-gLRJsk0XhwE" />
 								</div>
-
-								<div class="btn-group btn-success"
-									style="margin: 0px 15px 15px 15px;">
-									<button type="button" class="btn btn-success btn-lg">Ease</button>
-									<button type="button"
-										class="btn dropdown-toggle btn-lg btn-success" id="easeRate"
-										data-toggle="dropdown" aria-expanded="false">
-										<span class="ui-button-text"></span> <span class="caret"></span>
-										<!-- caret for arrow. ui-button-text for button text -->
-									</button>
-									<ul class="dropdown-menu" role="menu">
-										<li><a href="#">5 : Easy</a></li>
-										<li><a href="#">4</a></li>
-										<li><a href="#">3</a></li>
-										<li><a href="#">2</a></li>
-										<li><a href="#">1 : Difficult</a></li>
-									</ul>
+								<div class="nav">
+									<label for="img-1" class="prev">&#x2039;</label> <label
+										for="img-3" class="next">&#x203a;</label>
 								</div>
-							</div>
-							<!----------------------- End of Rate Buttons ----------------------------->
-							<div class="row ">
-								<div class="col-sm-6">
-									<div class="col-sm-9">
-										<br>
-										<div id="rate"
-											style="width: 100%; margin-up: auto; margin-down: auto; overflow: hidden;">
-											<div class="progress">
-												<div class="progress-bar progress-bar-warning"
-													id="prograssbarTaste" role="progressbar" aria-valuenow="0"
-													aria-valuemin="0" aria-valuemax="100"></div>
-											</div>
+							</li>
 
-											<div class="progress">
-												<div class="progress-bar progress-bar-info"
-													id="prograssbarHealth" role="progressbar" aria-valuenow="0"
-													aria-valuemin="0" aria-valuemax="100" style="width: 40%"></div>
-											</div>
-											<div class="progress">
-												<div class="progress-bar progress-bar-danger"
-													id="prograssbarCost" role="progressbar" aria-valuenow="0"
-													aria-valuemin="0" aria-valuemax="100"></div>
-											</div>
+							<input type="radio" name="radio-btn" id="img-3" />
+							<li class="slide-container">
+								<div class="slide">
+									<img
+										src="http://blog.fotografium.com/wp-content/uploads/2011/09/1218.jpg" />
+								</div>
+								<div class="nav">
+									<label for="img-2" class="prev">&#x2039;</label> <label
+										for="img-4" class="next">&#x203a;</label>
+								</div>
+							</li>
 
-											<div class="progress">
-												<div class="progress-bar progress-bar-success"
-													id="prograssbarEase" role="progressbar" aria-valuenow="0"
-													aria-valuemin="0" aria-valuemax="100"></div>
+							<input type="radio" name="radio-btn" id="img-4" />
+							<li class="slide-container">
+								<div class="slide">
+									<img
+										src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3mwbgHPPWvhTK9lRaqmsLDG3nDJ-SxqjzgPocywPCPpMghR1dNw" />
+								</div>
+								<div class="nav">
+									<label for="img-3" class="prev">&#x2039;</label> <label
+										for="img-5" class="next">&#x203a;</label>
+								</div>
+							</li>
+
+							<!-- <a> taginin içine buton koydum onun içine de img, dolayısıyle butonun yönlendirceği adresi href ile verebiliyoruz. -->
+							<input type="radio" name="radio-btn" id="img-5" />
+							<li class="slide-container">
+								<div class="slide">
+									<img src="http://i.imgur.com/If2Ma.jpg" />
+								</div>
+								<div class="nav">
+									<label for="img-4" class="prev">&#x2039;</label> <label
+										for="img-6" class="next">&#x203a;</label>
+								</div>
+							</li>
+
+							<input type="radio" name="radio-btn" id="img-6" />
+							<li class="slide-container">
+								<div class="slide">
+									<img src="http://i.imgur.com/If2Ma.jpg" />
+								</div>
+								<div class="nav">
+									<label for="img-5" class="prev">&#x2039;</label> <label
+										for="img-1" class="next">&#x203a;</label>
+								</div>
+							</li>
+
+							<li class="nav-dots"><label for="img-1" class="nav-dot"
+								id="img-dot-1"></label> <label for="img-2" class="nav-dot"
+								id="img-dot-2"></label> <label for="img-3" class="nav-dot"
+								id="img-dot-3"></label> <label for="img-4" class="nav-dot"
+								id="img-dot-4"></label> <label for="img-5" class="nav-dot"
+								id="img-dot-5"></label> <label for="img-6" class="nav-dot"
+								id="img-dot-6"></label></li>
+						</ul>
+					</div>
+					<div class="col-sm-6 col-centered">
+						<div class="panel panel-default">
+							<div class="panel-body" style="height: 300px; overflow: scroll;">
+								<div class="row">
+									<!----------------------- Rate Buttons ----------------------------->
+									<div class="btn-group btn-info "
+										style="margin: 0px 0px 15px 15px;">
+										<button type="button" class="btn btn-info btn-lg">Health</button>
+										<button type="button"
+											class="btn dropdown-toggle btn-lg btn-info" id="healthRate"
+											data-toggle="dropdown" aria-expanded="false">
+											<span class="ui-button-text"></span> <span class="caret"></span>
+											<!-- caret for arrow. ui-button-text for button text -->
+										</button>
+										<ul class="dropdown-menu" role="menu">
+											<li><a href="#">5 : Healthy</a></li>
+											<li><a href="#">4</a></li>
+											<li><a href="#">3</a></li>
+											<li><a href="#">2</a></li>
+											<li><a href="#">1 : Unhealthy</a></li>
+										</ul>
+									</div>
+
+									<div class="btn-group btn-danger"
+										style="margin: 0px 0px 15px 15px;">
+										<button type="button" class="btn btn-danger btn-lg">Cost</button>
+										<button type="button"
+											class="btn dropdown-toggle btn-lg btn-danger" id="costRate"
+											data-toggle="dropdown" aria-expanded="false">
+											<span class="caret"></span> <span class="ui-button-text"></span>
+											<!-- caret for arrow. ui-button-text for button text -->
+										</button>
+										<ul class="dropdown-menu" role="menu">
+											<li><a href="#">5 : Wallet Friendly</a></li>
+											<li><a href="#">4</a></li>
+											<li><a href="#">3</a></li>
+											<li><a href="#">2</a></li>
+											<li><a href="#">1 : Pricy</a></li>
+										</ul>
+									</div>
+
+									<div class="btn-group btn-warning"
+										style="margin: 0px 0px 15px 15px;">
+										<button type="button" class="btn btn-warning btn-lg">Taste</button>
+										<button type="button"
+											class="btn dropdown-toggle btn-lg btn-warning" id="tasteRate"
+											data-toggle="dropdown" aria-expanded="false">
+											<span class="caret"></span> <span class="ui-button-text"></span>
+											<!-- caret for arrow. ui-button-text for button text -->
+										</button>
+										<ul class="dropdown-menu" role="menu">
+											<li><a href="#">5 : Yummy</a></li>
+											<li><a href="#">4</a></li>
+											<li><a href="#">3</a></li>
+											<li><a href="#">2</a></li>
+											<li><a href="#">1 : Tasteless</a></li>
+										</ul>
+									</div>
+
+									<div class="btn-group btn-success"
+										style="margin: 0px 15px 15px 15px;">
+										<button type="button" class="btn btn-success btn-lg">Ease</button>
+										<button type="button"
+											class="btn dropdown-toggle btn-lg btn-success" id="easeRate"
+											data-toggle="dropdown" aria-expanded="false">
+											<span class="ui-button-text"></span> <span class="caret"></span>
+											<!-- caret for arrow. ui-button-text for button text -->
+										</button>
+										<ul class="dropdown-menu" role="menu">
+											<li><a href="#">5 : Easy</a></li>
+											<li><a href="#">4</a></li>
+											<li><a href="#">3</a></li>
+											<li><a href="#">2</a></li>
+											<li><a href="#">1 : Difficult</a></li>
+										</ul>
+									</div>
+								</div>
+								<!----------------------- End of Rate Buttons ----------------------------->
+								<div class="row ">
+									<div class="col-sm-6">
+										<div class="col-sm-9">
+											<br>
+											<div id="rate"
+												style="width: 100%; margin-up: auto; margin-down: auto; overflow: hidden;">
+												<div class="progress">
+													<div class="progress-bar progress-bar-warning"
+														id="prograssbarTaste" role="progressbar" aria-valuenow="0"
+														aria-valuemin="0" aria-valuemax="100"></div>
+												</div>
+
+												<div class="progress">
+													<div class="progress-bar progress-bar-info"
+														id="prograssbarHealth" role="progressbar"
+														aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+														style="width: 40%"></div>
+												</div>
+												<div class="progress">
+													<div class="progress-bar progress-bar-danger"
+														id="prograssbarCost" role="progressbar" aria-valuenow="0"
+														aria-valuemin="0" aria-valuemax="100"></div>
+												</div>
+
+												<div class="progress">
+													<div class="progress-bar progress-bar-success"
+														id="prograssbarEase" role="progressbar" aria-valuenow="0"
+														aria-valuemin="0" aria-valuemax="100"></div>
+												</div>
 											</div>
 										</div>
-									</div>
-									<div class="col-sm-3">
-										<h5 style="margin-top: 12px; text-align: left;">${numOfTasteRate}
-											users</h5>
-										<h5 style="margin-top: 12px; text-align: left;">${numOfHealthRate}
-											users</h5>
-										<h5 style="margin-top: 12px; text-align: left;">${numOfCostRate}
-											users</h5>
-										<h5 style="margin-top: 12px; text-align: left;">${numOfEaseRate}
-											users</h5>
+										<div class="col-sm-3">
+											<h5 style="margin-top: 12px; text-align: left;">${numOfTasteRate}
+												users</h5>
+											<h5 style="margin-top: 12px; text-align: left;">${numOfHealthRate}
+												users</h5>
+											<h5 style="margin-top: 12px; text-align: left;">${numOfCostRate}
+												users</h5>
+											<h5 style="margin-top: 12px; text-align: left;">${numOfEaseRate}
+												users</h5>
+
+										</div>
 
 									</div>
+									<div class="col-sm-1"></div>
+									<div class="col-sm-5" style="margin: auto;">
+										<h5 style="margin-top: 15px;">
+											<b>Likes: </b> ${noOfLikes} &nbsp&nbsp Eaten: ${noOfEats}
+										</h5>
+										<h5>
+											<b>Created On:</b> ${recipe.createdDate}
+										</h5>
+										<h5>
+											<b>Last Updated On:</b> ${recipe.updatedDate}
+										</h5>
+										<h5>
+											<b>Tags:</b>
 
-								</div>
-								<div class="col-sm-1"></div>
-								<div class="col-sm-5" style="margin: auto;">
-									<h5 style="margin-top: 15px;">
-										<b>Likes: </b> ${noOfLikes} &nbsp&nbsp Eaten: ${noOfEats}
-									</h5>
-									<h5>
-										<b>Created On:</b> ${recipe.createdDate}
-									</h5>
-									<h5>
-										<b>Last Updated On:</b> ${recipe.updatedDate}
-									</h5>
-									<h5>
-										<b>Tags:</b>
+											<c:forEach var="tag" items="${tags}">
+												<li><a href=""> ${tag.tag_name}</a></li>
+											</c:forEach>
 
-										<c:forEach var="tag" items="${tags}">
-											<li><a href=""> ${tag.tag_name}</a></li>
-										</c:forEach>
-
-									</h5>
+										</h5>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<br><br>
-			<div class=row>
-				<div class="col-sm-8">
-					<div id="info-wrap">
-						<button type="button" class="btn btn-primary" value="Share Recipe"
-							id="Share"
-							style="float: right; margin-right: 15 px; margin-left: 18px;">
-							<span id="textShare" class="ui-button-text">Share &nbsp </span> <span
-								id="shareCheck" class="glyphicon glyphicon-check"
-								style="visibility: hidden;"></span>
-							<!-- caret for arrow. ui-button-text for button text visible; -->
-						</button>
+				<br> <br>
+				<div class=row>
+					<div class="col-sm-8">
+						<div id="info-wrap">
+							<button type="button" class="btn btn-primary"
+								value="Share Recipe" id="Share"
+								style="float: right; margin-right: 15 px; margin-left: 18px;">
+								<span id="textShare" class="ui-button-text">Share &nbsp </span>
+								<span id="shareCheck" class="glyphicon glyphicon-check"
+									style="visibility: hidden;"></span>
+								<!-- caret for arrow. ui-button-text for button text visible; -->
+							</button>
 
-						<div id=recipeDetail>
-							<h3 style="margin-top: 0px">Portion:${recipe.portion} &nbsp&nbsp Total
-								Calories:${recipe.total_calorie}</h3>
-							<h3>Ingredients</h3>
-							<c:forEach var="ingredientAmount" items="${ingredientAmounts}">
-								<p>${ingredientAmount.amount}&nbsp${ingredientAmount.meas_type}&nbsp
-									${ingredientAmount.ing_name}</p>
+							<div id=recipeDetail>
+								<h3 style="margin-top: 0px">Portion:${recipe.portion}
+									&nbsp&nbsp Total Calories:${recipe.total_calorie}</h3>
+								<h3>Ingredients</h3>
+								<c:forEach var="ingredientAmount" items="${ingredientAmounts}">
+									<p>${ingredientAmount.amount}&nbsp${ingredientAmount.meas_type}&nbsp
+										${ingredientAmount.ing_name}</p>
 
-							</c:forEach>
-						</div>
-
-						<h3>Description</h3>
-						<p>${recipe.description}</p>
-					</div>
-				</div>
-								<div class="col-sm-4">
-					<div class="panel panel-default" style="margin-right: 10px; max-height: 300px; overflow: scroll;">
-
-						<div class="panel-heading clearfix">
-							<h4 class="panel-title pull-left" style="padding-top: 7.5px;">Versions</h4>
-							<a href="../derivedRecipe/${recipe.recipe_id}"
-								id="derivedRecipeButton" class="btn btn-primary active"
-								role="button" style="float: right;">Derive New Recipe</a>
-						</div>
-
-						<div class="panel-body" >
-							<p>Original: <a href="../recipe/${parent.recipe_id}" class="navbar-link">${parent.name}</a></p>
-							<p>Derived Recipes:</p>
-
-							<ul class="list-group" style="overflow:hidden;">
-								<c:forEach var="child" items="${children}">
-							 <a href="../recipe/${child.recipe_id}" class="list-group-item">
-							 <h5 class="list-group-item-heading">${child.name}</h5></a>
 								</c:forEach>
-							</ul>
+							</div>
+
+							<h3>Description</h3>
+							<p>${recipe.description}</p>
 						</div>
 					</div>
-				</div>
-				
-			</div>
-			<!-- end of row -->
-			<br> <br> <br>
-			<div class=row>
-				<div class="panel panel-default"
-					style="margin-right: 10px; margin-left: 10px; max-height: 400px; overflow: scroll;">
-					<div class="panel-heading clearfix">
-						<form id="addComment" action="../commentRecipe" method="post">
-							<input type="text" hidden="hidden" name="user_id"
-								value='${user.id}'> <input type="text" hidden="hidden"
-								name="recipe_id" value='${recipe.recipe_id}'>
-							<textarea placeholder="add a comment.." class="form-control"
-								name="comment" rows="3" style="resize: none"></textarea>
-							<br>
-							<button type="submit" class="btn btn-primary" id="comment"
-								style="float: right">Comment</button>
+					<div class="col-sm-4">
+						<div class="panel panel-default"
+							style="margin-right: 10px; max-height: 300px; overflow: scroll;">
 
-						</form>
+							<div class="panel-heading clearfix">
+								<h4 class="panel-title pull-left" style="padding-top: 7.5px;">Versions</h4>
+								<a href="../derivedRecipe/${recipe.recipe_id}"
+									id="derivedRecipeButton" class="btn btn-primary active"
+									role="button" style="float: right;">Derive New Recipe</a>
+							</div>
+
+							<div class="panel-body">
+								<p>
+									Original: <a href="../recipe/${parent.recipe_id}"
+										class="navbar-link">${parent.name}</a>
+								</p>
+								<p>Derived Recipes:</p>
+
+								<ul class="list-group" style="overflow: hidden;">
+									<c:forEach var="child" items="${children}">
+										<a href="../recipe/${child.recipe_id}" class="list-group-item">
+											<h5 class="list-group-item-heading">${child.name}</h5>
+										</a>
+									</c:forEach>
+								</ul>
+							</div>
+						</div>
 					</div>
-					<ul class="list-group">
-						<div id="comments"></div>
-					</ul>
+
+				</div>
+				<!-- end of row -->
+				<br> <br> <br>
+				<div class=row>
+					<div class="panel panel-default"
+						style="margin-right: 10px; margin-left: 10px; max-height: 400px; overflow: scroll;">
+						<div class="panel-heading clearfix">
+							<form id="addComment" action="../commentRecipe" method="post">
+								<input type="text" hidden="hidden" name="user_id"
+									value='${user.id}'> <input type="text" hidden="hidden"
+									name="recipe_id" value='${recipe.recipe_id}'>
+								<textarea placeholder="add a comment.." class="form-control"
+									name="comment" rows="3" style="resize: none"></textarea>
+								<br>
+								<button type="submit" class="btn btn-primary" id="comment"
+									style="float: right">Comment</button>
+
+							</form>
+						</div>
+						<ul class="list-group">
+							<div id="comments"></div>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
 </body>
 
 <script type="text/javascript">
@@ -670,7 +676,7 @@ body {
 
 	var comments = [];
 	var commentsILike = [];
-	
+
 	// getting comments
 	$(document)
 			.ready(
@@ -693,16 +699,18 @@ body {
 															.append(
 																	"<h4 style='text-align: center; margin-bottom: 10px; margin-top: 10px '>No comments :(<h4>");
 												} else {
-													comments = JSON.parse(answer);
+													comments = JSON
+															.parse(answer);
 
 													for (i = 0; i < comments.length; i++) {
-														
-														var likers = comments[i].likers;													
-														var likersCount = ((likers == null) ? 0 : likers.length);
-														
+
+														var likers = comments[i].likers;
+														var likersCount = ((likers == null) ? 0
+																: likers.length);
+
 														var likerIds = [];
-														for(var j = 0; j < likersCount; j++){
-															likerIds[j] = likers[j].liker_id; 
+														for (var j = 0; j < likersCount; j++) {
+															likerIds[j] = likers[j].liker_id;
 														}
 
 														$("#comments")
@@ -723,10 +731,16 @@ body {
 																				+ "<span id='textCommentLike" + i +"' class='ui-button-text'>Like &nbsp</span>"
 																				+ "<span id='commentLikeCheck"+ i +"' class='glyphicon glyphicon-check'"
 																				+ "style='visibility: hidden;'></span></button>"
-																				+ "<a id='showLikers' title='Click to see them' onclick='showLikers(" + i + ")'>" 
-																				+ "&nbsp" + likersCount + " likes </a></li>");
+																				+ "<a id='showLikers' title='Click to see them' onclick='showLikers("
+																				+ i
+																				+ ")'>"
+																				+ "&nbsp"
+																				+ likersCount
+																				+ " likes </a></li>");
 														//check this comment likes number
-														if ($.inArray('${user.id}', likerIds) > -1) {
+														if ($.inArray(
+																'${user.id}',
+																likerIds) > -1) {
 															commentsILike[i] = 1;
 															$(
 																	"#commentLikeCheck"
@@ -792,23 +806,25 @@ body {
 			}
 		})
 	};
-	
+
 	function showLikers(index) {
- 		var likersWindow = window.open("", "_blank", "left=500, top=350, width=200, height=150, resizable=1, scrollbars=1");
- 		
- 		var likers = comments[index].likers;
- 		 		
- 		var content = "<h3>Likers: </h3>";
- 		if(likers == null || likers.length == 0){
- 			content += "<p>Sorry! No likes here :(</p>";
- 		}
- 		else{
- 			for(var i = 0; i < likers.length; i++){
- 				content += "<li class='list-group-item'><a href='javascript:;' onclick='window.opener.location.href = \"../user/profile/" + likers[i].liker_id + "\"; window.close();'>" + likers[i].liker_name + "</p></li>"; 							
- 			}
- 		}
-		content += "<button type='button' onclick='window.close()'> Close </button>";
-		likersWindow.document.write(content);
+		var likers = comments[index].likers;
+		var content = "";
+		if (likers == null || likers.length == 0) {
+			content += "<p>Sorry! No likes here :(</p>";
+		} else {
+			for (var i = 0; i < likers.length; i++) {
+				content += "<li class='list-group-item'><a href='/nutty/user/profile/" + likers[i].liker_id + "'>"
+						+ likers[i].liker_name + "</p></li>";
+			}
+		}
+		bootbox.dialog({
+			title : "Likers",
+			message : content,
+			onEscape : function() {
+			},
+		});
+
 		return false;
 	};
 </script>
