@@ -65,12 +65,19 @@ public class SearchService {
 	}
 	
 	//descending order
+	//rateType might be a rate or likes/eats/overall
 	public Recipe[] sortByRate(Recipe[] recipes, String rateType){
 		List<RecipeRate> recRates = new ArrayList<RecipeRate>();
 		for(int i=0; i<recipes.length;i++){
 			double rate;
 			if(rateType.equals("overall")){
 				rate = recipeService.avgOfAllRates(recipes[i].getRecipe_id());
+			}
+			else if(rateType.equals("likes")){
+				rate=recipeService.numberOfLikes(recipes[i].getRecipe_id());
+			}
+			else if(rateType.equals("eats")){
+				rate=recipeService.numberOfEats(recipes[i].getRecipe_id());
 			}
 			else{
 				rate = recipeDao.getAvgRateStatistic(rateType, recipes[i].getRecipe_id());

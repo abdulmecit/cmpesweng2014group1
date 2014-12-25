@@ -320,6 +320,69 @@ public class RecipeController {
 		redirectAttrs.addFlashAttribute("message", new Message(0, null, "Your recipe couldn't added to the system."));
 		return "redirect:/derivedRecipe/"+recipeId;
 	}
+	
+	@RequestMapping(value = "/editRecipe/{recipeId}", method = RequestMethod.GET)
+	public String fillEditRecipe(@PathVariable int recipeId, Model model, HttpSession session){
+		Recipe recipe = recipeService.getRecipe(recipeId);
+		model.addAttribute("recipe", recipe);
+		IngredientAmount[] ingredientAmounts = recipeService.getIngredientAmounts(recipeId);
+		model.addAttribute("ingredientAmounts", ingredientAmounts);
+		Map<Integer, String[]> measTypesMap = new HashMap<Integer, String[]>();
+		for(int i=0; i<ingredientAmounts.length; i++){
+			int ing_id = ingredientAmounts[i].getIng_id();
+			String[] meas_types = recipeService.getRecipeDao().getMeasTypesByIngId(ing_id);
+			measTypesMap.put(i, meas_types);
+		}
+		model.addAttribute("measTypesMap", measTypesMap);
+		Tag[] tags=recipeService.getAllTags(recipeId);
+		if(tags != null)
+			model.addAttribute("tags", tags);
+		String photoUrl = recipeService.getRecipePhotoUrl(recipeId);
+		model.addAttribute("photoUrl", photoUrl);
+		
+		return "editRecipe";
+	}
+	
+	@RequestMapping(value = "/editRecipe/{recipeId}", method = RequestMethod.POST)
+	public String editRecipe(@PathVariable int recipeId, @RequestParam(value = "recipeName", required = true) String recipeName,
+			@RequestParam(value = "description", required = true) String description,
+			@RequestParam(value = "portion", required = true) int portion,
+			@RequestParam(value = "link", required = true) String link,
+			@RequestParam(value = "ingredient[]", required = true) String[] ingredients,
+			@RequestParam(value = "amount[]", required = true) String[] amounts,
+			@RequestParam(value = "measType[]", required = true) String[] meas_types,
+			@RequestParam(value = "tag[]", required = true) String[] tagz,
+			RedirectAttributes redirectAttrs, HttpSession session) {
+
+		String[] tags = {};
+		if(tagz != null){
+			//Remove empty and duplicate tags
+			HashSet<String> tagSet = new HashSet<String>(Arrays.asList(tagz));
+			tagSet.remove(new String(""));
+			tags = tagSet.toArray(new String[0]);
+		}
+		
+		double[] parsedAmounts = new double[amounts.length];
+		//Check if entered amounts are valid
+		for(int i=0; i<amounts.length; i++){
+			double parsedAmount = recipeService.parseAmount(amounts[i]);
+			if(parsedAmount == 0.0){
+				redirectAttrs.addFlashAttribute("message", new Message(0, null, "Your recipe had invalid ingredient amount values."));
+				return "redirect:/editRecipe/"+recipeId;
+			}
+			else
+				parsedAmounts[i] = parsedAmount;
+		}
+
+		Recipe r = recipeService.editRecipe(recipeId, recipeName, description, portion, link, ingredients, amounts, parsedAmounts, meas_types, tags);
+		if(r != null){
+			redirectAttrs.addFlashAttribute("message", new Message(1, null, "Your new version is successfully added to the system."));
+			return "redirect:/success";
+		}
+		redirectAttrs.addFlashAttribute("message", new Message(0, null, "Your recipe couldn't added to the system."));
+		return "redirect:/editRecipe/"+recipeId;
+	}
+	
 	@RequestMapping(value = "/deleteRecipe")
 	public String deleteRecipe(
 			@RequestParam(value = "recipe_id", required = true) int recipe_id
@@ -378,6 +441,18 @@ public class RecipeController {
 		recipeService.commentRecipe(value, u, recipe);		
 		return "redirect:recipe/"+recipe_id;
 	}
+	
+	@RequestMapping(value = "/editComment")
+	public String editComment(
+			@RequestParam(value = "comment_id", required = true) int comment_id,
+			@RequestParam(value = "recipe_id", required = true) int recipe_id,
+			@RequestParam(value = "text", required = true) String text
+			) {
+		
+		recipeService.getCommentDao().editComment(comment_id, text);		
+		return "redirect:recipe/"+recipe_id;
+	}
+	
 	
 	@RequestMapping(value = "/shareRecipe")
 	public String shareRecipe(

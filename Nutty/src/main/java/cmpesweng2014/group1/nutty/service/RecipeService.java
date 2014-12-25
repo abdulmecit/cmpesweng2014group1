@@ -317,4 +317,41 @@ public class RecipeService {
 		}
 		return intersection.toArray(new Recipe[intersection.size()]);
 	}
+	
+	public Recipe editRecipe(int recipe_id,String name, String description,int portion, String photo_url, String[] ingredients, String[] amounts, double[] parsedAmounts, String[] meas_types, String[] tags){
+		int[] ingredient_ids=new int[ingredients.length];
+		int[] ingredient_calories=new int[ingredients.length];
+		int ing_id;		
+		//get an array of ingredient id s for the given ingredient names
+		//get an array of calories for the given ingredients
+		for(int i=0; i<ingredients.length; i++){
+			ing_id=ingredientDao.getIdByName(ingredients[i]);
+			ingredient_ids[i]=ing_id;
+			ingredient_calories[i]=ingredientDao.getCalorieById(ing_id);
+		}		
+		//get total calorie value for the recipe
+		double total_calorie = calculateTotalCalorie(ingredient_ids, ingredient_calories, parsedAmounts, meas_types);		
+		
+		//edit recipe table
+		recipeDao.editRecipeTable(recipe_id, name, description, portion, total_calorie);
+		//delete previous tags
+		recipeDao.deleteTags(recipe_id);
+		//add tags
+		for(int i=0; i<tags.length; i++){
+			recipeDao.addTag(recipe_id, tags[i]);
+		}		
+		//delete previous ingredients
+		recipeDao.deleteIngredients(recipe_id);
+		//ingredients are added to HasIngredient table
+		for(int i=0; i<ingredients.length; i++){
+			recipeDao.addIngredient(ingredient_ids[i], recipe_id, amounts[i], meas_types[i]);
+		}
+		//delete photo
+		recipeDao.deleteRecipePhoto(recipe_id);
+		//Add photoUrl
+		if(photo_url != null && photo_url != "")
+			recipeDao.addPhotoUrl(photo_url, recipe_id);
+		
+		return recipeDao.getRecipeById(recipe_id);
+	}
 }

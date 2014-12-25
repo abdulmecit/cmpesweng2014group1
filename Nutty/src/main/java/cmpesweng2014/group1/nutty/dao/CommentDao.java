@@ -202,4 +202,22 @@ public class CommentDao extends PcDao {
 		this.getTemplate().update("DELETE FROM ReportComment WHERE comment_id = ?",
 				new Object[] {comment_id});
 	}
+	//changes the text of the given comment with provided text
+	public void editComment(final int comment_id, final String text){
+		final String query = "UPDATE Comment SET text=? WHERE comment_id=?";
+		KeyHolder gkh = new GeneratedKeyHolder();
+			this.getTemplate().update(new PreparedStatementCreator() {
+				@Override
+				public PreparedStatement createPreparedStatement(
+						Connection connection) throws SQLException {
+					PreparedStatement ps = connection.prepareStatement(query,
+							Statement.RETURN_GENERATED_KEYS);
+					ps.setString(1, text);
+					ps.setInt(2, comment_id);
+					return ps;
+				}
+			}, gkh);
+	}
+	
+	
 }

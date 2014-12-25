@@ -770,7 +770,7 @@ public class RecipeDao extends PcDao{
 
 	//recipe delete
 	public void deleteRecipe(int recipe_id){
-		//delete from Recipe table
+	//delete from Recipe table
 		this.getTemplate().update("DELETE FROM Recipe WHERE recipe_id = ?",
 				new Object[] {recipe_id});
 		//delete from OwnsRecipe table
@@ -785,17 +785,14 @@ public class RecipeDao extends PcDao{
 			}
 		}	
 		//delete from HasIngredient table
-		this.getTemplate().update("DELETE FROM HasIngredient WHERE recipe_id = ?",
-				new Object[] {recipe_id});
+		deleteIngredients(recipe_id);
 		//delete from HasTag table
-		this.getTemplate().update("DELETE FROM HasTag WHERE recipe_id = ?",
-				new Object[] {recipe_id});
+		deleteTags(recipe_id);
 		//delete from EatLikeRate table
 		this.getTemplate().update("DELETE FROM EatLikeRate WHERE recipe_id = ?",
 				new Object[] {recipe_id});
 		//delete from RecipePhoto table
-		this.getTemplate().update("DELETE FROM RecipePhoto WHERE recipe_id = ?",
-				new Object[] {recipe_id});
+		deleteRecipePhoto(recipe_id);
 		//delete reports of this recipe
 		deleteAllReportsOfRecipe(recipe_id);
 		//delete from SharesRecipe table
@@ -818,6 +815,42 @@ public class RecipeDao extends PcDao{
 		this.getTemplate().update("DELETE FROM Derived WHERE parent_recipe_id = ?",
 				new Object[] {recipe_id});
 		this.getTemplate().update("DELETE FROM Derived WHERE child_recipe_id = ?",
+				new Object[] {recipe_id});
+	}
+	
+	public void editRecipeTable(final int recipe_id,final String name, final String description,
+			final int portion, final double total_calorie){
+		final String query = "UPDATE Recipe SET name=?, description=?, portion=?, total_calorie=? "
+				+ "WHERE recipe_id?";
+
+		KeyHolder gkh = new GeneratedKeyHolder();
+
+		this.getTemplate().update(new PreparedStatementCreator() {
+
+			@Override
+			public PreparedStatement createPreparedStatement(
+					Connection connection) throws SQLException {
+				PreparedStatement ps = connection.prepareStatement(query,
+						Statement.RETURN_GENERATED_KEYS);
+				ps.setString(1, name);
+				ps.setString(2, description);
+				ps.setInt(3, portion);
+				ps.setDouble(4,total_calorie);
+				ps.setInt(5, recipe_id);
+				return ps;
+			}
+		}, gkh);		
+	}
+	public void deleteTags(int recipe_id){
+		this.getTemplate().update("DELETE FROM HasTag WHERE recipe_id = ?",
+				new Object[] {recipe_id});
+	}
+	public void deleteIngredients(int recipe_id){
+		this.getTemplate().update("DELETE FROM HasIngredient WHERE recipe_id = ?",
+				new Object[] {recipe_id});
+	}
+	public void deleteRecipePhoto(int recipe_id){
+		this.getTemplate().update("DELETE FROM RecipePhoto WHERE recipe_id = ?",
 				new Object[] {recipe_id});
 	}
 	
