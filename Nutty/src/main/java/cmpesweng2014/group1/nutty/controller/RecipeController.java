@@ -86,7 +86,7 @@ public class RecipeController {
 		//Check if entered amounts are valid
 		for(int i=0; i<amounts.length; i++){
 			double parsedAmount = recipeService.parseAmount(amounts[i]);
-			if(parsedAmount == 0.0){
+			if(parsedAmount <= 0.0){
 				redirectAttrs.addFlashAttribute("message", new Message(0, null, "Your recipe had invalid ingredient amount values."));	
 				return "redirect:/addRecipe";
 			}	
@@ -133,7 +133,7 @@ public class RecipeController {
 		//Check if entered amounts are valid
 		for(int i=0; i<amounts.length; i++){
 			double parsedAmount = recipeService.parseAmount(amounts[i]);
-			if(parsedAmount == 0.0)
+			if(parsedAmount <= 0.0)
 				return new Message(0, null, "Your recipe had invalid ingredient amount values.");
 			else
 				parsedAmounts[i] = parsedAmount;
@@ -304,7 +304,7 @@ public class RecipeController {
 		//Check if entered amounts are valid
 		for(int i=0; i<amounts.length; i++){
 			double parsedAmount = recipeService.parseAmount(amounts[i]);
-			if(parsedAmount == 0.0){
+			if(parsedAmount <= 0.0){
 				redirectAttrs.addFlashAttribute("message", new Message(0, null, "Your recipe had invalid ingredient amount values."));
 				return "redirect:/derivedRecipe/"+recipeId;
 			}

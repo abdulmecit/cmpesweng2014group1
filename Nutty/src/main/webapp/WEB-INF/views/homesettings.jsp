@@ -48,6 +48,9 @@
 		if ('${user.birthday}') {
 			document.getElementById('birthday').innerHTML = "${user.birthday}";
 		}
+		if ('${user.photo}') {
+			document.getElementById('photo').innerHTML = "${user.photo}";
+		}
 	});
 </script>
 
@@ -395,14 +398,15 @@
 									<div class="panel-body form-group" align="center"
 										style="height: 158px">
 										<div id="dropArea">
-											Drag and drop your profil picture here! OR
+											Drag and drop your profile picture here! OR
 											<button type="button"
 												onclick="document.querySelector('#elma').click()">Choose
 												from your computer</button>
 										</div>
-										<input name="changed "id="elma" value="photo" style="visibility: collapse; width: 0px;"
-										type="file" onchange="upload(this.files[0])"> <input
-										type="hidden" class="form-control" id="link" name="link"></input>
+										<input id="elma" style="visibility: collapse; width: 0px;"
+										type="file" onchange="upload(this.files[0])">
+										<input type="hidden" name="changed" id="changed" value="photo">	 
+										<input type="hidden" class="form-control" id="link" name="link"></input>
 										<p id="progress">Uploading...</p>
 									</div>
 								</div>
@@ -421,23 +425,6 @@
 			</div>
 		</div>
 	</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	<script type="text/javascript">
 		$(document).ready(function() {
