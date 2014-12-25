@@ -614,7 +614,8 @@ public class RecipeController {
 	@RequestMapping(value = "/recipeComments")
 	@ResponseBody
 	public String recipeComments(
-			@RequestParam(value = "recipeId", required = true) int recipeId){
+			@RequestParam(value = "recipeId", required = true) int recipeId,
+			@RequestParam(value = "user_id", defaultValue = "-1") long user_id){
 
 		String answer = "";
 		
@@ -629,6 +630,10 @@ public class RecipeController {
 			User u = userService.getUserDao().getUserById(comments[i].getUser_id());
 			answer += "\"commenter_id\":\"" + u.getId() + "\", \"commenter_name\":\"" + u.getName() + " " + u.getSurname() + "\"";
 			
+			if(user_id != -1){
+				int isReportedByMe = recipeService.getCommentDao().hasReportedComment(comments[i].getComment_id(), user_id);
+				answer += ", \"isReportedByMe\": \"" + isReportedByMe + "\"";
+			}
 			User[] likers = recipeService.usersWhoLike(comments[i]);
 			if(likers != null){
 				answer += ", \"likers\": [";

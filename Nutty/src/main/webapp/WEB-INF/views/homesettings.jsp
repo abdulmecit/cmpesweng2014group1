@@ -399,6 +399,7 @@
 										style="height: 158px">
 										<div id="dropArea">
 											Drag and drop your profile picture here! OR
+											<br>
 											<button type="button"
 												onclick="document.querySelector('#elma').click()">Choose
 												from your computer</button>
