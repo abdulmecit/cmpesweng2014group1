@@ -175,7 +175,7 @@ body {
 				.ready(
 						function() {
 							if(photo){
-							document.getElementById('foto').innerHTML = '<img id="profilePic" alt="Photo of the User" src='
+								document.getElementById('foto').innerHTML = '<img id="profilePic" alt="Photo of the User" src='
 									+ photo + ' width="100%" height="auto"/>';
 							}
 							else{

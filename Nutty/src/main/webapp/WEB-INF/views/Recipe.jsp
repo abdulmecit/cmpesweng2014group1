@@ -689,6 +689,7 @@ body {
 										url : "../recipeComments",
 										data : {
 											recipeId : '${recipe.recipe_id}',
+											user_id: '${user.id}'
 										}
 									})
 									.done(
