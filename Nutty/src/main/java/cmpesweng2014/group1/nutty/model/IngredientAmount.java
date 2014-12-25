@@ -5,14 +5,14 @@ public class IngredientAmount {
 	private int recipe_id;
 	private int ing_id;
 	private String ing_name;
-	private double amount;
+	private String amount;
 	private String meas_type;
 	
 	public IngredientAmount() {
 		super();
 	}	
 
-	public IngredientAmount(int recipe_id, int ing_id, String ing_name, double amount, String meas_type) {
+	public IngredientAmount(int recipe_id, int ing_id, String ing_name, String amount, String meas_type) {
 		super();
 		this.recipe_id = recipe_id;
 		this.ing_id = ing_id;
@@ -45,11 +45,11 @@ public class IngredientAmount {
 		this.ing_name = ing_name;
 	}
 
-	public double getAmount() {
+	public String getAmount() {
 		return amount;
 	}
 
-	public void setAmount(double amount) {
+	public void setAmount(String amount) {
 		this.amount = amount;
 	}
 

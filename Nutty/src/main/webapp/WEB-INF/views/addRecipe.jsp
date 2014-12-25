@@ -100,6 +100,10 @@ body {
 								Portion:<input type="text" class="form-control" id="portion"
 									name="portion" placeholder="portion">
 							</div>
+							<div class="col-xs-6">
+								<br>
+								<font color="blue">${message.message}</font>	
+							</div>					
 							<br> <br> <br> <br> <br>
 							<!------------------------  Get Ingredients  --------------------------->
 							<div class="row">

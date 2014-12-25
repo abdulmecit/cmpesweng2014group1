@@ -68,18 +68,33 @@ public class RecipeController {
 							@RequestParam(value = "portion", required = true) int portion,
 							@RequestParam(value = "link", required = true) String link,
 							@RequestParam(value = "ingredient[]", required = true) String[] ingredients,
-							@RequestParam(value = "amount[]", required = true) double[] amounts,
+							@RequestParam(value = "amount[]", required = true) String[] amounts,
 							@RequestParam(value = "measType[]", required = true) String[] meas_types, 
-							@RequestParam(value = "tag[]", required = true) String[] tagz,
+							@RequestParam(value = "tag[]", required = false) String[] tagz,
 			RedirectAttributes redirectAttrs, HttpSession session) {
 		User u = (User) session.getAttribute("user");
 		
+		String[] tags = {};
 		//Remove empty and duplicate tags			
-		HashSet<String> tagSet = new HashSet<String>(Arrays.asList(tagz));
-		tagSet.remove(new String(""));
-		String[] tags = tagSet.toArray(new String[0]);	
+		if(tagz != null){
+			HashSet<String> tagSet = new HashSet<String>(Arrays.asList(tagz));
+			tagSet.remove(new String(""));
+			tags = tagSet.toArray(new String[0]);
+		}
 		
-		Recipe r = recipeService.createRecipe(recipeName, description, portion, link, ingredients, amounts, meas_types, u, tags);
+		double[] parsedAmounts = new double[amounts.length];
+		//Check if entered amounts are valid
+		for(int i=0; i<amounts.length; i++){
+			double parsedAmount = recipeService.parseAmount(amounts[i]);
+			if(parsedAmount == 0.0){
+				redirectAttrs.addFlashAttribute("message", new Message(0, null, "Your recipe had invalid ingredient amount values."));	
+				return "redirect:/addRecipe";
+			}	
+			else
+				parsedAmounts[i] = parsedAmount;
+		}
+		
+		Recipe r = recipeService.createRecipe(recipeName, description, portion, link, ingredients, amounts, parsedAmounts, meas_types, u, tags);
 		if(r != null){
 			redirectAttrs.addFlashAttribute("message", new Message(1, null, "Your recipe is successfully added to the system."));
 			return "redirect:/success";
@@ -98,23 +113,34 @@ public class RecipeController {
 							@RequestParam(value = "amount[]", required = true) String amountz,
 							@RequestParam(value = "measType[]", required = true) String meas_typez, 
 							@RequestParam(value = "user_id", required = true) Long user_id,
-							@RequestParam(value = "tag[]", required = true) String tagz) {
+							@RequestParam(value = "tag[]", required = false) String tagz) {
 		
+		String[] tags = {};
 		//Convert from JSON String
 		Gson gson = new Gson();
 		String[] ingredients = gson.fromJson(ingredientz, String[].class);
-		String[] tags = gson.fromJson(tagz, String[].class);
-		double[] amounts = gson.fromJson(amountz, double[].class);
+		String[] amounts = gson.fromJson(amountz, String[].class);
 		String[] meas_types = gson.fromJson(meas_typez, String[].class);
-
 		
-		//Remove empty and duplicate tags			
-		HashSet<String> tagSet = new HashSet<String>(Arrays.asList(tags));
-		tagSet.remove(new String(""));
-		tags = tagSet.toArray(new String[0]);	
+		if(tagz != null){
+			//Remove empty and duplicate tags			
+			HashSet<String> tagSet = new HashSet<String>(Arrays.asList(gson.fromJson(tagz, String[].class)));
+			tagSet.remove(new String(""));
+			tags = tagSet.toArray(new String[0]);
+		}
+		
+		double[] parsedAmounts = new double[amounts.length];
+		//Check if entered amounts are valid
+		for(int i=0; i<amounts.length; i++){
+			double parsedAmount = recipeService.parseAmount(amounts[i]);
+			if(parsedAmount == 0.0)
+				return new Message(0, null, "Your recipe had invalid ingredient amount values.");
+			else
+				parsedAmounts[i] = parsedAmount;
+		}
 		
 		User u = userService.getUserDao().getUserById(user_id);	
-		Recipe r = recipeService.createRecipe(recipeName, description, portion, link, ingredients, amounts, meas_types, u, tags);
+		Recipe r = recipeService.createRecipe(recipeName, description, portion, link, ingredients, amounts, parsedAmounts, meas_types, u, tags);
 		if(r != null){
 			return new Message(1, r, "Your recipe is successfully added to the system.");		
 		}
@@ -257,18 +283,33 @@ public class RecipeController {
 			@RequestParam(value = "portion", required = true) int portion,
 			@RequestParam(value = "link", required = true) String link,
 			@RequestParam(value = "ingredient[]", required = true) String[] ingredients,
-			@RequestParam(value = "amount[]", required = true) double[] amounts,
+			@RequestParam(value = "amount[]", required = true) String[] amounts,
 			@RequestParam(value = "measType[]", required = true) String[] meas_types,
 			@RequestParam(value = "tag[]", required = true) String[] tagz,
 			RedirectAttributes redirectAttrs, HttpSession session) {
 		User u = (User) session.getAttribute("user");
 
-		//Remove empty and duplicate tags
-		HashSet<String> tagSet = new HashSet<String>(Arrays.asList(tagz));
-		tagSet.remove(new String(""));
-		String[] tags = tagSet.toArray(new String[0]);
+		String[] tags = {};
+		if(tagz != null){
+			//Remove empty and duplicate tags
+			HashSet<String> tagSet = new HashSet<String>(Arrays.asList(tagz));
+			tagSet.remove(new String(""));
+			tags = tagSet.toArray(new String[0]);
+		}
+		
+		double[] parsedAmounts = new double[amounts.length];
+		//Check if entered amounts are valid
+		for(int i=0; i<amounts.length; i++){
+			double parsedAmount = recipeService.parseAmount(amounts[i]);
+			if(parsedAmount == 0.0){
+				redirectAttrs.addFlashAttribute("message", new Message(0, null, "Your recipe had invalid ingredient amount values."));
+				return "redirect:/derivedRecipe/"+recipeId;
+			}
+			else
+				parsedAmounts[i] = parsedAmount;
+		}
 
-		Recipe r = recipeService.deriveRecipe(recipeName, description, portion, link, ingredients, amounts, meas_types, u, recipeService.getRecipe(recipeId), tags);
+		Recipe r = recipeService.deriveRecipe(recipeName, description, portion, link, ingredients, amounts, parsedAmounts, meas_types, u, recipeService.getRecipe(recipeId), tags);
 		if(r != null){
 			redirectAttrs.addFlashAttribute("message", new Message(1, null, "Your new version is successfully added to the system."));
 			return "redirect:/success";

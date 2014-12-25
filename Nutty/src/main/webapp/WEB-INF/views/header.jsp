@@ -170,7 +170,7 @@ body {
 									.ajax(
 											{
 												type : "POST",
-												url : "basicSearch",
+												url : "/nutty/basicSearch",
 												data : {
 													search : $("#searchText")
 															.val(),
@@ -194,7 +194,7 @@ body {
 				for (i = 1; i < results.length; i++) {
 					dummy = results[i].split('>');
 					//content += '<li class="list-group-item"><a href="' + path + '/' + dummy[1] +'>' + dummy[0] + '</a></li>';
-					content += '<a href="' + path + '/' + dummy[1] +'">'
+					content += '<a href="/nutty/' + path + '/' + dummy[1] +'">'
 							+ dummy[0] + '</a></p>';
 				}}
 				bootbox.dialog({

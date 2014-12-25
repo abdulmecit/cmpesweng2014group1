@@ -103,7 +103,7 @@ public class RecipeDao extends PcDao{
 		}
 	}
 	
-	public void addIngredient(final int ingredient_id, final int recipe_id, final double amount, final String meas_type){
+	public void addIngredient(final int ingredient_id, final int recipe_id, final String amount, final String meas_type){
 		final String query = "INSERT INTO HasIngredient (recipe_id, ing_id, amount, meas_type) VALUES (?,?,?,?)";
 		KeyHolder gkh = new GeneratedKeyHolder();
 
@@ -116,7 +116,7 @@ public class RecipeDao extends PcDao{
 						Statement.RETURN_GENERATED_KEYS);
 				ps.setInt(1, recipe_id);
 				ps.setInt(2, ingredient_id);
-				ps.setDouble(3, amount);
+				ps.setString(3, amount);
 				ps.setString(4, meas_type);
 				return ps;
 			}
