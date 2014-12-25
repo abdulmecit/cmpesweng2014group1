@@ -805,6 +805,16 @@ public class RecipeDao extends PcDao{
 		this.getTemplate().update("DELETE FROM UserRecipeScore WHERE recipe_id = ?",
 				new Object[] {recipe_id});
 		//update Derived table
+		//check whether it has parent or not
+		final Recipe parent=getParent(getRecipeById(recipe_id));
+		if (parent!=null){ //if it has a parent
+			final Recipe[] children=getAllDerivations(getRecipeById(recipe_id));
+			if(children!=null){ //if it has children
+				for(int i=0;i<children.length;i++){
+					addDerivedFrom(parent, children[i]);
+				}
+			}
+		}
 		this.getTemplate().update("DELETE FROM Derived WHERE parent_recipe_id = ?",
 				new Object[] {recipe_id});
 		this.getTemplate().update("DELETE FROM Derived WHERE child_recipe_id = ?",
