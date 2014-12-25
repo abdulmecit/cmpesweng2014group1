@@ -231,6 +231,9 @@ public class RecipeController {
 			
 			int eatenOfUser=recipeService.getEatenForUser(recipeId, user_id);
 			model.addAttribute("eatenOfUser", eatenOfUser);	
+			
+			int reportOfUser=recipeService.getRecipeDao().hasReportedRecipe(recipeId, user_id);
+			model.addAttribute("reportOfUser", reportOfUser);
 		}
 		
 		String photoUrl = recipeService.getRecipePhotoUrl(recipeId);
@@ -317,7 +320,37 @@ public class RecipeController {
 		redirectAttrs.addFlashAttribute("message", new Message(0, null, "Your recipe couldn't added to the system."));
 		return "redirect:/derivedRecipe/"+recipeId;
 	}
+	@RequestMapping(value = "/deleteRecipe")
+	public String deleteRecipe(
+			@RequestParam(value = "recipe_id", required = true) int recipe_id
+			){
+		recipeService.getRecipeDao().deleteRecipe(recipe_id);
+		return "redirect:index";
+	}
 	
+	@RequestMapping(value = "/deleteComment")
+	public String deleteComment(
+			@RequestParam(value = "comment_id", required = true) int comment_id
+			){
+		recipeService.getCommentDao().deleteComment(comment_id);
+		return "redirect:index";
+	}
+	@RequestMapping(value = "/reportComment")
+	public String reportComment(
+			@RequestParam(value = "comment_id", required = true) int comment_id,
+			@RequestParam(value = "user_id", required = true) Long user_id
+			){
+		recipeService.getCommentDao().reportComment(comment_id, user_id);
+		return "Recipe";
+	}
+	@RequestMapping(value = "/reportRecipe")
+	public String reportRecipe(
+			@RequestParam(value = "recipe_id", required = true) int recipe_id,
+			@RequestParam(value = "user_id", required = true) Long user_id
+			){
+		recipeService.getRecipeDao().reportRecipe(recipe_id, user_id);
+		return "Recipe";
+	}	
 	@RequestMapping(value = "/rateRecipe")
 	public String rateRecipe(
 			@RequestParam(value = "changed", required = true) String changed,

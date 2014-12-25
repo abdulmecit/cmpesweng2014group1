@@ -137,4 +137,69 @@ public class CommentDao extends PcDao {
 		this.getTemplate().update("DELETE FROM LikesComment WHERE user_id = ? AND comment_id = ?", 
 				new Object[] { user.getId(), comment.getComment_id()});
 	}
+	
+	////Report Comment Methods////
+	//report a comment
+	public void reportComment(final int comment_id, final Long user_id) {
+		final String query = "INSERT INTO ReportComment (user_id, comment_id) VALUES (?,?)";
+		KeyHolder gkh = new GeneratedKeyHolder();
+
+		this.getTemplate().update(new PreparedStatementCreator() {
+
+			@Override
+			public PreparedStatement createPreparedStatement(
+					Connection connection) throws SQLException {
+				PreparedStatement ps = connection.prepareStatement(query,
+						Statement.RETURN_GENERATED_KEYS);
+				ps.setLong(1, user_id);
+				ps.setInt(2, comment_id);
+				return ps;
+			}
+		}, gkh);
+	}
+	
+	//get how many reports a comment has
+	public int numberOfReportsOfComment(int comment_id){
+		int count = this.getTemplate().queryForObject(
+				"SELECT COUNT(*) FROM ReportComment WHERE comment_id =?",
+				new Object[] { comment_id},  Integer.class);
+		return count;		
+	}
+	
+	//delete all reports of a comment
+	public void deleteAllReportsOfComment(int comment_id){
+		this.getTemplate().update("DELETE FROM ReportComment WHERE comment_id = ?",
+				new Object[] {comment_id});
+	}
+	//delete report of a user for a specific comment
+	public void deleteReportOfAUserForComment(int comment_id, Long user_id){
+		this.getTemplate().update("DELETE FROM ReportComment WHERE comment_id = ? AND user_id = ?",
+				new Object[] {comment_id,user_id});
+	}
+	
+	//returns 1 if this user reported this comment, else 0
+	public int hasReportedComment(int comment_id,Long user_id){
+		int count = this.getTemplate().queryForObject(
+				"SELECT COUNT(*) FROM ReportComment WHERE comment_id =? AND user_id =?",
+				new Object[] { comment_id,user_id},  Integer.class);
+		if(count==0){
+			return 0;
+		}
+		else{
+			return 1;
+		}
+	}
+	
+	//deletes the comment
+	public void deleteComment(int comment_id){
+		//first delete from comment table
+		this.getTemplate().update("DELETE FROM Comment WHERE comment_id = ?",
+				new Object[] {comment_id});
+		//delete relations in LikesComment table
+		this.getTemplate().update("DELETE FROM LikesComment WHERE comment_id = ?",
+				new Object[] {comment_id});
+		//delete all reports for that comment
+		this.getTemplate().update("DELETE FROM ReportComment WHERE comment_id = ?",
+				new Object[] {comment_id});
+	}
 }

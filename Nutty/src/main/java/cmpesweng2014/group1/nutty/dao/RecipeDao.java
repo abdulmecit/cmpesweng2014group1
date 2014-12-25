@@ -30,6 +30,7 @@ import cmpesweng2014.group1.nutty.dao.mapper.RecipeRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.SharesRecipeRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.TagRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.UserRecipeScoreRowMapper;
+import cmpesweng2014.group1.nutty.model.Comment;
 import cmpesweng2014.group1.nutty.model.EatLikeRate;
 import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.model.SharesRecipe;
@@ -42,6 +43,8 @@ public class RecipeDao extends PcDao{
 	
 	@Autowired
 	private UserDao userDao;
+	@Autowired
+	private CommentDao commentDao;
 	
 	public int createRecipe(final String name, final String description,
 			final int portion, final double total_calorie) {
@@ -713,4 +716,100 @@ public class RecipeDao extends PcDao{
 			}
 		}
 	}
+
+	////Report Recipe Methods////
+	//report a recipe
+	public void reportRecipe(final int recipe_id, final Long user_id) {
+		final String query = "INSERT INTO ReportsRecipe (user_id, recipe_id) VALUES (?,?)";
+		KeyHolder gkh = new GeneratedKeyHolder();
+
+		this.getTemplate().update(new PreparedStatementCreator() {
+
+			@Override
+			public PreparedStatement createPreparedStatement(
+					Connection connection) throws SQLException {
+				PreparedStatement ps = connection.prepareStatement(query,
+						Statement.RETURN_GENERATED_KEYS);
+				ps.setLong(1, user_id);
+				ps.setInt(2, recipe_id);
+				return ps;
+			}
+		}, gkh);
+	}
+	
+	//get how many reports a recipe has
+	public int numberOfReportsOfRecipe(int recipe_id){
+		int count = this.getTemplate().queryForObject(
+				"SELECT COUNT(*) FROM ReportsRecipe WHERE recipe_id =?",
+				new Object[] { recipe_id},  Integer.class);
+		return count;		
+	}
+	
+	//delete reports of a recipe
+	public void deleteAllReportsOfRecipe(int recipe_id){
+		this.getTemplate().update("DELETE FROM ReportsRecipe WHERE recipe_id = ?",
+				new Object[] {recipe_id});
+	}
+	//delete report of a user for a specific recipe
+	public void deleteReportOfAUserForRecipe(int recipe_id, Long user_id){
+		this.getTemplate().update("DELETE FROM ReportsRecipe WHERE recipe_id = ? AND user_id = ?",
+				new Object[] {recipe_id,user_id});
+	}
+	//return 1 if the user has reported this recipe, else 0
+	public int hasReportedRecipe(int recipe_id,Long user_id){
+		int count = this.getTemplate().queryForObject(
+				"SELECT COUNT(*) FROM ReportsRecipe WHERE recipe_id =? AND user_id =?",
+				new Object[] { recipe_id, user_id},  Integer.class);
+		if(count==0){
+			return 0;
+		}
+		else{
+			return 1;
+		}
+	}
+
+	//recipe delete
+	public void deleteRecipe(int recipe_id){
+		//delete from Recipe table
+		this.getTemplate().update("DELETE FROM Recipe WHERE recipe_id = ?",
+				new Object[] {recipe_id});
+		//delete from OwnsRecipe table
+		this.getTemplate().update("DELETE FROM OwnsRecipe WHERE recipe_id = ?",
+				new Object[] {recipe_id});
+		//delete all comments of this recipe
+		Comment[] comments= commentDao.allComments(recipe_id);
+		if(comments!=null){
+			for(int i=0; i<comments.length;i++) {
+				//delete the comment and all relations of it
+				commentDao.deleteComment(comments[i].getComment_id());
+			}
+		}	
+		//delete from HasIngredient table
+		this.getTemplate().update("DELETE FROM HasIngredient WHERE recipe_id = ?",
+				new Object[] {recipe_id});
+		//delete from HasTag table
+		this.getTemplate().update("DELETE FROM HasTag WHERE recipe_id = ?",
+				new Object[] {recipe_id});
+		//delete from EatLikeRate table
+		this.getTemplate().update("DELETE FROM EatLikeRate WHERE recipe_id = ?",
+				new Object[] {recipe_id});
+		//delete from RecipePhoto table
+		this.getTemplate().update("DELETE FROM RecipePhoto WHERE recipe_id = ?",
+				new Object[] {recipe_id});
+		//delete reports of this recipe
+		deleteAllReportsOfRecipe(recipe_id);
+		//delete from SharesRecipe table
+		this.getTemplate().update("DELETE FROM SharesRecipe WHERE recipe_id = ?",
+				new Object[] {recipe_id});
+		//delete from UserRecipeScore table
+		this.getTemplate().update("DELETE FROM UserRecipeScore WHERE recipe_id = ?",
+				new Object[] {recipe_id});
+		//update Derived table
+		this.getTemplate().update("DELETE FROM Derived WHERE parent_recipe_id = ?",
+				new Object[] {recipe_id});
+		this.getTemplate().update("DELETE FROM Derived WHERE child_recipe_id = ?",
+				new Object[] {recipe_id});
+	}
+	
+	
 }
