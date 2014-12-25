@@ -130,7 +130,7 @@ public class UserController {
 			@RequestParam(value = "birthday_month", required = false) String month,
 			@RequestParam(value = "birthday_day", required = false) String day,
 			@RequestParam(value = "gender", required = false) Integer gender,
-			@RequestParam(value = "photo", required = false) String photo,
+			@RequestParam(value = "link", required = false) String photo,
 			RedirectAttributes redirectAttrs, HttpSession session) throws ParseException {
 		
 		Message msg = new Message();
@@ -224,14 +224,14 @@ public class UserController {
 			msg.setMessage("You've successfully changed your gender!");
 			
 		}else if (changed.equals("photo")){
-			/*
+			
 			if (photo.equals("")) {
 				msg.setIsSuccess(0);
-				msg.setMessage("Photo cannot be empty!");
+				msg.setMessage("Photo uploading haven't finished!");
 				redirectAttrs.addFlashAttribute("message", msg);
 				return "redirect:/user/homesettings";
 			}
-				*/	
+			
 			User u = (User) session.getAttribute("user");
 			u.setPhoto(photo);
 			userService.getUserDao().updateUser(u);
