@@ -76,9 +76,9 @@ public class HomeController {
 			}
 			if(recipes != null){
 				model.addAttribute("recommendedRecipes", recipes);
-				String[] recipePhotos = new String[recipes.length];
+				String[][] recipePhotos = new String[recipes.length][];
 				for(int i=0; i<recipes.length; i++){
-					recipePhotos[i] = recipeService.getRecipePhotoUrl(recipes[i].getRecipe_id());
+					recipePhotos[i] = recipeService.getRecipeAllPhotoUrl(recipes[i].getRecipe_id());
 				}
 				model.addAttribute("recommendedRecipesPhotos", recipePhotos);
 			}

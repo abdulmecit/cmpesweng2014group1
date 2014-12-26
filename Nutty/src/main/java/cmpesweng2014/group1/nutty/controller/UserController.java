@@ -438,7 +438,8 @@ public class UserController {
 		for(int i=0; i<recipeIds.length; i++){
 			response[i][0] = recipeIds[i] + "";
 			response[i][1] = recipeService.getRecipe(recipeIds[i]).getName();
-			response[i][2] = recipeService.getRecipePhotoUrl(recipeIds[i]);
+			String[] urls = recipeService.getRecipeAllPhotoUrl(recipeIds[i]);
+			response[i][2] = urls[0];
 		}
 		return response;
 	}
@@ -456,7 +457,8 @@ public class UserController {
 		for(int i=0; i<recipeIds.length; i++){
 			response[i][0] = recipeIds[i] + "";
 			response[i][1] = recipeService.getRecipe(recipeIds[i]).getName();
-			response[i][2] = recipeService.getRecipePhotoUrl(recipeIds[i]);
+			String[] urls = recipeService.getRecipeAllPhotoUrl(recipeIds[i]);
+			response[i][2] = urls[0];
 		}
 		return response;
 	}
@@ -571,7 +573,8 @@ public class UserController {
 		
 		for(int i=0; i<recipeCount; i++){
 			ownedRecipes[i] = recipeService.getRecipe(ownedRecipeIds[i]);
-			ownedRecipePictures[i] = recipeService.getRecipePhotoUrl(ownedRecipeIds[i]);
+			String[] urls = recipeService.getRecipeAllPhotoUrl(ownedRecipeIds[i]);
+			ownedRecipePictures[i] = urls[0];
 		}
 		
 		su.setOwnedRecipes(ownedRecipes);
@@ -584,7 +587,8 @@ public class UserController {
 		
 		for(int i=0; i<recipeCount; i++){
 			sharedRecipes[i] = recipeService.getRecipe(sharedRecipeIds[i]);
-			sharedRecipePictures[i] = recipeService.getRecipePhotoUrl(sharedRecipeIds[i]);
+			String[] urls = recipeService.getRecipeAllPhotoUrl(sharedRecipeIds[i]);
+			sharedRecipePictures[i] = urls[0];
 		}
 		
 		su.setSharedRecipes(sharedRecipes);
