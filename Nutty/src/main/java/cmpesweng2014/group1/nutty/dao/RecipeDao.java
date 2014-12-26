@@ -353,20 +353,28 @@ public class RecipeDao extends PcDao{
 				
 	}
 	
-	public String getPhotoUrl(int recipe_id){
+	public String[] getAllPhotoUrl(int recipe_id){
 		int count=this.getTemplate().queryForObject(
 				"SELECT COUNT(*) FROM RecipePhoto a, Photo b WHERE a.photo_id = b.photo_id and recipe_id = ?",  
 				new Object[] {recipe_id}, Integer.class);
 		if(count==0){
-			return "http://i.imgur.com/opd2vBI.png";
+			String[] defaultUrl = {"http://i.imgur.com/opd2vBI.png",""};
+			return defaultUrl;
 		}
 		else{
-			String photoUrl=this.getTemplate().queryForObject(
+			List<String> photoUrlList=this.getTemplate().queryForList(
 				"SELECT url FROM RecipePhoto a, Photo b WHERE a.photo_id = b.photo_id and recipe_id = ?", 
 				new Object[] {recipe_id}, String.class);
-			return photoUrl;
+			if (photoUrlList.isEmpty()) {
+				return null;
+			}
+			else{
+				String[] urls = photoUrlList.toArray(new String[photoUrlList.size()]);
+				return urls;
+			}
 		}
 	}
+	
 	
 	public Long getOwnerId(int recipe_id){
 		

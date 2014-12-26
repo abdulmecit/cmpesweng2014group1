@@ -66,7 +66,7 @@ public class RecipeController {
 	public String addRecipe(@RequestParam(value = "recipeName", required = true) String recipeName,
 							@RequestParam(value = "description", required = true) String description,
 							@RequestParam(value = "portion", required = true) int portion,
-							@RequestParam(value = "link", required = true) String link,
+							@RequestParam(value = "link[]", required = true) String[] link,
 							@RequestParam(value = "ingredient[]", required = true) String[] ingredients,
 							@RequestParam(value = "amount[]", required = true) String[] amounts,
 							@RequestParam(value = "measType[]", required = true) String[] meas_types, 
@@ -108,7 +108,7 @@ public class RecipeController {
 	public Message addRecipeREST(@RequestParam(value = "recipeName", required = true) String recipeName,
 							@RequestParam(value = "description", required = true) String description,
 							@RequestParam(value = "portion", required = true) int portion,
-							@RequestParam(value = "link", required = true) String link,
+							@RequestParam(value = "link[]", required = true) String link,
 							@RequestParam(value = "ingredient[]", required = true) String ingredientz,
 							@RequestParam(value = "amount[]", required = true) String amountz,
 							@RequestParam(value = "measType[]", required = true) String meas_typez, 
@@ -116,6 +116,7 @@ public class RecipeController {
 							@RequestParam(value = "tag[]", required = false) String tagz) {
 		
 		String[] tags = {};
+		String[] urls = {};
 		//Convert from JSON String
 		Gson gson = new Gson();
 		String[] ingredients = gson.fromJson(ingredientz, String[].class);
@@ -129,6 +130,13 @@ public class RecipeController {
 			tags = tagSet.toArray(new String[0]);
 		}
 		
+		if(link != null){
+			//Remove empty and duplicate links			
+			HashSet<String> linkSet = new HashSet<String>(Arrays.asList(gson.fromJson(link, String[].class)));
+			linkSet.remove(new String(""));
+			urls = linkSet.toArray(new String[0]);
+		}
+		
 		double[] parsedAmounts = new double[amounts.length];
 		//Check if entered amounts are valid
 		for(int i=0; i<amounts.length; i++){
@@ -140,7 +148,7 @@ public class RecipeController {
 		}
 		
 		User u = userService.getUserDao().getUserById(user_id);	
-		Recipe r = recipeService.createRecipe(recipeName, description, portion, link, ingredients, amounts, parsedAmounts, meas_types, u, tags);
+		Recipe r = recipeService.createRecipe(recipeName, description, portion, urls, ingredients, amounts, parsedAmounts, meas_types, u, tags);
 		if(r != null){
 			return new Message(1, r, "Your recipe is successfully added to the system.");		
 		}
@@ -236,7 +244,7 @@ public class RecipeController {
 			model.addAttribute("reportOfUser", reportOfUser);
 		}
 		
-		String photoUrl = recipeService.getRecipePhotoUrl(recipeId);
+		String[] photoUrl = recipeService.getRecipeAllPhotoUrl(recipeId);
 		model.addAttribute("photoUrl", photoUrl);
 		
 		Long ownerId = recipeService.getRecipeOwnerId(recipeId);
@@ -274,7 +282,7 @@ public class RecipeController {
 		Tag[] tags=recipeService.getAllTags(recipeId);
 		if(tags != null)
 			model.addAttribute("tags", tags);
-		String photoUrl = recipeService.getRecipePhotoUrl(recipeId);
+		String[] photoUrl = recipeService.getRecipeAllPhotoUrl(recipeId);
 		model.addAttribute("photoUrl", photoUrl);
 		
 		return "derivedRecipe";
@@ -284,7 +292,7 @@ public class RecipeController {
 	public String addDerivedRecipe(@PathVariable int recipeId, @RequestParam(value = "recipeName", required = true) String recipeName,
 			@RequestParam(value = "description", required = true) String description,
 			@RequestParam(value = "portion", required = true) int portion,
-			@RequestParam(value = "link", required = true) String link,
+			@RequestParam(value = "link[]", required = true) String[] link,
 			@RequestParam(value = "ingredient[]", required = true) String[] ingredients,
 			@RequestParam(value = "amount[]", required = true) String[] amounts,
 			@RequestParam(value = "measType[]", required = true) String[] meas_types,
@@ -337,7 +345,7 @@ public class RecipeController {
 		Tag[] tags=recipeService.getAllTags(recipeId);
 		if(tags != null)
 			model.addAttribute("tags", tags);
-		String photoUrl = recipeService.getRecipePhotoUrl(recipeId);
+		String[] photoUrl = recipeService.getRecipeAllPhotoUrl(recipeId);
 		model.addAttribute("photoUrl", photoUrl);
 		
 		return "editRecipe";
@@ -347,7 +355,7 @@ public class RecipeController {
 	public String editRecipe(@PathVariable int recipeId, @RequestParam(value = "recipeName", required = true) String recipeName,
 			@RequestParam(value = "description", required = true) String description,
 			@RequestParam(value = "portion", required = true) int portion,
-			@RequestParam(value = "link", required = true) String link,
+			@RequestParam(value = "link[]", required = true) String[] link,
 			@RequestParam(value = "ingredient[]", required = true) String[] ingredients,
 			@RequestParam(value = "amount[]", required = true) String[] amounts,
 			@RequestParam(value = "measType[]", required = true) String[] meas_types,
@@ -531,7 +539,7 @@ public class RecipeController {
 		double avgEaseRate = recipeService.avgOfEaseRates(recipeId);
 		sr.setAvgEaseRate(avgEaseRate);
 		
-		String photoUrl = recipeService.getRecipePhotoUrl(recipeId);
+		String[] photoUrl = recipeService.getRecipeAllPhotoUrl(recipeId);
 		sr.setPhotoUrl(photoUrl);
 		
 		Long ownerId = recipeService.getRecipeOwnerId(recipeId);

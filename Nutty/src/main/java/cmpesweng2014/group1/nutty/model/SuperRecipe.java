@@ -13,7 +13,7 @@ public class SuperRecipe{
 	private double avgCostRate;
 	private double avgTasteRate;
 	private double avgEaseRate;
-	private String photoUrl;
+	private String[] photoUrl;
 	private String owner;
 	private Recipe parent;
 	private Recipe[] children;
@@ -26,7 +26,7 @@ public class SuperRecipe{
 	public SuperRecipe(Recipe recipe, IngredientAmount[] ingredientAmounts,
 			Comment[] comments, String[] commenters, int[] commentLikes, int noOfLikes,
 			int noOfEats, double avgHealthRate, double avgCostRate,
-			double avgTasteRate, double avgEaseRate, String photoUrl,
+			double avgTasteRate, double avgEaseRate, String[] photoUrl,
 			String owner, Recipe parent, Recipe[] children, Tag[] tags) {
 		super();
 		this.recipe = recipe;
@@ -135,11 +135,11 @@ public class SuperRecipe{
 		this.avgEaseRate = avgEaseRate;
 	}
 
-	public String getPhotoUrl() {
+	public String[] getPhotoUrl() {
 		return photoUrl;
 	}
 
-	public void setPhotoUrl(String photoUrl) {
+	public void setPhotoUrl(String[] photoUrl) {
 		this.photoUrl = photoUrl;
 	}
 

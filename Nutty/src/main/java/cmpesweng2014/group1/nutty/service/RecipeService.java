@@ -65,7 +65,7 @@ public class RecipeService {
 	//returns created recipe object 
 	//give the user also to the function
 	public Recipe createRecipe(String name, String description,
-			int portion, String photo_url, String[] ingredients, String[] amounts, double[] parsedAmounts, String[] meas_types, User user, String[] tags) {
+			int portion, String[] photo_url, String[] ingredients, String[] amounts, double[] parsedAmounts, String[] meas_types, User user, String[] tags) {
 		
 		int[] ingredient_ids=new int[ingredients.length];
 		int[] ingredient_calories=new int[ingredients.length];
@@ -94,8 +94,11 @@ public class RecipeService {
 		recipeDao.addOwner(recipe_id, user.getId());			
 		
 		//Add photoUrl
-		if(photo_url != null && photo_url != "")
-		recipeDao.addPhotoUrl(photo_url, recipe_id);
+		if(photo_url != null)
+			for(int i=0; i<photo_url.length;i++){
+				if(photo_url[i] != "")
+					recipeDao.addPhotoUrl(photo_url[i], recipe_id);
+		}
 		
 		return recipeDao.getRecipeById(recipe_id);	
 	}	
@@ -221,15 +224,15 @@ public class RecipeService {
 		return recipeDao.getVoterCountForRate("ease_rate", recipe_id);
 	}
 	//returns url of the recipe photo
-	public String getRecipePhotoUrl(int recipe_id){
-		return recipeDao.getPhotoUrl(recipe_id);
+	public String[] getRecipeAllPhotoUrl(int recipe_id){
+		return recipeDao.getAllPhotoUrl(recipe_id);
 	}
 	public Long getRecipeOwnerId(int recipe_id){
 		return recipeDao.getOwnerId(recipe_id);
 	}
 	//creates and returns the derived recipe
 	public Recipe deriveRecipe(String name, String description,
-			int portion, String photo_url, String[] ingredients, String[] amounts, double[] parsedAmounts, String[] meas_types, User user, 
+			int portion, String[] photo_url, String[] ingredients, String[] amounts, double[] parsedAmounts, String[] meas_types, User user, 
 			Recipe originalRecipe, String[] tags){
 		Recipe createdRecipe=createRecipe(name, description,
 				portion, photo_url,ingredients,amounts, parsedAmounts, meas_types, user, tags);
@@ -318,7 +321,7 @@ public class RecipeService {
 		return intersection.toArray(new Recipe[intersection.size()]);
 	}
 	
-	public Recipe editRecipe(int recipe_id,String name, String description,int portion, String photo_url, String[] ingredients, String[] amounts, double[] parsedAmounts, String[] meas_types, String[] tags){
+	public Recipe editRecipe(int recipe_id,String name, String description,int portion, String[] photo_url, String[] ingredients, String[] amounts, double[] parsedAmounts, String[] meas_types, String[] tags){
 		int[] ingredient_ids=new int[ingredients.length];
 		int[] ingredient_calories=new int[ingredients.length];
 		int ing_id;		
@@ -349,8 +352,10 @@ public class RecipeService {
 		//delete photo
 		recipeDao.deleteRecipePhoto(recipe_id);
 		//Add photoUrl
-		if(photo_url != null && photo_url != "")
-			recipeDao.addPhotoUrl(photo_url, recipe_id);
+		if(photo_url != null)
+			for(int i=0;i<photo_url.length;i++)
+					if(photo_url[i] != "")
+						recipeDao.addPhotoUrl(photo_url[i], recipe_id);
 		
 		return recipeDao.getRecipeById(recipe_id);
 	}
