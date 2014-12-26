@@ -72,14 +72,12 @@ public class UserService {
 		}		
 	}
 	//add unpreferred food 
-	public void addUnpreferredFood(User user, String[] foodNames){
+	public void addUnpreferredFood(User user, String[] ing_grp_names){
 		foodSelectionDao.deleteAllUnpreferredFood(user.getId());
-		if(foodNames == null)
+		if(ing_grp_names == null)
 			return;	
-		int ing_id;
-		for(int i=0; i<foodNames.length; i++){
-			ing_id=ingredientDao.getIdByName(foodNames[i]);
-			foodSelectionDao.addUnpreferredFood(ing_id, user.getId());
+		for(int i=0; i<ing_grp_names.length; i++){
+			foodSelectionDao.addUnpreferredFood(user.getId(), ing_grp_names[i]);
 		}		
 	}	
 	//returns food intolerances for the given user as an array of foodSelection objects
@@ -95,7 +93,7 @@ public class UserService {
 		return foodSelectionDao.getFoodSelectionForUser(user.getId());
 	}
 	//returns unpreferred foods for the given user
-	public Ingredient[] getUnpreferredForUser(User user){
+	public String[] getUnpreferredForUser(User user){
 		return foodSelectionDao.getUnpreferredFoodForUser(user.getId());
 	}
 	//add follower

@@ -349,13 +349,13 @@ public class UserController {
 			msg.setMessage("You've successfully changed your gender!");
 			
 		}else if (changed.equals("photo")){
-			/*
+			
 			if (photo.equals("")) {
 				msg.setIsSuccess(0);
-				msg.setMessage("Photo cannot be empty!");
+				msg.setMessage("Photo uploading haven't finished!");
 				return msg;
 			}
-				*/	
+			
 			u.setPhoto(photo);
 			userService.getUserDao().updateUser(u);
 			msg.setIsSuccess(1);
@@ -493,7 +493,7 @@ public class UserController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/unpreferREST")
-	public Ingredient[] getUnpreferred(
+	public String[] getUnpreferred(
 			@RequestParam(value = "user_id", required = true) Long user_id
 			) {
 		
@@ -550,7 +550,7 @@ public class UserController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/userREST/{userId}")
+	@RequestMapping(value = "/userREST/{visited_user_id}")
 	public SuperUser viewUserREST(@PathVariable Long visited_user_id){
 		
 		SuperUser su = new SuperUser();

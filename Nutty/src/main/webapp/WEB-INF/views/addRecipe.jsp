@@ -309,26 +309,37 @@ body {
 						filter : request.term
 					},
 					success : function(data) {
-						response($.map(data, function(item) {
-							return {
-								label : item.ing_name,
-								id : item.id,
-							};
-						}));
+						if(!data.length){
+							response([{
+								label: 'Sorry! No matches found.', 
+								value: "false"
+							}]);
+						}
+						else{
+							response($.map(data, function(item) {
+								return {
+									label : item.ing_name,
+									id : item.id,
+									value : "true"
+								};
+							}));
+						}
 					}
 				});
 			},
 			minLength : 3,
 			select : function(event, ui) {
-				$.ajax({
-					type : "POST",
-					url : "measTypesOfIngr",
-					data : {
-						ing_id : ui.item.id
-					}
-				}).done(function(meas_types) {
-					addInput('dynamicInput', ui.item.label, meas_types);
-				});
+				if(ui.item.value == "true"){
+					$.ajax({
+						type : "POST",
+						url : "measTypesOfIngr",
+						data : {
+							ing_id : ui.item.id
+						}
+					}).done(function(meas_types) {
+						addInput('dynamicInput', ui.item.label, meas_types);
+					});
+				}
 				//clear text box
 				$(this).val("");
 				return false;

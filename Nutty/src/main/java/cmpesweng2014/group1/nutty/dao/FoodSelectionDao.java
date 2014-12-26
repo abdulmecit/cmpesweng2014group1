@@ -56,8 +56,8 @@ public class FoodSelectionDao extends PcDao {
 				new Object[] { user_id});
 	}
 	
-	public void addUnpreferredFood(final int ing_id, final long user_id){
-		final String query = "INSERT INTO Unprefer (user_id, ing_id) VALUES (?,?)";
+	public void addUnpreferredFood(final long user_id, final String ing_grp_name){
+		final String query = "INSERT INTO Unprefer (user_id, ing_grp_name) VALUES (?,?)";
 
 		this.getTemplate().update(new PreparedStatementCreator() {
 
@@ -66,7 +66,7 @@ public class FoodSelectionDao extends PcDao {
 					Connection connection) throws SQLException {
 				PreparedStatement ps = connection.prepareStatement(query);
 				ps.setLong(1, user_id);
-				ps.setInt(2, ing_id);
+				ps.setString(2, ing_grp_name);
 				return ps;
 			}
 		});
@@ -100,17 +100,16 @@ public class FoodSelectionDao extends PcDao {
 		}
 	}
 	
-	public Ingredient[] getUnpreferredFoodForUser(long user_id){
-		List<Ingredient> ingList = this.getTemplate().query(
-				"SELECT Shrt_Desc as ing_name, Energ_Kcal as calorie, NDB_No as id "
-				+ "FROM ingredients a, Unprefer b  WHERE "
-				+ " user_id= ? AND a.NDB_No=b.ing_id",
-				new Object[] { user_id }, new IngredientRowMapper());
-		if (ingList.isEmpty()) {
+	public String[] getUnpreferredFoodForUser(long user_id){		
+		List<String> unpreferred = this.getTemplate().queryForList(
+				"SELECT ing_grp_name FROM Unprefer WHERE user_id = ?",
+				new Object[] { user_id  }, String.class);
+	
+		if (unpreferred.isEmpty()) {
 			return null;
-		} else {
-			Ingredient[] ingredients = ingList.toArray(new Ingredient[ingList.size()]);
-			return ingredients;
+		}
+		else{
+			return unpreferred.toArray(new String[unpreferred.size()]);
 		}
 	}
 
@@ -166,7 +165,7 @@ public class FoodSelectionDao extends PcDao {
 		List<Ingredient> ingList = this.getTemplate().query(
 				"SELECT Shrt_Desc as ing_name, Energ_Kcal as calorie, NDB_No as id "
 				+ "FROM ingredients a, Unprefer b  WHERE "
-				+ " b.user_id= ? AND a.NDB_No=b.ing_id",
+				+ " user_id= ? AND a.Shrt_Desc LIKE CONCAT(b.ing_grp_name,',%') ",
 				new Object[] { user_id }, new IngredientRowMapper());
 		if (ingList.isEmpty()) {
 			return null;

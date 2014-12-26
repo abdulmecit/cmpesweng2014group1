@@ -602,7 +602,25 @@ public class RecipeController {
 	@ResponseBody
 	@RequestMapping(value = "/someIngredients2")
 	public Ingredient[] someIngredients2(@RequestParam(value = "filter", required = true) String filter) {
-		return recipeService.getSomeIngredients(filter);
+		Ingredient[] matchedIngredients = recipeService.getSomeIngredients(filter);
+		if(matchedIngredients == null)
+			return new Ingredient[0];
+		return matchedIngredients;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/someIngredients3")
+	public String[] someIngredients3(@RequestParam(value = "filter", required = true) String filter) {
+		Ingredient[] matchedIngredients = recipeService.getSomeIngredients(filter);
+		if(matchedIngredients == null)
+			return new String[0];
+		HashSet<String> ingredientTypes = new HashSet<String>();
+		for(int i=0; i<matchedIngredients.length; i++){
+			String[] temp = matchedIngredients[i].getIng_name().split(",");
+			if(temp[0].toUpperCase().contains(filter.toUpperCase()))
+				ingredientTypes.add(temp[0]);
+		}
+		return ingredientTypes.toArray(new String[ingredientTypes.size()]);
 	}
 	
 	@ResponseBody

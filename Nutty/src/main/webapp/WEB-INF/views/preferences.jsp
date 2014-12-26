@@ -244,31 +244,40 @@ body {
 			}).done(function(res) {
 				var len = res.length;
 				for (var i = 0; i < len; i++)
-					addRow(res[i].ing_name);
+					addRow(res[i]);
 			});
 		});
 
 		$("#addPreference").autocomplete({
 			source : function(request, response) {
 				$.ajax({
-					url : "../someIngredients2",
+					url : "../someIngredients3",
 					dataType : "json",
 					data : {
 						filter : request.term
 					},
-					success : function(data) {
-						response($.map(data, function(item) {
-							return {
-								label : item.ing_name,
-								id : item.id,
-							};
-						}));
+					success : function(data) {				
+						if(!data.length){
+							response([{
+								label: 'Sorry! No matches found.', 
+								value: "false"
+							}]);
+						}
+						else{
+							response($.map(data, function(item) {
+								return {
+									label : item,
+									value : "true"
+								};
+							}));
+						}
 					}
 				});
 			},
 			minLength : 3,
 			select : function(event, ui) {
-				addRow(ui.item.label);
+				if(ui.item.value == "true")
+					addRow(ui.item.label);
 				//clear text box
 				$(this).val("");
 				return false;

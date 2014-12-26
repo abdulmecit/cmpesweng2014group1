@@ -329,7 +329,7 @@ body {
 				type : "POST",
 				url : "../foodIntoleranceREST",
 				data : {
-					user_id : '${user.id}'
+					user_id : '${visitedUser.id}'
 				}
 			}).done(function(res) {
 				var len = res.length;
@@ -349,7 +349,7 @@ body {
 				type : "POST",
 				url : "../healthConditionREST",
 				data : {
-					user_id : '${user.id}'
+					user_id : '${visitedUser.id}'
 				}
 			}).done(function(res) {
 				var len = res.length;
@@ -369,7 +369,7 @@ body {
 				type : "POST",
 				url : "../unpreferREST",
 				data : {
-					user_id : '${user.id}'
+					user_id : '${visitedUser.id}'
 				}
 			}).done(function(res) {
 				var len = res.length;
