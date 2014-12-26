@@ -5,6 +5,39 @@
 <jsp:include page="header.jsp" flush="true"/>
     <title>Nutty</title>
     
+    
+    <style>
+#dropArea {
+	text-align: center;
+	line-height: 50px;
+	line-width: 50px;
+	margin: auto;
+	font-size: 15px;
+	display: inline-block;
+}
+
+#progress {
+	display: none
+}
+
+.uploading #dropArea {
+	display: none
+}
+
+.uploaded #dropArea {
+	display: none
+}
+
+.uploading #progress {
+	display: inline
+}
+
+.uploaded #progress {
+	display: inline
+}
+</style>
+    
+    
 </head>
 <body>
     <div class="container">
@@ -54,6 +87,32 @@
                   <input type="radio" name="gender" value="1">Female
 			    </div>
 			  </div>
+			  
+			  
+			  
+			  <div class="form-group">
+			    <label for="inputPhoto" class="col-sm-4 control-label">Photo:</label>
+			    <div  class="panel panel-default">
+									<div class="panel-body form-group" align="center"
+										style="height: 158px">
+										<div id="dropArea">
+											Drag and drop your profile picture here! OR
+											<br>
+											<button type="button"
+												onclick="document.querySelector('#elma').click()">Choose
+												from your computer</button>
+										</div>
+										<input id="elma" style="visibility: collapse; width: 0px;"
+										type="file" onchange="upload(this.files[0])">
+										 
+										<input type="hidden" class="form-control" id="link" name="link"></input>
+										<p id="progress">Uploading...</p>
+									</div>
+								</div>
+			  </div>
+			  
+			  
+			  
 			  <div class="form-group">
 			    <div class="col-sm-offset-2 col-sm-10">
 			      <button type="submit" class="btn btn-primary" id="registerButton" disabled>Sign Up</button>
@@ -145,5 +204,34 @@
 	  			});*/
     		}
     	});		
+      
+      
+      
+      window.ondragover = function(e) {
+			e.preventDefault()
+		}
+		window.ondrop = function(e) {
+			e.preventDefault();
+			upload(e.dataTransfer.files[0]);
+		}
+
+		function upload(file) {
+			if (!file || !file.type.match(/image.*/))
+				return;
+			document.body.className = "uploading";
+			var fd = new FormData();
+			fd.append("image", file);
+			var xhr = new XMLHttpRequest();
+			xhr.open("POST", "https://api.imgur.com/3/image.json");
+			xhr.onload = function() {
+				document.querySelector("#link").value = JSON
+						.parse(xhr.responseText).data.link;
+				document.querySelector("#progress").innerHTML = "Done!";
+				document.body.className = "uploaded";
+			}
+
+			xhr.setRequestHeader('Authorization', 'Client-ID 4aaaa88af99c596');
+			xhr.send(fd);
+		}
 	</script>
 </html>
