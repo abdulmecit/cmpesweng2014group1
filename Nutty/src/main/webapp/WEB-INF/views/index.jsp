@@ -225,12 +225,6 @@ input#img-1:checked ~ .nav-dots label#img-dot-1, input#img-2:checked ~
 								class="btn btn-link">Shared Recipes</a></li>
 						</ul>
 						<div id="results">
-							<c:forEach var="recRecipes" items="${recommendedRecipes}">
-								<a href="recipe/${recRecipes.recipe_id}"
-									class="list-group-item">
-									<h5 class="list-group-item-heading">${recRecipes.name}</h5>
-								</a>
-							</c:forEach>
 						</div>
 					</div>
 
@@ -250,54 +244,27 @@ input#img-1:checked ~ .nav-dots label#img-dot-1, input#img-2:checked ~
 <script type="text/javascript">
 	var searchFilter;
 	var user_id = '${user.id}';
+	var result="";
 
 	$(".filter").click(function() {
 		$(this).addClass("active").siblings().removeClass("active");
 		searchFilter = this.id;
-	});
-		
-		/*
+				
 		if (searchFilter == "recommendation") {
-			//$('#results').append("recommendation");
-		} else if (searchFilter == "myRecipe") {
-			 $('#results').append(user_id);
-			$
-					.ajax({
-						type : "POST",
-						url : "user/getUsersRecipes",
-						data : {
-							userId : '${user.id}',
-						}
-					})
-					.done(
-							function(response) {
-								if (response != null) {
-									for (var i = 0; i < response.length; i++) {
-										var href = "../../recipe/"
-												+ response[i][0];
-										var name = response[i][1];
-										var src = response[i][2];
-										$('#results')
-												.append(
-														"<a href='"+href+"'><img src='"
-																+ src
-																+ "' title='"
-																+ name
-																+ "' onError='this.onerror=null;this.src=\"http://img2.wikia.nocookie.net/__cb20130511180903/legendmarielu/images/b/b4/No_image_available.jpg\";' width='50%' height='auto'><p>"
-																+ name
-																+ "</p></a>");
-									}
-								} else {
-									$('#results').empty();
-									$('#results')
-											.append(
-													"User doesn't own any recipe :(");
-								}
-					});
-
+			$('#results').empty();
+			result='<c:forEach var="recRecipes" items="${recommendedRecipes}"> <a href="recipe/${recRecipes.recipe_id}"'
+				+'class="list-group-item"><h5 class="list-group-item-heading">${recRecipes.name}</h5></a></c:forEach>';
+			$('#results').append(result);
+		}
+		else if (searchFilter == "myRecipe") {
+			$('#results').empty();	
 		} else if (searchFilter == "myFriendsRecipe") {
+			$('#results').empty();
 		} else if (searchFilter == "sharedRecipe") {
+			$('#results').empty();
 		} else {
-		} */
+			$('#results').empty();
+		}
+	});
 </script>
 </html>
