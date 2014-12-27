@@ -1,6 +1,5 @@
 package cmpesweng2014.group1.nutty.dao;
 
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -10,15 +9,14 @@ import java.util.List;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
 
 import cmpesweng2014.group1.nutty.dao.mapper.BadgeRowMapper;
 import cmpesweng2014.group1.nutty.model.Badge;
 
-
-
+@Component
 public class BadgeDao extends PcDao {
 
-	
 	public Long addBadge(final String name, final double min_score, final double max_score){
 		final String query = "INSERT INTO Badge (name, min_score, max_score) VALUES (?,?,?)";
 
@@ -133,8 +131,6 @@ public class BadgeDao extends PcDao {
 					return ps;
 				}
 			}, gkh);
-		}
-		
-		
+		}	
 	}
 }

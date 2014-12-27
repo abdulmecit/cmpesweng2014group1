@@ -1,15 +1,11 @@
 package cmpesweng2014.group1.nutty.model;
 
-
-
 public class Badge {
 	private int badge_id;
 	private String name;
 	private double min_score;
 	private double max_score;
-	
-	
-	
+		
 	public Badge() {
 		super();
 	}
