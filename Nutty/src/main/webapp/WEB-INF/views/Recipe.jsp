@@ -297,7 +297,7 @@ body {
 					<div class="col-sm-6 col-centered">
 						<div class="panel panel-default">
 							<div class="panel-body" style="height: 300px; overflow: scroll;">
-								<div class="row">
+								<div id="rateButtons" class="row">
 									<!----------------------- Rate Buttons ----------------------------->
 									<div class="btn-group btn-info "
 										style="margin: 0px 0px 15px 15px;">
@@ -765,7 +765,7 @@ body {
 						} else {
 							$("#comments")
 									.append(
-											"<h4 style='text-align: center; margin-bottom: 10px; margin-top: 10px '><em>please login to add and see comments</em><h4>");
+											"<h4 style='text-align: center; margin-bottom: 10px; margin-top: 10px '><em>please <a href='../login'>login</a> to add and see comments</em><h4>");
 							$('#commentButton').attr("disabled", true);
 						}
 					});
@@ -828,5 +828,16 @@ body {
 
 		return false;
 	};
+	
+	$(document).ready( function() {
+		if (isLogged != 'true') {
+			$('#rateButtons').css('display', 'none');
+			$("#Eat").css('display', 'none');
+			$("#Like").css('display', 'none');
+			$("#Share").css('display', 'none');
+			$("#derivedRecipeButton").css('display', 'none');
+			$("#addComment").css('display', 'none');
+		}			
+	});
 </script>
 </html>
