@@ -72,6 +72,9 @@ public class UserController {
 			User[] followings = userService.getFollowingList(u.getId());
 			model.addAttribute("followings", followings);
 			
+			String badge = userService.getBadge(u.getId()).getName();
+			model.addAttribute("badge", badge);
+			
 			return "profile";
 		} else {
 			return "redirect:/login";
@@ -595,18 +598,6 @@ public class UserController {
 		su.setSharedRecipePictures(sharedRecipePictures);
 		
 		return su;
-	}
-	
-	
-	public String getUserBadge(
-			@RequestParam(value = "userId", required = true) Long userId){
-				
-		if (userId == null) {
-			return null;
-		}
-		
-		String badgeName = userService.getBadge(userId).getName();
-		return badgeName;
 	}
 	
 }

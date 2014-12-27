@@ -119,7 +119,7 @@ body {
 						src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"
 						width="50px" height="auto">
 					<p>&nbsp;</p>
-					<h2>Master Chef</h2>
+					<h2>${badge}</h2>
 					<h3>&nbsp;</h3>
 					<h3>
 						<a id="showFollowers" title="Click to see them">
