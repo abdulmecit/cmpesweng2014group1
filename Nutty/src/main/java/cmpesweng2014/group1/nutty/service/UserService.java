@@ -2,6 +2,7 @@ package cmpesweng2014.group1.nutty.service;
 
 import java.sql.Date;
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,10 +11,13 @@ import org.springframework.stereotype.Component;
 import cmpesweng2014.group1.nutty.dao.FoodSelectionDao;
 import cmpesweng2014.group1.nutty.dao.IngredientDao;
 import cmpesweng2014.group1.nutty.dao.UserDao;
+import cmpesweng2014.group1.nutty.dao.BadgeDao;
+import cmpesweng2014.group1.nutty.model.Badge;
 import cmpesweng2014.group1.nutty.model.FoodSelection;
 import cmpesweng2014.group1.nutty.model.Ingredient;
 import cmpesweng2014.group1.nutty.model.Message;
 import cmpesweng2014.group1.nutty.model.User;
+import cmpesweng2014.group1.nutty.model.UserRecipeScore;
 
 @Component
 public class UserService {
@@ -24,6 +28,9 @@ public class UserService {
 	private FoodSelectionDao foodSelectionDao;
 	@Autowired
 	private IngredientDao ingredientDao;
+	@Autowired
+	private BadgeDao badgeDao;
+
 
 	public UserDao getUserDao() {
 		return userDao;
@@ -144,5 +151,19 @@ public class UserService {
 			return true;
 		return false;
 	}
-	
+	public Badge getBadge(long user_id){
+		List<UserRecipeScore> scoreList = userDao.getUserRecipeScore(user_id);
+		UserRecipeScore [] scoreArray = scoreList.toArray(new UserRecipeScore[scoreList.size()]);
+		if(scoreArray == null){
+			return null;
+		}else{
+			double score = 0;
+			for(int i=0;i<scoreList.size();i++){
+				score += scoreArray[i].getScore();
+			}
+			Badge badge = badgeDao.getBadgeByScore(score);
+			badgeDao.updateUserBadge(user_id,badge.getBadge_id());
+			return badge;
+		}
+	}
 }

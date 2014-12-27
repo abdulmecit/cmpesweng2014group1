@@ -13,9 +13,11 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import cmpesweng2014.group1.nutty.dao.mapper.OwnsRecipeRowMapper;
+import cmpesweng2014.group1.nutty.dao.mapper.UserRecipeScoreRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.UserRowMapper;
 import cmpesweng2014.group1.nutty.model.OwnsRecipe;
 import cmpesweng2014.group1.nutty.model.User;
+import cmpesweng2014.group1.nutty.model.UserRecipeScore;
 
 @Component
 public class UserDao extends PcDao {
@@ -165,6 +167,28 @@ public class UserDao extends PcDao {
 			return users;
 		}
 	}
+	
+	
+	public List<UserRecipeScore> getUserRecipeScore(long user_id){
+		
+		List<UserRecipeScore> scoreList = this.getTemplate().query(
+				"SELECT user_id,recipe_id, "
+						+ "COALESCE(eats_score,0)+COALESCE(health_rate_score,0) + "
+						+ "COALESCE(add_score,0)+COALESCE(likes_score,0)+COALESCE(share_score,0)+"
+						+ "COALESCE(ease_rate_score,0)+COALESCE(taste_rate_score,0)+"
+						+ "COALESCE(comment_score,0) +COALESCE(cost_rate_score,0) "
+						+ "AS 'score' FROM UserRecipeScore WHERE user_id =?",
+						new Object[] { user_id }, new UserRecipeScoreRowMapper());
+
+		
+		if (scoreList.isEmpty()) {
+			return null;
+		}else{
+			
+			return scoreList;
+		}
+	}
+	
 /*	
 	public List<User> searchUserByNameSurname(String search){
 		String words[] = search.split(" ");

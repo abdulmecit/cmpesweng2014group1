@@ -670,6 +670,26 @@ public class RecipeDao extends PcDao{
 		}
 	}
 	
+	public List<UserRecipeScore> getUserRecipeScore(long user_id){
+		
+		List<UserRecipeScore> scoreList = this.getTemplate().query(
+				"SELECT user_id,recipe_id, "
+						+ "COALESCE(eats_score,0)+COALESCE(health_rate_score,0) + "
+						+ "COALESCE(add_score,0)+COALESCE(likes_score,0)+COALESCE(share_score,0)+"
+						+ "COALESCE(ease_rate_score,0)+COALESCE(taste_rate_score,0)+"
+						+ "COALESCE(comment_score,0) +COALESCE(cost_rate_score,0) "
+						+ "AS 'score' FROM UserRecipeScore WHERE user_id =?",
+						new Object[] { user_id }, new UserRecipeScoreRowMapper());
+
+		
+		if (scoreList.isEmpty()) {
+			return null;
+		}else{
+			
+			return scoreList;
+		}
+	}
+	
 	public List<Recipe> calculateRecommendation(long user_id) throws Exception{
 		List<UserRecipeScore> scoreList = this.getTemplate().query(
 				"SELECT user_id,recipe_id, "

@@ -596,4 +596,17 @@ public class UserController {
 		
 		return su;
 	}
+	
+	
+	public String getUserBadge(
+			@RequestParam(value = "userId", required = true) Long userId){
+				
+		if (userId == null) {
+			return null;
+		}
+		
+		String badgeName = userService.getBadge(userId).getName();
+		return badgeName;
+	}
+	
 }
