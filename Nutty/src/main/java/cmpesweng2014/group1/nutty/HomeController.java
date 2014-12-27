@@ -329,7 +329,8 @@ public class HomeController {
 			answer += "[";
 			for(int i=0; i<recipes.size(); i++){
 				Recipe r = recipes.get(i);
-				answer += "{\"name\":\"" + r.getName() +"\", \"id\":\"" + r.getRecipe_id() + "\"}";
+				String[] photoUrls = recipeService.getRecipeAllPhotoUrl(r.getRecipe_id());
+				answer += "{\"name\":\"" + r.getName() +"\", \"id\":\"" + r.getRecipe_id() + "\", \"photoUrl\":\"" + photoUrls[0] + "\"}";
 				if(i != (recipes.size()-1)) {
 					answer += ",";
 				}
@@ -440,7 +441,8 @@ public class HomeController {
 		if(recipes != null){
 			answer += "[";
 			for(int i=0; i<recipes.length; i++){
-				answer += "{\"name\":\"" + recipes[i].getName() +"\", \"id\":\"" + recipes[i].getRecipe_id() + "\"}";
+				String[] photoUrls = recipeService.getRecipeAllPhotoUrl(recipes[i].getRecipe_id());
+				answer += "{\"name\":\"" + recipes[i].getName() +"\", \"id\":\"" + recipes[i].getRecipe_id() + "\", \"photoUrl\":\"" + photoUrls[0] + "\"}";
 				if(i != (recipes.length-1)) {
 					answer += ",";
 				}

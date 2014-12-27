@@ -14,7 +14,6 @@ import cmpesweng2014.group1.nutty.dao.UserDao;
 import cmpesweng2014.group1.nutty.dao.BadgeDao;
 import cmpesweng2014.group1.nutty.model.Badge;
 import cmpesweng2014.group1.nutty.model.FoodSelection;
-import cmpesweng2014.group1.nutty.model.Ingredient;
 import cmpesweng2014.group1.nutty.model.Message;
 import cmpesweng2014.group1.nutty.model.User;
 import cmpesweng2014.group1.nutty.model.UserRecipeScore;

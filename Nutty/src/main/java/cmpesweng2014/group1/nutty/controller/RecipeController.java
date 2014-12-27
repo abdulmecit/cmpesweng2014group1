@@ -635,7 +635,13 @@ public class RecipeController {
 	@RequestMapping(value = "/measTypesOfIngr")
 	public String[] measTypesOfIngr(@RequestParam(value = "ing_id", required = true) int ing_id) {
 		return recipeService.getRecipeDao().getMeasTypesByIngId(ing_id);
-	}	
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/measTypesOfIngr2")
+	public String[] measTypesOfIngr(@RequestParam(value = "ing_name", required = true) String ing_name) {
+		return recipeService.getRecipeDao().getMeasTypesByIngName(ing_name);
+	}
 	
 	@RequestMapping(value = "/recipeComments")
 	@ResponseBody
