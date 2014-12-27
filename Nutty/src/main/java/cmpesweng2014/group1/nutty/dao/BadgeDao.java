@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -94,43 +95,38 @@ public class BadgeDao extends PcDao {
 	}
 	public void updateUserBadge(final Long user_id,final int badge_id){
 		
-		int badgeId = this.getTemplate().queryForObject(
+		try{
+			this.getTemplate().queryForObject(
 				"SELECT badge_id FROM UserBadge WHERE user_id=?",
 				new Object[] {user_id}, Integer.class);
-		
-
-		if (badgeId==0) {
+		}
+		catch(DataAccessException e){	// if cannot find a matching badge_id for the given user_id
 			final String query = "INSERT INTO UserBadge (user_id, badge_id) VALUES (?,?)";
-			KeyHolder gkh = new GeneratedKeyHolder();
-
 			this.getTemplate().update(new PreparedStatementCreator() {
 
 				@Override
 				public PreparedStatement createPreparedStatement(
 						Connection connection) throws SQLException {
-					PreparedStatement ps = connection.prepareStatement(query,
-							Statement.RETURN_GENERATED_KEYS);
+					PreparedStatement ps = connection.prepareStatement(query);
 					ps.setLong(1, user_id);
 					ps.setInt(2, badge_id);
 					return ps;
 				}
-			}, gkh);
-		} else {
+			});
+			return;
+		} 
 			
-			final String query = "UPDATE UserBadge SET badge_id=? WHERE user_id=?";
-			KeyHolder gkh = new GeneratedKeyHolder();
-			this.getTemplate().update(new PreparedStatementCreator() {
+		final String query = "UPDATE UserBadge SET badge_id=? WHERE user_id=?";
+		this.getTemplate().update(new PreparedStatementCreator() {
 
-				@Override
-				public PreparedStatement createPreparedStatement(
-						Connection connection) throws SQLException {
-					PreparedStatement ps = connection.prepareStatement(query,
-							Statement.RETURN_GENERATED_KEYS);
-					ps.setInt(1, badge_id);
-					ps.setLong(2, user_id);
-					return ps;
-				}
-			}, gkh);
-		}	
+			@Override
+			public PreparedStatement createPreparedStatement(
+					Connection connection) throws SQLException {
+				PreparedStatement ps = connection.prepareStatement(query);
+				ps.setInt(1, badge_id);
+				ps.setLong(2, user_id);
+				return ps;
+			}
+		});
 	}
 }

@@ -218,7 +218,7 @@ body {
 							<input type="radio" name="radio-btn" id="img-1" checked />
 							<li class="slide-container">
 								<div class="slide">
-									<img src="${photoUrl}" />
+									<img src="${photoUrl[0]}" />
 								</div>
 								<div class="nav">
 									<label for="img-6" class="prev">&#x2039;</label> <label

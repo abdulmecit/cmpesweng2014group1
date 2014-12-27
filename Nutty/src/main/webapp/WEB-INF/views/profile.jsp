@@ -376,9 +376,9 @@ body {
 				if (len != 0) {
 					var prefs = "";
 					for (var i = 0; i < len - 1; i++) {
-						prefs += res[i].ing_name + "<br>";
+						prefs += res[i] + "<br>";
 					}
-					prefs += res[len - 1].ing_name;
+					prefs += res[len - 1];
 					document.getElementById('not_pref').innerHTML = prefs;
 				}
 			});

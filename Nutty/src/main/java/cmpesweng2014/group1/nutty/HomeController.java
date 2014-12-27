@@ -345,7 +345,7 @@ public class HomeController {
 			answer += "[";
 			for(int i=0; i<users.size(); i++){
 				User u = users.get(i);
-				answer += "{\"name\":\"" + u.getName() + " " + u.getSurname() +"\", \"id\":\"" + u.getId() + "\"}";
+				answer += "{\"name\":\"" + u.getName() + " " + u.getSurname() +"\", \"id\":\"" + u.getId() + "\", \"photoUrl\":\"" + u.getPhoto() + "\"}";
 				if(i != (users.size()-1)) {
 					answer += ",";
 				}

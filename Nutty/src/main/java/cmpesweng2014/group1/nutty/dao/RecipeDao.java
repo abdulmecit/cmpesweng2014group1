@@ -45,6 +45,8 @@ public class RecipeDao extends PcDao{
 	private UserDao userDao;
 	@Autowired
 	private CommentDao commentDao;
+	@Autowired
+	private IngredientDao ingredientDao;
 	
 	public int createRecipe(final String name, final String description,
 			final int portion, final double total_calorie) {
@@ -107,16 +109,10 @@ public class RecipeDao extends PcDao{
 	}
 	
 	public String[] getMeasTypesByIngName(String ing_name) {
-		List<String> measTypeList = this.getTemplate().queryForList(
-				"SELECT Msre_Desc FROM IngredientWeight WHERE Shrt_Desc = ?",
-				new Object[] { ing_name  }, String.class);
-	
-		if (measTypeList.isEmpty()) {
+		int ing_id = ingredientDao.getIdByName(ing_name);
+		if(ing_id == 0)
 			return null;
-		}
-		else{
-			return measTypeList.toArray(new String[measTypeList.size()]);
-		}
+		return getMeasTypesByIngId(ing_id);
 	}
 	
 	public void addIngredient(final int ingredient_id, final int recipe_id, final String amount, final String meas_type){
@@ -371,7 +367,7 @@ public class RecipeDao extends PcDao{
 				"SELECT COUNT(*) FROM RecipePhoto a, Photo b WHERE a.photo_id = b.photo_id and recipe_id = ?",  
 				new Object[] {recipe_id}, Integer.class);
 		if(count==0){
-			String[] defaultUrl = {"http://i.imgur.com/opd2vBI.png",""};
+			String[] defaultUrl = {"http://i.imgur.com/opd2vBI.png"};
 			return defaultUrl;
 		}
 		else{
