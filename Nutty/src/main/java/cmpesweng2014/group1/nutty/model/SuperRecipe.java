@@ -5,8 +5,9 @@ public class SuperRecipe{
 	private Recipe recipe;
 	private IngredientAmount[] ingredientAmounts;
 	private Comment[] comments;
-	private String[] commenters;
-	private int[] commentLikes;
+	private String[] commenterNames;
+	private long[][] commentLikerIds;
+	private String[][] commentLikerNames;
 	private int noOfLikes;
 	private int noOfEats;
 	private double avgHealthRate;
@@ -24,7 +25,7 @@ public class SuperRecipe{
 	}
 
 	public SuperRecipe(Recipe recipe, IngredientAmount[] ingredientAmounts,
-			Comment[] comments, String[] commenters, int[] commentLikes, int noOfLikes,
+			Comment[] comments, String[] commenterNames, long[][] commentLikerIds, String[][] commentLikerNames, int noOfLikes,
 			int noOfEats, double avgHealthRate, double avgCostRate,
 			double avgTasteRate, double avgEaseRate, String[] photoUrl,
 			String owner, Recipe parent, Recipe[] children, Tag[] tags) {
@@ -32,8 +33,9 @@ public class SuperRecipe{
 		this.recipe = recipe;
 		this.ingredientAmounts = ingredientAmounts;
 		this.comments = comments;
-		this.commenters = commenters;
-		this.commentLikes = commentLikes;
+		this.commenterNames = commenterNames;
+		this.commentLikerIds = commentLikerIds;
+		this.commentLikerNames = commentLikerNames;
 		this.noOfLikes = noOfLikes;
 		this.noOfEats = noOfEats;
 		this.avgHealthRate = avgHealthRate;
@@ -71,20 +73,28 @@ public class SuperRecipe{
 		this.comments = comments;
 	}
 
-	public String[] getCommenters() {
-		return commenters;
+	public String[] getCommenterNames() {
+		return commenterNames;
 	}
 
-	public void setCommenters(String[] commenters) {
-		this.commenters = commenters;
+	public void setCommenterNames(String[] commenterNames) {
+		this.commenterNames = commenterNames;
 	}
 
-	public int[] getCommentLikes() {
-		return commentLikes;
+	public long[][] getCommentLikerIds() {
+		return commentLikerIds;
 	}
 
-	public void setCommentLikes(int[] commentLikes) {
-		this.commentLikes = commentLikes;
+	public void setCommentLikerIds(long[][] commentLikerIds) {
+		this.commentLikerIds = commentLikerIds;
+	}
+
+	public String[][] getCommentLikerNames() {
+		return commentLikerNames;
+	}
+
+	public void setCommentLikerNames(String[][] commentLikerNames) {
+		this.commentLikerNames = commentLikerNames;
 	}
 
 	public int getNoOfLikes() {

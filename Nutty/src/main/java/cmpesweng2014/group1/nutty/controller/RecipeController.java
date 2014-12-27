@@ -505,20 +505,26 @@ public class RecipeController {
 		
 		IngredientAmount[] ingredientAmounts = recipeService.getIngredientAmounts(recipeId);
 		sr.setIngredientAmounts(ingredientAmounts);
-		
+				
 		Comment[] comments = recipeService.getComments(recipeId);
 		sr.setComments(comments);
 
 		if(comments != null){
-			String[] commenters = new String[comments.length];
-			int[] commentLikes = new int[comments.length];
+			String[] commenterNames = new String[comments.length];
+			long[][] commentLikerIds = new long[comments.length][];
+			String[][] commentLikerNames = new String[comments.length][];
 			for(int i=0; i<comments.length; i++){
-				User u = userService.getUserDao().getUserById(comments[i].getUser_id());
-				commenters[i] = u.getName() + " " + u.getSurname();
-				commentLikes[i] = recipeService.numberOfLikesOfAComment(comments[i]);
+				User commenter = userService.getUserDao().getUserById(comments[i].getUser_id());
+				commenterNames[i] = commenter.getName() + " " + commenter.getSurname();
+				User[] commentLikers = recipeService.usersWhoLike(comments[i]);
+				for(int j=0; j<commentLikers.length; j++){
+					commentLikerIds[i][j] = commentLikers[j].getId();
+					commentLikerNames[i][j] = commentLikers[j].getName() + " " + commentLikers[j].getSurname();
+				}
 			}
-			sr.setCommenters(commenters);
-			sr.setCommentLikes(commentLikes);
+			sr.setCommenterNames(commenterNames);
+			sr.setCommentLikerIds(commentLikerIds);
+			sr.setCommentLikerNames(commentLikerNames);
 		}
 		
 		int noOfLikes = recipeService.numberOfLikes(recipeId);
@@ -684,5 +690,13 @@ public class RecipeController {
 		}
 		answer += "]";
 		return answer;
+	}
+	
+	@RequestMapping(value = "/isReportedForComment")
+	public int isReportedForComment(
+			@RequestParam(value = "comment_id", required = true) int comment_id,
+			@RequestParam(value = "user_id", required = true) Long user_id
+			){
+		return recipeService.getCommentDao().hasReportedComment(comment_id, user_id);
 	}
 }
