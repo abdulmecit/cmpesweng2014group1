@@ -148,6 +148,8 @@ body {
 								Settings</a></li>
 						<li id="app"><a href="/nutty/user/preferences">Food
 								Preferences</a></li>
+						<li id="app"><a href="/nutty/user/privacy">Privacy
+								Settings</a></li>
 					</ul></li>
 
 				<%

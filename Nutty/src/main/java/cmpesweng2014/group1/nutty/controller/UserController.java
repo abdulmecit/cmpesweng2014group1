@@ -619,4 +619,16 @@ public class UserController {
 		return su;
 	}
 	
+	@RequestMapping(value = "/privacy", method = RequestMethod.GET)
+	public String viewPrivacySettings(Model model, HttpSession session) {
+		Object logged = session.getAttribute("isLogged");
+		boolean isLogged = logged == null ? false : (Boolean) logged;
+		if (isLogged) {
+			User u = (User) session.getAttribute("user");
+			model.addAttribute("user", u);
+			return "privacy";
+		} else {
+			return "redirect:/login";
+		}
+	}
 }
