@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -14,10 +15,12 @@ import org.springframework.stereotype.Component;
 
 import cmpesweng2014.group1.nutty.dao.mapper.EatLikeRateRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.OwnsRecipeRowMapper;
+import cmpesweng2014.group1.nutty.dao.mapper.PrivacyOptionsRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.UserRecipeScoreRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.UserRowMapper;
 import cmpesweng2014.group1.nutty.model.EatLikeRate;
 import cmpesweng2014.group1.nutty.model.OwnsRecipe;
+import cmpesweng2014.group1.nutty.model.PrivacyOptions;
 import cmpesweng2014.group1.nutty.model.User;
 import cmpesweng2014.group1.nutty.model.UserRecipeScore;
 
@@ -242,4 +245,82 @@ public class UserDao extends PcDao {
 			return users;
 		}
 	}
+	
+	public void addPrivacyOptions(final long user_id){
+		
+		if(emptyCheckPrivacy(user_id)) {
+			final String query = "INSERT INTO PrivacyOption (user_id, followable, visible_health_condition,"
+					+ " visible_food_intolerance, visible_not_pref) VALUES (?,?,?,?,?)";
+	
+			this.getTemplate().update(new PreparedStatementCreator() {
+				@Override
+				public PreparedStatement createPreparedStatement(
+						Connection connection) throws SQLException {
+					PreparedStatement ps = connection.prepareStatement(query);
+					ps.setLong(1, user_id);
+					ps.setInt(2, 1);
+					ps.setInt(3, 1);
+					ps.setInt(4, 1);
+					ps.setInt(5, 1);
+					return ps;
+				}
+			});
+		}
+	}
+	
+	public void updatePrivacyOption(final long user_id, final String column, final int value){
+		
+		if(!emptyCheckPrivacy(user_id)) {
+			final String query = "UPDATE PrivacyOption SET "+column+"=? WHERE user_id=?";
+			this.getTemplate().update(new PreparedStatementCreator() {
+
+				@Override
+				public PreparedStatement createPreparedStatement(
+						Connection connection) throws SQLException {
+					PreparedStatement ps = connection.prepareStatement(query);
+					ps.setInt(1, value);
+					ps.setLong(2, user_id);
+					return ps;
+				}
+			});
+		}
+	}
+	
+	public PrivacyOptions getPrivacyOptions(long user_id) {		
+		List<PrivacyOptions> privOptions = this.getTemplate().query(
+				"SELECT * FROM PrivacyOption WHERE user_id = ? ",
+				new Object[] { user_id }, new PrivacyOptionsRowMapper());
+
+		if (privOptions.isEmpty()) {
+			return null;
+		} else {
+			return privOptions.get(0);
+		}
+	}
+	
+	public Integer getPrivacyOptionValue(long user_id, final String column) {		
+		Integer po;
+		try{
+			po = this.getTemplate().queryForObject(
+				"SELECT * FROM PrivacyOption WHERE user_id = ? AND " + column + " = ?",
+				new Object[] { user_id }, Integer.class);
+		}
+		catch(DataAccessException e){
+			po = null;
+		}
+		return po;
+	}
+	
+	public boolean emptyCheckPrivacy(long user_id){
+		int count = this.getTemplate().queryForObject(
+				"SELECT COUNT(*) FROM PrivacyOption WHERE user_id=?",
+				new Object[] { user_id  },  Integer.class);
+		if (count == 0) {
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
 }

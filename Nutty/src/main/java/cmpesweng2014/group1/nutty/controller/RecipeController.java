@@ -511,15 +511,20 @@ public class RecipeController {
 
 		if(comments != null){
 			String[] commenterNames = new String[comments.length];
-			long[][] commentLikerIds = new long[comments.length][];
-			String[][] commentLikerNames = new String[comments.length][];
+			long[][] commentLikerIds = {};
+			String[][] commentLikerNames = {};
+
 			for(int i=0; i<comments.length; i++){
 				User commenter = userService.getUserDao().getUserById(comments[i].getUser_id());
 				commenterNames[i] = commenter.getName() + " " + commenter.getSurname();
 				User[] commentLikers = recipeService.usersWhoLike(comments[i]);
-				for(int j=0; j<commentLikers.length; j++){
-					commentLikerIds[i][j] = commentLikers[j].getId();
-					commentLikerNames[i][j] = commentLikers[j].getName() + " " + commentLikers[j].getSurname();
+				if(commentLikers != null){
+					commentLikerIds = new long[comments.length][commentLikers.length];
+					commentLikerNames = new String[comments.length][commentLikers.length];
+					for(int j=0; j<commentLikers.length; j++){
+						commentLikerIds[i][j] = commentLikers[j].getId();
+						commentLikerNames[i][j] = commentLikers[j].getName() + " " + commentLikers[j].getSurname();
+					}
 				}
 			}
 			sr.setCommenterNames(commenterNames);

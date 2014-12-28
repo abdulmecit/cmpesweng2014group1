@@ -44,8 +44,11 @@ public class UserService {
 		if(userDao.getUserByEmail(email) != null)
 			return new Message(0, null, "This email address is already registered.");
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		User u = userDao.getUserById(userDao.createUser(email, encoder.encode(password), 
-				name, surname, birthday, gender, photo));
+		//Create user
+		Long user_id = userDao.createUser(email, encoder.encode(password), name, surname, birthday, gender, photo);
+		//Add default privacy options
+		userDao.addPrivacyOptions(user_id);
+		User u = userDao.getUserById(user_id);
 		return new Message(1, u, "Signup is successful.");
 	}
 	
@@ -166,6 +169,5 @@ public class UserService {
 			badgeDao.updateUserBadge(user_id,badge.getBadge_id());
 			return badge;
 		}
-		
 	}
 }
