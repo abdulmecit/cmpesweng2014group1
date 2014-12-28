@@ -9,6 +9,7 @@
 <style type="text/css">
 @import url(http://fonts.googleapis.com/css?family=Varela+Round);
 </style>
+
 <body>
 
 	<div class="container">
@@ -119,6 +120,34 @@
 	</div>
 
 	<script type="text/javascript">
+	
+	$(document).ready(function(event){
+		event.preventDefault();
+		var searchKey = '${searchKey}';
+// 		alert(searchKey);
+		if(searchKey != null){
+			$("#results").empty();
+			$.ajax({
+				type : "POST",
+				url : "advancedSearchResults",
+				data : {
+					search: searchKey,
+					user_id : '${user.id}'
+				}}).done(function(answer) {
+					if ((answer == "") || (answer == "[]")) {
+						$("#results").append("<p>Nothing to show :(</p>");
+					} else {
+						var resultsRec = JSON.parse(answer);
+						for (i = 0; i < resultsRec.length; i++) {
+							$("#results").append( "<li class='list-group-item'><a href= '/nutty/recipe/"  + resultsRec[i].id +"'>" + resultsRec[i].name + "</p></li>");
+						}			
+					}
+				}).fail(function (){
+					alert("Ajax call was unsuccessfull :(");			
+				});
+		}
+	});
+	
 	   // to add new input text
 		var counter = 1;
 		function addInput(divName) {

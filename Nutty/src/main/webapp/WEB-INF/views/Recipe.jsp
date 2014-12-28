@@ -429,9 +429,9 @@ body {
 										</h5>
 										<h5>
 											<b>Tags:</b>
-
+											
 											<c:forEach var="tag" items="${tags}">
-												<li><a href=""> ${tag.tag_name}</a></li>
+												<li><a href="javascript:search('${tag.tag_name}')"> ${tag.tag_name}</a></li>
 											</c:forEach>
 
 										</h5>
@@ -839,5 +839,9 @@ body {
 			$("#addComment").css('display', 'none');
 		}			
 	});
+	
+	function search(searchKey) {
+		window.location.href = "../advancedSearch/" + searchKey;
+	};
 </script>
 </html>

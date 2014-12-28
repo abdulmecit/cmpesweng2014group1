@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -362,6 +363,17 @@ public class HomeController {
 		if (!isLogged) {
 			return "redirect:login";
 		} 
+		return "advancedSearch";
+	}
+	
+	@RequestMapping(value = "/advancedSearch/{searchKey}", method = RequestMethod.GET)
+	public String advancedSearchTag(@PathVariable String searchKey, HttpSession session, RedirectAttributes redirectAttrs) {
+		Object logged = session.getAttribute("isLogged");
+		boolean isLogged = logged == null ? false : (Boolean) logged;
+		if (!isLogged) {
+			return "redirect:login";
+		} 
+		redirectAttrs.addFlashAttribute(searchKey, searchKey);
 		return "advancedSearch";
 	}
 	
