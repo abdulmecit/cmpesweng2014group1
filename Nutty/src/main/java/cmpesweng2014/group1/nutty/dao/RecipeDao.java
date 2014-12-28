@@ -636,7 +636,7 @@ public class RecipeDao extends PcDao{
 						+ "a.recipe_id=b.recipe_id ",
 						new Object[] { tag }, new RecipeRowMapper());
 		if (recList.isEmpty()) {
-			return null;
+			return new Recipe[0];
 		} else {
 			Recipe[] recipes = recList.toArray(new Recipe[recList.size()]);
 			return recipes;		

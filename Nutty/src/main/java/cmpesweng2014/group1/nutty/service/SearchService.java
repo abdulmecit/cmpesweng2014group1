@@ -59,7 +59,7 @@ public class SearchService {
 		}
 		
 		if (relatedTerms.isEmpty()) {
-			return null;
+			return new String[0];
 		}		
 		return relatedTerms.toArray(new String[relatedTerms.size()]);
 	}

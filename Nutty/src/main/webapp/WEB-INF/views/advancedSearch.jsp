@@ -152,6 +152,7 @@
 					}}).done(function(answer) {
 						if ((answer == "") || (answer == "[]")) {
 							$("#results").append("<p>Nothing to show :(</p>");
+							document.body.className = "loaded";
 						} else {
 							var resultsRec = JSON.parse(answer);
 							for (i = 0; i < resultsRec.length; i++) {
@@ -160,7 +161,8 @@
 							}	
 						}
 					}).fail(function (){
-						alert("Ajax call was unsuccessfull :(");			
+						alert("Ajax call was unsuccessfull :(");
+						document.body.className = "loaded";
 					});
 			}
 		});
@@ -218,6 +220,7 @@
 					}}).done(function(answer) {
 						if ((answer == "") || (answer == "[]")) {
 							$("#results").append("<p>Nothing to show :(</p>");
+							document.body.className = "loaded";
 						} else {
 							var resultsRec = JSON.parse(answer);
 							for (i = 0; i < resultsRec.length; i++) {
@@ -226,7 +229,8 @@
 							}			
 						}
 					}).fail(function (){
-						alert("Ajax call was unsuccessfull :(");			
+						alert("Ajax call was unsuccessfull :(");	
+						document.body.className = "loaded";
 					});
 			});
 	</script>
