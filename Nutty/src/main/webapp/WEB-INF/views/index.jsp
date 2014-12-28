@@ -136,65 +136,78 @@ input#img-1:checked ~ .nav-dots label#img-dot-1, input#img-2:checked ~
 	<br>
 
 	<div class="container" style="height: 400px">
-		<ul class="slides">
-			<input type="radio" name="radio-btn" id="img-1" checked />
-			<li class="slide-container">
-				<div class="slide">
-					<h3 align="center">Delicious</h3>
-					<a href="recipe/1"><img
-						src="http://2.bp.blogspot.com/-fHFQXiIq6IQ/TegYuDrnq-I/AAAAAAAAQAQ/AaB71suJeFk/s1600/Kobe+Beef-0094.jpg" /></a>
-				</div>
-				<div class="nav">
-					<label for="img-4" class="prev">&#x2039;</label> <label for="img-2"
-						class="next">&#x203a;</label>
-				</div>
-			</li>
-
-			<input type="radio" name="radio-btn" id="img-2" />
-			<li class="slide-container">
-				<div class="slide">
-					<h3 align="center">Healthy</h3>
-					<a href="recipe/1"><img
-						src="http://sandiegobargainmama.com/wp-content/uploads/2011/09/balanced-meal.png" /></a>
-				</div>
-				<div class="nav">
-					<label for="img-1" class="prev">&#x2039;</label> <label for="img-3"
-						class="next">&#x203a;</label>
-				</div>
-			</li>
-
-			<input type="radio" name="radio-btn" id="img-3" />
-			<li class="slide-container">
-				<div class="slide">
-					<h3 align="center">Easy</h3>
-					<a href="recipe/1"><img
-						src="http://www.damakdiyari.com.tr/content/images/thumbs/0000588_sahanda-menemen.jpeg" /></a>
-				</div>
-				<div class="nav">
-					<label for="img-2" class="prev">&#x2039;</label> <label for="img-4"
-						class="next">&#x203a;</label>
-				</div>
-			</li>
-
-			<input type="radio" name="radio-btn" id="img-4" />
-			<li class="slide-container">
-				<div class="slide">
-					<h3 align="center">Cheap</h3>
-					<a href="recipe/1"><img
-						src="http://s3.amazonaws.com/gmi-digital-library/41e7d5f1-05de-415e-a31a-3c48d828d81a.jpg" /></a>
-				</div>
-				<div class="nav">
-					<label for="img-3" class="prev">&#x2039;</label> <label for="img-1"
-						class="next">&#x203a;</label>
-				</div>
-			</li>
-
-			<li class="nav-dots"><label for="img-1" class="nav-dot"
-				id="img-dot-1"></label> <label for="img-2" class="nav-dot"
-				id="img-dot-2"></label> <label for="img-3" class="nav-dot"
-				id="img-dot-3"></label> <label for="img-4" class="nav-dot"
-				id="img-dot-4"></label></li>
-		</ul>
+		<div class="col-sm-6 col-centered">
+			<ul class="slides">
+				<input type="radio" name="radio-btn" id="img-1" checked />
+				<li class="slide-container">
+					<div class="slide">
+						<h3 align="center"><a href="javascript:search('Delicious')">Delicious</a></h3>
+						<a href="recipe/1"><img
+							src="http://2.bp.blogspot.com/-fHFQXiIq6IQ/TegYuDrnq-I/AAAAAAAAQAQ/AaB71suJeFk/s1600/Kobe+Beef-0094.jpg" /></a>
+					</div>
+					<div class="nav">
+						<label for="img-4" class="prev">&#x2039;</label> <label for="img-2"
+							class="next">&#x203a;</label>
+					</div>
+				</li>
+	
+				<input type="radio" name="radio-btn" id="img-2" />
+				<li class="slide-container">
+					<div class="slide">
+						<h3 align="center"><a href="javascript:search('Healthy')">Healthy</a></h3>
+						<a href="recipe/1"><img
+							src="http://sandiegobargainmama.com/wp-content/uploads/2011/09/balanced-meal.png" /></a>
+					</div>
+					<div class="nav">
+						<label for="img-1" class="prev">&#x2039;</label> <label for="img-3"
+							class="next">&#x203a;</label>
+					</div>
+				</li>
+	
+				<input type="radio" name="radio-btn" id="img-3" />
+				<li class="slide-container">
+					<div class="slide">
+						<h3 align="center"><a href="javascript:search('Easy')">Easy</a></h3>
+						<a href="recipe/1"><img
+							src="http://www.damakdiyari.com.tr/content/images/thumbs/0000588_sahanda-menemen.jpeg" /></a>
+					</div>
+					<div class="nav">
+						<label for="img-2" class="prev">&#x2039;</label> <label for="img-4"
+							class="next">&#x203a;</label>
+					</div>
+				</li>
+	
+				<input type="radio" name="radio-btn" id="img-4" />
+				<li class="slide-container">
+					<div class="slide">
+						<h3 align="center"><a href="javascript:search('Economic')">Economic</a></h3>
+						<a href="recipe/1"><img
+							src="http://s3.amazonaws.com/gmi-digital-library/41e7d5f1-05de-415e-a31a-3c48d828d81a.jpg" /></a>
+					</div>
+					<div class="nav">
+						<label for="img-3" class="prev">&#x2039;</label> <label for="img-1"
+							class="next">&#x203a;</label>
+					</div>
+				</li>
+	
+				<li class="nav-dots"><label for="img-1" class="nav-dot"
+					id="img-dot-1"></label> <label for="img-2" class="nav-dot"
+					id="img-dot-2"></label> <label for="img-3" class="nav-dot"
+					id="img-dot-3"></label> <label for="img-4" class="nav-dot"
+					id="img-dot-4"></label></li>
+			</ul>
+		</div>
+		<div class="col-sm-6 col-centered" style="margin-top: 50px;">
+			<p><a href="javascript:search('beef')">Beef</a></p>
+			<p><a href="javascript:search('breakfast')">Breakfast</a></p>
+			<p><a href="javascript:search('celebration')">Celebration</a></p>
+			<p><a href="javascript:search('chocolate')">Chocolate</a></p>
+			<p><a href="javascript:search('dessert')">Dessert</a></p>
+			<p><a href="javascript:search('diet')">Diet</a></p>
+			<p><a href="javascript:search('quick')">Quick</a></p>
+			<p><a href="javascript:search('vegetarian')">Vegetarian</a></p>
+			<p><a href="javascript:search('Student')">Student</a></p>
+		</div>
 	</div>
 
 
@@ -266,5 +279,9 @@ input#img-1:checked ~ .nav-dots label#img-dot-1, input#img-2:checked ~
 			$('#results').empty();
 		}
 	});
+	
+	function search(searchKey) {
+		window.location.href = "advancedSearch/" + searchKey;
+	};
 </script>
 </html>
