@@ -692,6 +692,7 @@ public class RecipeController {
 		return answer;
 	}
 	
+	@ResponseBody
 	@RequestMapping(value = "/isReportedForComment")
 	public int isReportedForComment(
 			@RequestParam(value = "comment_id", required = true) int comment_id,

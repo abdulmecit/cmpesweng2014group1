@@ -7,11 +7,27 @@
 
 <!-- Add custom CSS here -->
 <style type="text/css">
-@import url(http://fonts.googleapis.com/css?family=Varela+Round);
+	.loading #loadingScreen {
+	    display: block;
+	    position: absolute;
+	    top: 0;
+	    left: 0;
+	    z-index: 100;
+	    width: 100vw;
+	    height: 100vh;	
+	    background-color: rgba(192, 192, 192, 0.5);
+	    background-image: url("http://i.stack.imgur.com/MnyxU.gif");
+	    background-repeat: no-repeat;
+	    background-position: center;
+	}
+	.loaded #loadingScreen {
+		display: none;
+	}
+	@import url(http://fonts.googleapis.com/css?family=Varela+Round);
 </style>
 
 <body>
-
+	<div id=loadingScreen></div>
 	<div class="container">
 		<div class="panel panel-default">
 
@@ -120,33 +136,35 @@
 	</div>
 
 	<script type="text/javascript">
-	
-	$(document).ready(function(event){
-		event.preventDefault();
-		var searchKey = '${searchKey}';
-// 		alert(searchKey);
-		if(searchKey != null){
-			$("#results").empty();
-			$.ajax({
-				type : "POST",
-				url : "advancedSearchResults",
-				data : {
-					search: searchKey,
-					user_id : '${user.id}'
-				}}).done(function(answer) {
-					if ((answer == "") || (answer == "[]")) {
-						$("#results").append("<p>Nothing to show :(</p>");
-					} else {
-						var resultsRec = JSON.parse(answer);
-						for (i = 0; i < resultsRec.length; i++) {
-							$("#results").append( "<li class='list-group-item'><a href= '/nutty/recipe/"  + resultsRec[i].id +"'>" + resultsRec[i].name + "</p></li>");
-						}			
-					}
-				}).fail(function (){
-					alert("Ajax call was unsuccessfull :(");			
-				});
-		}
-	});
+		
+		$(document).ready(function(){
+			var searchKey = '${searchKey}';
+			if(searchKey != null && searchKey.trim().length > 0){
+				$("#searchKey").val(searchKey);
+				$("#results").empty();
+				document.body.className = "loading";
+				$.ajax({
+					type : "POST",
+					url : "../advancedSearchResults",
+					data : {
+						search: searchKey,
+						user_id : '${user.id}'
+					}}).done(function(answer) {
+						if ((answer == "") || (answer == "[]")) {
+							$("#results").append("<p>Nothing to show :(</p>");
+						} else {
+							var resultsRec = JSON.parse(answer);
+							for (i = 0; i < resultsRec.length; i++) {
+								$("#results").append( "<li class='list-group-item'><a href= '/nutty/recipe/"  + resultsRec[i].id +"'>" + resultsRec[i].name + "</p></li>");
+								document.body.className = "loaded";
+							}	
+						}
+					}).fail(function (){
+						alert("Ajax call was unsuccessfull :(");			
+					});
+			}
+		});
+
 	
 	   // to add new input text
 		var counter = 1;
@@ -179,6 +197,7 @@
 			function(event) {
 				event.preventDefault();
 				$("#results").empty();
+				document.body.className = "loading";
 				var nodeList = document.getElementsByName("mustHaveIngredients[]");
 				var nodeArray = [];
 				for (var i = 0; i < nodeList.length; i++){
@@ -203,13 +222,13 @@
 							var resultsRec = JSON.parse(answer);
 							for (i = 0; i < resultsRec.length; i++) {
 								$("#results").append( "<li class='list-group-item'><a href= '/nutty/recipe/"  + resultsRec[i].id +"'>" + resultsRec[i].name + "</p></li>");
+								document.body.className = "loaded";
 							}			
 						}
 					}).fail(function (){
 						alert("Ajax call was unsuccessfull :(");			
 					});
 			});
-		
 	</script>
 </body>
 </html>

@@ -367,13 +367,13 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/advancedSearch/{searchKey}", method = RequestMethod.GET)
-	public String advancedSearchTag(@PathVariable String searchKey, HttpSession session, RedirectAttributes redirectAttrs) {
+	public String advancedSearchTag(@PathVariable String searchKey, HttpSession session, Model model) {
 		Object logged = session.getAttribute("isLogged");
 		boolean isLogged = logged == null ? false : (Boolean) logged;
 		if (!isLogged) {
-			return "redirect:login";
+			return "redirect:/login";
 		} 
-		redirectAttrs.addFlashAttribute(searchKey, searchKey);
+		model.addAttribute("searchKey", searchKey);
 		return "advancedSearch";
 	}
 	
