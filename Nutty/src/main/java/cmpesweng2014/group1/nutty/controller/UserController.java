@@ -446,6 +446,26 @@ public class UserController {
 		return response;
 	}
 	
+	@RequestMapping(value = "/getUsersEatenRecipes")
+	@ResponseBody
+	public String[][] getUsersEatenRecipes(
+			@RequestParam(value = "userId", required = true) Long userId){
+				
+		if (userId == null) {
+			return null;
+		}
+		
+		int[] recipeIds = userService.getUserDao().getEatenRecipes(userId);
+		String[][] response = new String[recipeIds.length][3];
+		for(int i=0; i<recipeIds.length; i++){
+			response[i][0] = recipeIds[i] + "";
+			response[i][1] = recipeService.getRecipe(recipeIds[i]).getName();
+			String[] urls = recipeService.getRecipeAllPhotoUrl(recipeIds[i]);
+			response[i][2] = urls[0];
+		}
+		return response;
+	}
+	
 	@RequestMapping(value = "/getSharedRecipes")
 	@ResponseBody
 	public String[][] getSharedRecipes(

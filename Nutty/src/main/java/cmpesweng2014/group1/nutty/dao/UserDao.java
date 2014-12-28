@@ -12,9 +12,11 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
+import cmpesweng2014.group1.nutty.dao.mapper.EatLikeRateRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.OwnsRecipeRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.UserRecipeScoreRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.UserRowMapper;
+import cmpesweng2014.group1.nutty.model.EatLikeRate;
 import cmpesweng2014.group1.nutty.model.OwnsRecipe;
 import cmpesweng2014.group1.nutty.model.User;
 import cmpesweng2014.group1.nutty.model.UserRecipeScore;
@@ -117,6 +119,19 @@ public class UserDao extends PcDao {
 		}
 		return recipeIds;
 	}	
+	public int[] getEatenRecipes(Long user_id){
+		int eats = 1;
+		List<EatLikeRate> recipes = this.getTemplate().query(
+				"SELECT * FROM EatLikeRate WHERE user_id = ? and eats=?",
+				new Object[] { user_id, eats }, new EatLikeRateRowMapper());
+
+		int recipeIds[] = new int[recipes.size()];
+		for(int i=0; i<recipes.size(); i++){
+			recipeIds[i] = recipes.get(i).getRecipeId();
+		}
+		return recipeIds;
+	}	
+	
 	public void addFollower(final long follower_id, final long followed_id){
 		final String query = "INSERT INTO Follows (follower_id, followed_id) VALUES (?,?)";
 
