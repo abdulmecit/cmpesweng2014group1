@@ -107,17 +107,7 @@ body {
 				</div>
 				<div class="info" align="center">
 					<p>&nbsp;</p>
-					<img alt=""
-						src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"
-						width="50px" height="auto"> <img alt=""
-						src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"
-						width="50px" height="auto"> <img alt=""
-						src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"
-						width="50px" height="auto"> <img alt=""
-						src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"
-						width="50px" height="auto"> <img alt=""
-						src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"
-						width="50px" height="auto">
+					<div id="star" ></div>
 					<p>&nbsp;</p>
 					<h2>${badge}</h2>
 					<h3>&nbsp;</h3>
@@ -169,6 +159,8 @@ body {
 				$("#Follow").css('visibility', 'visible');
 			}
 		});
+		
+		
 
 		var photo = '${visitedUser.photo}';
 		$(document)
@@ -295,6 +287,23 @@ body {
 			} else {
 				$("#followCheck").css('display', 'none');
 				$("#followCheck").css('visibility', 'hidden');
+			}
+		});
+		
+		var badge = '${badge}';
+		$(document).ready(function() {
+			if (badge == 'World Wide Chef') {
+				document.getElementById('star').innerHTML = '<img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto">';
+			} else if(badge == 'Master Chef'){
+				document.getElementById('star').innerHTML = '<img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto">';
+			} else if(badge == 'Chef'){
+				document.getElementById('star').innerHTML = '<img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto">';
+			} else if(badge == 'Pre-Chef'){
+				document.getElementById('star').innerHTML = '<img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto">';
+			} else if(badge == 'Beginner'){
+				document.getElementById('star').innerHTML = '<img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto">';
+			}else {
+				document.getElementById('star').innerHTML = '<img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto">';
 			}
 		});
 
