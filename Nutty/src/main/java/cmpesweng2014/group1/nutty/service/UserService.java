@@ -152,10 +152,12 @@ public class UserService {
 	}
 	public Badge getBadge(long user_id){
 		List<UserRecipeScore> scoreList = userDao.getUserRecipeScore(user_id);
-		UserRecipeScore [] scoreArray = scoreList.toArray(new UserRecipeScore[scoreList.size()]);
-		if(scoreArray == null){
-			return null;
+		if(scoreList == null){
+			Badge b = badgeDao.getBadgeById(1);
+			return b;
+			
 		}else{
+			UserRecipeScore [] scoreArray = scoreList.toArray(new UserRecipeScore[scoreList.size()]);
 			double score = 0;
 			for(int i=0;i<scoreList.size();i++){
 				score += scoreArray[i].getScore();
@@ -164,5 +166,6 @@ public class UserService {
 			badgeDao.updateUserBadge(user_id,badge.getBadge_id());
 			return badge;
 		}
+		
 	}
 }
