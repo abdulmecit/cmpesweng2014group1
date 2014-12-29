@@ -135,6 +135,7 @@ body {
 				<%
 					} else {
 				%>
+				<li><a id="requests" class="glyphicon glyphicon-user" title="Follow Requests"></a></li> <!-- eger request varsa style="color: red;" -->
 				<li><a href="/nutty/advancedSearch">Advanced<br />&nbsp;&nbsp;Search
 				</a></li>
 				<li><a href="/nutty/addRecipe">Add Recipe</a></li>
@@ -164,6 +165,19 @@ body {
 	</nav>
 
 	<script type="text/javascript">
+		$('#requests').on(click, function(event){
+			event.preventDefault();
+			$.ajax({
+				type: "POST",
+				url: "",
+				data: {
+					userId: '${user.id}'
+				}
+			}).done(function(answer) {
+				showResult(answer);
+			})
+		});
+	
 		$('#search-form')
 				.submit(
 						function(event) {
@@ -185,7 +199,7 @@ body {
 										showResult(answer);
 									})
 						});
-
+		
 		function showResult(answer) {
 			var content = "";
 			if (answer == "") {
