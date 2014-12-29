@@ -136,7 +136,7 @@ public class UserDao extends PcDao {
 	}	
 	
 	public void addFollowRequest(final long follower_id, final long followed_id){
-		final String query = "INSERT INTO FollowRequests (follower_id, followed_id) VALUES (?,?)";
+		final String query = "INSERT INTO `FollowRequests` (follower_id, followed_id) VALUES (?,?)";
 		this.getTemplate().update(new PreparedStatementCreator() {
 
 			@Override
@@ -323,7 +323,7 @@ public class UserDao extends PcDao {
 		Integer po;
 		try{
 			po = this.getTemplate().queryForObject(
-				"SELECT * FROM PrivacyOption WHERE user_id = ? AND " + column + " = ?",
+				"SELECT " + column + " FROM PrivacyOption WHERE user_id = ?",
 				new Object[] { user_id }, Integer.class);
 		}
 		catch(DataAccessException e){
