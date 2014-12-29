@@ -169,7 +169,7 @@ body {
 			event.preventDefault();
 			$.ajax({
 				type: "POST",
-				url: "",
+				url: "/nutty/getFollowRequests",
 				data: {
 					userId: '${user.id}'
 				}

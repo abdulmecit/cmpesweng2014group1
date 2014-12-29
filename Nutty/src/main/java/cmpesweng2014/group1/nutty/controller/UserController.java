@@ -66,9 +66,6 @@ public class UserController {
 			int numberOfFollowing = userService.getNumberOfFollowing(u.getId());
 			model.addAttribute("numberOfFollowing", numberOfFollowing);
 			
-			User[] followRequesters = userService.getFollowerList(u.getId());
-			model.addAttribute("followRequesters", followRequesters);
-			
 			User[] followers = userService.getFollowerList(u.getId());
 			model.addAttribute("followers", followers);
 			
@@ -433,6 +430,24 @@ public class UserController {
 				userService.addFollowRequest(follower_id, followed_id);
 		}
 		return "profile";
+	}
+	
+	@RequestMapping(value = "/getFollowRequests")
+	public String getFollowRequests(
+			@RequestParam(value = "user_id", required = true) Long user_id
+			) {
+
+		String answer = "";
+		User[] users = userService.getUserDao().getFollowRequests(user_id);
+		
+		if(users == null){
+			return answer;
+		}
+		answer = "user/profile";
+		for(int i=0; i<users.length; i++){
+			answer += "|" + users[i].getName() + " " + users[i].getSurname() + ">" + users[i].getId();
+		}
+		return answer;
 	}
 	
 	@RequestMapping(value = "/answerFollowRequest")
