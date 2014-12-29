@@ -135,6 +135,27 @@ public class UserDao extends PcDao {
 		return recipeIds;
 	}	
 	
+	public void addFollowRequest(final long follower_id, final long followed_id){
+		final String query = "INSERT INTO FollowRequests (follower_id, followed_id) VALUES (?,?)";
+		this.getTemplate().update(new PreparedStatementCreator() {
+
+			@Override
+			public PreparedStatement createPreparedStatement(
+					Connection connection) throws SQLException {
+				PreparedStatement ps = connection.prepareStatement(query);
+				ps.setLong(1, follower_id);
+				ps.setLong(2, followed_id);
+
+				return ps;
+			}
+		});
+	}
+	
+	public void deleteFollowRequest(final long follower_id, final long followed_id){
+		this.getTemplate().update("DELETE FROM FollowRequests WHERE follower_id = ? AND followed_id=?", 
+				new Object[] { follower_id, followed_id });
+	}
+	
 	public void addFollower(final long follower_id, final long followed_id){
 		final String query = "INSERT INTO Follows (follower_id, followed_id) VALUES (?,?)";
 

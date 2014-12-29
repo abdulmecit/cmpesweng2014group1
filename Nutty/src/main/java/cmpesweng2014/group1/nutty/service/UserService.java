@@ -105,6 +105,12 @@ public class UserService {
 	public String[] getUnpreferredForUser(User user){
 		return foodSelectionDao.getUnpreferredFoodForUser(user.getId());
 	}
+	public void addFollowRequest(long follower_id, long followed_id){
+		userDao.addFollowRequest(follower_id, followed_id);
+	}
+	public void deleteFollowRequest(long follower_id, long followed_id){
+		userDao.deleteFollowRequest(follower_id, followed_id);
+	}
 	//add follower
 	//for now no private users, directly added to follower list
 	public void addFollower(long follower_id, long followed_id){

@@ -411,19 +411,23 @@ public class UserController {
 			return false;
 		}	
 	}
-	
+		
 	@RequestMapping(value = "/followUser")
 	public String followUser(
 			@RequestParam(value = "follower_id", required = true) Long follower_id,
 			@RequestParam(value = "followed_id", required = true) Long followed_id,
 			@RequestParam(value = "value", required = true) int value
 			) {
-		
+
+		int isFollowable = userService.getUserDao().getPrivacyOptionValue(followed_id, "followable");
+		if(isFollowable == 1){
 			if(value == 0)
 				userService.unfollow(follower_id, followed_id);
 			else
 				userService.addFollower(follower_id, followed_id);
-					
+		}else{
+			userService.addFollowRequest(follower_id, followed_id);
+		}
 		return "profile";
 	}
 	

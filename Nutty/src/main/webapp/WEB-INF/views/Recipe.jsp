@@ -623,7 +623,7 @@ body {
 				updateRate("eats", eaten);
 			} else {
 				alert("edit");
-				$(location).attr('href',"../derivedRecipe/${recipe.recipe_id}");
+				$(location).attr('href',"../editRecipe/${recipe.recipe_id}");
 			}
 		}
 	});
