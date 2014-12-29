@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 
 import cmpesweng2014.group1.nutty.model.FoodSelection;
 import cmpesweng2014.group1.nutty.model.Message;
+import cmpesweng2014.group1.nutty.model.PrivacyOptions;
 import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.model.SuperUser;
 import cmpesweng2014.group1.nutty.model.User;
@@ -626,9 +627,28 @@ public class UserController {
 		if (isLogged) {
 			User u = (User) session.getAttribute("user");
 			model.addAttribute("user", u);
+			PrivacyOptions privOptions = userService.getUserDao().getPrivacyOptions(u.getId());
+			model.addAttribute("privOptions", privOptions);
 			return "privacy";
 		} else {
 			return "redirect:/login";
 		}
+	}
+	
+	@RequestMapping(value = "/privacy", method = RequestMethod.POST)
+	public String updatePrivacySettings(
+			@RequestParam(value = "followable", required = true) int followable,
+			@RequestParam(value = "visible_hc", required = true) int visible_hc,
+			@RequestParam(value = "visible_fi", required = true) int visible_fi,
+			@RequestParam(value = "visible_np", required = true) int visible_np,
+			RedirectAttributes redirectAttrs, HttpSession session) {
+		User u = (User) session.getAttribute("user");
+		long user_id = u.getId();
+		userService.getUserDao().updatePrivacyOption(user_id, "followable", followable);
+		userService.getUserDao().updatePrivacyOption(user_id, "visible_health_condition", visible_hc);
+		userService.getUserDao().updatePrivacyOption(user_id, "visible_food_intolerance", visible_fi);
+		userService.getUserDao().updatePrivacyOption(user_id, "visible_not_pref", visible_np);		
+		redirectAttrs.addFlashAttribute("message", new Message(1, null, "Your privacy settings are successfully updated."));
+		return "redirect:/success";
 	}
 }
