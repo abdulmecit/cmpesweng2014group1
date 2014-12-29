@@ -747,8 +747,6 @@ body {
 						}
 					});
 
-	//											
-
 	//Comment Like
 	function commentLike(index) {
 		if (isLogged == 'true') {

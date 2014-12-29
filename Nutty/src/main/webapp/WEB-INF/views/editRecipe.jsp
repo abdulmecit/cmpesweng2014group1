@@ -253,6 +253,7 @@ body {
 	<%
 		}
 	%>
+	
 	<!---------------------------  Functions  ------------------------------>
 	<script type="text/javascript">
 		var counter = 1;
