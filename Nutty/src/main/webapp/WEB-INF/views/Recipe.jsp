@@ -188,18 +188,19 @@ body {
 						src="https://dl.dropboxusercontent.com/u/45511253/one-star.png" />
 					<h3 class="desc"></h3>
 				</div>
-
-				<button type="button" class="btn btn-primary" value="Eat" id="Eat"
+				
+				<!------------- Eat/Edit Like/Delete Buttons -------------->
+				<button type="button" class="btn btn-primary" id="EatEdit"
 					style="float: right; margin-right: 15 px; margin-top: 18px;">
-					<span id="textEat" class="ui-button-text">Eat &nbsp </span> <span
+					<span id="textEatEdit" class="ui-button-text"></span> <span
 						id="eatCheck" class="glyphicon glyphicon-check"
 						style="visibility: hidden;"></span>
 					<!-- caret for arrow. ui-button-text for button text visible; -->
 				</button>
 
-				<button type="button" class="btn btn-primary" value="Like" id="Like"
+				<button type="button" class="btn btn-primary" id="LikeDelete"
 					style="float: right; margin-right: 15 px; margin-top: 18px;">
-					<span id="textLike" class="ui-button-text">Like &nbsp</span> <span
+					<span id="textLikeDelete" class="ui-button-text"></span> <span
 						id="likeCheck" class="glyphicon glyphicon-check"
 						style="visibility: hidden;"></span>
 					<!-- caret for arrow. ui-button-text for button text -->
@@ -429,9 +430,10 @@ body {
 										</h5>
 										<h5>
 											<b>Tags:</b>
-											
+
 											<c:forEach var="tag" items="${tags}">
-												<li><a href="javascript:search('${tag.tag_name}')"> ${tag.tag_name}</a></li>
+												<li><a href="javascript:search('${tag.tag_name}')">
+														${tag.tag_name}</a></li>
 											</c:forEach>
 
 										</h5>
@@ -537,6 +539,9 @@ body {
 	var shared = '${shareOfUser}';
 	var isLogged = '${isLogged}';
 	var commentNumber = 0;
+	var user = '${user.id}';
+	var owner = '${ownerId}';
+
 
 	$(document)
 			.ready(
@@ -579,6 +584,10 @@ body {
 						if (easeRate != 0) {
 							$("#easeRate").text(easeRate);
 						}
+						
+						if (user != owner) {
+							$("#textLikeDelete").text("Like ");
+							$("#textEatEdit").text("Eat ");
 						// if liked 'check' is visible
 						if (liked == 1) {
 							$("#likeCheck").css('visibility', 'visible');
@@ -595,6 +604,10 @@ body {
 							$("#shareCheck").css('visibility', 'visible');
 						} else {
 							$("#shareCheck").css('visibility', 'hidden');
+						}
+						}else{
+							$("#textLikeDelete").text("Delete");
+							$("#textEatEdit").text("Edit");
 						}
 					});
 
@@ -623,31 +636,39 @@ body {
 				}
 			});
 
-	// Like button change "check" visibilty 
-	$("#Like").click(function(e) {
+	// Like/Delete button functions 
+	$("#LikeDelete").click(function(e) {
 		if (isLogged == 'true') {
-			if (liked == 0) {
-				$("#likeCheck").css('visibility', 'visible');
-				liked = 1;
+			if (user != owner) {
+				if (liked == 0) {
+					$("#likeCheck").css('visibility', 'visible');
+					liked = 1;
+				} else {
+					$("#likeCheck").css('visibility', 'hidden');
+					liked = 0;
+				}
+				updateRate("likes", liked);
 			} else {
-				$("#likeCheck").css('visibility', 'hidden');
-				liked = 0;
+				alert("delete");
 			}
-			updateRate("likes", liked);
 		}
 	});
 
-	// eat button change "check" visibilty 
-	$("#Eat").click(function(e) {
+	// Eat/Edit button change "check" visibilty 
+	$("#EatEdit").click(function(e) {
 		if (isLogged == 'true') {
-			if (eaten == 0) {
-				$("#eatCheck").css('visibility', 'visible');
-				eaten = 1;
+			if (user != owner) {
+				if (eaten == 0) {
+					$("#eatCheck").css('visibility', 'visible');
+					eaten = 1;
+				} else {
+					$("#eatCheck").css('visibility', 'hidden');
+					eaten = 0;
+				}
+				updateRate("eats", eaten);
 			} else {
-				$("#eatCheck").css('visibility', 'hidden');
-				eaten = 0;
+				alert("edit");
 			}
-			updateRate("eats", eaten);
 		}
 	});
 
@@ -689,7 +710,7 @@ body {
 										url : "../recipeComments",
 										data : {
 											recipeId : '${recipe.recipe_id}',
-											user_id: '${user.id}'
+											user_id : '${user.id}'
 										}
 									})
 									.done(
@@ -828,8 +849,8 @@ body {
 
 		return false;
 	};
-	
-	$(document).ready( function() {
+
+	$(document).ready(function() {
 		if (isLogged != 'true') {
 			$('#rateButtons').css('display', 'none');
 			$("#Eat").css('display', 'none');
@@ -837,9 +858,9 @@ body {
 			$("#Share").css('display', 'none');
 			$("#derivedRecipeButton").css('display', 'none');
 			$("#addComment").css('display', 'none');
-		}			
+		}
 	});
-	
+
 	function search(searchKey) {
 		window.location.href = "../advancedSearch/" + searchKey;
 	};
