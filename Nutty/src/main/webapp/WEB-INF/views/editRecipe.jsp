@@ -93,11 +93,9 @@ body {
 			<div class="panel panel-default">
 				<div class="panel-heading clearfix">
 					<h2 class="panel-title pull-left" style="padding-top: 7.5px;">
-						Create New Version of <em><b> ${recipe.name}</b> </em>
-					</h2>
+						Edit page </h2>
 					<button type="submit" value="submit" id="submit"
-						class="btn btn-primary" style="float: right;" disabled>Create
-						New Version</button>
+						class="btn btn-primary" style="float: right;" disabled>Done</button>
 				</div>
 
 				<div class="panel-body">
@@ -106,7 +104,7 @@ body {
 						<div class="col-xs-8">
 							<div class="col-xs-12">
 								Name:<input type="text" class="form-control" id="recipeName"
-									name="recipeName" placeholder="Name of Recipe...">
+									value= ${recipe.name } name="recipeName" placeholder="Name of Recipe...">
 							</div>
 							<br> <br> <br> <br>
 							<div class="col-xs-2">
@@ -409,20 +407,3 @@ body {
 	</script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
