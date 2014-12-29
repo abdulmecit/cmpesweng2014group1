@@ -188,7 +188,7 @@ body {
 						src="https://dl.dropboxusercontent.com/u/45511253/one-star.png" />
 					<h3 class="desc"></h3>
 				</div>
-				
+
 				<!------------- Eat/Edit Like/Delete Buttons -------------->
 				<button type="button" class="btn btn-primary" id="EatEdit"
 					style="float: right; margin-right: 15 px; margin-top: 18px;">
@@ -542,7 +542,6 @@ body {
 	var user = '${user.id}';
 	var owner = '${ownerId}';
 
-
 	$(document)
 			.ready(
 					function() {
@@ -584,28 +583,28 @@ body {
 						if (easeRate != 0) {
 							$("#easeRate").text(easeRate);
 						}
-						
+
 						if (user != owner) {
 							$("#textLikeDelete").text("Like ");
 							$("#textEatEdit").text("Eat ");
-						// if liked 'check' is visible
-						if (liked == 1) {
-							$("#likeCheck").css('visibility', 'visible');
+							// if liked 'check' is visible
+							if (liked == 1) {
+								$("#likeCheck").css('visibility', 'visible');
+							} else {
+								$("#likeCheck").css('visibility', 'hidden');
+							}
+							// if eat 'check' is visible
+							if (eaten == 1) {
+								$("#eatCheck").css('visibility', 'visible');
+							} else {
+								$("#eatCheck").css('visibility', 'hidden');
+							}
+							if (shared == 1) {
+								$("#shareCheck").css('visibility', 'visible');
+							} else {
+								$("#shareCheck").css('visibility', 'hidden');
+							}
 						} else {
-							$("#likeCheck").css('visibility', 'hidden');
-						}
-						// if eat 'check' is visible
-						if (eaten == 1) {
-							$("#eatCheck").css('visibility', 'visible');
-						} else {
-							$("#eatCheck").css('visibility', 'hidden');
-						}
-						if (shared == 1) {
-							$("#shareCheck").css('visibility', 'visible');
-						} else {
-							$("#shareCheck").css('visibility', 'hidden');
-						}
-						}else{
 							$("#textLikeDelete").text("Delete");
 							$("#textEatEdit").text("Edit");
 						}
@@ -649,7 +648,22 @@ body {
 				}
 				updateRate("likes", liked);
 			} else {
-				alert("delete");
+				bootbox.confirm("Are you sure?", function(result) {
+					if (result) {
+						$.ajax({
+							type : "POST",
+							url : "../deleteRecipe",
+							data : {
+								recipe_id : '${recipe.recipe_id}',
+							}
+						});
+
+					} else {
+
+					}
+
+				});
+
 			}
 		}
 	});
