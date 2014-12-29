@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <html lang="en">
 <jsp:include page="header.jsp" flush="true" />
@@ -216,83 +217,23 @@ body {
 				<div class=row>
 					<div class="col-sm-6 col-centered">
 						<ul class="slides">
-							<input type="radio" name="radio-btn" id="img-1" checked />
-							<li class="slide-container">
-								<div class="slide">
-									<img src="${photoUrl[0]}" />
-								</div>
-								<div class="nav">
-									<label for="img-6" class="prev">&#x2039;</label> <label
-										for="img-2" class="next">&#x203a;</label>
-								</div>
-							</li>
-
-							<input type="radio" name="radio-btn" id="img-2" />
-							<li class="slide-container">
-								<div class="slide">
-									<img
-										src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRikkxvA53g0Vc8XJuH2uIvWBMq8FGj5yFl5Gz-gLRJsk0XhwE" />
-								</div>
-								<div class="nav">
-									<label for="img-1" class="prev">&#x2039;</label> <label
-										for="img-3" class="next">&#x203a;</label>
-								</div>
-							</li>
-
-							<input type="radio" name="radio-btn" id="img-3" />
-							<li class="slide-container">
-								<div class="slide">
-									<img
-										src="http://blog.fotografium.com/wp-content/uploads/2011/09/1218.jpg" />
-								</div>
-								<div class="nav">
-									<label for="img-2" class="prev">&#x2039;</label> <label
-										for="img-4" class="next">&#x203a;</label>
-								</div>
-							</li>
-
-							<input type="radio" name="radio-btn" id="img-4" />
-							<li class="slide-container">
-								<div class="slide">
-									<img
-										src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3mwbgHPPWvhTK9lRaqmsLDG3nDJ-SxqjzgPocywPCPpMghR1dNw" />
-								</div>
-								<div class="nav">
-									<label for="img-3" class="prev">&#x2039;</label> <label
-										for="img-5" class="next">&#x203a;</label>
-								</div>
-							</li>
-
-							<!-- <a> taginin içine buton koydum onun içine de img, dolayısıyle butonun yönlendirceği adresi href ile verebiliyoruz. -->
-							<input type="radio" name="radio-btn" id="img-5" />
-							<li class="slide-container">
-								<div class="slide">
-									<img src="http://i.imgur.com/If2Ma.jpg" />
-								</div>
-								<div class="nav">
-									<label for="img-4" class="prev">&#x2039;</label> <label
-										for="img-6" class="next">&#x203a;</label>
-								</div>
-							</li>
-
-							<input type="radio" name="radio-btn" id="img-6" />
-							<li class="slide-container">
-								<div class="slide">
-									<img src="http://i.imgur.com/If2Ma.jpg" />
-								</div>
-								<div class="nav">
-									<label for="img-5" class="prev">&#x2039;</label> <label
-										for="img-1" class="next">&#x203a;</label>
-								</div>
-							</li>
-
-							<li class="nav-dots"><label for="img-1" class="nav-dot"
-								id="img-dot-1"></label> <label for="img-2" class="nav-dot"
-								id="img-dot-2"></label> <label for="img-3" class="nav-dot"
-								id="img-dot-3"></label> <label for="img-4" class="nav-dot"
-								id="img-dot-4"></label> <label for="img-5" class="nav-dot"
-								id="img-dot-5"></label> <label for="img-6" class="nav-dot"
-								id="img-dot-6"></label></li>
+							<c:forEach var="photo" items="${photoUrl}" varStatus="counter">
+								<input type="radio" name="radio-btn" id="img-${counter.index}" ${counter.index=='0'?'checked':''}/>
+								<li class="slide-container">
+									<div class="slide">
+										<img src="${photoUrl[counter.index]}" />
+									</div>
+									<div class="nav">
+										<label for="img-${counter.first ? (fn:length(photoUrl)-1) : counter.index-1}" class="prev">&#x2039;</label> 
+										<label for="img-${counter.last ? 0 : counter.index+1}" class="next">&#x203a;</label>
+									</div>
+								</li>						
+							</c:forEach>
+							<li class="nav-dots">
+							<c:forEach var="photo" items="${photoUrl}" varStatus="counter">
+								<label for="img-${counter.index}" class="nav-dot" id="img-dot-${counter.index}"></label>
+							</c:forEach>
+							</li>					
 						</ul>
 					</div>
 					<div class="col-sm-6 col-centered">
