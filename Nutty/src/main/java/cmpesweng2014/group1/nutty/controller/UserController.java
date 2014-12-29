@@ -66,6 +66,9 @@ public class UserController {
 			int numberOfFollowing = userService.getNumberOfFollowing(u.getId());
 			model.addAttribute("numberOfFollowing", numberOfFollowing);
 			
+			User[] followRequesters = userService.getFollowerList(u.getId());
+			model.addAttribute("followRequesters", followRequesters);
+			
 			User[] followers = userService.getFollowerList(u.getId());
 			model.addAttribute("followers", followers);
 			
@@ -420,18 +423,29 @@ public class UserController {
 			) {
 
 		int isFollowable = userService.getUserDao().getPrivacyOptionValue(followed_id, "followable");
-		if(isFollowable == 1){
-			if(value == 0)
-				userService.unfollow(follower_id, followed_id);
-			else
-				userService.addFollower(follower_id, followed_id);
-		}else{
-			if(value == 1){
-				userService.addFollowRequest(follower_id, followed_id);
-			}else{
-				userService.unfollow(follower_id, followed_id);
-			}
+		if(value == 0){
+			userService.unfollow(follower_id, followed_id);		
 		}
+		else{
+			if(isFollowable == 1)
+				userService.addFollower(follower_id, followed_id);
+			else
+				userService.addFollowRequest(follower_id, followed_id);
+		}
+		return "profile";
+	}
+	
+	@RequestMapping(value = "/answerFollowRequest")
+	public String answerFollowRequest(
+			@RequestParam(value = "follower_id", required = true) Long follower_id,
+			@RequestParam(value = "followed_id", required = true) Long followed_id,
+			@RequestParam(value = "value", required = true) int value
+			) {
+
+		if(value == 1){	//accept request
+			userService.addFollower(follower_id, followed_id);
+		}
+		userService.deleteFollowRequest(follower_id, followed_id);
 		return "profile";
 	}
 	

@@ -156,6 +156,22 @@ public class UserDao extends PcDao {
 				new Object[] { follower_id, followed_id });
 	}
 	
+	public User[] getFollowRequests(long user_id){
+		List<User> followRequesterList = this.getTemplate().query(
+				"SELECT user_id, email, password, name, surname, "
+				+ "birthday, gender, isBanned, photo FROM User, FollowRequests "
+				+ "WHERE followed_id =? AND user_id=follower_id",
+				new Object[] { user_id  }, new UserRowMapper());
+	
+		if (followRequesterList.isEmpty()) {
+			return null;
+		}
+		else{
+			User[] followRequesters = followRequesterList.toArray(new User[followRequesterList.size()]);
+			return followRequesters;
+		}
+	}
+	
 	public void addFollower(final long follower_id, final long followed_id){
 		final String query = "INSERT INTO Follows (follower_id, followed_id) VALUES (?,?)";
 
@@ -191,6 +207,7 @@ public class UserDao extends PcDao {
 			return users;
 		}
 	}
+	
 	public User[] getFollowings(long user_id){
 		List<User> followingList = this.getTemplate().query(
 				"SELECT user_id, email, password, name, surname, "
