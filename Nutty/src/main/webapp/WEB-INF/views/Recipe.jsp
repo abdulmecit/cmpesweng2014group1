@@ -1,6 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <html lang="en">
 <jsp:include page="header.jsp" flush="true" />
@@ -216,24 +216,28 @@ body {
 			<div class="panel-body">
 				<div class=row>
 					<div class="col-sm-6 col-centered">
+						<!----------------------- Photo ----------------------------->
 						<ul class="slides">
 							<c:forEach var="photo" items="${photoUrl}" varStatus="counter">
-								<input type="radio" name="radio-btn" id="img-${counter.index}" ${counter.index=='0'?'checked':''}/>
+								<input type="radio" name="radio-btn" id="img-${counter.index}"
+									${counter.index=='0'?'checked':''} />
 								<li class="slide-container">
 									<div class="slide">
 										<img src="${photoUrl[counter.index]}" />
 									</div>
 									<div class="nav">
-										<label for="img-${counter.first ? (fn:length(photoUrl)-1) : counter.index-1}" class="prev">&#x2039;</label> 
-										<label for="img-${counter.last ? 0 : counter.index+1}" class="next">&#x203a;</label>
+										<label
+											for="img-${counter.first ? (fn:length(photoUrl)-1) : counter.index-1}"
+											class="prev">&#x2039;</label> <label
+											for="img-${counter.last ? 0 : counter.index+1}" class="next">&#x203a;</label>
 									</div>
-								</li>						
+								</li>
 							</c:forEach>
-							<li class="nav-dots">
-							<c:forEach var="photo" items="${photoUrl}" varStatus="counter">
-								<label for="img-${counter.index}" class="nav-dot" id="img-dot-${counter.index}"></label>
-							</c:forEach>
-							</li>					
+							<li class="nav-dots"><c:forEach var="photo"
+									items="${photoUrl}" varStatus="counter">
+									<label for="img-${counter.index}" class="nav-dot"
+										id="img-dot-${counter.index}"></label>
+								</c:forEach></li>
 						</ul>
 					</div>
 					<div class="col-sm-6 col-centered">
@@ -622,8 +626,7 @@ body {
 				}
 				updateRate("eats", eaten);
 			} else {
-				alert("edit");
-				$(location).attr('href',"../editRecipe/${recipe.recipe_id}");
+				$(location).attr('href', "../editRecipe/${recipe.recipe_id}");
 			}
 		}
 	});
