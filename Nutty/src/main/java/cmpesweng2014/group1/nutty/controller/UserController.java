@@ -426,7 +426,11 @@ public class UserController {
 			else
 				userService.addFollower(follower_id, followed_id);
 		}else{
-			userService.addFollowRequest(follower_id, followed_id);
+			if(value == 1){
+				userService.addFollowRequest(follower_id, followed_id);
+			}else{
+				userService.unfollow(follower_id, followed_id);
+			}
 		}
 		return "profile";
 	}
