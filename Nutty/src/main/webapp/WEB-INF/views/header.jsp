@@ -229,7 +229,7 @@ body {
 					content += '<a href="/nutty/' + path + '/' + dummy[1] +'">'
 							+ dummy[0] + '</a>';
 					if(isRequest){
-						content += '<a href="javascript:answerRequest('+dummy[1]+',1);"> --> Accept / </a><a href="javascript:answerRequest('+dummy[1]+',0);">Reject</a>';					
+						content += '<a href="javascript:answerRequest('+dummy[1]+',1);"> <img src="http://png-1.findicons.com/files/icons/2226/matte_basic/16/accept.png"/> </a><a href="javascript:answerRequest('+dummy[1]+',0);"> <img src="http://circabc.eu:8080/circabc/faces/images/extension/help/Newsgroups%20-%20Icon%20-%20Post%20rejected.PNG"/> </a>';					
 					}
 					content += '</p>';
 				}}
