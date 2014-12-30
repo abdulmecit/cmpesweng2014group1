@@ -165,8 +165,13 @@ body {
 	</nav>
 
 	<script type="text/javascript">
-		$('#requests').on("click", function(event){
-			event.preventDefault();
+		var requests;
+	
+		$(document).ready(function(){
+			checkResults();
+		});
+		
+		function checkResults(){
 			$.ajax({
 				type: "POST",
 				url: "/nutty/user/getFollowRequests",
@@ -174,8 +179,19 @@ body {
 					user_id: '${user.id}'
 				}
 			}).done(function(answer) {
-				showResult("Follow Requests", answer);
+				if(answer != ""){
+					requests = answer;
+					length = (answer.split("|").length - 1);
+					$('#requests').css('color','red').attr("title",length);
+				}else{
+					$('#requests').css('color','gray').attr("title","No waiting request");
+				}
 			})
+		}
+		
+		$('#requests').on("click", function(event){
+			event.preventDefault();
+			showResult("Follow Requests", requests, true);
 		});
 	
 		$('#search-form')
@@ -196,11 +212,11 @@ body {
 												}
 											}).done(function(answer) {
 										$("#searchResults").html("");
-										showResult("Search Results", answer);
+										showResult("Search Results", answer,false);
 									})
 						});
 		
-		function showResult(title, answer) {
+		function showResult(title, answer, isRequest) {
 			var content = "";
 			if (answer == "") {
 				content +="<p>Sorry, Nothing to show :(</p>";
@@ -211,7 +227,11 @@ body {
 					dummy = results[i].split('>');
 					//content += '<li class="list-group-item"><a href="' + path + '/' + dummy[1] +'>' + dummy[0] + '</a></li>';
 					content += '<a href="/nutty/' + path + '/' + dummy[1] +'">'
-							+ dummy[0] + '</a></p>';
+							+ dummy[0] + '</a>';
+					if(isRequest){
+						content += '<a href="javascript:answerRequest('+dummy[1]+',1);"> --> Accept / </a><a href="javascript:answerRequest('+dummy[1]+',0);">Reject</a>';					
+					}
+					content += '</p>';
 				}}
 				bootbox.dialog({
 					title : title,
@@ -219,6 +239,26 @@ body {
 					onEscape: function() {},
 				});
 		}
+		
+		function answerRequest(id, answer){
+			$.ajax({
+				type:"POST",
+				url:"/nutty/user/answerFollowRequest",
+				data : {
+					follower_id : id,
+					followed_id : '${user.id}',
+					value : answer
+				}
+			}).done(function(answer){
+				if(answer == 1){
+					$('.close').trigger('click');
+					checkResults();
+				}else{
+					alert("An error occured!");
+				}
+			})
+		}
+		
 		/*		
 		function showResult(answer) {
 		var resultsWindow  = window.open("", "_blank", "left=500, top=350, width=200, height=150, resizable=1, scrollbars=1");

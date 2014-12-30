@@ -459,7 +459,8 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/answerFollowRequest")
-	public String answerFollowRequest(
+	@ResponseBody
+	public int answerFollowRequest(
 			@RequestParam(value = "follower_id", required = true) Long follower_id,
 			@RequestParam(value = "followed_id", required = true) Long followed_id,
 			@RequestParam(value = "value", required = true) int value
@@ -469,7 +470,7 @@ public class UserController {
 			userService.addFollower(follower_id, followed_id);
 		}
 		userService.deleteFollowRequest(follower_id, followed_id);
-		return "profile";
+		return 1;
 	}
 	
 	@RequestMapping(value = "/getUsersRecipes")
