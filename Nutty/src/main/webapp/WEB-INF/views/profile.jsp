@@ -57,12 +57,14 @@ body {
 
 #Follow {
 	display: none;
-	visibility: hidden;
 }
 
 #followCheck {
 	display: none;
-	visibility: hidden;
+}
+
+#followRequestCheck {
+	display: none;
 }
 </style>
 
@@ -100,7 +102,8 @@ body {
 					<button type="button" class="btn btn-primary" value="Follow"
 						id="Follow"
 						style="float: center; margin-right: 15 px; margin-top: 18px;">
-						<span id="textFollow" class="ui-button-text">Follow &nbsp </span>
+						<span id="textFollow" class="ui-button-text">Follow &nbsp; </span>
+						<span id="followRequestCheck" class="glyphicon glyphicon-envelope"></span>					
 						<span id="followCheck" class="glyphicon glyphicon-check"></span>
 						<!-- caret for arrow. ui-button-text for button text visible; -->
 					</button>
@@ -153,10 +156,8 @@ body {
 		$(document).ready(function() {
 			if ('${visitedUser.id}' == '${user.id}') {
 				$("#Follow").css('display', 'none');
-				$("#Follow").css('visibility', 'hidden');
 			} else {
 				$("#Follow").css('display', 'block');
-				$("#Follow").css('visibility', 'visible');
 			}
 		});
 		
@@ -278,15 +279,19 @@ body {
 											});
 						});
 
-		var isFollower = '${isFollower}';
-
+		var followStatus = '${followStatus}';
 		$(document).ready(function() {
-			if (isFollower == 'true') {
+			if (followStatus == 'true') {
 				$("#followCheck").css('display', 'inline');
-				$("#followCheck").css('visibility', 'visible');
-			} else {
+				$("#followRequestCheck").css('display', 'none');
+			} 
+			else if (followStatus == 'request'){
 				$("#followCheck").css('display', 'none');
-				$("#followCheck").css('visibility', 'hidden');
+				$("#followRequestCheck").css('display', 'inline');
+			}
+			else{
+				$("#followCheck").css('display', 'none');
+				$("#followRequestCheck").css('display', 'none');
 			}
 		});
 		
@@ -308,15 +313,24 @@ body {
 		});
 
 		$("#Follow").click(function() {
-			if (isFollower == 'true') {
+			if (followStatus == 'request'){
+				$("#followRequestCheck").css('display', 'none');
+				followStatus = 'false'
+				followUser(-1);
+			}
+			else if (followStatus == 'true') {
 				$("#followCheck").css('display', 'none');
-				$("#followCheck").css('visibility', 'hidden');
-				isFollower = 'false';
+				followStatus = 'false';
 				followUser(0);
 			} else {
-				$("#followCheck").css('display', 'inline');
-				$("#followCheck").css('visibility', 'visible');
-				isFollower = 'true';
+				if('${privOptions.followable}' == 1){
+					$("#followCheck").css('display', 'inline');
+					followStatus = 'true';
+				}
+				else{
+					$("#followRequestCheck").css('display', 'inline');
+					followStatus = 'request';
+				}
 				followUser(1);
 			}
 		});
@@ -334,63 +348,69 @@ body {
 		};
 
 		$(document).ready(function() {
-			$.ajax({
-				type : "POST",
-				url : "../foodIntoleranceREST",
-				data : {
-					user_id : '${visitedUser.id}'
-				}
-			}).done(function(res) {
-				var len = res.length;
-				if (len != 0) {
-					var prefs = "";
-					for (var i = 0; i < len - 1; i++) {
-						prefs += res[i].fs_name + ", ";
+			if('${privOptions.visible_food_intolerance}' == 1){
+				$.ajax({
+					type : "POST",
+					url : "../foodIntoleranceREST",
+					data : {
+						user_id : '${visitedUser.id}'
 					}
-					prefs += res[len - 1].fs_name;
-					document.getElementById('food_int').innerHTML = prefs;
-				}
-			});
+				}).done(function(res) {
+					var len = res.length;
+					if (len != 0) {
+						var prefs = "";
+						for (var i = 0; i < len - 1; i++) {
+							prefs += res[i].fs_name + ", ";
+						}
+						prefs += res[len - 1].fs_name;
+						document.getElementById('food_int').innerHTML = prefs;
+					}
+				});
+			}
 		});
 
 		$(document).ready(function() {
-			$.ajax({
-				type : "POST",
-				url : "../healthConditionREST",
-				data : {
-					user_id : '${visitedUser.id}'
-				}
-			}).done(function(res) {
-				var len = res.length;
-				if (len != 0) {
-					var prefs = "";
-					for (var i = 0; i < len - 1; i++) {
-						prefs += res[i].fs_name + ", ";
+			if('${privOptions.visible_health_condition}' == 1){
+				$.ajax({
+					type : "POST",
+					url : "../healthConditionREST",
+					data : {
+						user_id : '${visitedUser.id}'
 					}
-					prefs += res[len - 1].fs_name;
-					document.getElementById('health_cond').innerHTML = prefs;
-				}
-			});
+				}).done(function(res) {
+					var len = res.length;
+					if (len != 0) {
+						var prefs = "";
+						for (var i = 0; i < len - 1; i++) {
+							prefs += res[i].fs_name + ", ";
+						}
+						prefs += res[len - 1].fs_name;
+						document.getElementById('health_cond').innerHTML = prefs;
+					}
+				});
+			}
 		});
 
 		$(document).ready(function() {
-			$.ajax({
-				type : "POST",
-				url : "../unpreferREST",
-				data : {
-					user_id : '${visitedUser.id}'
-				}
-			}).done(function(res) {
-				var len = res.length;
-				if (len != 0) {
-					var prefs = "";
-					for (var i = 0; i < len - 1; i++) {
-						prefs += res[i] + "<br>";
+			if('${privOptions.visible_not_pref}' == 1){
+				$.ajax({
+					type : "POST",
+					url : "../unpreferREST",
+					data : {
+						user_id : '${visitedUser.id}'
 					}
-					prefs += res[len - 1];
-					document.getElementById('not_pref').innerHTML = prefs;
-				}
-			});
+				}).done(function(res) {
+					var len = res.length;
+					if (len != 0) {
+						var prefs = "";
+						for (var i = 0; i < len - 1; i++) {
+							prefs += res[i] + "<br>";
+						}
+						prefs += res[len - 1];
+						document.getElementById('not_pref').innerHTML = prefs;
+					}
+				});
+			}
 		});
 
 		$("#showFollowers")

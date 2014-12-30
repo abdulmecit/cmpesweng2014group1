@@ -147,6 +147,17 @@ public class UserService {
 			return getFollowingList(user_id).length;
 		}
 	}
+	//determines the follow status of an user against the other
+	public String getFollowStatus(long follower_id, long followed_id){
+		if(isFollower(follower_id, followed_id))
+			return "true";
+		else{
+			if(hasFollowRequest(follower_id, followed_id))
+				return "request";
+			else
+				return "false";
+		}
+	}	
 	//determines if user with follower_id is a follower of the user with followed_id
 	public boolean isFollower(long follower_id, long followed_id){
 		User[] followerList = getFollowerList(followed_id);
@@ -159,6 +170,18 @@ public class UserService {
 			return true;
 		return false;
 	}
+	//determines if user with follower_id has sent a follow request to the user with followed_id
+	public boolean hasFollowRequest(long follower_id, long followed_id){
+		User[] followRequesterList = getUserDao().getFollowRequests(followed_id);
+		if(followRequesterList == null){
+			return false;
+		}
+		Arrays.sort(followRequesterList);
+		int result = Arrays.binarySearch(followRequesterList, new User(follower_id, null, null, null, null, null, 0));
+		if (result >= 0)
+			return true;
+		return false;
+	}	
 	public Badge getBadge(long user_id){
 		List<UserRecipeScore> scoreList = userDao.getUserRecipeScore(user_id);
 		if(scoreList == null){

@@ -165,16 +165,16 @@ body {
 	</nav>
 
 	<script type="text/javascript">
-		$('#requests').on(click, function(event){
+		$('#requests').on("click", function(event){
 			event.preventDefault();
 			$.ajax({
 				type: "POST",
-				url: "/nutty/getFollowRequests",
+				url: "/nutty/user/getFollowRequests",
 				data: {
-					userId: '${user.id}'
+					user_id: '${user.id}'
 				}
 			}).done(function(answer) {
-				showResult(answer);
+				showResult("Follow Requests", answer);
 			})
 		});
 	
@@ -196,11 +196,11 @@ body {
 												}
 											}).done(function(answer) {
 										$("#searchResults").html("");
-										showResult(answer);
+										showResult("Search Results", answer);
 									})
 						});
 		
-		function showResult(answer) {
+		function showResult(title, answer) {
 			var content = "";
 			if (answer == "") {
 				content +="<p>Sorry, Nothing to show :(</p>";
@@ -214,7 +214,7 @@ body {
 							+ dummy[0] + '</a></p>';
 				}}
 				bootbox.dialog({
-					title : "Results",
+					title : title,
 					message : content,
 					onEscape: function() {},
 				});

@@ -57,8 +57,12 @@ public class UserController {
 			model.addAttribute("visitedUser", u);
 
 			User visitingUser = (User) session.getAttribute("user");
-			boolean isFollower = userService.isFollower(visitingUser.getId(), u.getId());
-			model.addAttribute("isFollower", isFollower);
+
+			String followStatus = userService.getFollowStatus(visitingUser.getId(), u.getId());
+			model.addAttribute("followStatus", followStatus);
+			
+			PrivacyOptions privOptions = userService.getUserDao().getPrivacyOptions(u.getId());
+			model.addAttribute("privOptions", privOptions);
 			
 			int numberOfFollowers = userService.getNumberOfFollowers(u.getId());
 			model.addAttribute("numberOfFollowers", numberOfFollowers);
@@ -420,7 +424,10 @@ public class UserController {
 			) {
 
 		int isFollowable = userService.getUserDao().getPrivacyOptionValue(followed_id, "followable");
-		if(value == 0){
+		if(value == -1){
+			userService.getUserDao().deleteFollowRequest(follower_id, followed_id);	
+		}
+		else if(value == 0){
 			userService.unfollow(follower_id, followed_id);		
 		}
 		else{
@@ -433,6 +440,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/getFollowRequests")
+	@ResponseBody
 	public String getFollowRequests(
 			@RequestParam(value = "user_id", required = true) Long user_id
 			) {
