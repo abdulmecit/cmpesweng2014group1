@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.dao.DataAccessException;
@@ -135,6 +136,61 @@ public class UserDao extends PcDao {
 		return recipeIds;
 	}	
 	
+	public Long getUserIdByToken(String token_id){	
+		Long user_id;
+		try{
+			user_id = this.getTemplate().queryForObject(
+				"SELECT user_id FROM PassResetRequests WHERE token_id = ?",
+				new Object[] { token_id }, Long.class);
+		}
+		catch(DataAccessException e){
+			user_id = null;
+		}
+		return user_id;
+	}
+	
+	public Timestamp getTimestampByToken(String token_id){	
+		Timestamp timestamp;
+		try{
+			timestamp = this.getTemplate().queryForObject(
+				"SELECT date FROM PassResetRequests WHERE token_id = ?",
+				new Object[] { token_id }, Timestamp.class);
+		}
+		catch(DataAccessException e){
+			timestamp = null;
+		}
+		return timestamp;
+	}
+	
+	public void addPasswordResetRequest(final String token_id, final long user_id){
+		// if there are old password reset requests delete them
+		if(!emptyCheckPassResetRequest(user_id)){
+			deletePasswordResetRequest(user_id);
+		}
+		final String query = "INSERT INTO PassResetRequests (token_id, user_id) VALUES (?,?)";
+		this.getTemplate().update(new PreparedStatementCreator() {
+
+			@Override
+			public PreparedStatement createPreparedStatement(
+					Connection connection) throws SQLException {
+				PreparedStatement ps = connection.prepareStatement(query);
+				ps.setString(1, token_id);
+				ps.setLong(2, user_id);
+				return ps;
+			}
+		});
+	}
+	
+	public void deletePasswordResetRequest(final String token_id){
+		this.getTemplate().update("DELETE FROM PassResetRequests WHERE token_id = ?", 
+				new Object[] { token_id});
+	}
+	
+	public void deletePasswordResetRequest(final Long user_id){
+		this.getTemplate().update("DELETE FROM PassResetRequests WHERE user_id = ?", 
+				new Object[] { user_id});
+	}
+	
 	public void addFollowRequest(final long follower_id, final long followed_id){
 		final String query = "INSERT INTO `FollowRequests` (follower_id, followed_id) VALUES (?,?)";
 		this.getTemplate().update(new PreparedStatementCreator() {
@@ -145,7 +201,6 @@ public class UserDao extends PcDao {
 				PreparedStatement ps = connection.prepareStatement(query);
 				ps.setLong(1, follower_id);
 				ps.setLong(2, followed_id);
-
 				return ps;
 			}
 		});
@@ -352,6 +407,18 @@ public class UserDao extends PcDao {
 	public boolean emptyCheckPrivacy(long user_id){
 		int count = this.getTemplate().queryForObject(
 				"SELECT COUNT(*) FROM PrivacyOption WHERE user_id=?",
+				new Object[] { user_id  },  Integer.class);
+		if (count == 0) {
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	public boolean emptyCheckPassResetRequest(long user_id){
+		int count = this.getTemplate().queryForObject(
+				"SELECT COUNT(*) FROM PassResetRequests WHERE user_id=?",
 				new Object[] { user_id  },  Integer.class);
 		if (count == 0) {
 			return true;

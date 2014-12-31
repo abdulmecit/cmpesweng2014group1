@@ -168,7 +168,8 @@ body {
 		var requests;
 	
 		$(document).ready(function(){
-			checkResults();
+			if('${isLogged}')
+				checkResults();
 		});
 		
 		function checkResults(){
@@ -179,8 +180,8 @@ body {
 					user_id: '${user.id}'
 				}
 			}).done(function(answer) {
+				requests = answer;
 				if(answer != ""){
-					requests = answer;
 					length = (answer.split("|").length - 1);
 					$('#requests').css('color','red').attr("title",length);
 				}else{

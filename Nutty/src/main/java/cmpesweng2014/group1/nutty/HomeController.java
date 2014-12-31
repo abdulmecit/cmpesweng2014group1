@@ -1,15 +1,20 @@
 package cmpesweng2014.group1.nutty;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringArrayPropertyEditor;
+import org.springframework.mail.MailException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -23,9 +28,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 
+import cmpesweng2014.group1.nutty.model.Mail;
 import cmpesweng2014.group1.nutty.model.Message;
 import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.model.User;
+import cmpesweng2014.group1.nutty.service.MailService;
 import cmpesweng2014.group1.nutty.service.RecipeService;
 import cmpesweng2014.group1.nutty.service.RecommendationService;
 import cmpesweng2014.group1.nutty.service.SearchService;
@@ -49,6 +56,9 @@ public class HomeController {
 	
 	@Autowired
 	private RecommendationService recommService;
+	
+	@Autowired
+	private MailService mailService;
 	
 	// No longer splits from comma when a single item sent as an array parameter
 	@InitBinder
@@ -140,7 +150,112 @@ public class HomeController {
 			return new Message(0, null, "Invalid email address or password.");
 		}
 	}
+	
+	@RequestMapping(value = "/forgotPass")
+	public String forgotPassword(@RequestParam(value = "email", required = true) String email,
+			RedirectAttributes redirectAttrs) {
+		SecureRandom random = new SecureRandom();
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		Mail m = new Mail();
+		
+		//Check if an user with the given email exists in the database
+		User u = userService.getUserDao().getUserByEmail(email);
+		
+		if(u == null){
+			String content = "You (or someone else) entered this email address when trying to reset the password for their Nutty account.\n\nHowever, this email address is not registered in our database and therefore the reset password request has failed.\n\nIf you indeed have a Nutty account, please try again with your registered email address.\n\nIf not, feel free to ignore this email.\n\nKind regards,\nNutty Customer Service";
+			m.setTo(email);
+			m.setSubject("Reset Password Request");
+			m.setContent(content);
+		}
+		else{
+			String content = "You (or someone else) entered this email address when trying to reset the password for their Nutty account.\n\n";
 
+			content += "If you are the one who initiated the reset process, please click on the following link or copy/paste it into your browser to decide on a new password:\n\n";
+			//Create a password reset request
+			String token = new BigInteger(130, random).toString(32);		
+			userService.getUserDao().addPasswordResetRequest(encoder.encode(token), u.getId());		
+			content += "http://localhost:8080/nutty/resetPass?t=" + token + "&a=1\n\n";
+			
+			content += "If you are NOT the person who initiated the reset process, please click on the following link or copy/paste it into your browser to cancel this request:\n\n";
+			content += "http://localhost:8080/nutty/resetPass?t=" + token + "&a=0\n\n";
+			
+			content += "Kind regards,\nNutty Customer Service";
+
+			m.setTo(email);
+			m.setSubject("Reset Password Request");
+			m.setContent(content);
+		}
+		try{
+			mailService.sendMail(m);
+		}
+		catch(MailException e){
+			redirectAttrs.addFlashAttribute("message", new Message(0, null, "An error has occurred when trying to send the email."));
+			return "redirect:login";
+		}
+		redirectAttrs.addFlashAttribute("message", new Message(1, null, "Instructions are sent to " + email + ".")); 
+		return "redirect:login";
+	}
+
+	@RequestMapping(value = "/resetPass", method = RequestMethod.GET)
+	public String viewResetPass(
+			@RequestParam(value = "t", required = true) String token,
+			@RequestParam(value = "a", required = true) int isAllowed,
+			RedirectAttributes redirectAttrs) {		
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		
+		if(isAllowed == 0){
+			userService.getUserDao().deletePasswordResetRequest(token);
+			redirectAttrs.addFlashAttribute("message", new Message(1, null, "Password reset request is successfully cancelled.")); 
+			return "redirect:login";
+		}
+		else if(isAllowed == 1){
+			Long user_id = userService.getUserDao().getUserIdByToken(encoder.encode(token));
+			if(user_id == null){
+				redirectAttrs.addFlashAttribute("message", new Message(0, null, "URL didn't get verified, password reset failed.")); 
+				return "redirect:login";
+			}
+			else{
+				Calendar currentTime = Calendar.getInstance();
+				Calendar tokenTime = Calendar.getInstance();
+				tokenTime.setTimeInMillis(userService.getUserDao().getTimestampByToken(token).getTime());
+				
+				long diff = currentTime.getTimeInMillis() - tokenTime.getTimeInMillis();
+				long threshold = 3600000; //1 hour in milliseconds
+				if(diff > threshold){
+					redirectAttrs.addFlashAttribute("message", new Message(0, null, "Your token has expired, password reset failed.")); 
+					return "redirect:login";
+				}
+				redirectAttrs.addFlashAttribute("user_id", user_id);
+				return "redirect:resetPassword";
+			}
+		}
+		else{
+			redirectAttrs.addFlashAttribute("message", new Message(0, null, "URL didn't get verified, password reset failed.")); 
+			return "redirect:login";
+		}
+	}
+	
+	@RequestMapping(value = "/resetPass", method = RequestMethod.POST)
+	public String resetPass(
+			@RequestParam(value = "inputPassword", required = true) String password,
+			@RequestParam(value = "inputPassword2", required = true) String password2,
+			@RequestParam(value = "user_id", required = true) long user_id,
+			RedirectAttributes redirectAttrs, HttpSession session) {
+		
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();	
+		User u = (User) userService.getUserDao().getUserById(user_id);
+		
+		if(!password.equals(password2)){
+			redirectAttrs.addFlashAttribute("message", new Message(0, null, "Entered passwords do not match!")); 
+			return "redirect:login";
+		}
+		
+		u.setPassword(encoder.encode(password));
+		userService.getUserDao().updateUser(u);
+		redirectAttrs.addFlashAttribute("message", new Message(1, null, "Your password is successfully changed")); 
+		return "redirect:login";
+	}
+	
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
 	public String viewSignup(Model model, HttpSession session) {
 		User u = new User();

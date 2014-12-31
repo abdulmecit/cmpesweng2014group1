@@ -125,34 +125,33 @@
 					</fb:login-button>
 					
 					<div id="status">
+					</div>			      
+			    	<p><a href="javascript:forgot()">Forgot Password?</a></p>
+			  	</div>
+			 </div>
+	  	</form>      
+	  	
+	  	<form:form class="form-horizontal" action="forgotPass" 
+				method="POST">
+			<div class="formEmail">
+				<div>
+				    <label for="email" class="col-sm-4 control-label">E-mail:</label>
+				    <div class="col-sm-6">
+				      <input type="email" class="form-control" id="email" name="email" style="width:80%" maxlength="30">
+				    </div>
+				  </div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-primary">Send E-mail</button>
 					</div>
-			      
-			      
-			    <p><a href="javascript:forgot()">Forgot Password?</a></p>
-			  	</div>  <!-- TODO forgotPass isminde bi controller lazim -->
-			  	<form:form class="form-horizontal" action="forgotPass" 
-						method="POST">
-					<div class="formEmail">
-						<div>
-						    <label for="email" class="col-sm-4 control-label">E-mail:</label>
-						    <div class="col-sm-6">
-						      <input type="email" class="form-control" id="email" name="email" style="width:80%" maxlength="30">
-						    </div>
-						  </div>
-						<div class="form-group">
-							<div class="col-sm-offset-2 col-sm-10">
-								<button type="submit" class="btn btn-primary">Send E-mail</button>
-							</div>
-						</div>
-					</div>
-				</form:form>
-			  </div>
-			  <br>
-		      <font color="blue">${message.message}</font>
-			</form>
-        </div>
+				</div>
+			</div>
+		</form:form>
+	  	<br>
+      	<font color="blue">${message.message}</font>
+		</div>		
       </div>
-    </div>  
+    </div>
 
   </body>
   
