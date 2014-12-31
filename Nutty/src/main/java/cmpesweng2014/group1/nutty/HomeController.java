@@ -197,20 +197,30 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/resetPass", method = RequestMethod.GET)
-	public String viewResetPass(
+	public String validateResetPass(
 			@RequestParam(value = "u", required = true) Long user_id,
 			@RequestParam(value = "t", required = true) String token,
 			@RequestParam(value = "a", required = true) int isAllowed,
-			RedirectAttributes redirectAttrs) {		
+			RedirectAttributes redirectAttrs, HttpSession session) {	
+		
+		Object logged = session.getAttribute("isLogged");
+		boolean isLogged = logged == null ? false : (Boolean) logged;
+		
+		if(isLogged){
+			return "redirect:index";
+		}
 		
 		if(isAllowed == 0){
-			userService.getUserDao().deletePasswordResetRequest(token, user_id);
+			if(!userService.tokensDoMatch(token, user_id)){
+				redirectAttrs.addFlashAttribute("message", new Message(0, null, "URL didn't get verified, password reset failed.")); 
+				return "redirect:login";
+			}
+			userService.getUserDao().deletePasswordResetRequest(user_id);
 			redirectAttrs.addFlashAttribute("message", new Message(1, null, "Password reset request is successfully cancelled.")); 
 			return "redirect:login";
 		}
 		else if(isAllowed == 1){
-			//Long user_id = userService.getUserDao().getUserIdByToken(token);
-			if(user_id == null){
+			if(!userService.tokensDoMatch(token, user_id)){
 				redirectAttrs.addFlashAttribute("message", new Message(0, null, "URL didn't get verified, password reset failed.")); 
 				return "redirect:login";
 			}
@@ -225,7 +235,7 @@ public class HomeController {
 					redirectAttrs.addFlashAttribute("message", new Message(0, null, "Your token has expired, password reset failed.")); 
 					return "redirect:login";
 				}
-				//TODO: need to delete the token
+				userService.getUserDao().deletePasswordResetRequest(user_id);
 				redirectAttrs.addFlashAttribute("user_id", user_id);
 				return "redirect:resetPassword";
 			}
@@ -237,19 +247,16 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/resetPassword", method = RequestMethod.GET)
-	public String resetPassword(Model model, HttpSession session
-			//@RequestParam(value = "user_id", required = true) Long user_id
-			) {
-		//model.addAttribute("user_id", user_id);
+	public String viewResetPass() {
 		return "resetPassword";
 	}
 	
-	@RequestMapping(value = "/resetPass", method = RequestMethod.POST)
+	@RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
 	public String resetPass(
 			@RequestParam(value = "inputPassword", required = true) String password,
 			@RequestParam(value = "inputPassword2", required = true) String password2,
 			@RequestParam(value = "user_id", required = true) long user_id,
-			RedirectAttributes redirectAttrs, HttpSession session) {
+			RedirectAttributes redirectAttrs) {
 		
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();	
 		User u = (User) userService.getUserDao().getUserById(user_id);

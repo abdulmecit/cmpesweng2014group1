@@ -66,6 +66,21 @@ public class UserService {
 		}
 	}
 	
+	public boolean tokensDoMatch(String token, long user_id) {
+		String hashedToken = userDao.getTokenById(user_id);
+		if (hashedToken == null) { // no token
+			return false;
+		}
+
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		if(	encoder.matches(token, hashedToken)){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
 	//add food intolerance and health condition
 	//it is the same to add food intolerance and health condition 
 	public void addFoodSelection(User user, String[] foodSelectionNames){
