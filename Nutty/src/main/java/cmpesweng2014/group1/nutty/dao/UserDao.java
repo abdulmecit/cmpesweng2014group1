@@ -12,6 +12,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import cmpesweng2014.group1.nutty.dao.mapper.EatLikeRateRowMapper;
@@ -149,12 +150,12 @@ public class UserDao extends PcDao {
 		return user_id;
 	}
 	
-	public Timestamp getTimestampByToken(String token_id){	
+	public Timestamp getTimestampById(Long user_id){	
 		Timestamp timestamp;
 		try{
 			timestamp = this.getTemplate().queryForObject(
-				"SELECT date FROM PassResetRequests WHERE token_id = ?",
-				new Object[] { token_id }, Timestamp.class);
+				"SELECT date FROM PassResetRequests WHERE user_id = ?",
+				new Object[] { user_id }, Timestamp.class);
 		}
 		catch(DataAccessException e){
 			timestamp = null;
@@ -181,9 +182,13 @@ public class UserDao extends PcDao {
 		});
 	}
 	
-	public void deletePasswordResetRequest(final String token_id){
-		this.getTemplate().update("DELETE FROM PassResetRequests WHERE token_id = ?", 
-				new Object[] { token_id});
+	public void deletePasswordResetRequest(final String token_id, final long user_id){
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		List<String> token = this.getTemplate().queryForList("SELECT token_id FROM PassResetRequests WHERE user_id = "+ user_id, String.class);
+		if(	encoder.matches(token_id, token.get(0))){
+			this.getTemplate().update("DELETE FROM PassResetRequests WHERE token_id = ?", 
+					new Object[] {token.get(0)});
+		}
 	}
 	
 	public void deletePasswordResetRequest(final Long user_id){

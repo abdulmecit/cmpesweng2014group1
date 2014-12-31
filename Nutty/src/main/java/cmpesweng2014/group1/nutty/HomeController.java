@@ -174,10 +174,10 @@ public class HomeController {
 			//Create a password reset request
 			String token = new BigInteger(130, random).toString(32);		
 			userService.getUserDao().addPasswordResetRequest(encoder.encode(token), u.getId());		
-			content += "http://localhost:8080/nutty/resetPass?t=" + token + "&a=1\n\n";
+			content += "http://localhost:8080/nutty/resetPass?t=" + token + "&a=1&u="+u.getId()+"\n\n";
 			
 			content += "If you are NOT the person who initiated the reset process, please click on the following link or copy/paste it into your browser to cancel this request:\n\n";
-			content += "http://localhost:8080/nutty/resetPass?t=" + token + "&a=0\n\n";
+			content += "http://localhost:8080/nutty/resetPass?t=" + token + "&a=0&u="+u.getId()+"\n\n";
 			
 			content += "Kind regards,\nNutty Customer Service";
 
@@ -198,18 +198,18 @@ public class HomeController {
 
 	@RequestMapping(value = "/resetPass", method = RequestMethod.GET)
 	public String viewResetPass(
+			@RequestParam(value = "u", required = true) Long user_id,
 			@RequestParam(value = "t", required = true) String token,
 			@RequestParam(value = "a", required = true) int isAllowed,
 			RedirectAttributes redirectAttrs) {		
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		
 		if(isAllowed == 0){
-			userService.getUserDao().deletePasswordResetRequest(token);
+			userService.getUserDao().deletePasswordResetRequest(token, user_id);
 			redirectAttrs.addFlashAttribute("message", new Message(1, null, "Password reset request is successfully cancelled.")); 
 			return "redirect:login";
 		}
 		else if(isAllowed == 1){
-			Long user_id = userService.getUserDao().getUserIdByToken(encoder.encode(token));
+			//Long user_id = userService.getUserDao().getUserIdByToken(token);
 			if(user_id == null){
 				redirectAttrs.addFlashAttribute("message", new Message(0, null, "URL didn't get verified, password reset failed.")); 
 				return "redirect:login";
@@ -217,7 +217,7 @@ public class HomeController {
 			else{
 				Calendar currentTime = Calendar.getInstance();
 				Calendar tokenTime = Calendar.getInstance();
-				tokenTime.setTimeInMillis(userService.getUserDao().getTimestampByToken(token).getTime());
+				tokenTime.setTimeInMillis(userService.getUserDao().getTimestampById(user_id).getTime());
 				
 				long diff = currentTime.getTimeInMillis() - tokenTime.getTimeInMillis();
 				long threshold = 3600000; //1 hour in milliseconds
@@ -225,6 +225,7 @@ public class HomeController {
 					redirectAttrs.addFlashAttribute("message", new Message(0, null, "Your token has expired, password reset failed.")); 
 					return "redirect:login";
 				}
+				//TODO: need to delete the token
 				redirectAttrs.addFlashAttribute("user_id", user_id);
 				return "redirect:resetPassword";
 			}
@@ -233,6 +234,14 @@ public class HomeController {
 			redirectAttrs.addFlashAttribute("message", new Message(0, null, "URL didn't get verified, password reset failed.")); 
 			return "redirect:login";
 		}
+	}
+	
+	@RequestMapping(value = "/resetPassword", method = RequestMethod.GET)
+	public String resetPassword(Model model, HttpSession session
+			//@RequestParam(value = "user_id", required = true) Long user_id
+			) {
+		//model.addAttribute("user_id", user_id);
+		return "resetPassword";
 	}
 	
 	@RequestMapping(value = "/resetPass", method = RequestMethod.POST)

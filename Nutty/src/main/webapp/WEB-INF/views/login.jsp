@@ -138,6 +138,7 @@
 				    <label for="email" class="col-sm-4 control-label">E-mail:</label>
 				    <div class="col-sm-6">
 				      <input type="email" class="form-control" id="email" name="email" style="width:80%" maxlength="30">
+				      <input type="hidden" class="form-control" id="user_id" name="user_id" value="${user.id}">
 				    </div>
 				  </div>
 				<div class="form-group">
