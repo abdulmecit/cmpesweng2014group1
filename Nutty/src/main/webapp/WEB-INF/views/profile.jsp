@@ -67,9 +67,6 @@ body {
 	display: none;
 }
 
-#sharedRecipes {
-	display: none;
-}
 </style>
 
 </head>
@@ -90,7 +87,7 @@ body {
 			<div id="info-wrap">
 				<div class="info" align="center">
 					<p>&nbsp;</p>
-					<h1 id="name">${visitedUser.name} ${visitedUser.surname}</h1>
+					<h1 id="name">${visitedUser.name}${visitedUser.surname}</h1>
 					<h3>Age:</h3>
 					<p id="age">Not specified</p>
 					<h3>Gender:</h3>
@@ -106,15 +103,16 @@ body {
 					<button type="button" class="btn btn-primary" value="Follow"
 						id="Follow"
 						style="float: center; margin-right: 15 px; margin-top: 18px;">
-						<span id="textFollow" class="ui-button-text">Follow &nbsp; </span>
-						<span id="followRequestCheck" class="glyphicon glyphicon-envelope"></span>					
-						<span id="followCheck" class="glyphicon glyphicon-check"></span>
+						<span id="textFollow" class="ui-button-text">Follow &nbsp;
+						</span> <span id="followRequestCheck"
+							class="glyphicon glyphicon-envelope"></span> <span
+							id="followCheck" class="glyphicon glyphicon-check"></span>
 						<!-- caret for arrow. ui-button-text for button text visible; -->
 					</button>
 				</div>
 				<div class="info" align="center">
 					<p>&nbsp;</p>
-					<div id="star" ></div>
+					<div id="star"></div>
 					<p>&nbsp;</p>
 					<h2>${badge}</h2>
 					<h3>&nbsp;</h3>
@@ -139,18 +137,24 @@ body {
 
 							<li role="presentation" class="filter" id="sharedRec"><a
 								class="btn btn-link">Shared Recipe</a></li>
+
+							<li role="presentation" class="filter" id="eatenRec"><a
+								class="btn btn-link">Recently Eaten</a></li>
 						</ul>
+
 						<ul id="recentActivity" class="list-group"
-							style="overflow:scroll;">
-							<li>
-								<br><p>Loading Recent Activities, please wait..</p><br>
-							</li>
+							style="overflow: scroll;display:block;">
+							<li><br>
+								<p>Loading, please wait..</p> <br></li>
 						</ul>
+
 						<ul id="sharedRecipes" class="list-group"
-							style="overflow:scroll;">
-							<li>
-								<br><p>Loading Recipes, please wait..</p><br>
-							</li>
+							style="overflow: scroll; display: none">
+							<li></li>
+						</ul>
+
+						<ul id="eatenRecipes" class="list-group" style="overflow: scroll; display: none">
+							<li></li>
 						</ul>
 					</div>
 				</div>
@@ -161,13 +165,20 @@ body {
 	<script type="text/javascript">
 		$(".filter").click(function() {
 			$(this).addClass("active").siblings().removeClass("active");
-			if(this.id == "recentAct"){
-				$("#recentActivity").css('display', 'block');
+			if (this.id == "recentAct") {
 				$("#sharedRecipes").css('display', 'none');
-			}
-			else{
+				$("#eatenRecipes").css('display', 'none');
+				$("#recentActivity").css('display', 'block');
+
+			} else if (this.id == "sharedRec") {
 				$("#recentActivity").css('display', 'none');
+				$("#eatenRecipes").css('display', 'none');
 				$("#sharedRecipes").css('display', 'block');
+				
+			} else {
+				$("#recentActivity").css('display', 'none');
+				$("#sharedRecipes").css('display', 'none');
+				$("#eatenRecipes").css('display', 'block');
 			}
 		});
 
@@ -178,18 +189,16 @@ body {
 				$("#Follow").css('display', 'block');
 			}
 		});
-		
-		
 
 		var photo = '${visitedUser.photo}';
 		$(document)
 				.ready(
 						function() {
-							if(photo){
+							if (photo) {
 								document.getElementById('foto').innerHTML = '<img id="profilePic" alt="Photo of the User" src='
-									+ photo + ' width="100%" height="auto"/>';
-							}
-							else{
+										+ photo
+										+ ' width="100%" height="auto"/>';
+							} else {
 								if ('${visitedUser.gender}' == 1) {
 									document.getElementById('foto').innerHTML = '<img id="profilePic" alt="Photo of the User" src="http://cdn.sett.com/images/user/20140502/chef57b22ab552661a6852fe44c0e7e59e63.jpg" width="100%" height="auto"/>';
 								} else {
@@ -279,7 +288,7 @@ body {
 														//	$('#sharedRecipes').append("<div class=row><div class='panel panel-default' align='center'>");
 														$('#sharedRecipes')
 																.append(
-																		"<a href='"+href+"'class='list-group-item'><img src='"
+																		"<br><a href='"+href+"'class='list-group-item'><img src='"
 																				+ src
 																				+ "' title='"
 																				+ name
@@ -296,78 +305,125 @@ body {
 												}
 											});
 						});
-							
+
 		$(document)
-			.ready(
-					function() {
-						$
-								.ajax({
-									type : "POST",
-									url : "../getUsersRecentEvents",
-									data : {
-										user_id : '${visitedUser.id}',
-									}
-								})
-								.done(
-										function(response) {
-											$('#recentActivity').empty();
-											if(response == null || response.length == 0){
-												$('#recentActivity')
-														.append("<li><br>"
-														+"<p>User doesn\'t have any recent activity :(</p><br></li>");
-											}
-											else{
-												for (var i = 0; i < response.length; i++) {
-												var event = response[i];
-													
-													var content = "<li>" + timestampToString(event.timestamp) + " - "
-														
-													content += "<a href='/nutty/user/profile/" + event.user.id + "'>" +
-													event.user.name + " " + event.user.surname + "</a>";
-													
-													var action = event.action;
-													
-													if(action == "add_comment"){														
-														content += " has commented on a recipe: <br> <a href='/nutty/recipe/";
-													}
-													else if(action == "edit_recipe"){
-														content += " has edited a recipe: <br> <a href='/nutty/recipe/";
-													}
-													else if(action == "add_recipe"){
-														content += " has created a recipe: <br> <a href='/nutty/recipe/";
-													}
-													else if(action == "derive_recipe"){
-														content += " has derived a recipe: <br> <a href='/nutty/recipe/";
-													}
-													<%-- will add more --%>
-													
-													content += event.target.recipe_id + "' class='list-group-item'><img src='"
-													+ event.target_photo_url
-													+ "' title='"
-													+ event.target.name
-													+ "' onError='this.onerror=null;this.src=\"http://img2.wikia.nocookie.net/__cb20130511180903/legendmarielu/images/b/b4/No_image_available.jpg\";' width='30%' height='auto' hspace='50px'><span style='font-size: 1.2em'>"
-													+ event.target.name
-													+ "</span></a>";
-													
-													content += "</li>";		
-													$('#recentActivity').append(content);
-												}
-											}
+				.ready(
+						function() {
+							$
+									.ajax({
+										type : "POST",
+										url : "../getUsersEatenRecipes",
+										data : {
+											userId : '${visitedUser.id}',
 										}
-								);
-					});
-						
+									})
+									.done(
+											function(response) {
+												if (response != null) {
+													$('#eatenRecipes').empty();
+													for (var i = 0; i < response.length; i++) {
+														var href = "../../recipe/"
+																+ response[i][0];
+														var name = response[i][1];
+														var src = response[i][2];
+														$('#eatenRecipes')
+																.append(
+																		"<br><a href='"+href+"'class='list-group-item'><img src='"
+																				+ src
+																				+ "' title='"
+																				+ name
+																				+ "' onError='this.onerror=null;this.src=\"http://img2.wikia.nocookie.net/__cb20130511180903/legendmarielu/images/b/b4/No_image_available.jpg\";' width='30%' height='auto' hspace='50px'><span style='font-size: 1.2em'>"
+																				+ name
+																				+ "</span></a>");
+													}
+												} else {
+													$('#eatenRecipes').empty();
+													$('#eatenRecipes')
+															.append(
+																	"User hasn't shared any recipe :(");
+												}
+											});
+						});
+
+		$(document)
+				.ready(
+						function() {
+							$
+									.ajax({
+										type : "POST",
+										url : "../getUsersRecentEvents",
+										data : {
+											user_id : '${visitedUser.id}',
+										}
+									})
+									.done(
+											function(response) {
+												$('#recentActivity').empty();
+												if (response == null
+														|| response.length == 0) {
+													$('#recentActivity')
+															.append(
+																	"<li><br>"
+																			+ "<p>User doesn\'t have any recent activity :(</p><br></li>");
+												} else {
+													for (var i = 0; i < response.length; i++) {
+														var event = response[i];
+
+														var content = "<br><li>"
+																+ timestampToString(event.timestamp)
+																+ " - "
+
+														content += "<a href='/nutty/user/profile/" + event.user.id + "'>"
+																+ event.user.name
+																+ " "
+																+ event.user.surname
+																+ "</a>";
+
+														var action = event.action;
+
+														if (action == "add_comment") {
+															content += " has commented on a recipe: <br> <a href='/nutty/recipe/";
+														} else if (action == "edit_recipe") {
+															content += " has edited a recipe: <br> <a href='/nutty/recipe/";
+														} else if (action == "add_recipe") {
+															content += " has created a recipe: <br> <a href='/nutty/recipe/";
+														} else if (action == "derive_recipe") {
+															content += " has derived a recipe: <br> <a href='/nutty/recipe/";
+														} else if (action == "shared_recipe") {
+															content += " has shared a recipe: <br> <a href='/nutty/recipe/";
+														} else if (action == "derive_recipe") {
+															content += " has eaten: <br> <a href='/nutty/recipe/";
+														}
+										
+	<%-- will add more --%>
+		content += event.target.recipe_id
+																+ "' class='list-group-item'><img src='"
+																+ event.target_photo_url
+																+ "' title='"
+																+ event.target.name
+																+ "' onError='this.onerror=null;this.src=\"http://img2.wikia.nocookie.net/__cb20130511180903/legendmarielu/images/b/b4/No_image_available.jpg\";' width='30%' height='auto' hspace='50px'><span style='font-size: 1.2em'>"
+																+ event.target.name
+																+ "</span></a>";
+
+														content += "</li>";
+														$('#recentActivity')
+																.append(content);
+													}
+												}
+											});
+						});
+
 		function timestampToString(timestamp) {
-			var ts = new Date(timestamp);		 
-			var date = [ts.getFullYear(), ts.getMonth() + 1, ts.getDate()]; 
-			var time = [ts.getHours(), ts.getMinutes(), ts.getSeconds()];
-			 
-			for(var i = 0; i < 3; i++){
-				if(time[i] < 10)
-					time[i] = "0" + time[i];	
-				if(date[i] < 10)
+			var ts = new Date(timestamp);
+			var date = [ ts.getFullYear(), ts.getMonth() + 1, ts.getDate() ];
+			var time = [ ts.getHours(), ts.getMinutes(), ts.getSeconds() ];
+
+			for (var i = 0; i < 3; i++) {
+				if (time[i] < 10)
+					time[i] = "0" + time[i];
+				if (date[i] < 10)
 					date[i] = "0" + date[i];
-			}		 
+			}
 			return date.join("/") + " " + time.join(":");
 		}
 
@@ -376,50 +432,48 @@ body {
 			if (followStatus == 'true') {
 				$("#followCheck").css('display', 'inline');
 				$("#followRequestCheck").css('display', 'none');
-			} 
-			else if (followStatus == 'request'){
+			} else if (followStatus == 'request') {
 				$("#followCheck").css('display', 'none');
 				$("#followRequestCheck").css('display', 'inline');
-			}
-			else{
+			} else {
 				$("#followCheck").css('display', 'none');
 				$("#followRequestCheck").css('display', 'none');
-			}
-		});
-		
-		var badge = '${badge}';
-		$(document).ready(function() {
-			if (badge == 'World Wide Chef') {
-				document.getElementById('star').innerHTML = '<img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto">';
-			} else if(badge == 'Master Chef'){
-				document.getElementById('star').innerHTML = '<img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto">';
-			} else if(badge == 'Chef'){
-				document.getElementById('star').innerHTML = '<img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto">';
-			} else if(badge == 'Pre-Chef'){
-				document.getElementById('star').innerHTML = '<img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto">';
-			} else if(badge == 'Beginner'){
-				document.getElementById('star').innerHTML = '<img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto">';
-			}else {
-				document.getElementById('star').innerHTML = '<img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto">';
 			}
 		});
 
+		var badge = '${badge}';
+		$(document)
+				.ready(
+						function() {
+							if (badge == 'World Wide Chef') {
+								document.getElementById('star').innerHTML = '<img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto">';
+							} else if (badge == 'Master Chef') {
+								document.getElementById('star').innerHTML = '<img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto">';
+							} else if (badge == 'Chef') {
+								document.getElementById('star').innerHTML = '<img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto">';
+							} else if (badge == 'Pre-Chef') {
+								document.getElementById('star').innerHTML = '<img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto"> <img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto">';
+							} else if (badge == 'Beginner') {
+								document.getElementById('star').innerHTML = '<img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto">';
+							} else {
+								document.getElementById('star').innerHTML = '<img alt=""src="http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg"width="50px" height="auto">';
+							}
+						});
+
 		$("#Follow").click(function() {
-			if (followStatus == 'request'){
+			if (followStatus == 'request') {
 				$("#followRequestCheck").css('display', 'none');
 				followStatus = 'false'
 				followUser(-1);
-			}
-			else if (followStatus == 'true') {
+			} else if (followStatus == 'true') {
 				$("#followCheck").css('display', 'none');
 				followStatus = 'false';
 				followUser(0);
 			} else {
-				if('${privOptions.followable}' == 1){
+				if ('${privOptions.followable}' == 1) {
 					$("#followCheck").css('display', 'inline');
 					followStatus = 'true';
-				}
-				else{
+				} else {
 					$("#followRequestCheck").css('display', 'inline');
 					followStatus = 'request';
 				}
@@ -440,7 +494,7 @@ body {
 		};
 
 		$(document).ready(function() {
-			if('${privOptions.visible_food_intolerance}' == 1){
+			if ('${privOptions.visible_food_intolerance}' == 1) {
 				$.ajax({
 					type : "POST",
 					url : "../foodIntoleranceREST",
@@ -461,30 +515,37 @@ body {
 			}
 		});
 
-		$(document).ready(function() {
-			if('${privOptions.visible_health_condition}' == 1){
-				$.ajax({
-					type : "POST",
-					url : "../healthConditionREST",
-					data : {
-						user_id : '${visitedUser.id}'
-					}
-				}).done(function(res) {
-					var len = res.length;
-					if (len != 0) {
-						var prefs = "";
-						for (var i = 0; i < len - 1; i++) {
-							prefs += res[i].fs_name + ", ";
-						}
-						prefs += res[len - 1].fs_name;
-						document.getElementById('health_cond').innerHTML = prefs;
-					}
-				});
-			}
-		});
+		$(document)
+				.ready(
+						function() {
+							if ('${privOptions.visible_health_condition}' == 1) {
+								$
+										.ajax({
+											type : "POST",
+											url : "../healthConditionREST",
+											data : {
+												user_id : '${visitedUser.id}'
+											}
+										})
+										.done(
+												function(res) {
+													var len = res.length;
+													if (len != 0) {
+														var prefs = "";
+														for (var i = 0; i < len - 1; i++) {
+															prefs += res[i].fs_name
+																	+ ", ";
+														}
+														prefs += res[len - 1].fs_name;
+														document
+																.getElementById('health_cond').innerHTML = prefs;
+													}
+												});
+							}
+						});
 
 		$(document).ready(function() {
-			if('${privOptions.visible_not_pref}' == 1){
+			if ('${privOptions.visible_not_pref}' == 1) {
 				$.ajax({
 					type : "POST",
 					url : "../unpreferREST",
