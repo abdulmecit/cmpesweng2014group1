@@ -450,7 +450,7 @@ body {
 				<br> <br> <br>
 				<div class=row>
 					<div class="panel panel-default"
-						style="margin-right: 10px; margin-left: 10px; max-height: 400px; overflow: scroll;">
+						style="margin-right: 10px; margin-left: 10px; max-height: 2000px; overflow: scroll;">
 						<div class="panel-heading clearfix">
 							<form id="addComment" action="../commentRecipe" method="post">
 								<input type="text" hidden="hidden" name="user_id"
@@ -663,102 +663,123 @@ body {
 					function() {
 						if (isLogged == 'true') {
 							$('#commentButton').attr("disabled", false);
-							$
-									.ajax({
-										type : "POST",
-										url : "../recipeComments",
-										data : {
-											recipeId : '${recipe.recipe_id}',
-											user_id : '${user.id}'
-										}
-									})
-									.done(
-											function(answer) {
-												$("#comments").html("");
-												if (answer == "") {
-													$("#comments")
-															.append(
-																	"<h4 style='text-align: center; margin-bottom: 10px; margin-top: 10px '>No comments :(<h4>");
-												} else {
-													comments = JSON
-															.parse(answer);
-
-													for (i = 0; i < comments.length; i++) {
-
-														var likers = comments[i].likers;
-														var likersCount = ((likers == null) ? 0
-																: likers.length);
-
-														var likerIds = [];
-														for (var j = 0; j < likersCount; j++) {
-															likerIds[j] = likers[j].liker_id;
-														}
-
-														$("#comments")
-																.append(
-																		"<li class='list-group-item'><b>"
-																				+ comments[i].comment_text
-																				+ "</b><p>by <a href='../user/profile/1'>"
-																				+ comments[i].commenter_name
-																				+ "</a></p>"
-																				+ "<input type='hidden' id='commentId" + i + "' value='" + comments[i].comment_id + "' style='visibility: collapse; width: 0px;'/>"
-																				+ "<button type='button' class='btn btn-primary btn-xs'"
-																				+ "onclick='commentLike("
-																				+ i
-																				+ ")' "
-																				+ " value='commentLike' id='commentLike"
-																				+ i
-																				+ "'style='float: left;'>"
-																				+ "<span id='textCommentLike" + i +"' class='ui-button-text'>Like &nbsp</span>"
-																				+ "<span id='commentLikeCheck"+ i +"' class='glyphicon glyphicon-check'"
-																				+ "style='visibility: hidden;'></span></button>"
-																				+ "<a id='showLikers' title='Click to see them' onclick='showLikers("
-																				+ i
-																				+ ")'>"
-																				+ "&nbsp"
-																				+ likersCount
-																				+ " likes </a></li>");
-														//check this comment likes number
-														if ($.inArray(
-																'${user.id}',
-																likerIds) > -1) {
-															commentsILike[i] = 1;
-															$(
-																	"#commentLikeCheck"
-																			+ i)
-																	.css(
-																			'visibility',
-																			'visible');
-														} else {
-															commentsILike[i] = 0;
-															$(
-																	"#commentLikeCheck"
-																			+ i)
-																	.css(
-																			'visibility',
-																			'hidden');
-														}
-
-													}
-												}
-											});
+							getComment();
 						} else {
 							$("#comments")
 									.append(
 											"<h4 style='text-align: center; margin-bottom: 10px; margin-top: 10px '><em>please <a href='../login'>login</a> to add and see comments</em><h4>");
 							$('#commentButton').attr("disabled", true);
 						}
+
 					});
 
 	//Comment Like
+
+	function getComment() {
+		$
+				.ajax({
+					type : "POST",
+					url : "../recipeComments",
+					data : {
+						recipeId : '${recipe.recipe_id}',
+						user_id : '${user.id}'
+					}
+				})
+				.done(
+						function(answer) {
+							$("#comments").html("");
+							if (answer == "") {
+								$("#comments")
+										.append(
+												"<h4 style='text-align: center; margin-bottom: 10px; margin-top: 10px '>No comments :(<h4>");
+							} else {
+								comments = JSON.parse(answer);
+
+								for (i = 0; i < comments.length; i++) {
+
+									var likers = comments[i].likers;
+									var likersCount = ((likers == null) ? 0
+											: likers.length);
+
+									var likerIds = [];
+									for (var j = 0; j < likersCount; j++) {
+										likerIds[j] = likers[j].liker_id;
+									}
+									var content = "<div id='commentDiv"
+											+ i
+											+ "' <li class='list-group-item'><b>"
+											+ comments[i].comment_text
+											+ "</b><p>by <a href='../user/profile/1'>"
+											+ comments[i].commenter_name
+											+ "</a></p>"
+											+ "<input type='hidden' id='commentId" + i + "' value='" + comments[i].comment_id + "' style='visibility: collapse; width: 0px;'/>";
+
+									if (comments[i].commenter_id != '${user.id}') {
+										content += "<button type='button' class='btn btn-primary btn-xs'"
+												+ "onclick='commentLike("
+												+ i
+												+ ")' "
+												+ " value='commentLike' id='commentLike"
+												+ i
+												+ "'style='float: left;'>"
+												+ "<span id='textCommentLike" + i +"' class='ui-button-text'>Like &nbsp</span>"
+												+ "<span id='commentLikeCheck"+ i +"' class='glyphicon glyphicon-check'"
+								+ "style='visibility: hidden;'></span></button>"
+
+									} else {
+										content += "<button type='button' class='btn btn-primary btn-xs'"
+												+ "onclick='editComment("
+												+ i
+												+ ")' "
+												+ " value='edit' id='editComment"
+												+ i
+												+ "'style='float: left;'><span class='ui-button-text'>Edit &nbsp</span></button>"
+
+										content += "<button type='button' class='btn btn-primary btn-xs'"
+												+ "onclick='deleteComment("
+												+ comments[i].comment_id
+												+ ","
+												+ i
+												+ ")' "
+												+ " id='deleteComment"
+												+ i
+												+ "'style='float: left;'><span class='ui-button-text'>Delete &nbsp</span></button>"
+									}
+									content += "&nbsp<a id='showLikers"+i+"' title='Click to see them' onclick='showLikers("
+											+ i
+											+ ")'>"
+											+ likersCount
+											+ " likes </a></li></div>"
+
+									$("#comments").append(content);
+									//check this comment likes number
+									if ($.inArray('${user.id}', likerIds) > -1) {
+										commentsILike[i] = 1;
+										$("#commentLikeCheck" + i).css(
+												'visibility', 'visible');
+									} else {
+										commentsILike[i] = 0;
+										$("#commentLikeCheck" + i).css(
+												'visibility', 'hidden');
+									}
+
+								}
+							}
+						});
+	}
+
 	function commentLike(index) {
+		var likersCount= $("#showLikers"+index).text().split(" ");
+		var num=likersCount[0];
 		if (isLogged == 'true') {
 			if (commentsILike[index] == 0) {
 				commentsILike[index] = 1;
 				$("#commentLikeCheck" + index).css('visibility', 'visible');
+				num++;
 			} else {
 				commentsILike[index] = 0;
 				$("#commentLikeCheck" + index).css('visibility', 'hidden');
+				num--;
 			}
 			$.ajax({
 				type : "POST",
@@ -769,8 +790,58 @@ body {
 					value : commentsILike[index]
 				}
 			})
+			.done(
+					$("#showLikers"+index).text(num+" likes")
+			)
 		}
 	};
+
+	function editComment(index) {
+		$('#commentDiv' + index).empty();
+
+		var cont = '<textarea class="form-control" id="myTextArea" rows="auto" style="resize: none">'
+				+ comments[index].comment_text
+				+ '</textarea> <br><button class="btn btn-primary" id="changeComment" style="float: right">Done</button><br><br>';
+		$('#commentDiv' + index).append(cont);
+		//var comment = document.getElementById("myTextarea").value;
+
+		$("#changeComment")
+				.on(
+						'click',
+						function() {
+							var newComment = document
+									.getElementById("myTextArea").value;
+							$.ajax({
+								type : "POST",
+								url : "../editComment",
+								data : {
+									comment_id : comments[index].comment_id,
+									recipe_id : '${recipe.recipe_id}',
+									text : newComment
+								}
+							})
+							.done(getComment());
+						});
+	}
+
+	function deleteComment(commentID, index) {
+		bootbox.confirm("Are you sure?", function(result) {
+			if (result) {
+				$.ajax({
+					type : "POST",
+					url : "../deleteComment",
+					data : {
+						comment_id : commentID
+					}
+				});
+				$('#commentDiv' + index).remove();
+
+			} else {
+
+			}
+
+		});
+	}
 
 	// for saving rate values
 	function updateRate(changed, value) {
