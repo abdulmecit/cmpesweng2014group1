@@ -594,5 +594,17 @@ public class HomeController {
 		}
 		return answer;
 	}
+	
+	@RequestMapping(value = "/singUpOrLogin", method = RequestMethod.POST) //for facebook login
+	@ResponseBody
+	public String signUpOrLogin(
+			@RequestParam(value = "email", required = true) String email,
+			RedirectAttributes redirectAttrs) {
+		
+		if(userService.getUserDao().getUserByEmail(email) == null){
+			return "0"; //signup
+		}
+		return "1";//login
+	}
 }
 
