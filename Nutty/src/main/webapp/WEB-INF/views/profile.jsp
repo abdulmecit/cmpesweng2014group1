@@ -66,6 +66,10 @@ body {
 #followRequestCheck {
 	display: none;
 }
+
+#sharedRecipes {
+	display: none;
+}
 </style>
 
 </head>
@@ -130,15 +134,23 @@ body {
 				<div class="panel-body">
 					<div>
 						<ul class="nav nav-tabs nav-justified">
-							<li role="presentation" class="filter active" id="overall"><a
-								class="btn btn-link">News Feed</a></li>
+							<li role="presentation" class="filter active" id="recentAct"><a
+								class="btn btn-link">Recent Activity</a></li>
 
-							<li role="presentation" class="filter" id="recommendation"><a
+							<li role="presentation" class="filter" id="sharedRec"><a
 								class="btn btn-link">Shared Recipe</a></li>
 						</ul>
+						<ul id="recentActivity" class="list-group"
+							style="overflow:scroll;">
+							<li>
+								<br><p>Loading Recent Activities, please wait..</p><br>
+							</li>
+						</ul>
 						<ul id="sharedRecipes" class="list-group"
-							style="overflow: scroll;">
-							<p>Loading Recipes, please wait..</p>
+							style="overflow:scroll;">
+							<li>
+								<br><p>Loading Recipes, please wait..</p><br>
+							</li>
 						</ul>
 					</div>
 				</div>
@@ -147,10 +159,16 @@ body {
 	</div>
 
 	<script type="text/javascript">
-		var searchFilter;
 		$(".filter").click(function() {
 			$(this).addClass("active").siblings().removeClass("active");
-			searchFilter = this.id;
+			if(this.id == "recentAct"){
+				$("#recentActivity").css('display', 'block');
+				$("#sharedRecipes").css('display', 'none');
+			}
+			else{
+				$("#recentActivity").css('display', 'none');
+				$("#sharedRecipes").css('display', 'block');
+			}
 		});
 
 		$(document).ready(function() {
@@ -278,6 +296,80 @@ body {
 												}
 											});
 						});
+							
+		$(document)
+			.ready(
+					function() {
+						$
+								.ajax({
+									type : "POST",
+									url : "../getUsersRecentEvents",
+									data : {
+										user_id : '${visitedUser.id}',
+									}
+								})
+								.done(
+										function(response) {
+											$('#recentActivity').empty();
+											if(response == null || response.length == 0){
+												$('#recentActivity')
+														.append("<li><br>"
+														+"<p>User doesn\'t have any recent activity :(</p><br></li>");
+											}
+											else{
+												for (var i = 0; i < response.length; i++) {
+												var event = response[i];
+													
+													var content = "<li>" + timestampToString(event.timestamp) + " - "
+														
+													content += "<a href='/nutty/user/profile/" + event.user.id + "'>" +
+													event.user.name + " " + event.user.surname + "</a>";
+													
+													var action = event.action;
+													
+													if(action == "add_comment"){														
+														content += " has commented on a recipe: <br> <a href='/nutty/recipe/";
+													}
+													else if(action == "edit_recipe"){
+														content += " has edited a recipe: <br> <a href='/nutty/recipe/";
+													}
+													else if(action == "add_recipe"){
+														content += " has created a recipe: <br> <a href='/nutty/recipe/";
+													}
+													else if(action == "derive_recipe"){
+														content += " has derived a recipe: <br> <a href='/nutty/recipe/";
+													}
+													<%-- will add more --%>
+													
+													content += event.target.recipe_id + "' class='list-group-item'><img src='"
+													+ event.target_photo_url
+													+ "' title='"
+													+ event.target.name
+													+ "' onError='this.onerror=null;this.src=\"http://img2.wikia.nocookie.net/__cb20130511180903/legendmarielu/images/b/b4/No_image_available.jpg\";' width='30%' height='auto' hspace='50px'><span style='font-size: 1.2em'>"
+													+ event.target.name
+													+ "</span></a>";
+													
+													content += "</li>";		
+													$('#recentActivity').append(content);
+												}
+											}
+										}
+								);
+					});
+						
+		function timestampToString(timestamp) {
+			var ts = new Date(timestamp);		 
+			var date = [ts.getFullYear(), ts.getMonth() + 1, ts.getDate()]; 
+			var time = [ts.getHours(), ts.getMinutes(), ts.getSeconds()];
+			 
+			for(var i = 0; i < 3; i++){
+				if(time[i] < 10)
+					time[i] = "0" + time[i];	
+				if(date[i] < 10)
+					date[i] = "0" + date[i];
+			}		 
+			return date.join("/") + " " + time.join(":");
+		}
 
 		var followStatus = '${followStatus}';
 		$(document).ready(function() {

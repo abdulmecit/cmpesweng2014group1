@@ -1,10 +1,13 @@
 package cmpesweng2014.group1.nutty.model;
 
+import java.sql.Timestamp;
+
 public class Comment {
 	private int comment_id;
 	private String text;
 	private int user_id;
 	private int recipe_id;
+	private Timestamp timestamp;
 	
 	public Comment() {
 		super();
@@ -37,5 +40,11 @@ public class Comment {
 	}
 	public void setRecipe_id(int recipe_id) {
 		this.recipe_id = recipe_id;
+	}
+	public Timestamp getTimestamp() {
+		return timestamp;
+	}
+	public void setTimestamp(Timestamp timestamp) {
+		this.timestamp = timestamp;
 	}
 }

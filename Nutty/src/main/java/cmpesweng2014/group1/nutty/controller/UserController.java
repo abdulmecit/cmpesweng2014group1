@@ -3,6 +3,7 @@ package cmpesweng2014.group1.nutty.controller;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -22,12 +23,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 
+import cmpesweng2014.group1.nutty.model.Event;
 import cmpesweng2014.group1.nutty.model.FoodSelection;
 import cmpesweng2014.group1.nutty.model.Message;
 import cmpesweng2014.group1.nutty.model.PrivacyOptions;
 import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.model.SuperUser;
 import cmpesweng2014.group1.nutty.model.User;
+import cmpesweng2014.group1.nutty.service.EventService;
 import cmpesweng2014.group1.nutty.service.RecipeService;
 import cmpesweng2014.group1.nutty.service.UserService;
 
@@ -39,6 +42,8 @@ public class UserController {
 	private UserService userService;
 	@Autowired
 	private RecipeService recipeService;
+	@Autowired
+	private EventService eventService;
 	
 	// No longer splits from comma when a single item sent as an array parameter
 	@InitBinder
@@ -530,6 +535,14 @@ public class UserController {
 			response[i][2] = urls[0];
 		}
 		return response;
+	}
+	
+	@RequestMapping(value = "/getUsersRecentEvents")
+	@ResponseBody
+	public List<Event> getUsersRecentEvents(
+			@RequestParam(value = "user_id", required = true) long user_id){
+		
+		return eventService.getAllRecentEventsOfUser(user_id);
 	}
 	
 	@ResponseBody

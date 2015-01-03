@@ -258,6 +258,8 @@ body {
 	<!---------------------------  Functions  ------------------------------>
 	<script type="text/javascript">
 		var counter = 1;
+		var tagCounter = 1;
+		
 		function addInput(div, ing_name, meas_types) {
 			var newDiv = document.createElement('div');
 			newDiv.id = 'textBoxDiv' + counter;

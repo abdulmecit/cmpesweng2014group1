@@ -38,6 +38,7 @@ public class RecipeService {
 	public void setRecipeDao(RecipeDao recipeDao) {
 		this.recipeDao = recipeDao;
 	}
+	
 	public IngredientDao getIngredientDao() {
 		return ingredientDao;
 	}

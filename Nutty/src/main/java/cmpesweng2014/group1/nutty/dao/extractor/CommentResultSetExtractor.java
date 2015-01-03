@@ -17,6 +17,7 @@ public class CommentResultSetExtractor implements ResultSetExtractor<Comment> {
 		comment.setText(rs.getString(2));
 		comment.setUser_id(rs.getInt(3));
 		comment.setRecipe_id(rs.getInt(4));
+		comment.setTimestamp(rs.getTimestamp(5));
 		return comment;
 	}
 }

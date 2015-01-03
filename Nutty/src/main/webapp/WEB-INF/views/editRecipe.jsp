@@ -407,6 +407,8 @@ body {
 	<!---------------------------  Functions  ------------------------------>
 	<script type="text/javascript">
 		var counter = 1;
+		var tagCounter = 1;
+
 		function addInput(div, ing_name, meas_types) {
 			var newDiv = document.createElement('div');
 			newDiv.id = 'textBoxDiv' + counter;
@@ -437,6 +439,7 @@ body {
 
 		function deleteTag(i) {
 			$("#tagDiv" + i).remove();
+			formCheck();
 		}
 
 		function addTag(div) {
@@ -455,6 +458,7 @@ body {
 			document.getElementById(div).appendChild(newDiv);
 			tagCounter++;
 			$("#myTag").val("");
+			formCheck();
 		}
 
 		$(document).on("keyup change",
@@ -466,7 +470,7 @@ body {
 			var ingredientz = document.getElementsByName("ingredient[]");
 			var amountz = document.getElementsByName("amount[]");
 			var ingredients = [];
-			var amounts = [];
+			var amounts = [];		
 			if ((ingredientz != null) && (amountz != null)) {
 				transferValues(ingredientz, ingredients);
 				transferValues(amountz, amounts);

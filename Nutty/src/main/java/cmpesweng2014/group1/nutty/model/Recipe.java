@@ -1,6 +1,6 @@
 package cmpesweng2014.group1.nutty.model;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class Recipe implements Comparable<Recipe>{
 
@@ -8,8 +8,8 @@ public class Recipe implements Comparable<Recipe>{
 	private String name;
 	private String description;
 	private int portion;
-	private Date updatedDate;
-	private Date createdDate;
+	private Timestamp createdDate;
+	private Timestamp updatedDate;
 	private double total_calorie;
 	
 	public Recipe() {
@@ -17,13 +17,13 @@ public class Recipe implements Comparable<Recipe>{
 	}
 	
 	public Recipe(int recipe_id, String name, String description, int portion,
-			      Date date,double total_calorie) {
+			Timestamp createdDate, double total_calorie) {
 		super();
 		this.setRecipe_id(recipe_id);
 		this.name = name;
 		this.description = description;
 		this.portion = portion;
-		this.createdDate = date;
+		this.createdDate = createdDate;
 		this.setTotal_calorie(total_calorie);		
 	}
 	
@@ -55,18 +55,18 @@ public class Recipe implements Comparable<Recipe>{
 	public void setPortion(int portion) {
 		this.portion = portion;
 	}
-	public Date getCreatedDate() {
+	public Timestamp getCreatedDate() {
 		return createdDate;
 	}
 
-	public void setCreatedDate(Date date) {
+	public void setCreatedDate(Timestamp date) {
 		this.createdDate = date;
 	}
-	public Date getUpdatedDate() {
+	public Timestamp getUpdatedDate() {
 		return updatedDate;
 	}
 
-	public void setUpdatedDate(Date date) {
+	public void setUpdatedDate(Timestamp date) {
 		this.updatedDate = date;
 	}
 
