@@ -8,7 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
 import org.apache.mahout.cf.taste.impl.neighborhood.ThresholdUserNeighborhood;
@@ -889,6 +891,24 @@ public class RecipeDao extends PcDao{
 	public void deleteRecipePhoto(int recipe_id){
 		this.getTemplate().update("DELETE FROM RecipePhoto WHERE recipe_id = ?",
 				new Object[] {recipe_id});
+	}
+	
+	public Map<Recipe,Integer> getReportedRecipes(){
+		Map<Recipe, Integer> recipeReportMap= new HashMap<Recipe, Integer>();
+		Recipe[] recipes= getAllRecipes();
+		if(recipes!=null){
+			for(int i=0; i<recipes.length;i++){
+				int id=recipes[i].getRecipe_id();
+				int count=numberOfReportsOfRecipe(id);
+				if(count>0){
+					recipeReportMap.put( getRecipeById(id), count);
+				}
+			}
+		}
+		if(recipeReportMap.isEmpty())
+			return null;
+		else
+			return recipeReportMap;
 	}
 	
 	
