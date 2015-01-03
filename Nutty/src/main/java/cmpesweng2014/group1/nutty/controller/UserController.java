@@ -710,4 +710,15 @@ public class UserController {
 		redirectAttrs.addFlashAttribute("message", new Message(1, null, "Your privacy settings are successfully updated."));
 		return "redirect:/success";
 	}
+	
+	@RequestMapping(value = "deleteAccount")
+	@ResponseBody
+	public int deleteRecipe(
+			@RequestParam(value = "user_id", required = true) Long user_id,HttpSession session
+	){
+		userService.getUserDao().deactivateAccount(user_id);
+		session.setAttribute("isLogged", false);
+		return 1;
+	}
+
 }

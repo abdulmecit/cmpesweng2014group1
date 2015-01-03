@@ -632,12 +632,13 @@
 						if (result) {
 							$.ajax({
 								type : "POST",
-								url : "../deleteAccount",
+								url : "deleteAccount",
 								data : {
-									recipe_id : '${user.id}',
+									user_id : '${user.id}',
 								}
+							}).done(function(success) {
+								window.location.href = "../login";
 							});
-
 						} else {
 
 						}

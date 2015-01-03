@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -19,6 +20,7 @@ import cmpesweng2014.group1.nutty.dao.mapper.OwnsRecipeRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.PrivacyOptionsRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.UserRecipeScoreRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.UserRowMapper;
+import cmpesweng2014.group1.nutty.model.Comment;
 import cmpesweng2014.group1.nutty.model.EatLikeRate;
 import cmpesweng2014.group1.nutty.model.OwnsRecipe;
 import cmpesweng2014.group1.nutty.model.PrivacyOptions;
@@ -28,6 +30,11 @@ import cmpesweng2014.group1.nutty.model.UserRecipeScore;
 @Component
 public class UserDao extends PcDao {
 
+	@Autowired
+	private RecipeDao recipeDao;
+	@Autowired
+	private CommentDao commentDao;
+	
 	public Long createUser(final String email, final String password,
 			final String name, final String surname, final Date birthday, final Integer gender,final String photo) {
 		final String query = "INSERT INTO User (email, password, name, surname, birthday, gender, isBanned, photo) VALUES (?,?,?,?,?,?,?,?)";
@@ -429,4 +436,63 @@ public class UserDao extends PcDao {
 		}
 	}
 	
+	public void deactivateAccount(long user_id){
+		//delete comments of this user
+		Comment[] comments=commentDao.commentsOfUser(user_id);
+		if(comments!=null){
+			for(int i=0;i<comments.length;i++){
+				commentDao.deleteComment(comments[i].getComment_id());
+			}
+		}
+		//delete from EatLikeRate table
+		this.getTemplate().update("DELETE FROM EatLikeRate WHERE user_id = ?",
+				new Object[] {user_id});
+		//delete from followRequests table
+		this.getTemplate().update("DELETE FROM FollowRequests WHERE follower_id = ? OR followed_id = ?",
+				new Object[] {user_id, user_id});
+		//delete from follows table
+		this.getTemplate().update("DELETE FROM Follows WHERE follower_id = ? OR followed_id = ?",
+				new Object[] {user_id, user_id});
+		//delete from HasSelection table
+		this.getTemplate().update("DELETE FROM HasSelection WHERE user_id = ?",
+				new Object[] {user_id});
+		//delete from LikesComment table
+		this.getTemplate().update("DELETE FROM LikesComment WHERE user_id = ?",
+				new Object[] {user_id});
+		//delete recipes of that user
+		int[] recipes=getRecipes(user_id);
+		if(recipes!=null){
+			for(int i=0; i<recipes.length;i++){
+				recipeDao.deleteRecipe(i);
+			}
+		}
+		//delete privacy options
+		this.getTemplate().update("DELETE FROM PrivacyOption WHERE user_id = ?",
+				new Object[] {user_id});
+		//delete from ReportComment table
+		this.getTemplate().update("DELETE FROM ReportComment WHERE user_id = ?",
+				new Object[] {user_id});
+		//delete from ReportsRecipe table
+		this.getTemplate().update("DELETE FROM ReportsRecipe WHERE user_id = ?",
+				new Object[] {user_id});
+		//delete from SharesRecipe table
+		this.getTemplate().update("DELETE FROM SharesRecipe WHERE user_id = ?",
+				new Object[] {user_id});
+		//delete from Unprefer table
+		this.getTemplate().update("DELETE FROM Unprefer WHERE user_id = ?",
+				new Object[] {user_id});
+		//delete from User table
+		this.getTemplate().update("DELETE FROM User WHERE user_id = ?",
+				new Object[] {user_id});
+		//delete from UserBadge table
+		this.getTemplate().update("DELETE FROM UserBadge WHERE user_id = ?",
+				new Object[] {user_id});
+		//delete from UserRecipeScore table
+		this.getTemplate().update("DELETE FROM UserRecipeScore WHERE user_id = ?",
+				new Object[] {user_id});
+		this.getTemplate().update("DELETE FROM PassResetRequests WHERE user_id = ?",
+				new Object[] {user_id});
+
+		}
+
 }

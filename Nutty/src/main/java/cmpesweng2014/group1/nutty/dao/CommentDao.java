@@ -218,6 +218,20 @@ public class CommentDao extends PcDao {
 				}
 			}, gkh);
 	}
+	public Comment[] commentsOfUser(long user_id){
+		List<Comment> commentList = this.getTemplate().query(
+		"SELECT * FROM Comment WHERE user_id =?",
+		new Object[] { user_id  }, new CommentRowMapper());
+
+		if (commentList.isEmpty()) {
+			return null;
+		}
+		else{
+			Comment[] comments = commentList.toArray(new Comment[commentList.size()]);
+			return comments;
+		}
+	}
+
 	
 	
 }
