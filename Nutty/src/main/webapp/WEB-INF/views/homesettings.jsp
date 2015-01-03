@@ -62,27 +62,30 @@
 			<div class="col-md-offset-3 col-md-6 well" align="center">
 				<h1>Profile Settings</h1>
 				<div>
-					<h3>
-						Name <span style="cursor: pointer"><a id="changeName"><span
-								class="glyphicon glyphicon-pencil"></span></a></span>
-					</h3>
-					<p id="name">${user.name}</p>
-					<form:form class="form-horizontal" action="homesettings/updateUser"
-						method="POST" modelAttribute="user">
-						<div class="formName">
-							<div class="form-group" align="center">
-								<input type="text" class="form-control" id="inputName"
-									name="inputName" style="width: 50%" maxlength="30"
-									value="${user.name}" required> <input type="hidden"
-									name="changed" id="changed" value="name">
-							</div>
-							<div class="form-group">
-								<div class="col-sm-offset-2 col-sm-10">
-									<button type="submit" class="btn btn-primary">Apply</button>
+					<div>
+						<h3>
+							Name <span style="cursor: pointer"><a id="changeName"><span
+									class="glyphicon glyphicon-pencil"></span></a></span>
+						</h3>
+						<p id="name">${user.name}</p>
+						<form:form class="form-horizontal"
+							action="homesettings/updateUser" method="POST"
+							modelAttribute="user">
+							<div class="formName">
+								<div class="form-group" align="center">
+									<input type="text" class="form-control" id="inputName"
+										name="inputName" style="width: 50%" maxlength="30"
+										value="${user.name}" required> <input type="hidden"
+										name="changed" id="changed" value="name">
+								</div>
+								<div class="form-group">
+									<div class="col-sm-offset-2 col-sm-10">
+										<button type="submit" class="btn btn-primary">Apply</button>
+									</div>
 								</div>
 							</div>
-						</div>
-					</form:form>
+						</form:form>
+					</div>
 					<div>
 						<h3>
 							Surname <span style="cursor: pointer"><a
@@ -393,21 +396,21 @@
 						<form:form class="form-horizontal"
 							action="homesettings/updateUser" method="POST"
 							modelAttribute="user">
-							<div  class="formPhoto">
-								<div  class="panel panel-default">
+							<div class="formPhoto">
+								<div class="panel panel-default">
 									<div class="panel-body form-group" align="center"
 										style="height: 158px">
 										<div id="dropArea">
-											Drag and drop your profile picture here! OR
-											<br>
+											Drag and drop your profile picture here! OR <br>
 											<button type="button"
 												onclick="document.querySelector('#elma').click()">Choose
 												from your computer</button>
 										</div>
 										<input id="elma" style="visibility: collapse; width: 0px;"
-										type="file" onchange="upload(this.files[0])">
-										<input type="hidden" name="changed" id="changed" value="photo">	 
-										<input type="hidden" class="form-control" id="link" name="link"></input>
+											type="file" onchange="upload(this.files[0])"> <input
+											type="hidden" name="changed" id="changed" value="photo">
+										<input type="hidden" class="form-control" id="link"
+											name="link"></input>
 										<p id="progress">Uploading...</p>
 									</div>
 								</div>
@@ -418,6 +421,13 @@
 								</div>
 							</div>
 						</form:form>
+					</div>
+
+					<div>
+						<button type="button" class="btn btn-primary" id="deleteAccount"
+							style="float:inherit; margin-right: 15 px; margin-top: 18px;">
+							<span id="textLikeDelete" class="ui-button-text">Delete Account</span> 
+						</button>
 					</div>
 
 
@@ -588,7 +598,7 @@
 						}
 					}
 				});
-		
+
 		window.ondragover = function(e) {
 			e.preventDefault()
 		}
@@ -615,6 +625,26 @@
 			xhr.setRequestHeader('Authorization', 'Client-ID 4aaaa88af99c596');
 			xhr.send(fd);
 		}
+		
+		
+		$("#deleteAccount").click(function(e) {
+					bootbox.confirm("Are you sure?", function(result) {
+						if (result) {
+							$.ajax({
+								type : "POST",
+								url : "../deleteAccount",
+								data : {
+									recipe_id : '${user.id}',
+								}
+							});
+
+						} else {
+
+						}
+
+					});
+		});
+		
 	</script>
 </body>
 </html>
