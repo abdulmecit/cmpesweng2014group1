@@ -22,7 +22,7 @@ body {
 /* layout */
 #main-wrap {
 	/* overflow to handle inner floating block */
-	overflow: hidden;
+	overflow: scroll;
 }
 
 #sidebar {
@@ -100,6 +100,7 @@ body {
 					<p id="not_pref">None</p>
 				</div>
 				<div class="info" align="center">
+				<br> <br>
 					<button type="button" class="btn btn-primary" value="Follow"
 						id="Follow"
 						style="float: center; margin-right: 15 px; margin-top: 18px;">
