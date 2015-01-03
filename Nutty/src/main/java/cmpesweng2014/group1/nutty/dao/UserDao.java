@@ -32,6 +32,8 @@ public class UserDao extends PcDao {
 			final String name, final String surname, final Date birthday, final Integer gender,final String photo) {
 		final String query = "INSERT INTO User (email, password, name, surname, birthday, gender, isBanned, photo) VALUES (?,?,?,?,?,?,?,?)";
 
+		final String defaultPhoto = "http://i.imgur.com/YyzTO03.jpg";
+		
 		KeyHolder gkh = new GeneratedKeyHolder();
 
 		this.getTemplate().update(new PreparedStatementCreator() {
@@ -51,7 +53,11 @@ public class UserDao extends PcDao {
 				else
 					ps.setInt(6, gender);
 				ps.setInt(7, 0);
-				ps.setString(8, photo);
+				if(photo.equals("")){
+					ps.setString(8, defaultPhoto);
+				}else{
+					ps.setString(8, photo);
+				}
 				return ps;
 			}
 		}, gkh);
