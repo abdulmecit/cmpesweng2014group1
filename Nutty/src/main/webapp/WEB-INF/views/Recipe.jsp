@@ -392,14 +392,20 @@ body {
 				<div class=row>
 					<div class="col-sm-8">
 						<div id="info-wrap">
+
 							<button type="button" class="btn btn-primary"
 								value="Share Recipe" id="Share"
-								style="float: right; margin-right: 15 px; margin-left: 18px;">
+								style="float: right; margin-right: 15 px; margin-left: 15px;">
 								<span id="textShare" class="ui-button-text">Share &nbsp </span>
 								<span id="shareCheck" class="glyphicon glyphicon-check"
 									style="visibility: hidden;"></span>
 								<!-- caret for arrow. ui-button-text for button text visible; -->
 							</button>
+							<button type="button" class="btn btn-primary" id="reportRecipe"  
+								style="float: right; margin-right: 15 px; margin-left: 15px;">
+								<span id="textReport" class="ui-button-text">Report</span>
+							</button>
+							
 
 							<div id=recipeDetail>
 								<h3 style="margin-top: 0px">Portion:${recipe.portion}
@@ -716,6 +722,16 @@ body {
 
 									if (comments[i].commenter_id != '${user.id}') {
 										content += "<button type='button' class='btn btn-primary btn-xs'"
+											+ "onclick='reportComment("
+											+ comments[i].comment_id
+											+ ","
+											+ i
+											+ ")' "
+											+ " value='report' id='reportComment"
+											+ i
+											+ "'style='float: left; margin-right:5px'><span class='ui-button-text'>Report </span></button>"
+											
+										content += "<button type='button' class='btn btn-primary btn-xs'"
 												+ "onclick='commentLike("
 												+ i
 												+ ")' "
@@ -733,7 +749,7 @@ body {
 												+ ")' "
 												+ " value='edit' id='editComment"
 												+ i
-												+ "'style='float: left;'><span class='ui-button-text'>Edit &nbsp</span></button>"
+												+ "'style='float: left;  margin-right:5px'><span class='ui-button-text'>&nbsp&nbspEdit&nbsp &nbsp</span></button>"
 
 										content += "<button type='button' class='btn btn-primary btn-xs'"
 												+ "onclick='deleteComment("
@@ -743,7 +759,7 @@ body {
 												+ ")' "
 												+ " id='deleteComment"
 												+ i
-												+ "'style='float: left;'><span class='ui-button-text'>Delete &nbsp</span></button>"
+												+ "'style='float: left;'><span class='ui-button-text'>Delete</span></button>"
 									}
 									content += "&nbsp<a id='showLikers"+i+"' title='Click to see them' onclick='showLikers("
 											+ i
@@ -842,6 +858,41 @@ body {
 
 		});
 	}
+	
+	function reportComment(commentID, index) {
+		bootbox.confirm("Are you sure?", function(result) {
+			if (result) {
+				$.ajax({
+					type : "POST",
+					url : "../reportComment",
+					data : {
+						comment_id : commentID,
+						user_id : '${user.id}'
+					}
+				});
+				$('#commentDiv' + index).remove();
+			} else {
+
+			}
+		});
+	}
+	
+	$("#reportRecipe").click(function(e) {
+		bootbox.confirm("Are you sure?", function(result) {
+			if (result) {
+				$.ajax({
+					type : "POST",
+					url : "../reportRecipe",
+					data : {
+						recipe_id : '${recipe.recipe_id}',
+						user_id : '${user.id}'
+					}
+				});
+			} else {
+
+			}
+		});
+	});
 
 	// for saving rate values
 	function updateRate(changed, value) {
