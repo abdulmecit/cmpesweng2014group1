@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -13,8 +15,10 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import cmpesweng2014.group1.nutty.dao.mapper.CommentRowMapper;
+import cmpesweng2014.group1.nutty.dao.mapper.RecipeRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.UserRowMapper;
 import cmpesweng2014.group1.nutty.model.Comment;
+import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.model.User;
 
 @Component
@@ -230,6 +234,38 @@ public class CommentDao extends PcDao {
 			Comment[] comments = commentList.toArray(new Comment[commentList.size()]);
 			return comments;
 		}
+	}
+	
+	public Comment[] getAllReportedComments(){
+		List<Comment> commentList = this.getTemplate().query(
+				"SELECT a.comment_id, a.text, a.user_id, a.recipe_id, a.date FROM Comment a, ReportComment b"
+				+ "WHERE b.comment_id=a.comment_id",
+				new Object[] {}, new CommentRowMapper());
+		if (commentList.isEmpty()) {
+			return null;
+		}
+		else{
+			Comment[] comments = commentList.toArray(new Comment[commentList.size()]);
+			return comments;
+		}
+	}
+	
+	public Map<Comment,Integer> getReportedCommentsMap(){
+		Map<Comment, Integer> commentReportMap= new HashMap<Comment, Integer>();
+		Comment[] comments= getAllReportedComments();
+		if(comments!=null){
+			for(int i=0; i<comments.length;i++){
+				int id=comments[i].getComment_id();
+				int count=numberOfReportsOfComment(id);
+				if(count>0){
+					commentReportMap.put(getCommentById(id), count);
+				}
+			}
+		}
+		if(commentReportMap.isEmpty())
+			return null;
+		else
+			return commentReportMap;
 	}
 
 	
