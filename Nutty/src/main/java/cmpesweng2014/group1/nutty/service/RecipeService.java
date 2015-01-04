@@ -66,7 +66,7 @@ public class RecipeService {
 	//returns created recipe object 
 	//give the user also to the function
 	public Recipe createRecipe(String name, String description,
-			int portion, String[] photo_url, String[] ingredients, String[] amounts, double[] parsedAmounts, String[] meas_types, User user, String[] tags) {
+			int portion, String[] photo_urls, String[] ingredients, String[] amounts, double[] parsedAmounts, String[] meas_types, User user, String[] tags) {
 		
 		int[] ingredient_ids=new int[ingredients.length];
 		int[] ingredient_calories=new int[ingredients.length];
@@ -95,10 +95,9 @@ public class RecipeService {
 		recipeDao.addOwner(recipe_id, user.getId());			
 		
 		//Add photoUrl
-		if(photo_url != null)
-			for(int i=0; i<photo_url.length;i++){
-				if(photo_url[i] != "")
-					recipeDao.addPhotoUrl(photo_url[i], recipe_id);
+		for(int i=0; i<photo_urls.length;i++){
+			if(photo_urls[i] != "")
+				recipeDao.addPhotoUrl(photo_urls[i], recipe_id);
 		}
 		
 		return recipeDao.getRecipeById(recipe_id);	

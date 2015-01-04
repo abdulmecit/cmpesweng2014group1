@@ -66,7 +66,7 @@ public class RecipeController {
 	public String addRecipe(@RequestParam(value = "recipeName", required = true) String recipeName,
 							@RequestParam(value = "description", required = true) String description,
 							@RequestParam(value = "portion", required = true) int portion,
-							@RequestParam(value = "link[]", required = true) String[] link,
+							@RequestParam(value = "link[]", required = false) String[] linkz,
 							@RequestParam(value = "ingredient[]", required = true) String[] ingredients,
 							@RequestParam(value = "amount[]", required = true) String[] amounts,
 							@RequestParam(value = "measType[]", required = true) String[] meas_types, 
@@ -82,6 +82,11 @@ public class RecipeController {
 			tags = tagSet.toArray(new String[0]);
 		}
 		
+		String[] links = {};
+		if(linkz != null){
+			links = linkz;
+		}
+		
 		double[] parsedAmounts = new double[amounts.length];
 		//Check if entered amounts are valid
 		for(int i=0; i<amounts.length; i++){
@@ -94,7 +99,7 @@ public class RecipeController {
 				parsedAmounts[i] = parsedAmount;
 		}
 		
-		Recipe r = recipeService.createRecipe(recipeName, description, portion, link, ingredients, amounts, parsedAmounts, meas_types, u, tags);
+		Recipe r = recipeService.createRecipe(recipeName, description, portion, links, ingredients, amounts, parsedAmounts, meas_types, u, tags);
 		if(r != null){
 			redirectAttrs.addFlashAttribute("message", new Message(1, null, "Your recipe is successfully added to the system."));
 			return "redirect:/success";
