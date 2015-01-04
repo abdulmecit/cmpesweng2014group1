@@ -139,7 +139,7 @@ body {
 
 									<input id="elma" style="visibility: collapse; width: 0px;"
 										type="file" onchange="upload(this.files[0])"> <input
-										type="hidden" class="form-control" id="link" name="link"></input>
+										type="hidden" class="form-control" id="link" name="link[]"></input>
 
 									<p id="progress">Uploading...</p>
 								</div>
