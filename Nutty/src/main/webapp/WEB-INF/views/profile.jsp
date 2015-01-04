@@ -116,6 +116,7 @@ body {
 					<div id="star"></div>
 					<p>&nbsp;</p>
 					<h2>${badge}</h2>
+					<h3>Point: ${score}</h3>
 					<h3>&nbsp;</h3>
 					<h3>
 						<a id="showFollowers" title="Click to see them">
