@@ -28,10 +28,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 
+import cmpesweng2014.group1.nutty.model.Event;
 import cmpesweng2014.group1.nutty.model.Mail;
 import cmpesweng2014.group1.nutty.model.Message;
 import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.model.User;
+import cmpesweng2014.group1.nutty.service.EventService;
 import cmpesweng2014.group1.nutty.service.MailService;
 import cmpesweng2014.group1.nutty.service.RecipeService;
 import cmpesweng2014.group1.nutty.service.RecommendationService;
@@ -59,6 +61,9 @@ public class HomeController {
 	
 	@Autowired
 	private MailService mailService;
+	
+	@Autowired
+	private EventService eventService;
 	
 	// No longer splits from comma when a single item sent as an array parameter
 	@InitBinder
@@ -605,6 +610,17 @@ public class HomeController {
 			return "0"; //signup
 		}
 		return "1";//login
+	}
+	
+	@RequestMapping(value = "/getRecentEvents")
+	@ResponseBody
+	public List<Event> getRecentEvents(
+			@RequestParam(value = "user_id", required = true) long user_id){
+		
+		User[] users = userService.getFollowingList(user_id);	
+		if(users == null)
+			return null;			
+		return eventService.getAllRecentEventsOfUserList(users);
 	}
 }
 
