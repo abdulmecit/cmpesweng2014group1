@@ -3,7 +3,9 @@ package cmpesweng2014.group1.nutty.controller;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -23,12 +25,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 
+import cmpesweng2014.group1.nutty.model.Comment;
 import cmpesweng2014.group1.nutty.model.Event;
 import cmpesweng2014.group1.nutty.model.FoodSelection;
+import cmpesweng2014.group1.nutty.model.IngredientAmount;
 import cmpesweng2014.group1.nutty.model.Message;
 import cmpesweng2014.group1.nutty.model.PrivacyOptions;
 import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.model.SuperUser;
+import cmpesweng2014.group1.nutty.model.Tag;
 import cmpesweng2014.group1.nutty.model.User;
 import cmpesweng2014.group1.nutty.service.EventService;
 import cmpesweng2014.group1.nutty.service.RecipeService;
@@ -720,5 +725,23 @@ public class UserController {
 		session.setAttribute("isLogged", false);
 		return 1;
 	}
+	
+	@RequestMapping(value = "/report", method = RequestMethod.GET)
+	public String showReported(Model model, HttpSession session){
+
+		Map<Recipe, Integer> reportedRecipeMap = recipeService.getRecipeDao().getReportedRecipes();
+		Recipe[] reportedRecipes=reportedRecipeMap.keySet().toArray(new Recipe[reportedRecipeMap.keySet().size()]);
+		Integer[] recipeReportNumbers=reportedRecipeMap.values().toArray(new Integer[reportedRecipeMap.values().size()]);
+		model.addAttribute("reportedRecipes", reportedRecipes);
+		model.addAttribute("recipeReportNumbers", recipeReportNumbers);
+		
+		Map<Comment, Integer> reportedCommentMap = recipeService.getCommentDao().getReportedCommentsMap();
+		Comment[] reportedComments=reportedCommentMap.keySet().toArray(new Comment[reportedCommentMap.keySet().size()]);
+		Integer[] commentReportNumbers=reportedCommentMap.values().toArray(new Integer[reportedCommentMap.values().size()]);
+		model.addAttribute("reportedComments", reportedComments);
+		model.addAttribute("commentReportNumbers", commentReportNumbers);
+		return "report";
+	}
+	
 
 }
