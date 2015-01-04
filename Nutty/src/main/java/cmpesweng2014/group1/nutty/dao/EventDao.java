@@ -8,11 +8,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import cmpesweng2014.group1.nutty.dao.mapper.CommentRowMapper;
+import cmpesweng2014.group1.nutty.dao.mapper.EatLikeRateRowMapper;
+import cmpesweng2014.group1.nutty.dao.mapper.FollowsUserRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.RecipeRowMapper;
+import cmpesweng2014.group1.nutty.dao.mapper.SharesRecipeRowMapper;
+import cmpesweng2014.group1.nutty.dao.mapper.UserBadgeRowMapper;
+import cmpesweng2014.group1.nutty.model.Badge;
 import cmpesweng2014.group1.nutty.model.Comment;
+import cmpesweng2014.group1.nutty.model.EatLikeRate;
 import cmpesweng2014.group1.nutty.model.Event;
+import cmpesweng2014.group1.nutty.model.FollowsUser;
 import cmpesweng2014.group1.nutty.model.Recipe;
+import cmpesweng2014.group1.nutty.model.SharesRecipe;
 import cmpesweng2014.group1.nutty.model.User;
+import cmpesweng2014.group1.nutty.model.UserBadge;
 
 @Component
 public class EventDao extends PcDao {
@@ -23,16 +32,19 @@ public class EventDao extends PcDao {
 	@Autowired
 	UserDao userDao;
 	
-	public List<Event> getRecentCommentEventsOfUser(long now, long user_id){
+	@Autowired
+	BadgeDao badgeDao;
+	
+	public List<Event> getRecentCommentEventsOfUser(long now, int dayCount, long user_id){
 		
 		Timestamp right_now = new Timestamp(now);
-		Timestamp last_week = new Timestamp(now - (604800000));
+		Timestamp past = new Timestamp(now - (dayCount * 86400000));
 		
 		User u = userDao.getUserById(user_id);
 					
 		List<Comment> recentComments = this.getTemplate().query(
 				"SELECT * FROM Comment WHERE user_id = ? AND date BETWEEN ? AND ?",
-				new Object[] { user_id, last_week, right_now}, new CommentRowMapper());
+				new Object[] { user_id, past, right_now }, new CommentRowMapper());
 		
 		List<Event> recentCommentEvents = new ArrayList<Event>(recentComments.size());
 		
@@ -45,17 +57,17 @@ public class EventDao extends PcDao {
 		return recentCommentEvents;
 	}
 	
-	public List<Event> getRecentRecipeEventsOfUser(long now, long user_id){
+	public List<Event> getRecentRecipeEventsOfUser(long now, int dayCount, long user_id){
 		
 		Timestamp right_now = new Timestamp(now);
-		Timestamp last_week = new Timestamp(now - (604800000));
+		Timestamp past = new Timestamp(now - (dayCount * 86400000));
 		
 		User u = userDao.getUserById(user_id);
 					
 		List<Recipe> recentRecipes = this.getTemplate().query(
 				"SELECT b.* FROM OwnsRecipe a, Recipe b WHERE a.user_id = ? AND a.recipe_id = b.recipe_id "
 				+ "AND b.last_updated BETWEEN ? AND ?",
-				new Object[] { user_id, last_week, right_now}, new RecipeRowMapper());
+				new Object[] { user_id, past, right_now }, new RecipeRowMapper());
 		
 		List<Event> recentRecipeEvents = new ArrayList<Event>(recentRecipes.size());
 		
@@ -76,4 +88,151 @@ public class EventDao extends PcDao {
 		return recentRecipeEvents;
 	}
 	
+	public List<Event> getRecentShareEventsOfUser(long now, int dayCount, long user_id){
+		
+		Timestamp right_now = new Timestamp(now);
+		Timestamp past = new Timestamp(now - (dayCount * 86400000));
+		
+		User u = userDao.getUserById(user_id);
+					
+		List<SharesRecipe> recentShares = this.getTemplate().query(
+				"SELECT * FROM SharesRecipe WHERE user_id = ? AND date BETWEEN ? AND ?",
+				new Object[] { user_id, past, right_now }, new SharesRecipeRowMapper());
+		
+		List<Event> recentShareEvents = new ArrayList<Event>(recentShares.size());
+		
+		for(SharesRecipe s : recentShares){
+			Recipe r = recipeDao.getRecipeById(s.getRecipe_id());
+			String photo = recipeDao.getAllPhotoUrl(s.getRecipe_id())[0];
+			recentShareEvents.add(new Event(u, "share_recipe", r, photo, s.getDate()));
+		}
+	
+		return recentShareEvents;
+	}
+	
+	public List<Event> getRecentEatEventsOfUser(long now, int dayCount, long user_id){
+		
+		Timestamp right_now = new Timestamp(now);
+		Timestamp past = new Timestamp(now - (dayCount * 86400000));
+		
+		User u = userDao.getUserById(user_id);
+					
+		List<EatLikeRate> recentEats = this.getTemplate().query(
+				"SELECT * FROM EatLikeRate WHERE user_id = ? AND eat_date BETWEEN ? AND ?",
+				new Object[] { user_id, past, right_now }, new EatLikeRateRowMapper());
+		
+		List<Event> recentEatEvents = new ArrayList<Event>(recentEats.size());
+		
+		for(EatLikeRate elr : recentEats){
+			Recipe r = recipeDao.getRecipeById(elr.getRecipeId());
+			String photo = recipeDao.getAllPhotoUrl(elr.getRecipeId())[0];
+			if(elr.getEats() == 1)
+				recentEatEvents.add(new Event(u, "eat_recipe", r, photo, elr.getEat_date()));
+			/*
+			else
+				recentEatEvents.add(new Event(u, "not_eat_recipe", r, photo, elr.getEat_date()));
+			*/
+		}
+	
+		return recentEatEvents;
+	}
+	
+	public List<Event> getRecentLikeEventsOfUser(long now, int dayCount, long user_id){
+		
+		Timestamp right_now = new Timestamp(now);
+		Timestamp past = new Timestamp(now - (dayCount * 86400000));
+		
+		User u = userDao.getUserById(user_id);
+					
+		List<EatLikeRate> recentLikes = this.getTemplate().query(
+				"SELECT * FROM EatLikeRate WHERE user_id = ? AND like_date BETWEEN ? AND ?",
+				new Object[] { user_id, past, right_now }, new EatLikeRateRowMapper());
+		
+		List<Event> recentLikeEvents = new ArrayList<Event>(recentLikes.size());
+		
+		for(EatLikeRate elr : recentLikes){
+			Recipe r = recipeDao.getRecipeById(elr.getRecipeId());
+			String photo = recipeDao.getAllPhotoUrl(elr.getRecipeId())[0];
+			if(elr.getLikes() == 1)
+				recentLikeEvents.add(new Event(u, "like_recipe", r, photo, elr.getLike_date()));
+			/*
+			else
+				recentLikeEvents.add(new Event(u, "not_like_recipe", r, photo, elr.getLike_date()));
+			*/
+		}
+	
+		return recentLikeEvents;
+	}
+	
+	public List<Event> getRecentRateEventsOfUser(long now, int dayCount, long user_id){
+		
+		Timestamp right_now = new Timestamp(now);
+		Timestamp past = new Timestamp(now - (dayCount * 86400000));
+		
+		User u = userDao.getUserById(user_id);
+					
+		List<EatLikeRate> recentRates = this.getTemplate().query(
+				"SELECT * FROM EatLikeRate WHERE user_id = ? AND rate_date BETWEEN ? AND ?",
+				new Object[] { user_id, past, right_now }, new EatLikeRateRowMapper());
+		
+		List<Event> recentRateEvents = new ArrayList<Event>(recentRates.size());
+		
+		for(EatLikeRate elr : recentRates){
+			Recipe r = recipeDao.getRecipeById(elr.getRecipeId());
+			String photo = recipeDao.getAllPhotoUrl(elr.getRecipeId())[0];
+			recentRateEvents.add(new Event(u, "rate_recipe", r, photo, elr.getRate_date()));
+		}
+	
+		return recentRateEvents;
+	}
+	
+	public List<Event> getRecentFollowEventsOfUser(long now, int dayCount, long user_id){
+		
+		Timestamp right_now = new Timestamp(now);
+		Timestamp past = new Timestamp(now - (dayCount * 86400000));
+		
+		User u = userDao.getUserById(user_id);
+					
+		List<FollowsUser> recentFollows = this.getTemplate().query(
+				"SELECT * FROM Follows WHERE follower_id = ? OR followed_id = ? AND date BETWEEN ? AND ?",
+				new Object[] { user_id, user_id, past, right_now }, new FollowsUserRowMapper());
+		
+		List<Event> recentFollowEvents = new ArrayList<Event>(recentFollows.size());
+		
+		for(FollowsUser f : recentFollows){
+			if(f.getFollowed_id() == user_id){
+				User target = userDao.getUserById(f.getFollower_id());
+				recentFollowEvents.add(new Event(u, "get_followed", target, target.getPhoto(), f.getDate()));
+			}
+			else{
+				User target = userDao.getUserById(f.getFollowed_id());
+				recentFollowEvents.add(new Event(u, "follow_user", target, target.getPhoto(), f.getDate()));
+			}
+		}
+	
+		return recentFollowEvents;
+	}
+	
+	public List<Event> getRecentBadgeEventsOfUser(long now, int dayCount, long user_id){
+		
+		Timestamp right_now = new Timestamp(now);
+		Timestamp past = new Timestamp(now - (dayCount * 86400000));
+		
+		User u = userDao.getUserById(user_id);
+					
+		List<UserBadge> recentBadges = this.getTemplate().query(
+				"SELECT * FROM UserBadge WHERE user_id = ? AND date BETWEEN ? AND ?",
+				new Object[] { user_id, past, right_now }, new UserBadgeRowMapper());
+		
+		List<Event> recentBadgeEvents = new ArrayList<Event>(recentBadges.size());
+		
+		for(UserBadge b : recentBadges){
+
+			Badge target = badgeDao.getBadgeById(b.getBadge_id());
+			String photo = "http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg";
+			recentBadgeEvents.add(new Event(u, "earn_badge", target, photo, b.getDate()));
+		}
+	
+		return recentBadgeEvents;
+	}
 }

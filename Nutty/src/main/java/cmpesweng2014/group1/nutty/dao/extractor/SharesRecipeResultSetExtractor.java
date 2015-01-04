@@ -16,6 +16,7 @@ public class SharesRecipeResultSetExtractor implements ResultSetExtractor<Shares
 		SharesRecipe sharesRecipe = new SharesRecipe();
 		sharesRecipe.setUser_id(rs.getLong(1));
 		sharesRecipe.setRecipe_id(rs.getInt(2));
+		sharesRecipe.setDate(rs.getTimestamp(3));
 		return sharesRecipe;
 	}
 }

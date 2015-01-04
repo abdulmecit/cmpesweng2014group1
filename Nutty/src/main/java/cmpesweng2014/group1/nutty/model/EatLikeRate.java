@@ -1,5 +1,7 @@
 package cmpesweng2014.group1.nutty.model;
 
+import java.sql.Timestamp;
+
 public class EatLikeRate {
 	private int user_id;
 	private int recipe_id;
@@ -9,6 +11,9 @@ public class EatLikeRate {
 	private int cost_rate;
 	private int taste_rate;
 	private int ease_rate;
+	private Timestamp eat_date;
+	private Timestamp like_date;
+	private Timestamp rate_date;
 	
 	public EatLikeRate() {
 		super();
@@ -60,5 +65,23 @@ public class EatLikeRate {
 	}
 	public void setEaseRate(int ease_rate) {
 		this.ease_rate = ease_rate;
+	}
+	public Timestamp getEat_date() {
+		return eat_date;
+	}
+	public void setEat_date(Timestamp eat_date) {
+		this.eat_date = eat_date;
+	}
+	public Timestamp getLike_date() {
+		return like_date;
+	}
+	public void setLike_date(Timestamp like_date) {
+		this.like_date = like_date;
+	}
+	public Timestamp getRate_date() {
+		return rate_date;
+	}
+	public void setRate_date(Timestamp rate_date) {
+		this.rate_date = rate_date;
 	}
 }

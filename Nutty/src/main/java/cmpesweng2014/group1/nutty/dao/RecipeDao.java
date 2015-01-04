@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -207,10 +208,17 @@ public class RecipeDao extends PcDao{
 
 	public void evaluateRecipe(final String column,final int value,final User user, final Recipe recipe){
 		
-		
+		String dateColumn;
+		if(column.equals("eats"))
+			dateColumn = "eat_date";
+		else if(column.equals("likes"))
+			dateColumn = "like_date";
+		else
+			dateColumn = "rate_date";
+				
 		if (emptyCheckUserRecipeRelation(user,recipe)) {
 			//add this recipe user relation to the table with eats value
-			final String query = "INSERT INTO EatLikeRate (user_id, recipe_id,"+column+") VALUES (?,?,?)";
+			final String query = "INSERT INTO EatLikeRate (user_id, recipe_id,"+column+","+dateColumn+") VALUES (?,?,?,?)";
 			KeyHolder gkh = new GeneratedKeyHolder();
 
 			this.getTemplate().update(new PreparedStatementCreator() {
@@ -222,13 +230,14 @@ public class RecipeDao extends PcDao{
 					ps.setLong(1, user.getId());
 					ps.setInt(2, recipe.getRecipe_id());
 					ps.setInt(3, value);
+					ps.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
 					return ps;
 				}
 			}, gkh);
 		} else {
 
 		//update eats value
-			final String query = "UPDATE EatLikeRate SET "+column+"=? WHERE user_id=? AND recipe_id=?";
+			final String query = "UPDATE EatLikeRate SET "+column+"=?, "+dateColumn+"=? WHERE user_id=? AND recipe_id=?";
 			KeyHolder gkh = new GeneratedKeyHolder();
 			this.getTemplate().update(new PreparedStatementCreator() {
 
@@ -238,8 +247,9 @@ public class RecipeDao extends PcDao{
 					PreparedStatement ps = connection.prepareStatement(query,
 							Statement.RETURN_GENERATED_KEYS);
 					ps.setInt(1, value);
-					ps.setLong(2, user.getId());
-					ps.setInt(3, recipe.getRecipe_id());
+					ps.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+					ps.setLong(3, user.getId());
+					ps.setInt(4, recipe.getRecipe_id());
 					return ps;
 				}
 			}, gkh);

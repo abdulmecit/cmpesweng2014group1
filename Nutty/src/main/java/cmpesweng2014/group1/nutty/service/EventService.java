@@ -28,9 +28,15 @@ public class EventService {
 	public List<Event> getAllRecentEventsOfUser(long user_id){
 		long now = System.currentTimeMillis();	
 		List<Event> allRecentEvents = new ArrayList<Event>();		
-		allRecentEvents.addAll(eventDao.getRecentCommentEventsOfUser(now, user_id));
-		allRecentEvents.addAll(eventDao.getRecentRecipeEventsOfUser(now, user_id));
-		Collections.sort(allRecentEvents);
+		allRecentEvents.addAll(eventDao.getRecentCommentEventsOfUser(now, 7, user_id));
+		allRecentEvents.addAll(eventDao.getRecentRecipeEventsOfUser(now, 7, user_id));
+		allRecentEvents.addAll(eventDao.getRecentShareEventsOfUser(now, 7, user_id));
+		allRecentEvents.addAll(eventDao.getRecentEatEventsOfUser(now, 7, user_id));
+		allRecentEvents.addAll(eventDao.getRecentLikeEventsOfUser(now, 7, user_id));
+		allRecentEvents.addAll(eventDao.getRecentRateEventsOfUser(now, 7, user_id));
+		allRecentEvents.addAll(eventDao.getRecentFollowEventsOfUser(now, 7, user_id));
+		allRecentEvents.addAll(eventDao.getRecentBadgeEventsOfUser(now, 7, user_id));
+		Collections.sort(allRecentEvents, Collections.reverseOrder());
 		return allRecentEvents;
 	}
 }

@@ -22,6 +22,10 @@ public class EatLikeRateResultSetExtractor implements ResultSetExtractor<EatLike
 		eLikeR.setCostRate(rs.getInt(6));
 		eLikeR.setTasteRate(rs.getInt(7));
 		eLikeR.setEaseRate(rs.getInt(8));
+		eLikeR.setEat_date(rs.getTimestamp(9));
+		eLikeR.setLike_date(rs.getTimestamp(10));
+		eLikeR.setRate_date(rs.getTimestamp(11));
+
 		return eLikeR;
 	}
 

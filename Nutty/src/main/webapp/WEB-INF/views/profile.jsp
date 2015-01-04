@@ -293,7 +293,8 @@ body {
 																				+ src
 																				+ "' title='"
 																				+ name
-																				+ "' onError='this.onerror=null;this.src=\"http://img2.wikia.nocookie.net/__cb20130511180903/legendmarielu/images/b/b4/No_image_available.jpg\";' width='30%' height='auto' hspace='50px'><span style='font-size: 1.2em'>"
+																				+ "' onError='this.onerror=null;this.src=\"http://img2.wikia.nocookie.net/__cb20130511180903/legendmarielu/images/b/b4/No_image_available.jpg\";' width='30%' height='auto' hspace='50px'>"
+																				+ "<span style='font-size: 1.2em; width:250px; height:auto; display:inline-block'>"
 																				+ name
 																				+ "</span></a>");
 													}
@@ -333,7 +334,8 @@ body {
 																				+ src
 																				+ "' title='"
 																				+ name
-																				+ "' onError='this.onerror=null;this.src=\"http://img2.wikia.nocookie.net/__cb20130511180903/legendmarielu/images/b/b4/No_image_available.jpg\";' width='30%' height='auto' hspace='50px'><span style='font-size: 1.2em'>"
+																				+ "' onError='this.onerror=null;this.src=\"http://img2.wikia.nocookie.net/__cb20130511180903/legendmarielu/images/b/b4/No_image_available.jpg\";' width='30%' height='auto' hspace='50px'>"
+																				+ "<span style='font-size: 1.2em; width:250px; height:auto; display:inline-block'>"
 																				+ name
 																				+ "</span></a>");
 													}
@@ -381,34 +383,69 @@ body {
 																+ "</a>";
 
 														var action = event.action;
-
-														if (action == "add_comment") {
-															content += " has commented on a recipe: <br> <a href='/nutty/recipe/";
-														} else if (action == "edit_recipe") {
-															content += " has edited a recipe: <br> <a href='/nutty/recipe/";
-														} else if (action == "add_recipe") {
-															content += " has created a recipe: <br> <a href='/nutty/recipe/";
-														} else if (action == "derive_recipe") {
-															content += " has derived a recipe: <br> <a href='/nutty/recipe/";
-														} else if (action == "shared_recipe") {
-															content += " has shared a recipe: <br> <a href='/nutty/recipe/";
-														} else if (action == "derive_recipe") {
-															content += " has eaten: <br> <a href='/nutty/recipe/";
+														
+														if(action == "earn_badge"){
+															content += " has earned a new badge: <br>"
+																+ "<a href='javascript:;' class='list-group-item'>";
+																
+															for(var j=0; j<event.target.badge_id; j++){
+																content += "<img alt='' src='"
+																	+ event.target_photo_url
+																	+ "' width='50px' height='auto' hspace='10px'>"
+															}
+															
+															content += "<span style='font-size: 1.2em;'>&nbsp;&nbsp;"
+															+ event.target.name + "</span></a>";		
 														}
-										
-	<%-- will add more --%>
-		content += event.target.recipe_id
-																+ "' class='list-group-item'><img src='"
-																+ event.target_photo_url
-																+ "' title='"
-																+ event.target.name
-																+ "' onError='this.onerror=null;this.src=\"http://img2.wikia.nocookie.net/__cb20130511180903/legendmarielu/images/b/b4/No_image_available.jpg\";' width='30%' height='auto' hspace='50px'><span style='font-size: 1.2em'>"
-																+ event.target.name
-																+ "</span></a>";
-
+														else if(action == "follow_user" || action == "get_followed"){
+															if (action == "follow_user")
+																content += " is now following: <br>";
+															else 
+																content += " is now being followed by: <br>";
+															
+																content += "<a href='/nutty/user/profile/" + event.target.id
+																	+ "' class='list-group-item'><img src='"
+																	+ event.target_photo_url
+																	+ "' title='"
+																	+ event.target.name + " " + event.target.surname
+																	+ "' onError='this.onerror=null;this.src=\"http://img2.wikia.nocookie.net/__cb20130511180903/legendmarielu/images/b/b4/No_image_available.jpg\";' width='30%' height='auto' hspace='50px'>"
+																	+ "<span style='font-size: 1.2em; width:250px; height:auto; display:inline-block'>"
+																	+ event.target.name + " " + event.target.surname
+																	+ "</span></a>";
+														}
+														else{
+															if (action == "add_comment") {
+																content += " has commented on a recipe: <br>";
+															} else if (action == "edit_recipe") {
+																content += " has edited a recipe: <br>";
+															} else if (action == "add_recipe") {
+																content += " has created a recipe: <br>";
+															} else if (action == "derive_recipe") {
+																content += " has derived a recipe: <br>";
+															} else if (action == "share_recipe") {
+																content += " has shared a recipe: <br>";
+															} else if (action == "eat_recipe") {
+																content += " has eaten a recipe: <br>";
+															} else if (action == "like_recipe") {
+																content += " has liked a recipe: <br>";
+															} else if (action == "rate_recipe") {
+																content += " has rated a recipe: <br>";
+															}
+															
+																content += "<a href='/nutty/recipe/" + event.target.recipe_id
+																	+ "' class='list-group-item'><img src='"
+																	+ event.target_photo_url
+																	+ "' title='"
+																	+ event.target.name
+																	+ "' onError='this.onerror=null;this.src=\"http://img2.wikia.nocookie.net/__cb20130511180903/legendmarielu/images/b/b4/No_image_available.jpg\";' width='30%' height='auto' hspace='50px'>"
+																	+ "<span style='font-size: 1.2em; width:250px; height:auto; display:inline-block'>"
+																	+ event.target.name
+																	+ "</span></a>";			
+														}
+											
 														content += "</li>";
 														$('#recentActivity')
-																.append(content);
+																.append(content);	
 													}
 												}
 											});

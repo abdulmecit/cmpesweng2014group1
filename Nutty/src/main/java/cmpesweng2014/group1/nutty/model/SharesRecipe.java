@@ -1,8 +1,11 @@
 package cmpesweng2014.group1.nutty.model;
 
+import java.sql.Timestamp;
+
 public class SharesRecipe {
 	private Long user_id;
 	private int recipe_id;
+	private Timestamp date;
 	
 	public SharesRecipe() {
 		super();
@@ -22,5 +25,13 @@ public class SharesRecipe {
 
 	public void setRecipe_id(int recipe_id) {
 		this.recipe_id = recipe_id;
+	}
+
+	public Timestamp getDate() {
+		return date;
+	}
+
+	public void setDate(Timestamp date) {
+		this.date = date;
 	}
 }
