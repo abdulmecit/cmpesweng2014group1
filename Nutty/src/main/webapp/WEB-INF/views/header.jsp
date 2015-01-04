@@ -138,6 +138,7 @@ body {
 				<li><a id="requests" class="glyphicon glyphicon-user" title="Follow Requests" style="cursor:pointer"></a></li> <!-- eger request varsa style="color: red;" -->
 				<li><a href="/nutty/advancedSearch">Advanced<br />&nbsp;&nbsp;Search
 				</a></li>
+				<li><a href="/nutty/reportPage">Reports</a></li>
 				<li><a href="/nutty/addRecipe">Add Recipe</a></li>
 				<li><a href="/nutty/user/profile/${user.id}">My Profile</a></li>
 				<li><a id="logout" href="/nutty/logout">Logout</a></li>

@@ -401,11 +401,11 @@ body {
 									style="visibility: hidden;"></span>
 								<!-- caret for arrow. ui-button-text for button text visible; -->
 							</button>
-							<button type="button" class="btn btn-primary" id="reportRecipe"  
+							<button type="button" class="btn btn-primary" id="reportRecipe"
 								style="float: right; margin-right: 15 px; margin-left: 15px;">
 								<span id="textReport" class="ui-button-text">Report</span>
 							</button>
-							
+
 
 							<div id=recipeDetail>
 								<h3 style="margin-top: 0px">Portion:${recipe.portion}
@@ -488,6 +488,7 @@ body {
 	var eaten = '${eatenOfUser}';
 	var liked = '${likeOfUser}';
 	var shared = '${shareOfUser}';
+	var report = '${reportOfUser}'
 	var isLogged = '${isLogged}';
 	var commentNumber = 0;
 	var user = '${user.id}';
@@ -554,6 +555,11 @@ body {
 								$("#shareCheck").css('visibility', 'visible');
 							} else {
 								$("#shareCheck").css('visibility', 'hidden');
+							}
+							if (report == 1) {
+								$("#reportRecipe").attr("disabled", true);
+							} else {
+								$("#reportRecipe").attr("disabled", false);
 							}
 						} else {
 							$("#textLikeDelete").text("Delete");
@@ -660,6 +666,43 @@ body {
 		}
 	});
 
+
+	function reportComment(commentID, index) {
+			bootbox.confirm("Are you sure?", function(result) {
+				if (result) {
+					$.ajax({
+						type : "POST",
+						url : "../reportComment",
+						data : {
+							comment_id : commentID,
+							user_id : '${user.id}'
+						}
+					});
+					$('#reportComment' + index).attr("disabled", true);	
+				} else {
+
+				}
+			});
+		}
+		
+		$("#reportRecipe").click(function(e) {
+			bootbox.confirm("Are you sure?", function(result) {
+				if (result) {
+					$.ajax({
+						type : "POST",
+						url : "../reportRecipe",
+						data : {
+							recipe_id : '${recipe.recipe_id}',
+							user_id : '${user.id}'
+						}
+					});
+				} else {
+
+				}
+			});
+			$("#reportRecipe").attr("disabled", true);		
+		});
+	
 	var comments = [];
 	var commentsILike = [];
 
@@ -722,15 +765,15 @@ body {
 
 									if (comments[i].commenter_id != '${user.id}') {
 										content += "<button type='button' class='btn btn-primary btn-xs'"
-											+ "onclick='reportComment("
-											+ comments[i].comment_id
-											+ ","
-											+ i
-											+ ")' "
-											+ " value='report' id='reportComment"
-											+ i
-											+ "'style='float: left; margin-right:5px'><span class='ui-button-text'>Report </span></button>"
-											
+												+ "onclick='reportComment("
+												+ comments[i].comment_id
+												+ ","
+												+ i
+												+ ")' "
+												+ " value='report' id='reportComment"
+												+ i
+												+ "'style='float: left; margin-right:5px'><span class='ui-button-text'>Report </span></button>"
+
 										content += "<button type='button' class='btn btn-primary btn-xs'"
 												+ "onclick='commentLike("
 												+ i
@@ -761,10 +804,10 @@ body {
 												+ i
 												+ "'style='float: left;'><span class='ui-button-text'>Delete</span></button>"
 									}
-									content += "&nbsp<a id='showLikers"+i+"' title='Click to see them' onclick='showLikers("
+									content += "&nbsp<a id='showLikers"
 											+ i
-											+ ")'>"
-											+ likersCount
+											+ "' title='Click to see them' onclick='showLikers("
+											+ i + ")'>" + likersCount
 											+ " likes </a></li></div>"
 
 									$("#comments").append(content);
@@ -785,8 +828,8 @@ body {
 	}
 
 	function commentLike(index) {
-		var likersCount= $("#showLikers"+index).text().split(" ");
-		var num=likersCount[0];
+		var likersCount = $("#showLikers" + index).text().split(" ");
+		var num = likersCount[0];
 		if (isLogged == 'true') {
 			if (commentsILike[index] == 0) {
 				commentsILike[index] = 1;
@@ -805,10 +848,7 @@ body {
 					comment_id : $("#commentId" + index).val(),
 					value : commentsILike[index]
 				}
-			})
-			.done(
-					$("#showLikers"+index).text(num+" likes")
-			)
+			}).done($("#showLikers" + index).text(num + " likes"))
 		}
 	};
 
@@ -821,23 +861,18 @@ body {
 		$('#commentDiv' + index).append(cont);
 		//var comment = document.getElementById("myTextarea").value;
 
-		$("#changeComment")
-				.on(
-						'click',
-						function() {
-							var newComment = document
-									.getElementById("myTextArea").value;
-							$.ajax({
-								type : "POST",
-								url : "../editComment",
-								data : {
-									comment_id : comments[index].comment_id,
-									recipe_id : '${recipe.recipe_id}',
-									text : newComment
-								}
-							})
-							.done(getComment());
-						});
+		$("#changeComment").on('click', function() {
+			var newComment = document.getElementById("myTextArea").value;
+			$.ajax({
+				type : "POST",
+				url : "../editComment",
+				data : {
+					comment_id : comments[index].comment_id,
+					recipe_id : '${recipe.recipe_id}',
+					text : newComment
+				}
+			}).done(getComment());
+		});
 	}
 
 	function deleteComment(commentID, index) {
@@ -858,7 +893,7 @@ body {
 
 		});
 	}
-	
+
 	function reportComment(commentID, index) {
 		bootbox.confirm("Are you sure?", function(result) {
 			if (result) {
@@ -876,7 +911,7 @@ body {
 			}
 		});
 	}
-	
+
 	$("#reportRecipe").click(function(e) {
 		bootbox.confirm("Are you sure?", function(result) {
 			if (result) {

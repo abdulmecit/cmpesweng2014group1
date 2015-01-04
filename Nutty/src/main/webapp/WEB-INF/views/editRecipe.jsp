@@ -348,8 +348,6 @@ body {
 									</div>
 									<div class="panel-body" style="min-height: 50px">
 										<div id="dynamicTag">
-
-											<div>
 												<c:forEach var="tagItem" items="${tags}" varStatus="loop">
 													<div id="tagDiv0${loop.index}">
 														<div class="input-group">
@@ -365,7 +363,7 @@ body {
 														<br> <br>
 													</div>
 												</c:forEach>
-											</div>
+											
 
 										</div>
 									</div>
