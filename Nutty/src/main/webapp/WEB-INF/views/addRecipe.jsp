@@ -62,7 +62,7 @@ body {
 }
 
 .uploaded #dropArea {
-	display: none
+	display: inline
 }
 
 .uploading #progress {
@@ -136,12 +136,16 @@ body {
 											onclick="document.querySelector('#elma').click()">Choose
 											from your computer</button>
 									</div>
-
-									<input id="elma" style="visibility: collapse; width: 0px;"
+								</div>
+								<div class="panel-body" style="min-height: 50px">
+									<input id="elma" style="visibility: hidden; width: 0px;"
 										type="file" onchange="upload(this.files[0])"> <input
-										type="hidden" class="form-control" id="link" name="link[]"></input>
+										type="hidden" class="form-control" id="photo" name="photo"></input>
 
 									<p id="progress">Uploading...</p>
+								</div>
+								<div class="panel-body" style="min-height: 50px">
+									<div id="dynamicPhoto"></div>
 								</div>
 							</div>
 							<!------------------------ Get Tags  --------------------------->
@@ -184,6 +188,7 @@ body {
 	<script type="text/javascript">
 		var counter = 1;
 		var tagCounter = 1;
+		var photoCounter = 1;
 
 		function addInput(div, ing_name, meas_types) {
 			var newDiv = document.createElement('div');
@@ -285,20 +290,45 @@ body {
 			if (!file || !file.type.match(/image.*/))
 				return;
 			document.body.className = "uploading";
+			document.querySelector("#progress").innerHTML = "Uploading...";
 			var fd = new FormData();
 			fd.append("image", file);
 			var xhr = new XMLHttpRequest();
 			xhr.open("POST", "https://api.imgur.com/3/image.json");
 			xhr.onload = function() {
-				document.querySelector("#link").value = JSON
+				document.querySelector("#photo").value = JSON
 						.parse(xhr.responseText).data.link;
 				document.querySelector("#progress").innerHTML = "Done!";
 				document.body.className = "uploaded";
+				addPhoto('dynamicPhoto');
 			}
 
 			xhr.setRequestHeader('Authorization', 'Client-ID 4aaaa88af99c596');
 			xhr.send(fd);
+			
+			
 		}
+		function addPhoto(div) {
+			var photoValue = document.getElementById("photo").value;
+			
+			var newDiv = document.createElement('div');
+			newDiv.id = 'photoDiv' + photoCounter;
+			var content = "<div class='input-group'> <input type='text' class='form-control' id='link' name='link[]' value='" + photoValue + "' readonly>"
+					+ "<span class='input-group-btn'> <button type='button' class='btn btn-default' onclick='deletePhoto("
+					+ photoCounter
+					+ ")'"
+					+ "id='delphoto"
+					+ photoCounter
+					+ "'><span id='den'>&times;</span></button></span></div><br>";
+			newDiv.innerHTML = content;
+			document.getElementById(div).appendChild(newDiv);
+			photoCounter++;
+			$("#photo").val("");
+		}
+		function deletePhoto(i) {
+			$("#photoDiv" + i).remove();
+		}
+		
 
 		$("#addIngredient").autocomplete({
 			source : function(request, response) {
