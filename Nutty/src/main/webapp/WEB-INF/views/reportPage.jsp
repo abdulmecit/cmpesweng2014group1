@@ -32,18 +32,20 @@
 							href="/nutty/recipe/${repRecipe.recipe_id}">
 								${repRecipe.name}</a></td>
 
-						<td style="text-align: center"><button type="button" class="btn btn-primary"
-								onclick='DeleteRecipe(${repRecipe.recipe_id})'>
+						<td style="text-align: center"><button type="button"
+								class="btn btn-primary"
+								onclick='deleteRecipe(${repRecipe.recipe_id})'>
 								<span class="ui-button-text">Recipe</span>
 							</button></td>
 
-						<td style="text-align: center"><button type="button" class="btn btn-primary"
+						<td style="text-align: center"><button type="button"
+								class="btn btn-primary"
 								onclick='cancelReport(${repRecipe.recipe_id})'>
 								<span class="ui-button-text">Reports</span>
 							</button></td>
 
-						<td style="text-align: center"><button type="button" class="btn btn-primary"
-								onclick='cancelReport(${ownerId})'>
+						<td style="text-align: center"><button type="button"
+								class="btn btn-primary" onclick='deleteAccount(${ownerId})'>
 								<span class="ui-button-text">User</span>
 							</button></td>
 					</tr>
@@ -73,21 +75,24 @@
 
 						<td style="text-align: center">${commentReportNumbers[counter.index]}</td>
 
-						<td style="text-align: center"><a href="/nutty/recipe/${repComments.recipe_id}">
+						<td style="text-align: center"><a
+							href="/nutty/recipe/${repComments.recipe_id}">
 								${repComments.text}</a></td>
 
-						<td style="text-align: center"><button type="button" class="btn btn-primary"
-								onclick='DeleteRecipe(${repRecipe.recipe_id})'>
+						<td style="text-align: center"><button type="button"
+								class="btn btn-primary"
+								onclick='deleteComment(${repComments.comment_id})'>
 								<span class="ui-button-text">Comment</span>
 							</button></td>
 
-						<td style="text-align: center"><button type="button" class="btn btn-primary"
-								onclick='cancelReport(${repRecipe.recipe_id})'>
+						<td style="text-align: center"><button type="button"
+								class="btn btn-primary"
+								onclick='cancelReport(${repComments.recipe_id})'>
 								<span class="ui-button-text">Reports</span>
 							</button></td>
 
-						<td style="text-align: center"><button type="button" class="btn btn-primary"
-								onclick='cancelReport(${ownerId})'>
+						<td style="text-align: center"><button type="button"
+								class="btn btn-primary" onclick='cancelReport(${ownerId})'>
 								<span class="ui-button-text">User</span>
 							</button></td>
 
@@ -108,36 +113,39 @@
 			if (result) {
 				$.ajax({
 					type : "POST",
-					url : "../nutty/recipe/deleteRecipe",
+					url : "/nutty/deleteRecipe",
 					data : {
 						recipe_id : RecipeID,
 					}
 				}).done(function(e) {
-					location.reload();
 				})
 			} else {
 			}
-		});	
+		});
+		
+		location.reload();
 	}
 	
 	/*
 	* Delete Comment
 	*/
-	function deleteComment(userID){
+	function deleteComment(commentID){
 		bootbox.confirm("Are you sure?", function(result) {
 			if (result) {
 				$.ajax({
 					type : "POST",
-					url : "../deleteComment",
+					url : "/nutty/deleteComment",
 					data : {
-						recipe_id :userID,
+						comment_id : commentID,
 					}
 				}).done(function(e) {
-					location.reload();
 				})
 			} else {
 			}
-		});	
+		});
+		
+		location.reload();
+		
 	}
 	
 	/*
@@ -148,38 +156,41 @@
 			if (result) {
 				$.ajax({
 					type : "POST",
-					url : "../deleteReports",
+					url : "/nutty/deleteReports",
 					data : {
 						recipe_id : RecipeID,
 					}
 				}).done(function(e) {
-					location.reload();
 				})
 			} else {
 			}
-		});	
+		});
+	
+		location.reload();
+	
+	
 	}
 
 	/*
 	* Delete Account (missing userId)
 	*/
-	/*	
+		
 	function deleteAccount(userID){
-		bootbox.confirm("Are you sure?", function(result) {
+		/* bootbox.confirm("Are you sure?", function(result) {
 			if (result) {
 				$.ajax({
 					type : "POST",
-					url : "deleteAccount",
+					url : "/nutty/deleteAccount",
 					data : {
 						user_id : '${user.id}',
 					}
 				}).done(function(e) {
-					location.reload();
 				})
 			} else {
 			}
-		});	
-	}*/
+		})	*/
+		location.reload();
+	}
 
 	</script>
 </body>

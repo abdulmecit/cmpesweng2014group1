@@ -66,7 +66,7 @@
 	color: #FFF;
 	font-size: 56pt;
 	text-align: center;
-	line-height: 325px;
+	line-height: 280px;
 	font-family: "Varela Round", sans-serif;
 	background-color: rgba(255, 255, 255, .3);
 	text-shadow: 0px 0px 15px rgb(119, 119, 119);
@@ -319,8 +319,16 @@ body {
 								</div>
 								<!----------------------- End of Rate Buttons ----------------------------->
 								<div class="row ">
-									<div class="col-sm-6">
-										<div class="col-sm-9">
+									<div class="col-sm-7">
+										<div class="col-sm-5">
+											<h5 style="margin-top: 12px; text-align: right;">
+												Taste Rate: <br> ${numOfTasteRate} users <br>
+											</h5>
+											<h5 style="margin-top: 12px; text-align: right;">Health Rate: <br> ${numOfHealthRate} users<br></h5>
+											<h5 style="margin-top: 12px; text-align: right;">Cost Rate: <br> ${numOfCostRate} users<br></h5>
+											<h5 style="margin-top: 12px; text-align: right;">Ease Rate: <br> ${numOfEaseRate} users<br></h5>
+										</div>
+										<div class="col-sm-7">
 											<br>
 											<div id="rate"
 												style="width: 100%; margin-up: auto; margin-down: auto; overflow: hidden;">
@@ -329,19 +337,20 @@ body {
 														id="prograssbarTaste" role="progressbar" aria-valuenow="0"
 														aria-valuemin="0" aria-valuemax="100"></div>
 												</div>
-
+												
 												<div class="progress">
 													<div class="progress-bar progress-bar-info"
 														id="prograssbarHealth" role="progressbar"
 														aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
 														style="width: 40%"></div>
 												</div>
+										
 												<div class="progress">
 													<div class="progress-bar progress-bar-danger"
 														id="prograssbarCost" role="progressbar" aria-valuenow="0"
 														aria-valuemin="0" aria-valuemax="100"></div>
 												</div>
-
+												
 												<div class="progress">
 													<div class="progress-bar progress-bar-success"
 														id="prograssbarEase" role="progressbar" aria-valuenow="0"
@@ -349,20 +358,9 @@ body {
 												</div>
 											</div>
 										</div>
-										<div class="col-sm-3">
-											<h5 style="margin-top: 12px; text-align: left;">${numOfTasteRate}
-												users</h5>
-											<h5 style="margin-top: 12px; text-align: left;">${numOfHealthRate}
-												users</h5>
-											<h5 style="margin-top: 12px; text-align: left;">${numOfCostRate}
-												users</h5>
-											<h5 style="margin-top: 12px; text-align: left;">${numOfEaseRate}
-												users</h5>
 
-										</div>
 
 									</div>
-									<div class="col-sm-1"></div>
 									<div class="col-sm-5" style="margin: auto;">
 										<h5 style="margin-top: 15px;">
 											<b>Likes: </b> ${noOfLikes} &nbsp&nbsp Eaten: ${noOfEats}
@@ -423,7 +421,7 @@ body {
 						</div>
 					</div>
 					<div class="col-sm-4">
-						<div class="panel panel-default"
+						<div id="version" class="panel panel-default"
 							style="margin-right: 10px; max-height: 300px; overflow: scroll;">
 
 							<div class="panel-heading clearfix">
@@ -666,43 +664,42 @@ body {
 		}
 	});
 
-
 	function reportComment(commentID, index) {
-			bootbox.confirm("Are you sure?", function(result) {
-				if (result) {
-					$.ajax({
-						type : "POST",
-						url : "../reportComment",
-						data : {
-							comment_id : commentID,
-							user_id : '${user.id}'
-						}
-					});
-					$('#reportComment' + index).attr("disabled", true);	
-				} else {
+		bootbox.confirm("Are you sure?", function(result) {
+			if (result) {
+				$.ajax({
+					type : "POST",
+					url : "../reportComment",
+					data : {
+						comment_id : commentID,
+						user_id : '${user.id}'
+					}
+				});
+				$('#reportComment' + index).attr("disabled", true);
+			} else {
 
-				}
-			});
-		}
-		
-		$("#reportRecipe").click(function(e) {
-			bootbox.confirm("Are you sure?", function(result) {
-				if (result) {
-					$.ajax({
-						type : "POST",
-						url : "../reportRecipe",
-						data : {
-							recipe_id : '${recipe.recipe_id}',
-							user_id : '${user.id}'
-						}
-					});
-				} else {
-
-				}
-			});
-			$("#reportRecipe").attr("disabled", true);		
+			}
 		});
-	
+	}
+
+	$("#reportRecipe").click(function(e) {
+		bootbox.confirm("Are you sure?", function(result) {
+			if (result) {
+				$.ajax({
+					type : "POST",
+					url : "../reportRecipe",
+					data : {
+						recipe_id : '${recipe.recipe_id}',
+						user_id : '${user.id}'
+					}
+				});
+			} else {
+
+			}
+		});
+		$("#reportRecipe").attr("disabled", true);
+	});
+
 	var comments = [];
 	var commentsILike = [];
 
@@ -912,22 +909,6 @@ body {
 		});
 	}
 
-	$("#reportRecipe").click(function(e) {
-		bootbox.confirm("Are you sure?", function(result) {
-			if (result) {
-				$.ajax({
-					type : "POST",
-					url : "../reportRecipe",
-					data : {
-						recipe_id : '${recipe.recipe_id}',
-						user_id : '${user.id}'
-					}
-				});
-			} else {
-
-			}
-		});
-	});
 
 	// for saving rate values
 	function updateRate(changed, value) {
@@ -972,6 +953,10 @@ body {
 			$("#Share").css('display', 'none');
 			$("#derivedRecipeButton").css('display', 'none');
 			$("#addComment").css('display', 'none');
+			$("#reportRecipe").css('display', 'none');
+			$("#EatEdit").css('display', 'none');
+			$("#LikeDelete").css('display', 'none');
+			$("#version").css('display', 'none');
 		}
 	});
 

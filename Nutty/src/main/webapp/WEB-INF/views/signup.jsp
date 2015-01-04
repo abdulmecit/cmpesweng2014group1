@@ -91,10 +91,9 @@
 			  
 			  
 			  <div class="form-group">
-			    <label for="inputPhoto" class="col-sm-4 control-label">Photo:</label>
-			    <div  class="panel panel-default">
-									<div class="panel-body form-group" align="center"
-										style="height: 158px">
+			    <label for="inputPhoto" class="col-sm-4 control-label">Photo:</label><br><br>
+			    <div  class="panel panel-default"  style="height: 170px;  margin-left:80px; margin-right:80px ">
+									<div class="panel-body form-group" align="center">
 										<div id="dropArea">
 											Drag and drop your profile picture here! OR
 											<br>
