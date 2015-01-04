@@ -236,8 +236,7 @@ public class CommentDao extends PcDao {
 	
 	public Comment[] getAllReportedComments(){
 		List<Comment> commentList = this.getTemplate().query(
-				"SELECT a.comment_id, a.text, a.user_id, a.recipe_id, a.date FROM Comment a, ReportComment b"
-				+ "WHERE b.comment_id=a.comment_id",
+				"SELECT a.comment_id, text, a.user_id, recipe_id, date FROM Comment a, ReportComment b WHERE b.comment_id=a.comment_id",
 				new Object[] {}, new CommentRowMapper());
 		if (commentList.isEmpty()) {
 			return null;

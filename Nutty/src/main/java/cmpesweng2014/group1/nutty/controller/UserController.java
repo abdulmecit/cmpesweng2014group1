@@ -729,7 +729,7 @@ public class UserController {
 		return 1;
 	}
 	
-	@RequestMapping(value = "/report", method = RequestMethod.GET)
+	@RequestMapping(value = "/reportPage", method = RequestMethod.GET)
 	public String showReported(Model model, HttpSession session){
 
 		Map<Recipe, Integer> reportedRecipeMap = recipeService.getRecipeDao().getReportedRecipes();
@@ -743,7 +743,7 @@ public class UserController {
 		Integer[] commentReportNumbers=reportedCommentMap.values().toArray(new Integer[reportedCommentMap.values().size()]);
 		model.addAttribute("reportedComments", reportedComments);
 		model.addAttribute("commentReportNumbers", commentReportNumbers);
-		return "report";
+		return "reportPage";
 	}
 	
 
