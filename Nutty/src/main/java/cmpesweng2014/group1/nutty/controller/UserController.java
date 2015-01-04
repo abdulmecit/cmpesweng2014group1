@@ -89,6 +89,9 @@ public class UserController {
 			String badge = userService.getBadge(u.getId()).getName();
 			model.addAttribute("badge", badge);
 			
+			int score = userService.getScore(u.getId());
+			model.addAttribute("score", score);
+			
 			return "profile";
 		} else {
 			return "redirect:/login";

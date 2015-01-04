@@ -214,4 +214,19 @@ public class UserService {
 			return badge;
 		}
 	}
+	public int getScore(long user_id){
+		int score = 0;
+		List<UserRecipeScore> scoreList = userDao.getUserRecipeScore(user_id);
+		if(scoreList == null){
+			return score;
+			
+		}else{
+			UserRecipeScore [] scoreArray = scoreList.toArray(new UserRecipeScore[scoreList.size()]);
+			
+			for(int i=0;i<scoreList.size();i++){
+				score += scoreArray[i].getScore();
+			}
+			return score;
+		}
+	}
 }
