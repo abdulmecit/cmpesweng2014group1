@@ -46,8 +46,8 @@ body {
 
 #dropArea {
 	text-align: center;
-	line-height: 50px;
-	line-width: 50px;
+	line-height: 15px;
+	line-width: 15px;
 	margin: auto;
 	font-size: 15px;
 	display: inline-block;
@@ -88,9 +88,30 @@ body {
 				</div>
 
 				<div class="panel-body">
+					<div class="col-xs-2">
+						<!------------------------  Photo  --------------------------->
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<div id="dropArea">
+									<br>Drag and drop your recipe picture! OR<br> <br>
+									<button type="button"
+										onclick="document.querySelector('#elma').click()">Choose
+										from your computer</button>
+								</div>
+								<input id="elma" style="visibility: hidden; width: 0px;"
+									type="file" onchange="upload(this.files[0])"> <input
+									type="hidden" class="form-control" id="photo" name="photo"></input>
+								<p id="progress">Uploading...</p>
+							</div>
+							<div id="dynamicPhoto"
+								style="margin-left: 15px; min-height:500px;"></div>
+							<br>
+						</div>
+					</div>
+					<div class="col-xs-10">
 					<div class="row">
 						<!------------------------  Get Name & Portion  --------------------------->
-						<div class="col-xs-8">
+						<div class="col-xs-9">
 							<div class="col-xs-12">
 								Name:<input type="text" class="form-control" id="recipeName"
 									name="recipeName" placeholder="Name of Recipe...">
@@ -101,9 +122,8 @@ body {
 									name="portion" placeholder="portion">
 							</div>
 							<div class="col-xs-6">
-								<br>
-								<font color="blue">${message.message}</font>	
-							</div>					
+								<br> <font color="blue">${message.message}</font>
+							</div>
 							<br> <br> <br> <br> <br>
 							<!------------------------  Get Ingredients  --------------------------->
 							<div class="row">
@@ -125,29 +145,7 @@ body {
 							</div>
 						</div>
 
-						<div class="col-xs-4">
-							<!------------------------  Photo  --------------------------->
-							<div class="panel panel-default">
-								<div class="panel-body" style="height: 158px">
-
-									<div id="dropArea">
-										Drag and drop your recipe picture here! OR
-										<button type="button"
-											onclick="document.querySelector('#elma').click()">Choose
-											from your computer</button>
-									</div>
-								</div>
-								<div class="panel-body" style="min-height: 50px">
-									<input id="elma" style="visibility: hidden; width: 0px;"
-										type="file" onchange="upload(this.files[0])"> <input
-										type="hidden" class="form-control" id="photo" name="photo"></input>
-
-									<p id="progress">Uploading...</p>
-								</div>
-								<div class="panel-body" style="min-height: 50px">
-									<div id="dynamicPhoto"></div>
-								</div>
-							</div>
+						<div class="col-xs-3">
 							<!------------------------ Get Tags  --------------------------->
 							<div class="panel panel-default">
 								<div class="panel-heading clearfix">
@@ -155,34 +153,36 @@ body {
 										<input type="text" id="myTag" class="form-control"
 											placeholder="tags..."> <span class="input-group-btn">
 											<button class="btn btn-default" type="button"
-												onclick="addTag('dynamicTag')">Add Tag</button>
+												onclick="addTag('dynamicTag')">Tag</button>
 										</span>
 									</div>
 								</div>
-								<div class="panel-body" style="min-height: 50px">
+								<div class="panel-body" style="min-height: 230px">
 									<div id="dynamicTag"></div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<br>
-				<div class="row">
-					<div class="col-xs-12">
-						<!------------------------  Get Directions  --------------------------->
-						<div class="panel panel-default">
-							<div class="panel-heading clearfix">
-								<h4 class="panel-title " style="padding-top: 7.5px;">Directions</h4>
-							</div>
-							<div class="panel-body">
-								<textarea class="form-control" id="description"
-									name="description" rows="13"></textarea>
+					<br>
+					<div class="row">
+						<div class="col-xs-12">
+							<!------------------------  Get Directions  --------------------------->
+							<div class="panel panel-default">
+								<div class="panel-heading clearfix">
+									<h4 class="panel-title " style="padding-top: 7.5px;">Directions</h4>
+								</div>
+								<div class="panel-body">
+									<textarea class="form-control" id="description"
+										name="description" rows="13"></textarea>
+								</div>
+
 							</div>
 						</div>
 					</div>
+					</div>
 				</div>
 			</div>
-	</form>
+		</form>
 	</div>
 	<!---------------------------  Functions  ------------------------------>
 	<script type="text/javascript">
@@ -210,7 +210,7 @@ body {
 			newDiv.innerHTML = content;
 			document.getElementById(div).appendChild(newDiv);
 			counter++;
-	        formCheck();
+			formCheck();
 		}
 
 		function addTag(div) {
@@ -237,45 +237,44 @@ body {
 
 		function deleteText(i) {
 			$("#textBoxDiv" + i).remove();
-	        formCheck();
+			formCheck();
 		}
 
-	    $(document).on("keyup change", "#recipeName, #portion, #description, #amount", function() {
-	        formCheck();
-	    });
-	
-		function formCheck(){
+		$(document).on("keyup change",
+				"#recipeName, #portion, #description, #amount", function() {
+					formCheck();
+				});
+
+		function formCheck() {
 			var ingredientz = document.getElementsByName("ingredient[]");
 			var amountz = document.getElementsByName("amount[]");
 			var ingredients = [];
 			var amounts = [];
-			if ((ingredientz != null) && (amountz != null)){
+			if ((ingredientz != null) && (amountz != null)) {
 				transferValues(ingredientz, ingredients);
 				transferValues(amountz, amounts);
 			}
-			if( ($("#recipeName").val().length != 0)
-				&& ($("#portion").val().length != 0)
-				&& ($("#description").val().length != 0)
-				&& (ingredients.length != 0)
-				&& (amounts.length != 0)
-				&& (ingredients.length == amounts.length) )
-			{
+			if (($("#recipeName").val().length != 0)
+					&& ($("#portion").val().length != 0)
+					&& ($("#description").val().length != 0)
+					&& (ingredients.length != 0) && (amounts.length != 0)
+					&& (ingredients.length == amounts.length)) {
 				$('#submit').attr("disabled", false);
 			} else {
 				$('#submit').attr("disabled", true);
 			}
-		}	
+		}
 
 		function transferValues(src, dest) {
-			for (var i = 0; i < src.length; i++){
+			for (var i = 0; i < src.length; i++) {
 				var item = src[i].value;
-				if(!isBlank(item))
+				if (!isBlank(item))
 					dest.push(item);
 			}
 		}
-		
+
 		function isBlank(str) {
-		    return (!str || /^\s*$/.test(str));
+			return (!str || /^\s*$/.test(str));
 		}
 
 		window.ondragover = function(e) {
@@ -298,28 +297,27 @@ body {
 			xhr.onload = function() {
 				document.querySelector("#photo").value = JSON
 						.parse(xhr.responseText).data.link;
-				document.querySelector("#progress").innerHTML = "Done!";
+				document.querySelector("#progress").innerHTML = "";
 				document.body.className = "uploaded";
 				addPhoto('dynamicPhoto');
 			}
 
 			xhr.setRequestHeader('Authorization', 'Client-ID 4aaaa88af99c596');
 			xhr.send(fd);
-			
-			
+
 		}
 		function addPhoto(div) {
 			var photoValue = document.getElementById("photo").value;
-			
 			var newDiv = document.createElement('div');
 			newDiv.id = 'photoDiv' + photoCounter;
-			var content = "<div class='input-group'> <input type='text' class='form-control' id='link' name='link[]' value='" + photoValue + "' readonly>"
-					+ "<span class='input-group-btn'> <button type='button' class='btn btn-default' onclick='deletePhoto("
+			//newDiv.style.cssText='width:120px';
+			var content = "&nbsp<div class='input-group input-group-sm'><span class='input-group-btn'> <button type='button' class='btn btn-default' onclick='deletePhoto("
 					+ photoCounter
-					+ ")'"
-					+ "id='delphoto"
+					+ ")'id='delphoto"
 					+ photoCounter
-					+ "'><span id='den'>&times;</span></button></span></div><br>";
+					+ "'><span>&times;</span></button></span>"
+					+ "<input type='text' class='form-control' id='link' name='link[]' style='visibility:hidden; width:80px; overflow:scroll' value='" + photoValue +
+					"' readonly><img src='"+photoValue+"' class='img-responsive' style='height: 80px;width: 80px'></div>";
 			newDiv.innerHTML = content;
 			document.getElementById(div).appendChild(newDiv);
 			photoCounter++;
@@ -328,7 +326,6 @@ body {
 		function deletePhoto(i) {
 			$("#photoDiv" + i).remove();
 		}
-		
 
 		$("#addIngredient").autocomplete({
 			source : function(request, response) {
@@ -339,13 +336,12 @@ body {
 						filter : request.term
 					},
 					success : function(data) {
-						if(!data.length){
-							response([{
-								label: 'Sorry! No matches found.', 
-								value: "false"
-							}]);
-						}
-						else{
+						if (!data.length) {
+							response([ {
+								label : 'Sorry! No matches found.',
+								value : "false"
+							} ]);
+						} else {
 							response($.map(data, function(item) {
 								return {
 									label : item.ing_name,
@@ -359,7 +355,7 @@ body {
 			},
 			minLength : 3,
 			select : function(event, ui) {
-				if(ui.item.value == "true"){
+				if (ui.item.value == "true") {
 					$.ajax({
 						type : "POST",
 						url : "measTypesOfIngr",

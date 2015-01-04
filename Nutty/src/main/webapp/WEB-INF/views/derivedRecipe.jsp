@@ -101,150 +101,175 @@ body {
 				</div>
 
 				<div class="panel-body">
-					<div class="row">
-						<!------------------------  Get Name & Portion  --------------------------->
-						<div class="col-xs-8">
-							<div class="col-xs-12">
-								Name:<input type="text" class="form-control" id="recipeName"
-									name="recipeName" placeholder="Name of Recipe...">
-							</div>
-							<br> <br> <br> <br>
-							<div class="col-xs-2">
-								Portion:<input type="text" class="form-control" id="portion"
-									value=${recipe.portion } name="portion" placeholder="portion">
-							</div>
-							<div class="col-xs-6">
-								<br> <font color="blue">${message.message}</font>
-							</div>
-							<br> <br> <br> <br> <br>
-							<!------------------------  Get Ingredients  --------------------------->
-							<div class="row">
-								<div class="col-xs-12">
-									<div class="panel panel-default">
-										<div class="panel-heading clearfix">
-											<h4 class="panel-title pull-left"
-												style="padding-top: 7.5px; padding-bottom: 7.5px">Search
-												Ingredient:</h4>
-											<div class="col-xs-9">
-												<input type="text" class="form-control" id="addIngredient">
-											</div>
-										</div>
-										<div class="panel-body" style="min-height: 50px">
-											<div id="dynamicInput">
-												<div>
-													<c:forEach var="ingredientAmount"
-														items="${ingredientAmounts}" varStatus="loop">
-														<div id="textBoxDiv0${loop.index}">
-															<p>
-															<div class="col-sm-2" align="left">
-																<input type="text" class="form-control" id="amount"
-																	name="amount[]" value="${ingredientAmount.amount}">
-															</div>
-															<div class='col-sm-3' align='left'>
-																<select name='measType[]'
-																	style="width: 100%; height: 35px; line-height: 35px; overflow: hidden;">
-																	<option value='gr'
-																		<c:if test ="${ingredientAmount.meas_type == 'gr'}">selected</c:if>>gr</option>
-																	<c:forEach var="item"
-																		items="${measTypesMap[loop.index]}">
-																		<option value="${item}"
-																			<c:if test ="${ingredientAmount.meas_type == item}">selected</c:if>>${item}</option>
-																	</c:forEach>
-																</select>
-															</div>
-															<div class="col-sm-7">
-																<div class="input-group">
-																	<input type="text" class="form-control" id="ingredient"
-																		name="ingredient[]"
-																		value="${ingredientAmount.ing_name}" readonly>
-																	<span class="input-group-btn">
-																		<button type="button" class="btn btn-default"
-																			onclick="deleteText('0${loop.index}')"
-																			id="delingredient">
-																			<span>&times;</span>
-																		</button>
-																	</span>
-																</div>
-															</div>
-															<br> <br>
-														</div>
-													</c:forEach>
-												</div>
-											</div>
-										</div>
-									</div>
+					<div class="col-xs-2">
+						<!------------------------  Photo  --------------------------->
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<div id="dropArea">
+									<br>Drag and drop your recipe picture! OR<br> <br>
+									<button type="button"
+										onclick="document.querySelector('#elma').click()">Choose
+										from your computer</button>
 								</div>
+								<input id="elma" style="visibility: hidden; width: 0px;"
+									type="file" onchange="upload(this.files[0])"> <input
+									type="hidden" class="form-control" id="photo" name="photo"></input>
+								<p id="progress">Uploading...</p>
 							</div>
-						</div>
+							<div id="dynamicPhoto"
+								style="margin-left: 15px; min-height: 500px;"></div>
 
-						<div class="col-xs-4">
-							<!------------------------  Photo  --------------------------->
-							<div class="panel panel-default">
-								<div class="panel-body" style="height: 158px">
-
-									<div id="dropArea">
-										Drag and drop your recipe picture here! OR
-										<button type="button"
-											onclick="document.querySelector('#elma').click()">Choose
-											from your computer</button>
-									</div>
-
-									<input id="elma" style="visibility: collapse; width: 0px;"
-										type="file" onchange="upload(this.files[0])"> <input
-										type="hidden" class="form-control" id="link" name="link"></input>
-
-									<p id="progress">Uploading...</p>
+							<c:forEach var="photo" items="${photoUrl}" varStatus="counter">
+								<div class='input-group input-group-sm'>
+									<span class='input-group-btn'>
+										<button type='button' class='btn btn-default'
+											onclick='deletePhoto(0${counter.index})'
+											id='delphoto0${counter.index}'>
+											<span>&times;</span>
+										</button>
+									</span>" <input type='text' class='form-control' id='link'
+										name='link[]'
+										style='visibility: hidden; width: 80px; overflow: scroll'
+										value='${photoUrl[counter.index]}' readonly> <img
+										src='${photoUrl[counter.index]}' class='img-responsive'
+										style='height: 80px; width: 80px'>
 								</div>
-							</div>
-							<!------------------------ Get Tags  --------------------------->
-							<div class="panel panel-default">
-								<div class="panel-heading clearfix">
-									<div class="input-group">
-										<input type="text" id="myTag" class="form-control"
-											placeholder="tags..."> <span class="input-group-btn">
-											<button class="btn btn-default" type="button"
-												onclick="addTag('dynamicTag')">Add Tag</button>
-										</span>
-									</div>
-								</div>
-								<div class="panel-body" style="min-height: 50px">
-									<div id="dynamicTag">
-
-										<div>
-											<c:forEach var="tagItem" items="${tags}" varStatus="loop">
-												<div id="tagDiv0${loop.index}">
-													<div class="input-group">
-														<input type="text" class="form-control" id="tag"
-															name="tag[]" value="${tagItem.tag_name}" readonly>
-														<span class="input-group-btn">
-															<button type="button" class="btn btn-default"
-																onclick="deleteTag('0${loop.index}')" id="deltag">
-																<span>&times;</span>
-															</button>
-														</span>
-													</div>
-													<br> <br>
-												</div>
-											</c:forEach>
-										</div>
-
-									</div>
-								</div>
-							</div>
+							</c:forEach>
+							<br>
 						</div>
 					</div>
-				</div>
-				<br>
-				<div class="row">
-					<div class="col-xs-12">
-						<!------------------------  Get Directions  --------------------------->
-						<div class="panel panel-default">
-							<div class="panel-heading clearfix">
-								<h4 class="panel-title " style="padding-top: 7.5px;">Directions</h4>
+
+
+					<div class="col-xs-10">
+						<div class="row">
+							<!------------------------  Get Name & Portion  --------------------------->
+							<div class="col-xs-9">
+								<div class="col-xs-12">
+									Name:<input type="text" class="form-control" id="recipeName"
+										value=${recipe.name } name="recipeName"
+										placeholder="Name of Recipe...">
+								</div>
+								<br> <br> <br> <br>
+								<div class="col-xs-2">
+									Portion:<input type="text" class="form-control" id="portion"
+										value=${recipe.portion } name="portion" placeholder="portion">
+								</div>
+								<div class="col-xs-6">
+									<br> <font color="blue">${message.message}</font>
+								</div>
+								<br> <br> <br> <br> <br>
+								<!------------------------  Get Ingredients  --------------------------->
+								<div class="row">
+									<div class="col-xs-12">
+										<div class="panel panel-default">
+											<div class="panel-heading clearfix">
+												<h4 class="panel-title pull-left"
+													style="padding-top: 7.5px; padding-bottom: 7.5px">Search
+													Ingredient:</h4>
+												<div class="col-xs-9">
+													<input type="text" class="form-control" id="addIngredient">
+												</div>
+											</div>
+											<div class="panel-body" style="min-height: 50px">
+												<div id="dynamicInput">
+													<div>
+														<c:forEach var="ingredientAmount"
+															items="${ingredientAmounts}" varStatus="loop">
+															<div id="textBoxDiv0${loop.index}">
+																<p>
+																<div class="col-sm-2" align="left">
+																	<input type="text" class="form-control" id="amount"
+																		name="amount[]" value="${ingredientAmount.amount}">
+																</div>
+																<div class='col-sm-3' align='left'>
+																	<select name='measType[]'
+																		style="width: 100%; height: 35px; line-height: 35px; overflow: hidden;">
+																		<option value='gr'
+																			<c:if test ="${ingredientAmount.meas_type == 'gr'}">selected</c:if>>gr</option>
+																		<c:forEach var="item"
+																			items="${measTypesMap[loop.index]}">
+																			<option value="${item}"
+																				<c:if test ="${ingredientAmount.meas_type == item}">selected</c:if>>${item}</option>
+																		</c:forEach>
+																	</select>
+																</div>
+																<div class="col-sm-7">
+																	<div class="input-group">
+																		<input type="text" class="form-control"
+																			id="ingredient" name="ingredient[]"
+																			value="${ingredientAmount.ing_name}" readonly>
+																		<span class="input-group-btn">
+																			<button type="button" class="btn btn-default"
+																				onclick="deleteText('0${loop.index}')"
+																				id="delingredient">
+																				<span>&times;</span>
+																			</button>
+																		</span>
+																	</div>
+																</div>
+																<br> <br>
+															</div>
+														</c:forEach>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
-							<div class="panel-body">
-								<textarea class="form-control" id="description"
-									name="description" rows="13">${recipe.description}</textarea>
+
+							<div class="col-xs-3">
+								<!------------------------ Get Tags  --------------------------->
+								<div class="panel panel-default">
+									<div class="panel-heading clearfix">
+										<div class="input-group">
+											<input type="text" id="myTag" class="form-control"
+												placeholder="tags..."> <span class="input-group-btn">
+												<button class="btn btn-default" type="button"
+													onclick="addTag('dynamicTag')">Add Tag</button>
+											</span>
+										</div>
+									</div>
+									<div class="panel-body" style="min-height: 50px">
+										<div id="dynamicTag">
+
+											<div>
+												<c:forEach var="tagItem" items="${tags}" varStatus="loop">
+													<div id="tagDiv0${loop.index}">
+														<div class="input-group">
+															<input type="text" class="form-control" id="tag"
+																name="tag[]" value="${tagItem.tag_name}" readonly>
+															<span class="input-group-btn">
+																<button type="button" class="btn btn-default"
+																	onclick="deleteTag('0${loop.index}')" id="deltag">
+																	<span>&times;</span>
+																</button>
+															</span>
+														</div>
+														<br> <br>
+													</div>
+												</c:forEach>
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<br>
+						<div class="row">
+							<div class="col-xs-12">
+								<!------------------------  Get Directions  --------------------------->
+								<div class="panel panel-default">
+									<div class="panel-heading clearfix">
+										<h4 class="panel-title " style="padding-top: 7.5px;">Directions</h4>
+									</div>
+									<div class="panel-body">
+										<textarea class="form-control" id="description"
+											name="description" rows="13">${recipe.description}</textarea>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
