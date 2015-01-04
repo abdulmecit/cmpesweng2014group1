@@ -34,7 +34,7 @@
 					  the FB.login() function when clicked.
 					-->
 					
-					<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+					<fb:login-button scope="public_profile,email,user_birthday" onlogin="checkLoginState();">
 					</fb:login-button>
 					
 					<div id="status">
@@ -155,6 +155,11 @@
  		}
  		var email = response.email;
  		var pass = "facebook" + response.id;
+ 		var link = "https://graph.facebook.com/" + response.id + "/picture?width=300&height=300";
+ 		var date = new Date(response.birthday);
+ 		var day = date.getDate();
+ 		var month = date.getMonth() +1;
+ 		var year = date.getFullYear();
  		
  		$.ajax({
  			type: "POST",
@@ -173,10 +178,10 @@
  							  inputEmail: email, 
  							  inputPassword1: pass,
  							  gender: gender,
- 							  birthday_year: 0,
- 							  birthday_month: 0,
- 							  birthday_day:0,
- 							  link:"http://i.imgur.com/YyzTO03.jpg"
+ 							  birthday_year: year,
+ 							  birthday_month: month,
+ 							  birthday_day: day,
+ 							  link:link
  							  }
  						})
  						.done(function(session) {
