@@ -100,7 +100,7 @@ body {
 								</div>
 								<input id="elma" style="visibility: hidden; width: 0px;"
 									type="file" onchange="upload(this.files[0])"> <input
-									type="hidden" class="form-control" id="photo" name="photo"></input>
+									type="hidden" class="form-control" id="photo" name="photo" disabled></input>
 								<p id="progress">Uploading...</p>
 							</div>
 							<div id="dynamicPhoto"
