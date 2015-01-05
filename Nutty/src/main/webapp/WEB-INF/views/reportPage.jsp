@@ -8,7 +8,7 @@
 </head>
 <body>
 
-	<!-- ------------------- Recipe Report Table ------------------ -->
+	<!--------------------- Recipe Report Table -------------------->
 	<div class="panel panel-default" style="margin: 120px 75px 75px 75px;">
 		<div class="panel-heading">Recipe Reports</div>
 		<table class="table table-striped table-bordered">
@@ -23,24 +23,24 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach var="repRecipe" items="${reportedRecipes}"
+				<c:forEach var="reportRecipe" items="${reportedRecipes}"
 					varStatus="counter">
 					<tr>
 						<td style="text-align: center">${recipeReportNumbers[counter.index]}</td>
 
 						<td style="text-align: center"><a
-							href="/nutty/recipe/${repRecipe.recipe_id}">
-								${repRecipe.name}</a></td>
+							href="/nutty/recipe/${reportRecipe.recipe_id}">
+								${reportRecipe.name}</a></td>
 
 						<td style="text-align: center"><button type="button"
 								class="btn btn-primary"
-								onclick='deleteRecipe(${repRecipe.recipe_id})'>
+								onclick='deleteRecipe(${reportRecipe.recipe_id})'>
 								<span class="ui-button-text">Recipe</span>
 							</button></td>
 
 						<td style="text-align: center"><button type="button"
 								class="btn btn-primary"
-								onclick='cancelReport(${repRecipe.recipe_id})'>
+								onclick='cancelReport(${reportRecipe.recipe_id})'>
 								<span class="ui-button-text">Reports</span>
 							</button></td>
 
@@ -54,7 +54,7 @@
 		</table>
 	</div>
 
-	<!-- ------------------- Comment Report Table ------------------ -->
+	<!--------------------- Comment Report Table -------------------->
 	<div class="panel panel-default" style="margin: 75px 75px 75px 75px;">
 		<div class="panel-heading">Comment Reports</div>
 		<table class="table table-striped table-bordered">
@@ -69,25 +69,25 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach var="repComments" items="${reportedComments}"
+				<c:forEach var="reportComments" items="${reportedComments}"
 					varStatus="counter">
 					<tr>
 
 						<td style="text-align: center">${commentReportNumbers[counter.index]}</td>
 
 						<td style="text-align: center"><a
-							href="/nutty/recipe/${repComments.recipe_id}">
-								${repComments.text}</a></td>
+							href="/nutty/recipe/${reportComments.recipe_id}">
+								${reportComments.text}</a></td>
 
 						<td style="text-align: center"><button type="button"
 								class="btn btn-primary"
-								onclick='deleteComment(${repComments.comment_id})'>
+								onclick='deleteComment(${reportComments.comment_id})'>
 								<span class="ui-button-text">Comment</span>
 							</button></td>
 
 						<td style="text-align: center"><button type="button"
 								class="btn btn-primary"
-								onclick='cancelReport(${repComments.recipe_id})'>
+								onclick='cancelReport(${reportComments.comment_id})'>
 								<span class="ui-button-text">Reports</span>
 							</button></td>
 
@@ -108,21 +108,20 @@
 	/*
 	* Delete Recipe
 	*/
-	function deleteRecipe(RecipeID){
+	function deleteRecipe(recipeID){
 		bootbox.confirm("Are you sure?", function(result) {
 			if (result) {
 				$.ajax({
 					type : "POST",
 					url : "/nutty/deleteRecipe",
 					data : {
-						recipe_id : RecipeID,
+						recipe_id : recipeID,
 					}
 				}).done(function(e) {
 				})
 			} else {
 			}
 		});
-		
 		location.reload();
 	}
 	
@@ -143,9 +142,7 @@
 			} else {
 			}
 		});
-		
 		location.reload();
-		
 	}
 	
 	/*
@@ -165,16 +162,12 @@
 			} else {
 			}
 		});
-	
 		location.reload();
-	
-	
 	}
 
 	/*
 	* Delete Account (missing userId)
 	*/
-		
 	function deleteAccount(userID){
 		/* bootbox.confirm("Are you sure?", function(result) {
 			if (result) {

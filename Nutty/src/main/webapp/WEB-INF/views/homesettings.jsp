@@ -423,6 +423,7 @@
 						</form:form>
 					</div>
 
+					<!-- Delete Account Button -->
 					<div>
 						<button type="button" class="btn btn-primary" id="deleteAccount"
 							style="float:inherit; margin-right: 15 px; margin-top: 18px;">
@@ -626,7 +627,9 @@
 			xhr.send(fd);
 		}
 		
-		
+		/*
+		* Delete Account
+		*/
 		$("#deleteAccount").click(function(e) {
 					bootbox.confirm("Are you sure?", function(result) {
 						if (result) {

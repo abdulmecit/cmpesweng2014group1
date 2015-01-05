@@ -285,6 +285,9 @@ body {
 		var counter = 1;
 		var tagCounter = 1;
 		
+		/*
+		* Dynamic div creation for added ingredients 
+		*/
 		function addInput(div, ing_name, meas_types) {
 			var newDiv = document.createElement('div');
 			newDiv.id = 'textBoxDiv' + counter;
@@ -308,15 +311,24 @@ body {
 	        formCheck();
 		}
 
+		/*
+		* Delete ingredient div  
+		*/
 		function deleteText(i) {
 			$("#textBoxDiv" + i).remove();
 			formCheck();
 		}
 
+		/*
+		* Delete tag div
+		*/
 		function deleteTag(i) {
 			$("#tagDiv" + i).remove();
 		}
 
+		/*
+		* Dynamic div creation for added tags 
+		*/
 		function addTag(div) {
 			var tagValue = document.getElementById("myTag").value;
 			//var tagValue = "s";
@@ -372,33 +384,71 @@ body {
 			return (!str || /^\s*$/.test(str));
 		}
 
+		/*
 		window.ondragover = function(e) {
 			e.preventDefault()
 		}
 		window.ondrop = function(e) {
 			e.preventDefault();
 			upload(e.dataTransfer.files[0]);
-		}
+		}*/
 
+		/*
+		* Photo upload to imgur  
+		*/
 		function upload(file) {
 			if (!file || !file.type.match(/image.*/))
 				return;
 			document.body.className = "uploading";
+			document.querySelector("#progress").innerHTML = "Uploading...";
 			var fd = new FormData();
 			fd.append("image", file);
 			var xhr = new XMLHttpRequest();
 			xhr.open("POST", "https://api.imgur.com/3/image.json");
 			xhr.onload = function() {
-				document.querySelector("#link").value = JSON
+				document.querySelector("#photo").value = JSON
 						.parse(xhr.responseText).data.link;
-				document.querySelector("#progress").innerHTML = "Done!";
+				document.querySelector("#progress").innerHTML = "";
 				document.body.className = "uploaded";
+				addPhoto('dynamicPhoto');
 			}
 
 			xhr.setRequestHeader('Authorization', 'Client-ID 4aaaa88af99c596');
 			xhr.send(fd);
+
+		}
+		
+		/*
+		* Dynamic div creation for added photo 
+		*/
+		function addPhoto(div) {
+			var photoValue = document.getElementById("photo").value;
+			var newDiv = document.createElement('div');
+			newDiv.id = 'photoDiv' + photoCounter;
+			//newDiv.style.cssText='width:120px';
+			var content = "&nbsp<div class='input-group input-group-sm'><span class='input-group-btn'> <button type='button' class='btn btn-default' onclick='deletePhoto("
+					+ photoCounter
+					+ ")'id='delphoto"
+					+ photoCounter
+					+ "'><span>&times;</span></button></span>"
+					+ "<input type='text' class='form-control' id='link' name='link[]' style='visibility:hidden; width:80px; overflow:scroll' value='" + photoValue +
+					"' readonly><img src='"+photoValue+"' class='img-responsive' style='height: 80px;width: 80px'></div>";
+			newDiv.innerHTML = content;
+			document.getElementById(div).appendChild(newDiv);
+			photoCounter++;
+			$("#photo").val("");
+		}
+		
+		/*
+		* Delete photo div
+		*/
+		function deletePhoto(i) {
+			$("#photoDiv" + i).remove();
 		}
 
+		/*
+		* Ingredient autocomplete
+		*/
 		$("#addIngredient").autocomplete({
 			source : function(request, response) {
 				$.ajax({

@@ -66,12 +66,13 @@ body {
 #followRequestCheck {
 	display: none;
 }
-
 </style>
 
 </head>
 <body>
 	<div id="main-wrap">
+
+		<!------------- Recipes & Photo of User ---------------->
 		<div id="sidebar" align="center">
 			<div id="foto">
 				<!-- 	    		<img id="profilePic" alt="Photo of the User" src="http://cdn.sett.com/images/user/20140502/chef57b22ab552661a6852fe44c0e7e59e63.jpg" width="100%" height="auto"/> -->
@@ -83,6 +84,7 @@ body {
 				<p>Loading Recipes, please wait..</p>
 			</div>
 		</div>
+		<!------------- Personal Info & Badge & Followers ---------------->
 		<div id="content-wrap">
 			<div id="info-wrap">
 				<div class="info" align="center">
@@ -100,7 +102,7 @@ body {
 					<p id="not_pref">None</p>
 				</div>
 				<div class="info" align="center">
-				<br> <br>
+					<br> <br>
 					<button type="button" class="btn btn-primary" value="Follow"
 						id="Follow"
 						style="float: center; margin-right: 15 px; margin-top: 18px;">
@@ -129,6 +131,7 @@ body {
 				</div>
 			</div>
 
+			<!------------- Recent Activity / Shared Recipes / Eaten ---------------->
 			<div class="panel panel-default"
 				style="margin-right: 80px; margin-left: 80px">
 				<div class="panel-body">
@@ -145,7 +148,7 @@ body {
 						</ul>
 
 						<ul id="recentActivity" class="list-group"
-							style="overflow: scroll;display:block;">
+							style="overflow: scroll; display: block;">
 							<li><br>
 								<p>Loading, please wait..</p> <br></li>
 						</ul>
@@ -155,7 +158,8 @@ body {
 							<li></li>
 						</ul>
 
-						<ul id="eatenRecipes" class="list-group" style="overflow: scroll; display: none">
+						<ul id="eatenRecipes" class="list-group"
+							style="overflow: scroll; display: none">
 							<li></li>
 						</ul>
 					</div>
@@ -165,6 +169,9 @@ body {
 	</div>
 
 	<script type="text/javascript">
+		/*
+		 * switch filter between eatenRecipes, shared Recipes and RecentActivity
+		 */
 		$(".filter").click(function() {
 			$(this).addClass("active").siblings().removeClass("active");
 			if (this.id == "recentAct") {
@@ -176,7 +183,7 @@ body {
 				$("#recentActivity").css('display', 'none');
 				$("#eatenRecipes").css('display', 'none');
 				$("#sharedRecipes").css('display', 'block');
-				
+
 			} else {
 				$("#recentActivity").css('display', 'none');
 				$("#sharedRecipes").css('display', 'none');
@@ -184,6 +191,9 @@ body {
 			}
 		});
 
+		/*
+		 * change follow button visibility 
+		 */
 		$(document).ready(function() {
 			if ('${visitedUser.id}' == '${user.id}') {
 				$("#Follow").css('display', 'none');
@@ -193,6 +203,9 @@ body {
 		});
 
 		var photo = '${visitedUser.photo}';
+		/*
+		 * get photo 
+		 */
 		$(document)
 				.ready(
 						function() {
@@ -209,6 +222,9 @@ body {
 							}
 						});
 
+		/*
+		 * get personal Info 
+		 */
 		$(document).ready(function() {
 			if ('${visitedUser.gender}') {
 				if ('${visitedUser.gender}' == 0) {
@@ -219,6 +235,9 @@ body {
 			}
 		});
 
+		/*
+		 * get personal Info 
+		 */
 		$(document).ready(
 				function() {
 					if ('${visitedUser.birthday}') {
@@ -228,6 +247,9 @@ body {
 					}
 				});
 
+		/*
+		 * get user recipes 
+		 */
 		$(document)
 				.ready(
 						function() {
@@ -267,6 +289,9 @@ body {
 											});
 						});
 
+		/*
+		 * get shared Recipe
+		 */
 		$(document)
 				.ready(
 						function() {
@@ -309,6 +334,9 @@ body {
 											});
 						});
 
+		/*
+		 * get eaten recipes 
+		 */
 		$(document)
 				.ready(
 						function() {
@@ -349,6 +377,9 @@ body {
 											});
 						});
 
+		/*
+		 * get recent event 
+		 */
 		$(document)
 				.ready(
 						function() {
@@ -384,37 +415,41 @@ body {
 																+ "</a>";
 
 														var action = event.action;
-														
-														if(action == "earn_badge"){
+
+														if (action == "earn_badge") {
 															content += " has earned a new badge: <br>"
-																+ "<a href='javascript:;' class='list-group-item'>";
-																
-															for(var j=0; j<event.target.badge_id; j++){
+																	+ "<a href='javascript:;' class='list-group-item'>";
+
+															for (var j = 0; j < event.target.badge_id; j++) {
 																content += "<img alt='' src='"
 																	+ event.target_photo_url
 																	+ "' width='50px' height='auto' hspace='10px'>"
 															}
-															
+
 															content += "<span style='font-size: 1.2em;'>&nbsp;&nbsp;"
-															+ event.target.name + "</span></a>";		
-														}
-														else if(action == "follow_user" || action == "get_followed"){
+																	+ event.target.name
+																	+ "</span></a>";
+														} else if (action == "follow_user"
+																|| action == "get_followed") {
 															if (action == "follow_user")
 																content += " is now following: <br>";
-															else 
+															else
 																content += " is now being followed by: <br>";
-															
-																content += "<a href='/nutty/user/profile/" + event.target.id
+
+															content += "<a href='/nutty/user/profile/" + event.target.id
 																	+ "' class='list-group-item'><img src='"
 																	+ event.target_photo_url
 																	+ "' title='"
-																	+ event.target.name + " " + event.target.surname
+																	+ event.target.name
+																	+ " "
+																	+ event.target.surname
 																	+ "' onError='this.onerror=null;this.src=\"http://img2.wikia.nocookie.net/__cb20130511180903/legendmarielu/images/b/b4/No_image_available.jpg\";' width='30%' height='auto' hspace='50px'>"
 																	+ "<span style='font-size: 1.2em; width:250px; height:auto; display:inline-block'>"
-																	+ event.target.name + " " + event.target.surname
+																	+ event.target.name
+																	+ " "
+																	+ event.target.surname
 																	+ "</span></a>";
-														}
-														else{
+														} else {
 															if (action == "add_comment") {
 																content += " has commented on a recipe: <br>";
 															} else if (action == "edit_recipe") {
@@ -432,8 +467,8 @@ body {
 															} else if (action == "rate_recipe") {
 																content += " has rated a recipe: <br>";
 															}
-															
-																content += "<a href='/nutty/recipe/" + event.target.recipe_id
+
+															content += "<a href='/nutty/recipe/" + event.target.recipe_id
 																	+ "' class='list-group-item'><img src='"
 																	+ event.target_photo_url
 																	+ "' title='"
@@ -441,12 +476,12 @@ body {
 																	+ "' onError='this.onerror=null;this.src=\"http://img2.wikia.nocookie.net/__cb20130511180903/legendmarielu/images/b/b4/No_image_available.jpg\";' width='30%' height='auto' hspace='50px'>"
 																	+ "<span style='font-size: 1.2em; width:250px; height:auto; display:inline-block'>"
 																	+ event.target.name
-																	+ "</span></a>";			
+																	+ "</span></a>";
 														}
-											
+
 														content += "</li>";
 														$('#recentActivity')
-																.append(content);	
+																.append(content);
 													}
 												}
 											});
@@ -466,6 +501,9 @@ body {
 			return date.join("/") + " " + time.join(":");
 		}
 
+		/*
+		 *  
+		 */
 		var followStatus = '${followStatus}';
 		$(document).ready(function() {
 			if (followStatus == 'true') {
@@ -480,6 +518,9 @@ body {
 			}
 		});
 
+		/*
+		 * Badge for Gamification  
+		 */
 		var badge = '${badge}';
 		$(document)
 				.ready(
@@ -499,6 +540,9 @@ body {
 							}
 						});
 
+		/*
+		 * Requests  
+		 */
 		$("#Follow").click(function() {
 			if (followStatus == 'request') {
 				$("#followRequestCheck").css('display', 'none');
@@ -520,6 +564,9 @@ body {
 			}
 		});
 
+		/*
+		 * FollowUser  
+		 */
 		function followUser(value) {
 			$.ajax({
 				type : "POST",
@@ -554,6 +601,9 @@ body {
 			}
 		});
 
+		/*
+		 * Check Privacy Options  
+		 */
 		$(document)
 				.ready(
 						function() {

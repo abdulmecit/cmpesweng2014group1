@@ -48,7 +48,7 @@ body {
 </style>
 </head>
 <body>
-
+    <!--------------- Food Intolerance and Allergies Checkbox ------------------->
 	<form name="foodForm" method="post">
 		<div class="container">
 			<div class="panel panel-default">
@@ -142,7 +142,7 @@ body {
 				</div>
 			</div>
 
-
+			<!--------------- Diseases Checkbox ------------------->
 			<div class="panel panel-default">
 
 				<div class="panel-heading clearfix">
@@ -193,7 +193,7 @@ body {
 				</div>
 			</div>
 
-
+			<!--------------- Textbox For Other Foods ------------------->
 			<div class="panel panel-default">
 
 				<div class="panel-heading clearfix">

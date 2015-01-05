@@ -190,6 +190,9 @@ body {
 		var tagCounter = 1;
 		var photoCounter = 1;
 
+		/*
+		* Dynamic div creation for added ingredients 
+		*/
 		function addInput(div, ing_name, meas_types) {
 			var newDiv = document.createElement('div');
 			newDiv.id = 'textBoxDiv' + counter;
@@ -212,7 +215,10 @@ body {
 			counter++;
 			formCheck();
 		}
-
+    
+		/*
+		* Dynamic div creation for added tags 
+		*/
 		function addTag(div) {
 			var tagValue = document.getElementById("myTag").value;
 			//var tagValue = "s";
@@ -231,10 +237,16 @@ body {
 			$("#myTag").val("");
 		}
 
+		/*
+		* Delete tag div
+		*/
 		function deleteTag(i) {
 			$("#tagDiv" + i).remove();
 		}
 
+		/*
+		* Delete ingredient div  
+		*/
 		function deleteText(i) {
 			$("#textBoxDiv" + i).remove();
 			formCheck();
@@ -285,6 +297,9 @@ body {
 			upload(e.dataTransfer.files[0]);
 		}
 
+		/*
+		* Photo upload to imgur  
+		*/
 		function upload(file) {
 			if (!file || !file.type.match(/image.*/))
 				return;
@@ -306,6 +321,10 @@ body {
 			xhr.send(fd);
 
 		}
+		
+		/*
+		* Dynamic div creation for added photo 
+		*/
 		function addPhoto(div) {
 			var photoValue = document.getElementById("photo").value;
 			var newDiv = document.createElement('div');
@@ -323,10 +342,17 @@ body {
 			photoCounter++;
 			$("#photo").val("");
 		}
+		
+		/*
+		* Delete photo div
+		*/
 		function deletePhoto(i) {
 			$("#photoDiv" + i).remove();
 		}
 
+		/*
+		* Ingredient autocomplete
+		*/
 		$("#addIngredient").autocomplete({
 			source : function(request, response) {
 				$.ajax({

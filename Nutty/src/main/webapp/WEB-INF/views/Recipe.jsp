@@ -317,16 +317,23 @@ body {
 										</ul>
 									</div>
 								</div>
-								<!----------------------- End of Rate Buttons ----------------------------->
+								<!----------------------- Recipe Info (Rates) ----------------------------->
 								<div class="row ">
 									<div class="col-sm-7">
 										<div class="col-sm-5">
+
 											<h5 style="margin-top: 12px; text-align: right;">
 												Taste Rate: <br> ${numOfTasteRate} users <br>
 											</h5>
-											<h5 style="margin-top: 12px; text-align: right;">Health Rate: <br> ${numOfHealthRate} users<br></h5>
-											<h5 style="margin-top: 12px; text-align: right;">Cost Rate: <br> ${numOfCostRate} users<br></h5>
-											<h5 style="margin-top: 12px; text-align: right;">Ease Rate: <br> ${numOfEaseRate} users<br></h5>
+											<h5 style="margin-top: 12px; text-align: right;">
+												Health Rate: <br> ${numOfHealthRate} users<br>
+											</h5>
+											<h5 style="margin-top: 12px; text-align: right;">
+												Cost Rate: <br> ${numOfCostRate} users<br>
+											</h5>
+											<h5 style="margin-top: 12px; text-align: right;">
+												Ease Rate: <br> ${numOfEaseRate} users<br>
+											</h5>
 										</div>
 										<div class="col-sm-7">
 											<br>
@@ -337,20 +344,20 @@ body {
 														id="prograssbarTaste" role="progressbar" aria-valuenow="0"
 														aria-valuemin="0" aria-valuemax="100"></div>
 												</div>
-												
+
 												<div class="progress">
 													<div class="progress-bar progress-bar-info"
 														id="prograssbarHealth" role="progressbar"
 														aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
 														style="width: 40%"></div>
 												</div>
-										
+
 												<div class="progress">
 													<div class="progress-bar progress-bar-danger"
 														id="prograssbarCost" role="progressbar" aria-valuenow="0"
 														aria-valuemin="0" aria-valuemax="100"></div>
 												</div>
-												
+
 												<div class="progress">
 													<div class="progress-bar progress-bar-success"
 														id="prograssbarEase" role="progressbar" aria-valuenow="0"
@@ -358,9 +365,8 @@ body {
 												</div>
 											</div>
 										</div>
-
-
 									</div>
+									<!----------------------- Recipe Info (Number of likes/eats ,tags) ----------------------------->
 									<div class="col-sm-5" style="margin: auto;">
 										<h5 style="margin-top: 15px;">
 											<b>Likes: </b> ${noOfLikes} &nbsp&nbsp Eaten: ${noOfEats}
@@ -388,6 +394,7 @@ body {
 				</div>
 				<br> <br>
 				<div class=row>
+					<!----------------------- Share/Report Button ----------------------------->
 					<div class="col-sm-8">
 						<div id="info-wrap">
 
@@ -404,7 +411,7 @@ body {
 								<span id="textReport" class="ui-button-text">Report</span>
 							</button>
 
-
+							<!----------------------- Recipe Description ----------------------------->
 							<div id=recipeDetail>
 								<h3 style="margin-top: 0px">Portion:${recipe.portion}
 									&nbsp&nbsp Total Calories:${recipe.total_calorie}</h3>
@@ -420,6 +427,7 @@ body {
 							<p>${recipe.description}</p>
 						</div>
 					</div>
+					<!----------------------- Derived Recipe ----------------------------->
 					<div class="col-sm-4">
 						<div id="version" class="panel panel-default"
 							style="margin-right: 10px; max-height: 300px; overflow: scroll;">
@@ -453,6 +461,7 @@ body {
 				<!-- end of row -->
 				<br> <br> <br>
 				<div class=row>
+					<!----------------------- Comments ----------------------------->
 					<div class="panel panel-default"
 						style="margin-right: 10px; margin-left: 10px; max-height: 2000px; overflow: scroll;">
 						<div class="panel-heading clearfix">
@@ -564,8 +573,10 @@ body {
 							$("#textEatEdit").text("Edit");
 						}
 					});
-
-	// change & save values of rate buttons
+	
+	/*
+	 * change & save values of rate buttons
+	 */
 	$(".dropdown-menu li a").click(
 			function(e) {
 				if (isLogged == 'true') {
@@ -589,8 +600,11 @@ body {
 					}
 				}
 			});
-
-	// Like/Delete button functions 
+	
+	
+	/*
+	 * Like/Delete button functions
+	 */
 	$("#LikeDelete").click(function(e) {
 		if (isLogged == 'true') {
 			if (user != owner) {
@@ -623,7 +637,9 @@ body {
 		}
 	});
 
-	// Eat/Edit button change "check" visibilty 
+	/*
+	 * Eat/Edit button change "check" visibilty 
+	 */
 	$("#EatEdit").click(function(e) {
 		if (isLogged == 'true') {
 			if (user != owner) {
@@ -641,7 +657,9 @@ body {
 		}
 	});
 
-	// share recipe
+	/*
+	* Share recipe
+	*/
 	$("#Share").click(function(e) {
 		if (isLogged == 'true') {
 			if (shared == 0) {
@@ -664,6 +682,9 @@ body {
 		}
 	});
 
+	/*
+	* Report Comment
+	*/
 	function reportComment(commentID, index) {
 		bootbox.confirm("Are you sure?", function(result) {
 			if (result) {
@@ -682,6 +703,9 @@ body {
 		});
 	}
 
+	/*
+	* Report Recipe
+	*/
 	$("#reportRecipe").click(function(e) {
 		bootbox.confirm("Are you sure?", function(result) {
 			if (result) {
@@ -700,10 +724,11 @@ body {
 		$("#reportRecipe").attr("disabled", true);
 	});
 
+	
+
+
 	var comments = [];
 	var commentsILike = [];
-
-	// getting comments
 	$(document)
 			.ready(
 					function() {
@@ -719,8 +744,9 @@ body {
 
 					});
 
-	//Comment Like
-
+	/*
+	* Getting comments
+	*/
 	function getComment() {
 		$
 				.ajax({
@@ -823,7 +849,10 @@ body {
 							}
 						});
 	}
-
+	
+	/*
+	* Comment Like
+	*/
 	function commentLike(index) {
 		var likersCount = $("#showLikers" + index).text().split(" ");
 		var num = likersCount[0];
@@ -849,6 +878,9 @@ body {
 		}
 	};
 
+	/*
+	* Comment Edit
+	*/
 	function editComment(index) {
 		$('#commentDiv' + index).empty();
 
@@ -872,6 +904,9 @@ body {
 		});
 	}
 
+	/*
+	* Comment Delete
+	*/
 	function deleteComment(commentID, index) {
 		bootbox.confirm("Are you sure?", function(result) {
 			if (result) {
@@ -891,6 +926,9 @@ body {
 		});
 	}
 
+	/*
+	* Comment Report
+	*/
 	function reportComment(commentID, index) {
 		bootbox.confirm("Are you sure?", function(result) {
 			if (result) {
@@ -909,8 +947,9 @@ body {
 		});
 	}
 
-
-	// for saving rate values
+	/*
+	* for changing and saving rate values
+	*/
 	function updateRate(changed, value) {
 		$.ajax({
 			type : "POST",
@@ -924,6 +963,9 @@ body {
 		})
 	};
 
+	/*
+	* show likes number and likers of comment
+	*/
 	function showLikers(index) {
 		var likers = comments[index].likers;
 		var content = "";
@@ -945,6 +987,9 @@ body {
 		return false;
 	};
 
+	/*
+	* change visibility according to user/guest
+	*/
 	$(document).ready(function() {
 		if (isLogged != 'true') {
 			$('#rateButtons').css('display', 'none');
