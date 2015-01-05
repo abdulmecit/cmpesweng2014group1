@@ -904,9 +904,9 @@ public class RecipeDao extends PcDao{
 	}
 	
 	public Map<Recipe,Integer> getReportedRecipes(){
-		Map<Recipe, Integer> recipeReportMap= new HashMap<Recipe, Integer>();
-		Recipe[] recipes= getAllRecipes();
-		if(recipes!=null){
+		Map<Recipe, Integer> recipeReportMap = new HashMap<Recipe, Integer>();
+		Recipe[] recipes = getAllRecipes();
+		if(recipes != null){
 			for(int i=0; i<recipes.length;i++){
 				int id=recipes[i].getRecipe_id();
 				int count=numberOfReportsOfRecipe(id);
@@ -915,10 +915,7 @@ public class RecipeDao extends PcDao{
 				}
 			}
 		}
-		if(recipeReportMap.isEmpty())
-			return null;
-		else
-			return recipeReportMap;
+		return recipeReportMap;
 	}
 	
 	

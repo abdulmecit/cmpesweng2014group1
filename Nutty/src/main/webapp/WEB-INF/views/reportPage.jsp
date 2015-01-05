@@ -40,12 +40,12 @@
 
 						<td style="text-align: center"><button type="button"
 								class="btn btn-primary"
-								onclick='cancelReport(${reportRecipe.recipe_id})'>
+								onclick='cancelRecipeReport(${reportRecipe.recipe_id})'>
 								<span class="ui-button-text">Reports</span>
 							</button></td>
 
 						<td style="text-align: center"><button type="button"
-								class="btn btn-primary" onclick='deleteAccount(${ownerId})'>
+								class="btn btn-primary" onclick='deleteAccount(${reportRecipe.user_id})'>
 								<span class="ui-button-text">User</span>
 							</button></td>
 					</tr>
@@ -87,12 +87,12 @@
 
 						<td style="text-align: center"><button type="button"
 								class="btn btn-primary"
-								onclick='cancelReport(${reportComments.comment_id})'>
+								onclick='cancelCommentReport(${reportComments.comment_id})'>
 								<span class="ui-button-text">Reports</span>
 							</button></td>
 
 						<td style="text-align: center"><button type="button"
-								class="btn btn-primary" onclick='cancelReport(${ownerId})'>
+								class="btn btn-primary" onclick='deleteAccount(${reportComments.user_id})'>
 								<span class="ui-button-text">User</span>
 							</button></td>
 
@@ -146,16 +146,36 @@
 	}
 	
 	/*
-	* Delete Reports
+	* Delete Recipe Reports
 	*/
-	function cancelReport(RecipeID){
+	function cancelRecipeReport(recipeID){
 		bootbox.confirm("Are you sure?", function(result) {
 			if (result) {
 				$.ajax({
 					type : "POST",
-					url : "/nutty/deleteReports",
+					url : "/nutty/cancelRecipeReports",
 					data : {
-						recipe_id : RecipeID,
+						recipe_id : recipeID,
+					}
+				}).done(function(e) {
+				})
+			} else {
+			}
+		});
+		location.reload();
+	}
+	
+	/*
+	* Delete Comment Reports
+	*/
+	function cancelCommentReport(commentID){
+		bootbox.confirm("Are you sure?", function(result) {
+			if (result) {
+				$.ajax({
+					type : "POST",
+					url : "/nutty/cancelCommentReports",
+					data : {
+						comment_id : commentID,
 					}
 				}).done(function(e) {
 				})
@@ -166,23 +186,23 @@
 	}
 
 	/*
-	* Delete Account (missing userId)
+	* Deactivate User Account
 	*/
 	function deleteAccount(userID){
-		/* bootbox.confirm("Are you sure?", function(result) {
+/*		 bootbox.confirm("Are you sure?", function(result) {
 			if (result) {
 				$.ajax({
 					type : "POST",
 					url : "/nutty/deleteAccount",
 					data : {
-						user_id : '${user.id}',
+						user_id : userID,
 					}
 				}).done(function(e) {
 				})
 			} else {
 			}
-		})	*/
-		location.reload();
+		})	
+		location.reload();*/
 	}
 
 	</script>

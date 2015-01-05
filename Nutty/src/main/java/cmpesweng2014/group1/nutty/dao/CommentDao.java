@@ -248,9 +248,9 @@ public class CommentDao extends PcDao {
 	}
 	
 	public Map<Comment,Integer> getReportedCommentsMap(){
-		Map<Comment, Integer> commentReportMap= new HashMap<Comment, Integer>();
-		Comment[] comments= getAllReportedComments();
-		if(comments!=null){
+		Map<Comment, Integer> commentReportMap = new HashMap<Comment, Integer>();
+		Comment[] comments = getAllReportedComments();
+		if(comments != null){
 			for(int i=0; i<comments.length;i++){
 				int id=comments[i].getComment_id();
 				int count=numberOfReportsOfComment(id);
@@ -259,10 +259,7 @@ public class CommentDao extends PcDao {
 				}
 			}
 		}
-		if(commentReportMap.isEmpty())
-			return null;
-		else
-			return commentReportMap;
+		return commentReportMap;
 	}
 
 	

@@ -728,11 +728,16 @@ public class UserController {
 	
 	@RequestMapping(value = "deleteAccount")
 	@ResponseBody
-	public int deleteRecipe(
-			@RequestParam(value = "user_id", required = true) Long user_id,HttpSession session
-	){
+	public int deleteAccount(@RequestParam(value = "user_id", required = true) Long user_id,
+			HttpSession session){
+		
 		userService.getUserDao().deactivateAccount(user_id);
-		session.setAttribute("isLogged", false);
+		User u = (User) session.getAttribute("user");
+		if (user_id == u.getId()){
+			session.setAttribute("isLogged", false);
+			session.setAttribute("user", null);
+			session.invalidate();
+		}
 		return 1;
 	}
 	

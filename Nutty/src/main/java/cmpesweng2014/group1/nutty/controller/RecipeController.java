@@ -443,6 +443,13 @@ public class RecipeController {
 		recipeService.getCommentDao().reportComment(comment_id, user_id);
 		return "Recipe";
 	}
+	@RequestMapping(value = "/cancelCommentReports")
+	public String cancelCommentReports(
+			@RequestParam(value = "comment_id", required = true) int comment_id
+			){
+		recipeService.getCommentDao().deleteAllReportsOfComment(comment_id);
+		return "redirect:index";
+	}
 	@RequestMapping(value = "/reportRecipe")
 	public String reportRecipe(
 			@RequestParam(value = "recipe_id", required = true) int recipe_id,
@@ -450,7 +457,14 @@ public class RecipeController {
 			){
 		recipeService.getRecipeDao().reportRecipe(recipe_id, user_id);
 		return "Recipe";
-	}	
+	}
+	@RequestMapping(value = "/cancelRecipeReports")
+	public String cancelRecipeReports(
+			@RequestParam(value = "recipe_id", required = true) int recipe_id
+			){
+		recipeService.getRecipeDao().deleteAllReportsOfRecipe(recipe_id);
+		return "redirect:index";
+	}
 	@RequestMapping(value = "/rateRecipe")
 	public String rateRecipe(
 			@RequestParam(value = "changed", required = true) String changed,
