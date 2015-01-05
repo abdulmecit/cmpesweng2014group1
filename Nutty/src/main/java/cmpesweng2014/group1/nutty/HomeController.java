@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -641,6 +642,49 @@ public class HomeController {
 		if(users == null)
 			return null;			
 		return eventService.getAllRecentEventsOfUserList(users);
+	}
+	
+	//Returns one of the best recipes from each category to show index page
+	@RequestMapping(value = "/bestOfCategories")
+	@ResponseBody
+	public String[][] getBestOfCategories(){
+		Recipe[] allRecipes = recipeService.getRecipeDao().getAllRecipes();
+		Random rand = new Random();
+		int randHealth = rand.nextInt(2);
+		int randEase = rand.nextInt(2);
+		int randCost = rand.nextInt(2);
+		int randTaste = rand.nextInt(2);
+		Recipe[] health = searchService.sortByRate(allRecipes, "health");
+		Recipe[] ease = searchService.sortByRate(allRecipes, "ease");
+		Recipe[] taste = searchService.sortByRate(allRecipes, "taste");
+		Recipe[] cost = searchService.sortByRate(allRecipes, "cost");
+		
+		String[][] response = new String[4][3];
+		
+		String[] urls;
+		response[0][0] = health[randHealth].getRecipe_id() + "";
+		response[0][1] = health[randHealth].getName();
+		urls = recipeService.getRecipeAllPhotoUrl(Integer.parseInt(response[0][0]));
+		response[0][2] = urls[0];
+		
+		response[1][0] = ease[randEase].getRecipe_id() + "";
+		response[1][1] = ease[randEase].getName();
+		urls = recipeService.getRecipeAllPhotoUrl(Integer.parseInt(response[1][0]));
+		response[1][2] = urls[0];
+		
+		response[2][0] = taste[randTaste].getRecipe_id() + "";
+		response[2][1] = taste[randTaste].getName();
+		urls = recipeService.getRecipeAllPhotoUrl(Integer.parseInt(response[2][0]));
+		response[2][2] = urls[0];
+		
+		response[3][0] = cost[randCost].getRecipe_id() + "";
+		response[3][1] = cost[randCost].getName();
+		urls = recipeService.getRecipeAllPhotoUrl(Integer.parseInt(response[3][0]));
+		response[3][2] = urls[0];
+		
+		//an example of expected output
+//		String[][] response = {{"45","Pilav with Kavurma (Turkish style)","http://i.imgur.com/nbQ2iCU.jpg"},{"44","Pilav (Turkish Style)","http://i.imgur.com/bp89y54.jpg"},{"45","Pilav with Kavurma (Turkish style)","http://i.imgur.com/nbQ2iCU.jpg"},{"1","macaroni with mozzarella","http://s3.amazonaws.com/gmi-digital-library/41e7d5f1-05de-415e-a31a-3c48d828d81a.jpg"}};
+		return response;
 	}
 }
 

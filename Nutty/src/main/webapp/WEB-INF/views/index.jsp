@@ -127,6 +127,79 @@ input#img-1:checked ~ .nav-dots label#img-dot-1, input#img-2:checked ~
 }
 </style>
 
+<script type="text/javascript">
+
+//To show best recipes from each category
+$(function() {
+	$('#recipeSlides').hide();
+	$.ajax({
+		type: "POST",
+		url:"bestOfCategories"
+	}).done(function(response){
+		if (response[0][0] != null) {
+			$('#slideForHealthy').empty();
+			var href = "../recipe/"
+					+ response[0][0];
+			var name = response[0][1];
+			var src = response[0][2];
+			$('#slideForHealthy')
+					.append('<h3 align="center">'
+							+'<a href="javascript:search('
+									+"'Healthy'"
+									+')">Healthy</a>'
+							+'</h3>'
+							+'<a href='+href+'><img src='+src+'/></a>');
+		}
+		
+		if (response[1][0] != null) {
+			$('#slideForEasy').empty();
+			var href = "../recipe/"
+					+ response[1][0];
+			var name = response[1][1];
+			var src = response[1][2];
+			$('#slideForEasy')
+					.append('<h3 align="center">'
+							+'<a href="javascript:search('
+									+"'Easy'"
+									+')">Easy</a>'
+							+'</h3>'
+							+'<a href='+href+'><img src='+src+' /></a>');
+		}
+		
+		if (response[2][0] != null) {
+			$('#slideForDelicious').empty();
+			var href = "../recipe/"
+					+ response[2][0];
+			var name = response[2][1];
+			var src = response[2][2];
+			$('#slideForDelicious')
+					.append('<h3 align="center">'
+							+'<a href="javascript:search('
+									+"'Delicious'"
+									+')">Delicious</a>'
+							+'</h3>'
+							+'<a href='+href+'><img src='+src+' /></a>');
+		}
+		if (response[3][0] != null) {
+			$('#slideForEconomic').empty();
+			var href = "../recipe/" + response[3][0];
+			var name = response[3][1];
+			var src = response[3][2];
+			$('#slideForEconomic')
+					.append('<h3 align="center">'
+							+'<a href="javascript:search('
+									+"'Economic'"
+									+')">Economic</a>'
+							+'</h3>'
+							+'<a href='+href+'><img src='+src+' /></a>');
+		}
+		$('#loading').hide();
+		$('#recipeSlides').show();
+	});
+});
+
+</script>
+
 </head>
 <body>
 	<div class="container" id="searchResults"
@@ -136,15 +209,13 @@ input#img-1:checked ~ .nav-dots label#img-dot-1, input#img-2:checked ~
 	<!------------------ Photo Slides -------------------->
 	<div class="container" style="height: 400px">
 		<div class="col-sm-8 col-centered">
+			<div id="loading"><h4>We are finding the best recipes for you, please wait..</h4><img src="http://rpg.drivethrustuff.com/shared_images/ajax-loader.gif" height="400px" width="400px"/></div>
+			<div id="recipeSlides">
 			<ul class="slides">
 				<input type="radio" name="radio-btn" id="img-1" checked />
 				<li class="slide-container">
-					<div class="slide">
-						<h3 align="center">
-							<a href="javascript:search('Delicious')">Delicious</a>
-						</h3>
-						<a href="recipe/1"><img
-							src="http://2.bp.blogspot.com/-fHFQXiIq6IQ/TegYuDrnq-I/AAAAAAAAQAQ/AaB71suJeFk/s1600/Kobe+Beef-0094.jpg" /></a>
+					<div id="slideForDelicious" class="slide">
+						
 					</div>
 					<div class="nav">
 						<label for="img-4" class="prev">&#x2039;</label> <label
@@ -154,12 +225,8 @@ input#img-1:checked ~ .nav-dots label#img-dot-1, input#img-2:checked ~
 
 				<input type="radio" name="radio-btn" id="img-2" />
 				<li class="slide-container">
-					<div class="slide">
-						<h3 align="center">
-							<a href="javascript:search('Healthy')">Healthy</a>
-						</h3>
-						<a href="recipe/1"><img
-							src="http://sandiegobargainmama.com/wp-content/uploads/2011/09/balanced-meal.png" /></a>
+					<div id="slideForHealthy" class="slide">
+						
 					</div>
 					<div class="nav">
 						<label for="img-1" class="prev">&#x2039;</label> <label
@@ -169,12 +236,8 @@ input#img-1:checked ~ .nav-dots label#img-dot-1, input#img-2:checked ~
 
 				<input type="radio" name="radio-btn" id="img-3" />
 				<li class="slide-container">
-					<div class="slide">
-						<h3 align="center">
-							<a href="javascript:search('Easy')">Easy</a>
-						</h3>
-						<a href="recipe/1"><img
-							src="http://www.damakdiyari.com.tr/content/images/thumbs/0000588_sahanda-menemen.jpeg" /></a>
+					<div id="slideForEasy" class="slide">
+						
 					</div>
 					<div class="nav">
 						<label for="img-2" class="prev">&#x2039;</label> <label
@@ -184,12 +247,8 @@ input#img-1:checked ~ .nav-dots label#img-dot-1, input#img-2:checked ~
 
 				<input type="radio" name="radio-btn" id="img-4" />
 				<li class="slide-container">
-					<div class="slide">
-						<h3 align="center">
-							<a href="javascript:search('Economic')">Economic</a>
-						</h3>
-						<a href="recipe/1"><img
-							src="http://s3.amazonaws.com/gmi-digital-library/41e7d5f1-05de-415e-a31a-3c48d828d81a.jpg" /></a>
+					<div id="slideForEconomic" class="slide">
+						
 					</div>
 					<div class="nav">
 						<label for="img-3" class="prev">&#x2039;</label> <label
@@ -202,7 +261,7 @@ input#img-1:checked ~ .nav-dots label#img-dot-1, input#img-2:checked ~
 					id="img-dot-2"></label> <label for="img-3" class="nav-dot"
 					id="img-dot-3"></label> <label for="img-4" class="nav-dot"
 					id="img-dot-4"></label></li>
-			</ul>
+			</ul></div>
 		</div>
 		<div class="col-sm-4 col-centered" style="margin-top: 50px;">
 			<p>
@@ -448,5 +507,6 @@ input#img-1:checked ~ .nav-dots label#img-dot-1, input#img-2:checked ~
 	function search(searchKey) {
 		window.location.href = "advancedSearch/" + searchKey;
 	};
+	
 </script>
 </html>

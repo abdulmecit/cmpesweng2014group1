@@ -73,6 +73,18 @@ public class SearchService {
 			if(rateType.equals("overall")){
 				rate = recipeService.avgOfAllRates(recipes[i].getRecipe_id());
 			}
+			else if(rateType.equals("health")){
+				rate = recipeService.avgOfHealthRates(recipes[i].getRecipe_id());
+			}
+			else if(rateType.equals("ease")){
+				rate = recipeService.avgOfEaseRates(recipes[i].getRecipe_id());
+			}
+			else if(rateType.equals("cost")){
+				rate = recipeService.avgOfCostRates(recipes[i].getRecipe_id());
+			}
+			else if(rateType.equals("taste")){
+				rate = recipeService.avgOfTasteRates(recipes[i].getRecipe_id());
+			}
 			else if(rateType.equals("likes")){
 				rate=recipeService.numberOfLikes(recipes[i].getRecipe_id());
 			}
