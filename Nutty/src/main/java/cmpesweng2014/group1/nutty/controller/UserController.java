@@ -3,7 +3,6 @@ package cmpesweng2014.group1.nutty.controller;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,12 +27,10 @@ import com.google.gson.Gson;
 import cmpesweng2014.group1.nutty.model.Comment;
 import cmpesweng2014.group1.nutty.model.Event;
 import cmpesweng2014.group1.nutty.model.FoodSelection;
-import cmpesweng2014.group1.nutty.model.IngredientAmount;
 import cmpesweng2014.group1.nutty.model.Message;
 import cmpesweng2014.group1.nutty.model.PrivacyOptions;
 import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.model.SuperUser;
-import cmpesweng2014.group1.nutty.model.Tag;
 import cmpesweng2014.group1.nutty.model.User;
 import cmpesweng2014.group1.nutty.service.EventService;
 import cmpesweng2014.group1.nutty.service.RecipeService;
@@ -103,6 +100,10 @@ public class UserController {
 		Object logged = session.getAttribute("isLogged");
 		boolean isLogged = logged == null ? false : (Boolean) logged;
 		if (isLogged) {
+			Object currentUrl = session.getAttribute("currentUrl");
+			String from_page = currentUrl == null ? "/nutty" : (String) currentUrl;
+			model.addAttribute("from_page", from_page);
+			
 			User u = (User) session.getAttribute("user");
 			model.addAttribute("user", u);
 			return "preferences";
@@ -115,13 +116,14 @@ public class UserController {
 	public String addFoodPreferences(
 			@RequestParam(value = "FoodSelection[]",required = false) String[] foodSelection,
 			@RequestParam(value = "OtherPreferences[]", required = false) String[] unpreferred,
+			@RequestParam(value = "from_page", required = true) String from_page,
 			RedirectAttributes redirectAttrs, HttpSession session) {
 		User u = (User) session.getAttribute("user");
 
 		userService.addFoodSelection(u, foodSelection);
 		userService.addUnpreferredFood(u, unpreferred);
 			
-		redirectAttrs.addFlashAttribute("message", new Message(1, null, "Your selections are successfully added to the system."));
+		redirectAttrs.addFlashAttribute("message", new Message(1, from_page, "Your selections are successfully added to the system."));
 		return "redirect:/success";
 	}
 	
@@ -692,6 +694,10 @@ public class UserController {
 		Object logged = session.getAttribute("isLogged");
 		boolean isLogged = logged == null ? false : (Boolean) logged;
 		if (isLogged) {
+			Object currentUrl = session.getAttribute("currentUrl");
+			String from_page = currentUrl == null ? "/nutty" : (String) currentUrl;
+			model.addAttribute("from_page", from_page);
+			
 			User u = (User) session.getAttribute("user");
 			model.addAttribute("user", u);
 			PrivacyOptions privOptions = userService.getUserDao().getPrivacyOptions(u.getId());
@@ -708,6 +714,7 @@ public class UserController {
 			@RequestParam(value = "visible_hc", required = true) int visible_hc,
 			@RequestParam(value = "visible_fi", required = true) int visible_fi,
 			@RequestParam(value = "visible_np", required = true) int visible_np,
+			@RequestParam(value = "from_page", required = true) String from_page,
 			RedirectAttributes redirectAttrs, HttpSession session) {
 		User u = (User) session.getAttribute("user");
 		long user_id = u.getId();
@@ -715,7 +722,7 @@ public class UserController {
 		userService.getUserDao().updatePrivacyOption(user_id, "visible_health_condition", visible_hc);
 		userService.getUserDao().updatePrivacyOption(user_id, "visible_food_intolerance", visible_fi);
 		userService.getUserDao().updatePrivacyOption(user_id, "visible_not_pref", visible_np);		
-		redirectAttrs.addFlashAttribute("message", new Message(1, null, "Your privacy settings are successfully updated."));
+		redirectAttrs.addFlashAttribute("message", new Message(1, from_page, "Your privacy settings are successfully updated."));
 		return "redirect:/success";
 	}
 	

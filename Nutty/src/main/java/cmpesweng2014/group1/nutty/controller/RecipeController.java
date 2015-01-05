@@ -51,10 +51,13 @@ public class RecipeController {
 	}
 
 	@RequestMapping(value = "/addRecipe", method = RequestMethod.GET)
-	public String viewAddRecipe(HttpSession session) {
+	public String viewAddRecipe(Model model, HttpSession session) {
 		Object logged = session.getAttribute("isLogged");
 		boolean isLogged = logged == null ? false : (Boolean) logged;
 		if (isLogged) {
+			Object currentUrl = session.getAttribute("currentUrl");
+			String from_page = currentUrl == null ? "/nutty" : (String) currentUrl;
+			model.addAttribute("from_page", from_page);		
 			return "addRecipe";
 		} 
 		else {
@@ -71,6 +74,7 @@ public class RecipeController {
 							@RequestParam(value = "amount[]", required = true) String[] amounts,
 							@RequestParam(value = "measType[]", required = true) String[] meas_types, 
 							@RequestParam(value = "tag[]", required = false) String[] tagz,
+							@RequestParam(value = "from_page", required = true) String from_page,
 			RedirectAttributes redirectAttrs, HttpSession session) {
 		User u = (User) session.getAttribute("user");
 		
@@ -101,7 +105,7 @@ public class RecipeController {
 		
 		Recipe r = recipeService.createRecipe(recipeName, description, portion, links, ingredients, amounts, parsedAmounts, meas_types, u, tags);
 		if(r != null){
-			redirectAttrs.addFlashAttribute("message", new Message(1, null, "Your recipe is successfully added to the system."));
+			redirectAttrs.addFlashAttribute("message", new Message(1, from_page, "Your recipe is successfully added to the system."));
 			return "redirect:/success";
 		}
 		redirectAttrs.addFlashAttribute("message", new Message(0, null, "Your recipe couldn't added to the system."));
@@ -290,6 +294,10 @@ public class RecipeController {
 		String[] photoUrl = recipeService.getRecipeAllPhotoUrl(recipeId);
 		model.addAttribute("photoUrl", photoUrl);
 		
+		Object currentUrl = session.getAttribute("currentUrl");
+		String from_page = currentUrl == null ? "/nutty" : (String) currentUrl;
+		model.addAttribute("from_page", from_page);		
+		
 		return "derivedRecipe";
 	}
 	
@@ -297,11 +305,12 @@ public class RecipeController {
 	public String addDerivedRecipe(@PathVariable int recipeId, @RequestParam(value = "recipeName", required = true) String recipeName,
 			@RequestParam(value = "description", required = true) String description,
 			@RequestParam(value = "portion", required = true) int portion,
-			@RequestParam(value = "link[]", required = true) String[] link,
+			@RequestParam(value = "link[]", required = false) String[] linkz,
 			@RequestParam(value = "ingredient[]", required = true) String[] ingredients,
 			@RequestParam(value = "amount[]", required = true) String[] amounts,
 			@RequestParam(value = "measType[]", required = true) String[] meas_types,
 			@RequestParam(value = "tag[]", required = true) String[] tagz,
+			@RequestParam(value = "from_page", required = true) String from_page,
 			RedirectAttributes redirectAttrs, HttpSession session) {
 		User u = (User) session.getAttribute("user");
 
@@ -311,6 +320,11 @@ public class RecipeController {
 			HashSet<String> tagSet = new HashSet<String>(Arrays.asList(tagz));
 			tagSet.remove(new String(""));
 			tags = tagSet.toArray(new String[0]);
+		}
+		
+		String[] links = {};
+		if(linkz != null){
+			links = linkz;
 		}
 		
 		double[] parsedAmounts = new double[amounts.length];
@@ -325,9 +339,9 @@ public class RecipeController {
 				parsedAmounts[i] = parsedAmount;
 		}
 
-		Recipe r = recipeService.deriveRecipe(recipeName, description, portion, link, ingredients, amounts, parsedAmounts, meas_types, u, recipeService.getRecipe(recipeId), tags);
+		Recipe r = recipeService.deriveRecipe(recipeName, description, portion, links, ingredients, amounts, parsedAmounts, meas_types, u, recipeService.getRecipe(recipeId), tags);
 		if(r != null){
-			redirectAttrs.addFlashAttribute("message", new Message(1, null, "Your new version is successfully added to the system."));
+			redirectAttrs.addFlashAttribute("message", new Message(1, from_page, "Your new version is successfully added to the system."));
 			return "redirect:/success";
 		}
 		redirectAttrs.addFlashAttribute("message", new Message(0, null, "Your recipe couldn't added to the system."));
@@ -353,6 +367,10 @@ public class RecipeController {
 		String[] photoUrl = recipeService.getRecipeAllPhotoUrl(recipeId);
 		model.addAttribute("photoUrl", photoUrl);
 		
+		Object currentUrl = session.getAttribute("currentUrl");
+		String from_page = currentUrl == null ? "/nutty" : (String) currentUrl;
+		model.addAttribute("from_page", from_page);	
+		
 		return "editRecipe";
 	}
 	
@@ -360,11 +378,12 @@ public class RecipeController {
 	public String editRecipe(@PathVariable int recipeId, @RequestParam(value = "recipeName", required = true) String recipeName,
 			@RequestParam(value = "description", required = true) String description,
 			@RequestParam(value = "portion", required = true) int portion,
-			@RequestParam(value = "link[]", required = true) String[] link,
+			@RequestParam(value = "link[]", required = false) String[] linkz,
 			@RequestParam(value = "ingredient[]", required = true) String[] ingredients,
 			@RequestParam(value = "amount[]", required = true) String[] amounts,
 			@RequestParam(value = "measType[]", required = true) String[] meas_types,
 			@RequestParam(value = "tag[]", required = true) String[] tagz,
+			@RequestParam(value = "from_page", required = true) String from_page,
 			RedirectAttributes redirectAttrs, HttpSession session) {
 
 		String[] tags = {};
@@ -373,6 +392,11 @@ public class RecipeController {
 			HashSet<String> tagSet = new HashSet<String>(Arrays.asList(tagz));
 			tagSet.remove(new String(""));
 			tags = tagSet.toArray(new String[0]);
+		}
+		
+		String[] links = {};
+		if(linkz != null){
+			links = linkz;
 		}
 		
 		double[] parsedAmounts = new double[amounts.length];
@@ -387,9 +411,9 @@ public class RecipeController {
 				parsedAmounts[i] = parsedAmount;
 		}
 
-		Recipe r = recipeService.editRecipe(recipeId, recipeName, description, portion, link, ingredients, amounts, parsedAmounts, meas_types, tags);
+		Recipe r = recipeService.editRecipe(recipeId, recipeName, description, portion, links, ingredients, amounts, parsedAmounts, meas_types, tags);
 		if(r != null){
-			redirectAttrs.addFlashAttribute("message", new Message(1, null, "Your new version is successfully added to the system."));
+			redirectAttrs.addFlashAttribute("message", new Message(1, from_page, "Your new version is successfully added to the system."));
 			return "redirect:/success";
 		}
 		redirectAttrs.addFlashAttribute("message", new Message(0, null, "Your recipe couldn't added to the system."));

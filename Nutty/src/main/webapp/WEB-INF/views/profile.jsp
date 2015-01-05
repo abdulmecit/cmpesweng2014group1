@@ -89,7 +89,7 @@ body {
 			<div id="info-wrap">
 				<div class="info" align="center">
 					<p>&nbsp;</p>
-					<h1 id="name">${visitedUser.name}${visitedUser.surname}</h1>
+					<h1 id="name">${visitedUser.name} ${visitedUser.surname}</h1>
 					<h3>Age:</h3>
 					<p id="age">Not specified</p>
 					<h3>Gender:</h3>

@@ -13,7 +13,7 @@
 			<p>${message.message}</p>
 			<br>
 			<p>Click <a href=".">here</a> to return to the main page.<p>
-			<p>Click <a href="addRecipe">here</a> to add recipe.<p>
+			<p>Click <a href="${message.data}">here</a> to return where you've left off.<p>
 		</div>
 	 </div>
    </div>

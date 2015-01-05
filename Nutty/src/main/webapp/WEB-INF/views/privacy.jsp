@@ -50,6 +50,7 @@
 							<input type="radio" id="notPreferred1" name="visible_np" value="1" 
 							${privOptions.visible_not_pref=='1'?'checked':''}>Visible
 						</div>
+						<input type="hidden" id="from_page" name="from_page" value="${from_page}">	  			
 						<button type="submit" class="btn btn-primary" style="float: right">Apply</button>
 					</div>
 				</form>

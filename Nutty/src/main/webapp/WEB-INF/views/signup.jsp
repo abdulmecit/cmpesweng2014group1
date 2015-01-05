@@ -85,10 +85,8 @@
 			    <div class="col-sm-6">
 			      <input type="radio" name="gender" value="0">Male
                   <input type="radio" name="gender" value="1">Female
-			    </div>
-			  </div>
-			  
-			  
+			    </div>			    
+			  </div>		  
 			  
 			  <div class="form-group">
 			    <label for="inputPhoto" class="col-sm-4 control-label">Photo:</label><br><br>
@@ -110,10 +108,10 @@
 								</div>
 			  </div>
 			  
-			  
+			  <input type="hidden" id="from_page" name="from_page" value="${from_page}">	  
 			  
 			  <div class="form-group">
-			    <div class="col-sm-offset-2 col-sm-10">
+			    <div class="col-sm-offset-2 col-sm-10">			    
 			      <button type="submit" class="btn btn-primary" id="registerButton" disabled>Sign Up</button>
 			    </div>
 			  </div>

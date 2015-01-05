@@ -272,6 +272,7 @@ body {
 								</div>
 							</div>
 						</div>
+							<input type="hidden" id="from_page" name="from_page" value="${from_page}">	  							
 					</div>
 				</div>
 			</div>

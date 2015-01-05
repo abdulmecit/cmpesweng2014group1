@@ -175,10 +175,10 @@ body {
 									<textarea class="form-control" id="description"
 										name="description" rows="13"></textarea>
 								</div>
-
 							</div>
 						</div>
 					</div>
+						<input type="hidden" id="from_page" name="from_page" value="${from_page}">	  	
 					</div>
 				</div>
 			</div>

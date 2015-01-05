@@ -1,6 +1,8 @@
 package cmpesweng2014.group1.nutty;
 
 import java.math.BigInteger;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,6 +114,10 @@ public class HomeController {
 			return "redirect:index";
 		} 
 		else {
+			Object currentUrl = session.getAttribute("currentUrl");
+			String from_page = currentUrl == null ? "/nutty" : (String) currentUrl;
+			model.addAttribute("from_page", from_page);
+
 			User u = new User();
 			model.addAttribute("user", u);
 			return "login";
@@ -121,6 +128,7 @@ public class HomeController {
 	public String login(
 			@RequestParam(value = "inputEmail", required = true) String email,
 			@RequestParam(value = "inputPassword", required = true) String password,
+			@RequestParam(value = "from_page", required = true) String from_page,
 			RedirectAttributes redirectAttrs, HttpSession session) {
 		if (email.equals("") || password.equals("")) {
 			redirectAttrs.addFlashAttribute("message", new Message(0, null, "Email and password fields cannot be empty!")); 
@@ -130,7 +138,7 @@ public class HomeController {
 		if (u != null) {
 			session.setAttribute("user", u);
 			session.setAttribute("isLogged", true);
-			redirectAttrs.addFlashAttribute("message", new Message(1, null, "You have successfully logged in, " + u.getName() + "."));
+			redirectAttrs.addFlashAttribute("message", new Message(1, from_page, "You have successfully logged in, " + u.getName() + "."));
 			return "redirect:success";
 		} 
 		else {
@@ -158,7 +166,7 @@ public class HomeController {
 	
 	@RequestMapping(value = "/forgotPass")
 	public String forgotPassword(@RequestParam(value = "email", required = true) String email,
-			RedirectAttributes redirectAttrs) {
+			RedirectAttributes redirectAttrs, HttpServletRequest request) throws URISyntaxException {
 		SecureRandom random = new SecureRandom();
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		Mail m = new Mail();
@@ -176,13 +184,20 @@ public class HomeController {
 			String content = "You (or someone else) entered this email address when trying to reset the password for their Nutty account.\n\n";
 
 			content += "If you are the one who initiated the reset process, please click on the following link or copy/paste it into your browser to decide on a new password:\n\n";
+			
 			//Create a password reset request
 			String token = new BigInteger(130, random).toString(32);		
-			userService.getUserDao().addPasswordResetRequest(encoder.encode(token), u.getId());		
-			content += "http://localhost:8080/nutty/resetPass?t=" + token + "&a=1&u="+u.getId()+"\n\n";
+			userService.getUserDao().addPasswordResetRequest(encoder.encode(token), u.getId());	
+			
+			//Get domain url
+			String current_url = request.getRequestURL().toString();
+			URI uri = new URI(current_url);
+		    String domain = uri.getAuthority();
+
+			content += "http://" + domain + "/nutty/resetPass?t=" + token + "&a=1&u="+u.getId()+"\n\n";
 			
 			content += "If you are NOT the person who initiated the reset process, please click on the following link or copy/paste it into your browser to cancel this request:\n\n";
-			content += "http://localhost:8080/nutty/resetPass?t=" + token + "&a=0&u="+u.getId()+"\n\n";
+			content += "http://" + domain + "/nutty/resetPass?t=" + token + "&a=0&u="+u.getId()+"\n\n";
 			
 			content += "Kind regards,\nNutty Customer Service";
 
@@ -279,6 +294,10 @@ public class HomeController {
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
 	public String viewSignup(Model model, HttpSession session) {
+		Object currentUrl = session.getAttribute("currentUrl");
+		String from_page = currentUrl == null ? "/nutty" : (String) currentUrl;
+		model.addAttribute("from_page", from_page);
+		
 		User u = new User();
 		model.addAttribute("user", u);
 		return "signup";
@@ -295,6 +314,7 @@ public class HomeController {
 			@RequestParam(value = "birthday_day", required = false) String day,
 			@RequestParam(value = "gender", required = false) Integer gender,
 			@RequestParam(value = "link", required = false) String link,
+			@RequestParam(value = "from_page", required = true) String from_page,
 			RedirectAttributes redirectAttrs, HttpSession session) throws ParseException {
 						
 		if (name.equals("") || surname.equals("") || email.equals("") || password.equals("")) {
@@ -316,7 +336,7 @@ public class HomeController {
 			session.setAttribute("user", u);
 			session.setAttribute("isLogged", true);
 					
-			redirectAttrs.addFlashAttribute("message", new Message(1, null, "You've successfully signed up, " + u.getName() + "."));
+			redirectAttrs.addFlashAttribute("message", new Message(1, from_page, "You've successfully signed up, " + u.getName() + "."));
 			return "redirect:success";
 		} 
 		else {
@@ -600,7 +620,7 @@ public class HomeController {
 		return answer;
 	}
 	
-	@RequestMapping(value = "/singUpOrLogin", method = RequestMethod.POST) //for facebook login
+	@RequestMapping(value = "/signUpOrLogin", method = RequestMethod.POST) //for facebook login
 	@ResponseBody
 	public String signUpOrLogin(
 			@RequestParam(value = "email", required = true) String email,

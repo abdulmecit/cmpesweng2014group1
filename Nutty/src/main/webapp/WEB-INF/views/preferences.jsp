@@ -211,6 +211,8 @@ body {
 						style="width: 600px; float: left; overflow: auto;"></div>
 					<div></div>
 				</div>
+				
+				<input type="hidden" id="from_page" name="from_page" value="${from_page}">	  			
 			</div>
 			<input type="submit" value="Submit" style="float: right" />
 		</div>

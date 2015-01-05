@@ -24,6 +24,7 @@
 			      <input type="password" class="form-control" id="inputPassword" name="inputPassword" style="width:80%" maxlength="30" required>
 			    </div>
 			  </div>
+			  <input type="hidden" id="from_page" name="from_page" value="${from_page}">	  	      		  
 			  <div class="form-group">
 			    <div class="col-sm-offset-2 col-sm-10">
 			      <button type="submit" class="btn btn-primary" id="loginButton">Login</button>
@@ -163,7 +164,7 @@
  		
  		$.ajax({
  			type: "POST",
- 			url: "singUpOrLogin",
+ 			url: "signUpOrLogin",
  			data: {
  				email:email
  			}
@@ -181,7 +182,8 @@
  							  birthday_year: year,
  							  birthday_month: month,
  							  birthday_day: day,
- 							  link:link
+ 							  link:link,
+ 							  from_page: "${from_page}"
  							  }
  						})
  						.done(function(session) {
@@ -193,7 +195,8 @@
  					  	url: "login",
  					  	data: { 
  							inputEmail: email,
- 							inputPassword: pass
+ 							inputPassword: pass,
+							from_page: "${from_page}"
  						}
  					})
  					.done(function(session) {

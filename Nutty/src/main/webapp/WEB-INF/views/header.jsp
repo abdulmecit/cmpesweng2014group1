@@ -85,14 +85,14 @@ body {
 </style>
 </head>
 
-<body>
+<% 	session.setAttribute("currentUrl", request.getAttribute("javax.servlet.forward.request_uri"));	%>
 
+<body>
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 		<div class="container">
 			<div class="navbar-header navbar-left">
 				<a class="navbar-brand" href=/nutty>Nutty</a>
 			</div>
-
 
 			<div style="margin-top: 7px; margin-left: 100px; margin-right: 100px">
 				<form id="search-form" class="navbar-form navbar-left" role="search">
@@ -128,7 +128,7 @@ body {
 			<ul class="nav navbar-nav navbar-right">
 				<%
 					if (session.getAttribute("isLogged") == null
-							|| ((Boolean) (session.getAttribute("isLogged")) == false)) {
+							|| ((Boolean) (session.getAttribute("isLogged")) == false)) {				
 				%>
 				<li><a href="/nutty/login">Login</a></li>
 				<li><a href="/nutty/signup">Sign Up</a></li>
