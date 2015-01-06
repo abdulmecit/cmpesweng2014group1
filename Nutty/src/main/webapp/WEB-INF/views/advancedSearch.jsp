@@ -117,7 +117,7 @@
 					<ul class="nav nav-tabs nav-justified">
 						<li role="presentation" class="filter active" id="overall"><a
 							class="btn btn-link">Overall</a></li>
-						<li role="presentation" class="filter" id="like"><a
+						<li role="presentation" class="filter" id="likes"><a
 							class="btn btn-link">Like</a></li>
 						<li role="presentation" class="filter" id="taste"><a
 							class="btn btn-link">Taste Rate</a></li>
@@ -334,7 +334,7 @@
 									
 								});
 							}
-							else if(searchFilter == "like") {
+							else if(searchFilter == "likes") {
 								$("#tasteContent").css('display', 'none');
 								$("#healthContent").css('display', 'none');
 								$("#costContent").css('display', 'none');
