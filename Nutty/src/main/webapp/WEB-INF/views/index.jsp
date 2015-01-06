@@ -195,6 +195,9 @@ $(function() {
 		}
 		$('#loading').hide();
 		$('#recipeSlides').show();
+	}).fail(function(response){
+		$('#loading').empty();
+		$('#loading').append("<h4> Some error occured on server :( </h4>");
 	});
 });
 

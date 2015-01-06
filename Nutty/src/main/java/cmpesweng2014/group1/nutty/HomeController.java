@@ -647,8 +647,21 @@ public class HomeController {
 	//Returns one of the best recipes from each category to show index page
 	@RequestMapping(value = "/bestOfCategories")
 	@ResponseBody
-	public String[][] getBestOfCategories(){
-		Recipe[] allRecipes = recipeService.getRecipeDao().getAllRecipes();
+	public String[][] getBestOfCategories(HttpSession session){
+		Object logged = session.getAttribute("isLogged");
+		Recipe[] allRecipes = null;
+		boolean isLogged = logged == null ? false : (Boolean) logged;
+		if (isLogged) {
+			User u = (User) session.getAttribute("user");
+			allRecipes = null;
+			try {
+				allRecipes = recommService.getRecommendation(u.getId());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}else{
+			allRecipes = recipeService.getRecipeDao().getAllRecipes();
+		}
 		Random rand = new Random();
 		int randHealth = rand.nextInt(2);
 		int randEase = rand.nextInt(2);
