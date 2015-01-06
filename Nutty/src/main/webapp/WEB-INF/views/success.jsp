@@ -19,3 +19,17 @@
    </div>
 </body>
 </html>
+
+<script type="text/javascript">
+ 
+$(document).ready(function() {
+	$.ajax({
+		type: "POST",
+		url: "removeSessionAttr",
+		data: { 
+			attrName : "message"
+		}
+	});
+});
+  
+</script>

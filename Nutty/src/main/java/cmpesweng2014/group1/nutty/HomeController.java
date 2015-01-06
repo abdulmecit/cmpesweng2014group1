@@ -139,7 +139,7 @@ public class HomeController {
 		if (u != null) {
 			session.setAttribute("user", u);
 			session.setAttribute("isLogged", true);
-			redirectAttrs.addFlashAttribute("message", new Message(1, from_page, "You have successfully logged in, " + u.getName() + "."));
+			session.setAttribute("message", new Message(1, from_page, "You have successfully logged in, " + u.getName() + "."));
 			return "redirect:success";
 		} 
 		else {
@@ -337,7 +337,7 @@ public class HomeController {
 			session.setAttribute("user", u);
 			session.setAttribute("isLogged", true);
 					
-			redirectAttrs.addFlashAttribute("message", new Message(1, from_page, "You've successfully signed up, " + u.getName() + "."));
+			session.setAttribute("message", new Message(1, from_page, "You've successfully signed up, " + u.getName() + "."));
 			return "redirect:success";
 		} 
 		else {
@@ -633,6 +633,15 @@ public class HomeController {
 		return "1";//login
 	}
 	
+	@RequestMapping(value = "/removeSessionAttr", method = RequestMethod.POST) 
+	@ResponseBody
+	public void removeSessionAttr(
+			@RequestParam(value = "attrName", required = true) String attrName,
+			HttpSession session) {
+		
+			session.removeAttribute(attrName);
+	}
+	
 	@RequestMapping(value = "/getRecentEvents")
 	@ResponseBody
 	public List<Event> getRecentEvents(
@@ -644,47 +653,81 @@ public class HomeController {
 		return eventService.getAllRecentEventsOfUserList(users);
 	}
 	
-	//Returns one of the best recipes from each category to show index page
-	@RequestMapping(value = "/bestOfCategories")
+	@RequestMapping(value = "/bestOfHealthCategory")
 	@ResponseBody
-	public String[][] getBestOfCategories(){
-		Recipe[] allRecipes = recipeService.getRecipeDao().getAllRecipes();
+	public String[] getBestOfHealth(){
+		Recipe[] allRecipes = recipeService.getAllRecipes();
 		Random rand = new Random();
 		int randHealth = rand.nextInt(2);
-		int randEase = rand.nextInt(2);
-		int randCost = rand.nextInt(2);
-		int randTaste = rand.nextInt(2);
-		Recipe[] health = searchService.sortByRate(allRecipes, "health");
-		Recipe[] ease = searchService.sortByRate(allRecipes, "ease");
-		Recipe[] taste = searchService.sortByRate(allRecipes, "taste");
-		Recipe[] cost = searchService.sortByRate(allRecipes, "cost");
-		
-		String[][] response = new String[4][3];
+
+		Recipe[] health = searchService.sortByRate(allRecipes, "health");				
+		String[] response = new String[3];
 		
 		String[] urls;
-		response[0][0] = health[randHealth].getRecipe_id() + "";
-		response[0][1] = health[randHealth].getName();
-		urls = recipeService.getRecipeAllPhotoUrl(Integer.parseInt(response[0][0]));
-		response[0][2] = urls[0];
-		
-		response[1][0] = ease[randEase].getRecipe_id() + "";
-		response[1][1] = ease[randEase].getName();
-		urls = recipeService.getRecipeAllPhotoUrl(Integer.parseInt(response[1][0]));
-		response[1][2] = urls[0];
-		
-		response[2][0] = taste[randTaste].getRecipe_id() + "";
-		response[2][1] = taste[randTaste].getName();
-		urls = recipeService.getRecipeAllPhotoUrl(Integer.parseInt(response[2][0]));
-		response[2][2] = urls[0];
-		
-		response[3][0] = cost[randCost].getRecipe_id() + "";
-		response[3][1] = cost[randCost].getName();
-		urls = recipeService.getRecipeAllPhotoUrl(Integer.parseInt(response[3][0]));
-		response[3][2] = urls[0];
-		
-		//an example of expected output
-//		String[][] response = {{"45","Pilav with Kavurma (Turkish style)","http://i.imgur.com/nbQ2iCU.jpg"},{"44","Pilav (Turkish Style)","http://i.imgur.com/bp89y54.jpg"},{"45","Pilav with Kavurma (Turkish style)","http://i.imgur.com/nbQ2iCU.jpg"},{"1","macaroni with mozzarella","http://s3.amazonaws.com/gmi-digital-library/41e7d5f1-05de-415e-a31a-3c48d828d81a.jpg"}};
+		response[0] = health[randHealth].getRecipe_id() + "";
+		response[1] = health[randHealth].getName();
+		urls = recipeService.getRecipeAllPhotoUrl(Integer.parseInt(response[0]));
+		response[2] = urls[0];
+
 		return response;
 	}
+	
+	@RequestMapping(value = "/bestOfEaseCategory")
+	@ResponseBody
+	public String[] getBestOfEase(){
+		Recipe[] allRecipes = recipeService.getAllRecipes();
+		Random rand = new Random();
+		int randEase = rand.nextInt(2);
+
+		Recipe[] ease = searchService.sortByRate(allRecipes, "ease");		
+		String[] response = new String[3];
+		
+		String[] urls;
+		response[0] = ease[randEase].getRecipe_id() + "";
+		response[1] = ease[randEase].getName();
+		urls = recipeService.getRecipeAllPhotoUrl(Integer.parseInt(response[0]));
+		response[2] = urls[0];
+
+		return response;
+	}
+	
+	@RequestMapping(value = "/bestOfTasteCategory")
+	@ResponseBody
+	public String[] getBestOfTaste(){
+		Recipe[] allRecipes = recipeService.getAllRecipes();
+		Random rand = new Random();
+		int randTaste = rand.nextInt(2);
+		
+		Recipe[] taste = searchService.sortByRate(allRecipes, "taste");		
+		String[] response = new String[3];
+		
+		String[] urls;
+		response[0] = taste[randTaste].getRecipe_id() + "";
+		response[1] = taste[randTaste].getName();
+		urls = recipeService.getRecipeAllPhotoUrl(Integer.parseInt(response[0]));
+		response[2] = urls[0];
+
+		return response;
+	}
+	
+	@RequestMapping(value = "/bestOfCostCategory")
+	@ResponseBody
+	public String[] getBestOfCost(){
+		Recipe[] allRecipes = recipeService.getAllRecipes();
+		Random rand = new Random();
+		int randCost = rand.nextInt(2);
+
+		Recipe[] cost = searchService.sortByRate(allRecipes, "cost");
+		String[] response = new String[3];
+		
+		String[] urls;
+		response[0] = cost[randCost].getRecipe_id() + "";
+		response[1] = cost[randCost].getName();
+		urls = recipeService.getRecipeAllPhotoUrl(Integer.parseInt(response[0]));
+		response[2] = urls[0];
+
+		return response;
+	}
+	
 }
 

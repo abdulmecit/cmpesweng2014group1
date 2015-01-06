@@ -134,14 +134,14 @@ $(function() {
 	$('#recipeSlides').hide();
 	$.ajax({
 		type: "POST",
-		url:"bestOfCategories"
+		url:"bestOfHealthCategory"
 	}).done(function(response){
-		if (response[0][0] != null) {
+		if (response[0] != null) {
 			$('#slideForHealthy').empty();
-			var href = "../recipe/"
-					+ response[0][0];
-			var name = response[0][1];
-			var src = response[0][2];
+			var href = "/nutty/recipe/"
+					+ response[0];
+			var name = response[1];
+			var src = response[2];
 			$('#slideForHealthy')
 					.append('<h3 align="center">'
 							+'<a href="javascript:search('
@@ -149,52 +149,70 @@ $(function() {
 									+')">Healthy</a>'
 							+'</h3>'
 							+'<a href='+href+'><img src='+src+'/></a>');
+			
+		$('#loading').hide();
+		$('#recipeSlides').show();
 		}
-		
-		if (response[1][0] != null) {
+	});
+	
+	$.ajax({
+		type: "POST",
+		url:"bestOfEaseCategory"
+	}).done(function(response){
+		if (response[0] != null) {
 			$('#slideForEasy').empty();
-			var href = "../recipe/"
-					+ response[1][0];
-			var name = response[1][1];
-			var src = response[1][2];
+			var href = "/nutty/recipe/"
+					+ response[0];
+			var name = response[1];
+			var src = response[2];
 			$('#slideForEasy')
 					.append('<h3 align="center">'
 							+'<a href="javascript:search('
 									+"'Easy'"
 									+')">Easy</a>'
 							+'</h3>'
-							+'<a href='+href+'><img src='+src+' /></a>');
+							+'<a href='+href+'><img src='+src+'/></a>');
 		}
+	});
 		
-		if (response[2][0] != null) {
+	$.ajax({
+		type: "POST",
+		url:"bestOfTasteCategory"
+	}).done(function(response){
+		if (response[0] != null) {
 			$('#slideForDelicious').empty();
-			var href = "../recipe/"
-					+ response[2][0];
-			var name = response[2][1];
-			var src = response[2][2];
+			var href = "/nutty/recipe/"
+					+ response[0];
+			var name = response[1];
+			var src = response[2];
 			$('#slideForDelicious')
 					.append('<h3 align="center">'
 							+'<a href="javascript:search('
 									+"'Delicious'"
 									+')">Delicious</a>'
 							+'</h3>'
-							+'<a href='+href+'><img src='+src+' /></a>');
+							+'<a href='+href+'><img src='+src+'/></a>');
 		}
-		if (response[3][0] != null) {
+	});
+
+	$.ajax({
+		type: "POST",
+		url:"bestOfCostCategory"
+	}).done(function(response){
+		if (response[0] != null) {
 			$('#slideForEconomic').empty();
-			var href = "../recipe/" + response[3][0];
-			var name = response[3][1];
-			var src = response[3][2];
+			var href = "/nutty/recipe/"
+					+ response[0];
+			var name = response[1];
+			var src = response[2];
 			$('#slideForEconomic')
 					.append('<h3 align="center">'
 							+'<a href="javascript:search('
 									+"'Economic'"
 									+')">Economic</a>'
 							+'</h3>'
-							+'<a href='+href+'><img src='+src+' /></a>');
+							+'<a href='+href+'><img src='+src+'/></a>');
 		}
-		$('#loading').hide();
-		$('#recipeSlides').show();
 	});
 });
 
