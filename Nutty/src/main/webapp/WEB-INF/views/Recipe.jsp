@@ -418,7 +418,8 @@ body {
 								style="float: right; margin-right: 15 px; margin-left: 15px;">
 								<span id="textReport" class="ui-button-text">Report</span>
 							</button>
-							<div style="float: right;margin-right: 15 px; margin-left: 15px;" class="fb-share-button" data-href="http://titan.cmpe.boun.edu.tr:8080/nutty/recipe/${recipe.recipe_id}" data-layout="button"></div>
+							<br><br>
+							<div style="float: right;margin-right: 15 px; margin-left: 15px;" id="fbShare" class="fb-share-button" data-href="http://titan.cmpe.boun.edu.tr:8080/nutty/recipe/${recipe.recipe_id}" data-layout="button"></div>
 
 							<!----------------------- Recipe Description ----------------------------->
 							<div id=recipeDetail>
@@ -482,7 +483,7 @@ body {
 									name="comment" rows="3" style="resize: none"></textarea>
 								<br>
 								<button type="submit" class="btn btn-primary" id="comment"
-									style="float: right">Comment</button>
+									style="right">Comment</button>
 
 							</form>
 						</div>
@@ -504,7 +505,7 @@ body {
 	var eaten = '${eatenOfUser}';
 	var liked = '${likeOfUser}';
 	var shared = '${shareOfUser}';
-	var report = '${reportOfUser}'
+	var report = '${reportOfUser}';
 	var isLogged = '${isLogged}';
 	var commentNumber = 0;
 	var user = '${user.id}';
@@ -635,7 +636,7 @@ body {
 								recipe_id : '${recipe.recipe_id}',
 							}
 						}).done(function(response){
-							window.location.href = "../../index";
+							window.location.href = "../index";
 						});
 
 					} else {
@@ -707,7 +708,7 @@ body {
 						user_id : '${user.id}'
 					}
 				});
-				$('#reportComment' + index).attr("disabled", true);
+				
 			} else {
 
 			}
@@ -728,11 +729,12 @@ body {
 						user_id : '${user.id}'
 					}
 				});
+				$("#reportRecipe").attr("disabled", true);
 			} else {
 
 			}
 		});
-		$("#reportRecipe").attr("disabled", true);
+		
 	});
 
 	
@@ -792,13 +794,14 @@ body {
 											+ i
 											+ "' <li class='list-group-item'><b>"
 											+ comments[i].comment_text
-											+ "</b><p>by <a href='../user/profile/1'>"
+											+ "</b><p>by <a href='../user/profile/"+comments[i].commenter_id+"'>"
 											+ comments[i].commenter_name
 											+ "</a></p>"
 											+ "<input type='hidden' id='commentId" + i + "' value='" + comments[i].comment_id + "' style='visibility: collapse; width: 0px;'/>";
 
 									if (comments[i].commenter_id != '${user.id}') {
-										content += "<button type='button' class='btn btn-primary btn-xs'"
+										if(comments[i].commentedByMe==0){
+											content += "<button type='button' class='btn btn-primary btn-xs'"
 												+ "onclick='reportComment("
 												+ comments[i].comment_id
 												+ ","
@@ -806,8 +809,19 @@ body {
 												+ ")' "
 												+ " value='report' id='reportComment"
 												+ i
-												+ "'style='float: left; margin-right:5px'><span class='ui-button-text'>Report </span></button>"
-
+												+ "'style='float: left; margin-right:5px' disabled='disabled'><span class='ui-button-text'>Report </span></button>"
+										}
+										else {
+											content += "<button type='button' class='btn btn-primary btn-xs'"
+												+ "onclick='reportComment("
+												+ comments[i].comment_id
+												+ ","
+												+ i
+												+ ")' "
+												+ " value='report' id='reportComment"
+												+ i
+												+ "'style='float: left; margin-right:5px'><span class='ui-button-text'>Report </span></button>"	
+										}
 										content += "<button type='button' class='btn btn-primary btn-xs'"
 												+ "onclick='commentLike("
 												+ i
@@ -885,7 +899,9 @@ body {
 					comment_id : $("#commentId" + index).val(),
 					value : commentsILike[index]
 				}
-			}).done($("#showLikers" + index).text(num + " likes"))
+			}).done(function(response){
+				$("#showLikers" + index).text(num + " likes");
+			});
 		}
 	};
 
@@ -911,7 +927,9 @@ body {
 					recipe_id : '${recipe.recipe_id}',
 					text : newComment
 				}
-			}).done(getComment());
+			}).done(function(response){
+				getComment();
+			});
 		});
 	}
 
@@ -951,11 +969,13 @@ body {
 						user_id : '${user.id}'
 					}
 				});
-				$('#commentDiv' + index).remove();
+				$("#reportComment"+index).attr("disabled", true);
 			} else {
 
 			}
 		});
+		
+		
 	}
 
 	/*
@@ -1010,9 +1030,14 @@ body {
 			$("#derivedRecipeButton").css('display', 'none');
 			$("#addComment").css('display', 'none');
 			$("#reportRecipe").css('display', 'none');
+			$("#fbShare").css('display', 'none');
 			$("#EatEdit").css('display', 'none');
 			$("#LikeDelete").css('display', 'none');
 			$("#version").css('display', 'none');
+		}else{
+			if (user == owner) {
+				$("#reportRecipe").css('display', 'none');
+			}
 		}
 	});					
 
