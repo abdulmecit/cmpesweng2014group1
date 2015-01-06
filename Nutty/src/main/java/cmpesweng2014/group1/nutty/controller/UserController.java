@@ -714,6 +714,7 @@ public class UserController {
 			@RequestParam(value = "visible_hc", required = true) int visible_hc,
 			@RequestParam(value = "visible_fi", required = true) int visible_fi,
 			@RequestParam(value = "visible_np", required = true) int visible_np,
+			@RequestParam(value = "visible_ac", required = true) int visible_ac,
 			@RequestParam(value = "from_page", required = true) String from_page,
 			RedirectAttributes redirectAttrs, HttpSession session) {
 		User u = (User) session.getAttribute("user");
@@ -721,7 +722,8 @@ public class UserController {
 		userService.getUserDao().updatePrivacyOption(user_id, "followable", followable);
 		userService.getUserDao().updatePrivacyOption(user_id, "visible_health_condition", visible_hc);
 		userService.getUserDao().updatePrivacyOption(user_id, "visible_food_intolerance", visible_fi);
-		userService.getUserDao().updatePrivacyOption(user_id, "visible_not_pref", visible_np);		
+		userService.getUserDao().updatePrivacyOption(user_id, "visible_not_pref", visible_np);
+		userService.getUserDao().updatePrivacyOption(user_id, "visible_activities", visible_ac);
 		redirectAttrs.addFlashAttribute("message", new Message(1, from_page, "Your privacy settings are successfully updated."));
 		return "redirect:/success";
 	}

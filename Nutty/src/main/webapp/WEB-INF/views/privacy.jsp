@@ -50,6 +50,15 @@
 							<input type="radio" id="notPreferred1" name="visible_np" value="1" 
 							${privOptions.visible_not_pref=='1'?'checked':''}>Visible
 						</div>
+						<br>
+						<h4>Activities</h4>
+						<div class="form-group" align="center">
+							<input type="radio" id="activities0" name="visible_ac" value="0" 
+							${privOptions.visible_activities=='0'?'checked':''}>Hidden
+							&nbsp;
+							<input type="radio" id="activities1" name="visible_ac" value="1" 
+							${privOptions.visible_activities=='1'?'checked':''}>Visible
+						</div>
 						<input type="hidden" id="from_page" name="from_page" value="${from_page}">	  			
 						<button type="submit" class="btn btn-primary" style="float: right">Apply</button>
 					</div>

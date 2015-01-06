@@ -19,6 +19,7 @@ public class PrivacyOptionsResultSetExtractor implements ResultSetExtractor<Priv
 		po.setVisible_health_condition(rs.getInt(3));
 		po.setVisible_food_intolerance(rs.getInt(4));
 		po.setVisible_not_pref(rs.getInt(5));
+		po.setVisible_activities(rs.getInt(6));
 		return po;
 	}
 }

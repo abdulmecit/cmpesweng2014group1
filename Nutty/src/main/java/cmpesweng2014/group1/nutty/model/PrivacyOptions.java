@@ -6,6 +6,7 @@ public class PrivacyOptions {
 	private int visible_health_condition;
 	private int visible_food_intolerance;
 	private int visible_not_pref;
+	private int visible_activities;
 	
 	public PrivacyOptions() {
 		super();
@@ -13,13 +14,14 @@ public class PrivacyOptions {
 	
 	public PrivacyOptions(long user_id, int followable,
 			int visible_health_condition, int visible_food_intolerance,
-			int visible_not_pref) {
+			int visible_not_pref, int visible_activities) {
 		super();
 		this.user_id = user_id;
 		this.followable = followable;
 		this.visible_health_condition = visible_health_condition;
 		this.visible_food_intolerance = visible_food_intolerance;
 		this.visible_not_pref = visible_not_pref;
+		this.visible_activities = visible_activities;
 	}
 
 	public long getUser_id() {
@@ -60,5 +62,13 @@ public class PrivacyOptions {
 
 	public void setVisible_not_pref(int visible_not_pref) {
 		this.visible_not_pref = visible_not_pref;
+	}
+	
+	public int getVisible_activities() {
+		return visible_not_pref;
+	}
+
+	public void setVisible_activities(int visible_activities) {
+		this.visible_activities = visible_activities;
 	}
 }
