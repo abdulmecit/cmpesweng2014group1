@@ -28,7 +28,7 @@ body {
 #sidebar {
 	float: left;
 	width: 40%;
-	height: 100%;
+	height: auto;
 	background: #eeeeee;
 }
 

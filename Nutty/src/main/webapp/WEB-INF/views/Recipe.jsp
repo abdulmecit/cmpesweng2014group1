@@ -176,9 +176,17 @@ body {
 }
 </style>
 
-
 </head>
 <body>
+<!--------------------------- for facebook share ------------------------------->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/tr_TR/sdk.js#xfbml=1&appId=595039627289255&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 
 	<!------------------------ star --------------------------->
 	<div class="container">
@@ -410,6 +418,7 @@ body {
 								style="float: right; margin-right: 15 px; margin-left: 15px;">
 								<span id="textReport" class="ui-button-text">Report</span>
 							</button>
+							<div style="float: right;margin-right: 15 px; margin-left: 15px;" class="fb-share-button" data-href="http://titan.cmpe.boun.edu.tr:8080/nutty/recipe/${recipe.recipe_id}" data-layout="button"></div>
 
 							<!----------------------- Recipe Description ----------------------------->
 							<div id=recipeDetail>
@@ -1003,7 +1012,7 @@ body {
 			$("#LikeDelete").css('display', 'none');
 			$("#version").css('display', 'none');
 		}
-	});
+	});					
 
 	function search(searchKey) {
 		window.location.href = "../advancedSearch/" + searchKey;
