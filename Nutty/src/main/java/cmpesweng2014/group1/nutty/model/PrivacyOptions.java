@@ -65,7 +65,7 @@ public class PrivacyOptions {
 	}
 	
 	public int getVisible_activities() {
-		return visible_not_pref;
+		return visible_activities;
 	}
 
 	public void setVisible_activities(int visible_activities) {

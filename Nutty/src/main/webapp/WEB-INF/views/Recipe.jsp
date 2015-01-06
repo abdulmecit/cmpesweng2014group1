@@ -634,6 +634,8 @@ body {
 							data : {
 								recipe_id : '${recipe.recipe_id}',
 							}
+						}).done(function(response){
+							window.location.href = "../../index";
 						});
 
 					} else {
