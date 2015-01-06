@@ -121,15 +121,43 @@
 							class="btn btn-link">Like</a></li>
 						<li role="presentation" class="filter" id="taste"><a
 							class="btn btn-link">Taste Rate</a></li>
-						<li role="presentation" class="filter" id="healht"><a
+						<li role="presentation" class="filter" id="health"><a
 							class="btn btn-link">Health Rate </a></li>
 						<li role="presentation" class="filter" id="cost"><a
 							class="btn btn-link">Cost Rate</a></li>
 						<li role="presentation" class="filter" id="ease"><a
 							class="btn btn-link">Ease Rate</a></li>
 					</ul>
-					<ul id="results" class="list-group" style="overflow:scroll;">
-				    </ul>
+					<ul id="overallContent" class="list-group"
+						style="overflow: scroll; display: block;">
+						<li><br>
+							<p>Loading, please wait..</p> <br></li>
+					</ul>
+					<ul id="likeContent" class="list-group"
+						style="overflow: scroll; display:none;">
+						<li><br>
+							<p>Loading, please wait..</p> <br></li>
+					</ul>
+					<ul id="tasteContent" class="list-group"
+						style="overflow: scroll; display:none;">
+						<li><br>
+							<p>Loading, please wait..</p> <br></li>
+					</ul>
+					<ul id="healthContent" class="list-group"
+						style="overflow: scroll; display:none;">
+						<li><br>
+							<p>Loading, please wait..</p> <br></li>
+					</ul>
+					<ul id="costContent" class="list-group"
+						style="overflow: scroll; display:none;">
+						<li><br>
+							<p>Loading, please wait..</p> <br></li>
+					</ul>
+					<ul id="easeContent" class="list-group"
+						style="overflow: scroll; display:none;">
+						<li><br>
+							<p>Loading, please wait..</p> <br></li>
+					</ul>
 				</div>
 			</div>
 		</div>
@@ -195,6 +223,7 @@
 			$("#results").append(searchFilter);
 		});
 
+		var advSearchResult;
 		$('#AdvSearch').submit(
 			function(event) {
 				event.preventDefault();
@@ -218,21 +247,238 @@
 						disableSemantic : $("#JustMyTags").prop('checked') ? 'true' : 'false',
 						user_id : '${user.id}'
 					}}).done(function(answer) {
-						if ((answer == "") || (answer == "[]")) {
-							$("#results").append("<p>Nothing to show :(</p>");
+						if ((answer == "") || (answer == "[]") || (answer == null)) {
+							$("#tasteContent").append("<p>Nothing to show :(</p>");
+							$("#healthContent").append("<p>Nothing to show :(</p>");
+							$("#costContent").append("<p>Nothing to show :(</p>");
+							$("#easeContent").append("<p>Nothing to show :(</p>");
+							$("#overallContent").append("<p>Nothing to show :(</p>");
+							$("#likeContent").append("<p>Nothing to show :(</p>");
 							document.body.className = "loaded";
 						} else {
-							var resultsRec = JSON.parse(answer);
-							for (i = 0; i < resultsRec.length; i++) {
-								$("#results").append( "<li class='list-group-item'><a href= '/nutty/recipe/"  + resultsRec[i].id +"'>" + resultsRec[i].name + "</p></li>");
+							advSearchResult = answer;
+							
+							$("#likeContent").css('display', 'none');
+							$("#tasteContent").css('display', 'none');
+							$("#healthContent").css('display', 'none');
+							$("#costContent").css('display', 'none');
+							$("#easeContent").css('display', 'none');
+							$("#overallContent").css('display', 'block');
+							
+							$.ajax({
+								type:"POST",
+								url:"sortBy",
+								data:{
+									results:advSearchResult,
+									type:"overall"
+								}
+							}).done(function(answer){
+								var results = JSON.parse(answer);
+								$("#overallContent").empty();
+								for (i = 0; i < results.length; i++) {
+									$("#overallContent").append( "<li class='list-group-item'><a href= '/nutty/recipe/"  + results[i].recipe_id +"'>" + results[i].name + "</p></li>");
+									document.body.className = "loaded";
+								}			
+							}).fail(function(){
+								alert("Ajax call was unsuccessfull :(");	
 								document.body.className = "loaded";
-							}			
+								
+							});
+// 							var resultsRec = JSON.parse(answer);
+// 							for (i = 0; i < resultsRec.length; i++) {
+// 								$("#results").append( "<li class='list-group-item'><a href= '/nutty/recipe/"  + resultsRec[i].id +"'>" + resultsRec[i].name + "</p></li>");
+// 								document.body.className = "loaded";
+// 							}			
 						}
 					}).fail(function (){
 						alert("Ajax call was unsuccessfull :(");	
 						document.body.className = "loaded";
 					});
 			});
+							
+			/*
+			* switch filter between sort types
+			*/
+			$(".filter")
+					.click(
+							function() {
+								$(this).addClass("active").siblings().removeClass(
+										"active");
+								searchFilter = this.id;
+							
+							if (searchFilter == "overall") {
+								$("#likeContent").css('display', 'none');
+								$("#tasteContent").css('display', 'none');
+								$("#healthContent").css('display', 'none');
+								$("#costContent").css('display', 'none');
+								$("#easeContent").css('display', 'none');
+								$("#overallContent").css('display', 'block');
+								
+								$.ajax({
+									type:"POST",
+									url:"sortBy",
+									data:{
+										results:advSearchResult,
+										type:searchFilter
+									}
+								}).done(function(answer){
+									var results = JSON.parse(answer);
+									$("#overallContent").empty();
+									for (i = 0; i < results.length; i++) {
+										$("#overallContent").append( "<li class='list-group-item'><a href= '/nutty/recipe/"  + results[i].recipe_id +"'>" + results[i].name + "</p></li>");
+										document.body.className = "loaded";
+									}			
+								}).fail(function(){
+									alert("Ajax call was unsuccessfull :(");	
+									document.body.className = "loaded";
+									
+								});
+							}
+							else if(searchFilter == "like") {
+								$("#tasteContent").css('display', 'none');
+								$("#healthContent").css('display', 'none');
+								$("#costContent").css('display', 'none');
+								$("#easeContent").css('display', 'none');
+								$("#overallContent").css('display', 'none');
+								$("#likeContent").css('display', 'block');
+								
+								$.ajax({
+									type:"POST",
+									url:"sortBy",
+									data:{
+										results:advSearchResult,
+										type:searchFilter
+									}
+								}).done(function(answer){
+									var results = JSON.parse(answer);
+									$("#likeContent").empty();
+									for (i = 0; i < results.length; i++) {
+										$("#likeContent").append( "<li class='list-group-item'><a href= '/nutty/recipe/"  + results[i].recipe_id +"'>" + results[i].name + "</p></li>");
+										document.body.className = "loaded";
+									}			
+								}).fail(function(){
+									alert("Ajax call was unsuccessfull :(");	
+									document.body.className = "loaded";
+									
+								});
+							}
+							else if(searchFilter == "taste") {
+								$("#healthContent").css('display', 'none');
+								$("#costContent").css('display', 'none');
+								$("#easeContent").css('display', 'none');
+								$("#overallContent").css('display', 'none');
+								$("#likeContent").css('display', 'none');
+								$("#tasteContent").css('display', 'block');
+								
+								$.ajax({
+									type:"POST",
+									url:"sortBy",
+									data:{
+										results:advSearchResult,
+										type:searchFilter
+									}
+								}).done(function(answer){
+									var results = JSON.parse(answer);
+									$("#tasteContent").empty();
+									for (i = 0; i < results.length; i++) {
+										$("#tasteContent").append( "<li class='list-group-item'><a href= '/nutty/recipe/"  + results[i].recipe_id +"'>" + results[i].name + "</p></li>");
+										document.body.className = "loaded";
+									}			
+								}).fail(function(){
+									alert("Ajax call was unsuccessfull :(");	
+									document.body.className = "loaded";
+									
+								});
+								
+							}
+							else if(searchFilter == "health") {
+								$("#costContent").css('display', 'none');
+								$("#easeContent").css('display', 'none');
+								$("#overallContent").css('display', 'none');
+								$("#likeContent").css('display', 'none');
+								$("#tasteContent").css('display', 'none');
+								$("#healthContent").css('display', 'block');
+								
+								$.ajax({
+									type:"POST",
+									url:"sortBy",
+									data:{
+										results:advSearchResult,
+										type:searchFilter
+									}
+								}).done(function(answer){
+									var results = JSON.parse(answer);
+									$("#healthContent").empty();
+									for (i = 0; i < results.length; i++) {
+										$("#healthContent").append( "<li class='list-group-item'><a href= '/nutty/recipe/"  + results[i].recipe_id +"'>" + results[i].name + "</p></li>");
+										document.body.className = "loaded";
+									}			
+								}).fail(function(){
+									alert("Ajax call was unsuccessfull :(");	
+									document.body.className = "loaded";
+									
+								});
+								
+							}
+							else if(searchFilter == "cost") {
+								$("#easeContent").css('display', 'none');
+								$("#overallContent").css('display', 'none');
+								$("#likeContent").css('display', 'none');
+								$("#tasteContent").css('display', 'none');
+								$("#healthContent").css('display', 'none');
+								$("#costContent").css('display', 'block');
+								
+								$.ajax({
+									type:"POST",
+									url:"sortBy",
+									data:{
+										results:advSearchResult,
+										type:searchFilter
+									}
+								}).done(function(answer){
+									var results = JSON.parse(answer);
+									$("#costContent").empty();
+									for (i = 0; i < results.length; i++) {
+										$("#costContent").append( "<li class='list-group-item'><a href= '/nutty/recipe/"  + results[i].recipe_id +"'>" + results[i].name + "</p></li>");
+										document.body.className = "loaded";
+									}			
+								}).fail(function(){
+									alert("Ajax call was unsuccessfull :(");	
+									document.body.className = "loaded";
+									
+								});
+	
+							}
+							else if(searchFilter == "ease") {
+								$("#overallContent").css('display', 'none');
+								$("#likeContent").css('display', 'none');
+								$("#tasteContent").css('display', 'none');
+								$("#healthContent").css('display', 'none');
+								$("#costContent").css('display', 'none');
+								$("#easeContent").css('display', 'block');
+								
+								$.ajax({
+									type:"POST",
+									url:"sortBy",
+									data:{
+										results:advSearchResult,
+										type:searchFilter
+									}
+								}).done(function(answer){
+									var results = JSON.parse(answer);
+									$("#easeContent").empty();
+									for (i = 0; i < results.length; i++) {
+										$("#easeContent").append( "<li class='list-group-item'><a href= '/nutty/recipe/"  + results[i].recipe_id +"'>" + results[i].name + "</p></li>");
+										document.body.className = "loaded";
+									}			
+								}).fail(function(){
+									alert("Ajax call was unsuccessfull :(");	
+									document.body.className = "loaded";
+									
+								});
+
+							}	
+						});
 	</script>
 </body>
 </html>

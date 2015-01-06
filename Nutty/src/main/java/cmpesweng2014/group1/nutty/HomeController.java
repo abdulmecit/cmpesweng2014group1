@@ -553,7 +553,6 @@ public class HomeController {
 		String[] mustHaveIngredients = gson.fromJson(mustHaveIngredientz, String[].class);
 		
 		Recipe[] recipes;
-		String answer = "";
 		if(search == null || search.isEmpty()){
 			 recipes = recipeService.getRecipeDao().getAllRecipes();
 		}
@@ -607,18 +606,7 @@ public class HomeController {
 				recipes = recipez.toArray(new Recipe[recipez.size()]);
 			}
 		}
-		if(recipes != null){
-			answer += "[";
-			for(int i=0; i<recipes.length; i++){
-				String[] photoUrls = recipeService.getRecipeAllPhotoUrl(recipes[i].getRecipe_id());
-				answer += "{\"name\":\"" + recipes[i].getName() +"\", \"id\":\"" + recipes[i].getRecipe_id() + "\", \"photoUrl\":\"" + photoUrls[0] + "\"}";
-				if(i != (recipes.length-1)) {
-					answer += ",";
-				}
-			}
-			answer += "]";
-		}
-		return answer;
+		return gson.toJson(recipes);
 	}
 	
 	@RequestMapping(value = "/signUpOrLogin", method = RequestMethod.POST) //for facebook login
@@ -728,34 +716,37 @@ public class HomeController {
 
 		return response;
 	}
-	@RequestMapping(value = "/sortBy")
+
 	@ResponseBody
+	@RequestMapping(value = "/sortBy")
 	public String sortBy(
 			@RequestParam(value = "results", required = true) String results,
 			@RequestParam(value = "type", required = true) String type){
 		
-		//need to convert string to recipe objects in order to sort them
-		Recipe[] recipes;
+		//Convert from JSON String
+		Gson gson = new Gson();
+		Recipe[] recipes = gson.fromJson(results, Recipe[].class);
 		
 		Recipe[] sortedRecipes=searchService.sortByRate(recipes, type);
 		
-		String answer="";
-		if(sortedRecipes != null){
-			answer += "[";
-			for(int i=0; i<sortedRecipes.length; i++){
-				String[] photoUrls = recipeService.getRecipeAllPhotoUrl(sortedRecipes[i].getRecipe_id());
-				answer += "{\"name\":\"" + sortedRecipes[i].getName() +"\", \"id\":\"" + sortedRecipes[i].getRecipe_id() + "\", \"photoUrl\":\"" + photoUrls[0] + "\"}";
-				if(i != (sortedRecipes.length-1)) {
-					answer += ",";
-				}
-			}
-			answer += "]";
-		}
-		
-		
-		return answer;
+		return gson.toJson(sortedRecipes);
 	}
 	
+//	private String jsonEncode(Recipe[] sortedRecipes){
+//		String answer="";
+//		if(sortedRecipes != null){
+//			answer += "[";
+//			for(int i=0; i<sortedRecipes.length; i++){
+//				String[] photoUrls = recipeService.getRecipeAllPhotoUrl(sortedRecipes[i].getRecipe_id());
+//				answer += "{\"name\":\"" + sortedRecipes[i].getName() +"\", \"id\":\"" + sortedRecipes[i].getRecipe_id() + "\", \"photoUrl\":\"" + photoUrls[0] + "\"}";
+//				if(i != (sortedRecipes.length-1)) {
+//					answer += ",";
+//				}
+//			}
+//			answer += "]";
+//		}
+//		return answer;
+//	}
 	
 }
 
