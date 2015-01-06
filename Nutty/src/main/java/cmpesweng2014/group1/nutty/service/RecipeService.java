@@ -359,4 +359,12 @@ public class RecipeService {
 		
 		return recipeDao.getRecipeById(recipe_id);
 	}
+	
+	public static Recipe[] all_recipes = null;
+	
+	public Recipe[] getAllRecipes(){
+		if(all_recipes == null)
+			all_recipes = recipeDao.getAllRecipes();
+		return all_recipes;
+	}
 }

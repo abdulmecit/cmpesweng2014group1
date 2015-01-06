@@ -43,7 +43,9 @@
 			    	<p><a href="javascript:forgot()">Forgot Password?</a></p>
 			  	</div>
 			 </div>
-	  	</form>      
+	  	</form>
+	  	
+	  	<div id="fb-root"></div> 
 	  	
 	  	<form:form class="form-horizontal" action="forgotPass" 
 				method="POST">
@@ -157,10 +159,18 @@
  		var email = response.email;
  		var pass = "facebook" + response.id;
  		var link = "https://graph.facebook.com/" + response.id + "/picture?width=300&height=300";
- 		var date = new Date(response.birthday);
- 		var day = date.getDate();
- 		var month = date.getMonth() +1;
- 		var year = date.getFullYear();
+ 		var day = 0, month = 0, year = 0;
+ 		if(response.birthday != null){
+ 	 		var date = new Date(response.birthday);
+ 	 		day = date.getDate();
+ 	 		month = date.getMonth() +1;
+ 	 		year = date.getFullYear();		
+ 		}
+ 		
+ 		if(email == null){
+ 			alert("Your facebook account doesn't have an email address, login failed.")
+ 			return;
+ 		}
  		
  		$.ajax({
  			type: "POST",
