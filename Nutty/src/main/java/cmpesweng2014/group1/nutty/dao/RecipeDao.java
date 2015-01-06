@@ -870,7 +870,7 @@ public class RecipeDao extends PcDao{
 	public void editRecipeTable(final int recipe_id,final String name, final String description,
 			final int portion, final double total_calorie){
 		final String query = "UPDATE Recipe SET name=?, description=?, portion=?, total_calorie=? "
-				+ "WHERE recipe_id?";
+				+ "WHERE recipe_id= ?";
 
 		KeyHolder gkh = new GeneratedKeyHolder();
 

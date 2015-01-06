@@ -728,6 +728,34 @@ public class HomeController {
 
 		return response;
 	}
+	@RequestMapping(value = "/sortBy")
+	@ResponseBody
+	public String sortBy(
+			@RequestParam(value = "results", required = true) String results,
+			@RequestParam(value = "type", required = true) String type){
+		
+		//need to convert string to recipe objects in order to sort them
+		Recipe[] recipes;
+		
+		Recipe[] sortedRecipes=searchService.sortByRate(recipes, type);
+		
+		String answer="";
+		if(sortedRecipes != null){
+			answer += "[";
+			for(int i=0; i<sortedRecipes.length; i++){
+				String[] photoUrls = recipeService.getRecipeAllPhotoUrl(sortedRecipes[i].getRecipe_id());
+				answer += "{\"name\":\"" + sortedRecipes[i].getName() +"\", \"id\":\"" + sortedRecipes[i].getRecipe_id() + "\", \"photoUrl\":\"" + photoUrls[0] + "\"}";
+				if(i != (sortedRecipes.length-1)) {
+					answer += ",";
+				}
+			}
+			answer += "]";
+		}
+		
+		
+		return answer;
+	}
+	
 	
 }
 
