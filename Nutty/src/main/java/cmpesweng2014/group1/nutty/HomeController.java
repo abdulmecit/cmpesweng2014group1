@@ -728,6 +728,7 @@ public class HomeController {
 
 		return response;
 	}
+	/*
 	@RequestMapping(value = "/sortBy")
 	@ResponseBody
 	public String sortBy(
@@ -755,7 +756,7 @@ public class HomeController {
 		
 		return answer;
 	}
-	
+	*/
 	
 }
 

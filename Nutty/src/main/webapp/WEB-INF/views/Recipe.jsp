@@ -483,7 +483,7 @@ body {
 									name="comment" rows="3" style="resize: none"></textarea>
 								<br>
 								<button type="submit" class="btn btn-primary" id="comment"
-									style="float: right">Comment</button>
+									style="right">Comment</button>
 
 							</form>
 						</div>
@@ -505,7 +505,7 @@ body {
 	var eaten = '${eatenOfUser}';
 	var liked = '${likeOfUser}';
 	var shared = '${shareOfUser}';
-	var report = '${reportOfUser}'
+	var report = '${reportOfUser}';
 	var isLogged = '${isLogged}';
 	var commentNumber = 0;
 	var user = '${user.id}';
@@ -729,11 +729,12 @@ body {
 						user_id : '${user.id}'
 					}
 				});
+				$("#reportRecipe").attr("disabled", true);
 			} else {
 
 			}
 		});
-		$("#reportRecipe").attr("disabled", true);
+		
 	});
 
 	
@@ -793,13 +794,14 @@ body {
 											+ i
 											+ "' <li class='list-group-item'><b>"
 											+ comments[i].comment_text
-											+ "</b><p>by <a href='../user/profile/1'>"
+											+ "</b><p>by <a href='../user/profile/"+comments[i].commenter_id+"'>"
 											+ comments[i].commenter_name
 											+ "</a></p>"
 											+ "<input type='hidden' id='commentId" + i + "' value='" + comments[i].comment_id + "' style='visibility: collapse; width: 0px;'/>";
 
 									if (comments[i].commenter_id != '${user.id}') {
-										content += "<button type='button' class='btn btn-primary btn-xs'"
+										if(comments[i].commentedByMe==0){
+											content += "<button type='button' class='btn btn-primary btn-xs'"
 												+ "onclick='reportComment("
 												+ comments[i].comment_id
 												+ ","
@@ -807,8 +809,19 @@ body {
 												+ ")' "
 												+ " value='report' id='reportComment"
 												+ i
-												+ "'style='float: left; margin-right:5px'><span class='ui-button-text'>Report </span></button>"
-
+												+ "'style='float: left; margin-right:5px' disabled='disabled'><span class='ui-button-text'>Report </span></button>"
+										}
+										else {
+											content += "<button type='button' class='btn btn-primary btn-xs'"
+												+ "onclick='reportComment("
+												+ comments[i].comment_id
+												+ ","
+												+ i
+												+ ")' "
+												+ " value='report' id='reportComment"
+												+ i
+												+ "'style='float: left; margin-right:5px'><span class='ui-button-text'>Report </span></button>"	
+										}
 										content += "<button type='button' class='btn btn-primary btn-xs'"
 												+ "onclick='commentLike("
 												+ i
@@ -956,11 +969,13 @@ body {
 						user_id : '${user.id}'
 					}
 				});
-				$('#commentDiv' + index).remove();
+				$("#reportComment"+index).attr("disabled", true);
 			} else {
 
 			}
 		});
+		
+		
 	}
 
 	/*

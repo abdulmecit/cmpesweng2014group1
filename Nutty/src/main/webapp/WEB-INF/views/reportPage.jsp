@@ -106,11 +106,11 @@
 						recipe_id : recipeID,
 					}
 				}).done(function(e) {
+					location.reload();
 				})
 			} else {
 			}
 		});
-		location.reload();
 	}
 	
 	/*
@@ -126,11 +126,11 @@
 						comment_id : commentID,
 					}
 				}).done(function(e) {
+					location.reload();
 				})
 			} else {
 			}
 		});
-		location.reload();
 	}
 	
 	/*
@@ -146,11 +146,11 @@
 						recipe_id : recipeID,
 					}
 				}).done(function(e) {
+					location.reload();
 				})
 			} else {
 			}
 		});
-		location.reload();
 	}
 	
 	/*
@@ -166,11 +166,11 @@
 						comment_id : commentID,
 					}
 				}).done(function(e) {
+					location.reload();
 				})
 			} else {
 			}
 		});
-		location.reload();
 	}
 	</script>
 </body>
