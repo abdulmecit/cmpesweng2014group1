@@ -127,7 +127,7 @@ body {
 											id='delphoto0${counter.index}'>
 											<span>&times;</span>
 										</button>
-									</span>" <input type='text' class='form-control' id='link'
+									</span><input type='text' class='form-control' id='link'
 										name='link[]'
 										style='visibility: hidden; width: 80px; overflow: scroll'
 										value='${photoUrl[counter.index]}' readonly> <img
@@ -146,16 +146,16 @@ body {
 							<div class="col-xs-9">
 								<div class="col-xs-12">
 									Name:<input type="text" class="form-control" id="recipeName"
-										value=${recipe.name } name="recipeName"
+										value='${recipe.name }' name="recipeName"
 										placeholder="Name of Recipe...">
 								</div>
 								<br> <br> <br> <br>
 								<div class="col-xs-2">
 									Portion:<input type="text" class="form-control" id="portion"
-										value=${recipe.portion } name="portion" placeholder="portion">
+										value='${recipe.portion }' name="portion" placeholder="portion">
 								</div>
 								<div class="col-xs-6">
-									<br> <font color="blue">${message.message}</font>
+									<!--<br> <font color="blue">${message.message}</font> -->
 								</div>
 								<br> <br> <br> <br> <br>
 								<!------------------------  Get Ingredients  --------------------------->
@@ -487,20 +487,4 @@ body {
 	</script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

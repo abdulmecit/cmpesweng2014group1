@@ -19,7 +19,6 @@
 					<th class="col-sm-7" style="text-align: center">Contents</th>
 					<th class="col-sm-1" style="text-align: center">Delete Content</th>
 					<th class="col-sm-1" style="text-align: center">Delete Reports</th>
-					<th class="col-sm-1" style="text-align: center">Delete User</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -44,10 +43,6 @@
 								<span class="ui-button-text">Reports</span>
 							</button></td>
 
-						<td style="text-align: center"><button type="button"
-								class="btn btn-primary" onclick='deleteAccount(${reportRecipe.user_id})'>
-								<span class="ui-button-text">User</span>
-							</button></td>
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -65,7 +60,6 @@
 					<th class="col-sm-8" style="text-align: center">Contents</th>
 					<th class="col-sm-1" style="text-align: center">Delete Content</th>
 					<th class="col-sm-1" style="text-align: center">Delete Reports</th>
-					<th class="col-sm-1" style="text-align: center">Delete User</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -90,12 +84,6 @@
 								onclick='cancelCommentReport(${reportComments.comment_id})'>
 								<span class="ui-button-text">Reports</span>
 							</button></td>
-
-						<td style="text-align: center"><button type="button"
-								class="btn btn-primary" onclick='deleteAccount(${reportComments.user_id})'>
-								<span class="ui-button-text">User</span>
-							</button></td>
-
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -184,27 +172,6 @@
 		});
 		location.reload();
 	}
-
-	/*
-	* Deactivate User Account
-	*/
-	function deleteAccount(userID){
-/*		 bootbox.confirm("Are you sure?", function(result) {
-			if (result) {
-				$.ajax({
-					type : "POST",
-					url : "/nutty/deleteAccount",
-					data : {
-						user_id : userID,
-					}
-				}).done(function(e) {
-				})
-			} else {
-			}
-		})	
-		location.reload();*/
-	}
-
 	</script>
 </body>
 </html>

@@ -418,7 +418,8 @@ body {
 								style="float: right; margin-right: 15 px; margin-left: 15px;">
 								<span id="textReport" class="ui-button-text">Report</span>
 							</button>
-							<div style="float: right;margin-right: 15 px; margin-left: 15px;" class="fb-share-button" data-href="http://titan.cmpe.boun.edu.tr:8080/nutty/recipe/${recipe.recipe_id}" data-layout="button"></div>
+							<br><br>
+							<div style="float: right;margin-right: 15 px; margin-left: 15px;" id="fbShare" class="fb-share-button" data-href="http://titan.cmpe.boun.edu.tr:8080/nutty/recipe/${recipe.recipe_id}" data-layout="button"></div>
 
 							<!----------------------- Recipe Description ----------------------------->
 							<div id=recipeDetail>
@@ -635,7 +636,7 @@ body {
 								recipe_id : '${recipe.recipe_id}',
 							}
 						}).done(function(response){
-							window.location.href = "../../index";
+							window.location.href = "../index";
 						});
 
 					} else {
@@ -707,7 +708,7 @@ body {
 						user_id : '${user.id}'
 					}
 				});
-				$('#reportComment' + index).attr("disabled", true);
+				
 			} else {
 
 			}
@@ -885,7 +886,9 @@ body {
 					comment_id : $("#commentId" + index).val(),
 					value : commentsILike[index]
 				}
-			}).done($("#showLikers" + index).text(num + " likes"))
+			}).done(function(response){
+				$("#showLikers" + index).text(num + " likes");
+			});
 		}
 	};
 
@@ -911,7 +914,9 @@ body {
 					recipe_id : '${recipe.recipe_id}',
 					text : newComment
 				}
-			}).done(getComment());
+			}).done(function(response){
+				getComment();
+			});
 		});
 	}
 
@@ -1010,9 +1015,14 @@ body {
 			$("#derivedRecipeButton").css('display', 'none');
 			$("#addComment").css('display', 'none');
 			$("#reportRecipe").css('display', 'none');
+			$("#fbShare").css('display', 'none');
 			$("#EatEdit").css('display', 'none');
 			$("#LikeDelete").css('display', 'none');
 			$("#version").css('display', 'none');
+		}else{
+			if (user == owner) {
+				$("#reportRecipe").css('display', 'none');
+			}
 		}
 	});					
 
