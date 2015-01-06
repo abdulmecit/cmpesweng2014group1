@@ -8,6 +8,8 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
+<meta property="og:title" content="${recipe.name}" />
+<meta property="og:image" content="${photoUrl[0]}" />
 <title>Nutty</title>
 
 <!-- Bootstrap core CSS -->
