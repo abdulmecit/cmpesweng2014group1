@@ -30,89 +30,105 @@
 <body>
 	<div id=processingScreen></div>
 
-	<!--------------------- Recipe Report Table -------------------->
-	<div class="panel panel-default" style="margin: 120px 75px 75px 75px;">
-		<div class="panel-heading">Recipe Reports</div>
-		<table class="table table-striped table-bordered">
-			<thead>
-				<tr>
-					<th class="col-sm-1" style="text-align: center">Number
-						OfReports</th>
-					<th class="col-sm-7" style="text-align: center">Contents</th>
-					<th class="col-sm-1" style="text-align: center">Delete Content</th>
-					<th class="col-sm-1" style="text-align: center">Delete Reports</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach var="reportRecipe" items="${reportedRecipes}"
-					varStatus="counter">
+	<div id="reportTable">
+		<!--------------------- Recipe Report Table -------------------->
+		<div class="panel panel-default" style="margin: 120px 75px 75px 75px;">
+			<div class="panel-heading">Recipe Reports</div>
+			<table class="table table-striped table-bordered">
+				<thead>
 					<tr>
-						<td style="text-align: center">${recipeReportNumbers[counter.index]}</td>
-
-						<td style="text-align: center"><a
-							href="/nutty/recipe/${reportRecipe.recipe_id}">
-								${reportRecipe.name}</a></td>
-
-						<td style="text-align: center"><button type="button"
-								class="btn btn-primary"
-								onclick='deleteRecipe(${reportRecipe.recipe_id})'>
-								<span class="ui-button-text">Recipe</span>
-							</button></td>
-
-						<td style="text-align: center"><button type="button"
-								class="btn btn-primary"
-								onclick='cancelRecipeReport(${reportRecipe.recipe_id})'>
-								<span class="ui-button-text">Reports</span>
-							</button></td>
-
+						<th class="col-sm-1" style="text-align: center">Number
+							OfReports</th>
+						<th class="col-sm-7" style="text-align: center">Contents</th>
+						<th class="col-sm-1" style="text-align: center">Delete
+							Content</th>
+						<th class="col-sm-1" style="text-align: center">Delete
+							Reports</th>
 					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
-	</div>
+				</thead>
+				<tbody>
+					<c:forEach var="reportRecipe" items="${reportedRecipes}"
+						varStatus="counter">
+						<tr>
+							<td style="text-align: center">${recipeReportNumbers[counter.index]}</td>
 
-	<!--------------------- Comment Report Table -------------------->
-	<div class="panel panel-default" style="margin: 75px 75px 75px 75px;">
-		<div class="panel-heading">Comment Reports</div>
-		<table class="table table-striped table-bordered">
-			<thead>
-				<tr>
-					<th class="col-sm-1" style="text-align: center">Number Of
-						Reports</th>
-					<th class="col-sm-8" style="text-align: center">Contents</th>
-					<th class="col-sm-1" style="text-align: center">Delete Content</th>
-					<th class="col-sm-1" style="text-align: center">Delete Reports</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach var="reportComments" items="${reportedComments}"
-					varStatus="counter">
+							<td style="text-align: center"><a
+								href="/nutty/recipe/${reportRecipe.recipe_id}">
+									${reportRecipe.name}</a></td>
+
+							<td style="text-align: center"><button type="button"
+									class="btn btn-primary"
+									onclick='deleteRecipe(${reportRecipe.recipe_id})'>
+									<span class="ui-button-text">Recipe</span>
+								</button></td>
+
+							<td style="text-align: center"><button type="button"
+									class="btn btn-primary"
+									onclick='cancelRecipeReport(${reportRecipe.recipe_id})'>
+									<span class="ui-button-text">Reports</span>
+								</button></td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		</div>
+
+		<!--------------------- Comment Report Table -------------------->
+		<div class="panel panel-default" style="margin: 75px 75px 75px 75px;">
+			<div class="panel-heading">Comment Reports</div>
+			<table class="table table-striped table-bordered">
+				<thead>
 					<tr>
-
-						<td style="text-align: center">${commentReportNumbers[counter.index]}</td>
-
-						<td style="text-align: center"><a
-							href="/nutty/recipe/${reportComments.recipe_id}">
-								${reportComments.text}</a></td>
-
-						<td style="text-align: center"><button type="button"
-								class="btn btn-primary"
-								onclick='deleteComment(${reportComments.comment_id})'>
-								<span class="ui-button-text">Comment</span>
-							</button></td>
-
-						<td style="text-align: center"><button type="button"
-								class="btn btn-primary"
-								onclick='cancelCommentReport(${reportComments.comment_id})'>
-								<span class="ui-button-text">Reports</span>
-							</button></td>
+						<th class="col-sm-1" style="text-align: center">Number Of
+							Reports</th>
+						<th class="col-sm-8" style="text-align: center">Contents</th>
+						<th class="col-sm-1" style="text-align: center">Delete
+							Content</th>
+						<th class="col-sm-1" style="text-align: center">Delete
+							Reports</th>
 					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
-	</div>
+				</thead>
+				<tbody>
+					<c:forEach var="reportComments" items="${reportedComments}"
+						varStatus="counter">
+						<tr>
 
+							<td style="text-align: center">${commentReportNumbers[counter.index]}</td>
+
+							<td style="text-align: center"><a
+								href="/nutty/recipe/${reportComments.recipe_id}">
+									${reportComments.text}</a></td>
+
+							<td style="text-align: center"><button type="button"
+									class="btn btn-primary"
+									onclick='deleteComment(${reportComments.comment_id})'>
+									<span class="ui-button-text">Comment</span>
+								</button></td>
+
+							<td style="text-align: center"><button type="button"
+									class="btn btn-primary"
+									onclick='cancelCommentReport(${reportComments.comment_id})'>
+									<span class="ui-button-text">Reports</span>
+								</button></td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div id="userView" style="margin-top: 300px; text-align: center;"></div>
 	<script type="text/javascript">
+	
+	$(document).ready(function(){
+		if('${user.id}'!=0) {
+			$("#reportTable").css('display', 'none');
+			$("#userView").append("Sorry, you can not see this page!")
+		}else{
+			
+		}
+		
+	});
+	
 	
 	
 	/*
