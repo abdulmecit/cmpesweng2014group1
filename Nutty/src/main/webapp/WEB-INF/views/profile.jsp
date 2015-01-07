@@ -377,14 +377,29 @@ body {
 											});
 						});
 
+		// determine if should show the recent activities
+		var shouldShow; 
+		
+		if ('${privOptions.visible_activities}' == 0) {
+			shouldShow = 0;
+			
+			if ('${visitedUser.id}' == '${user.id}') {
+				shouldShow = 1;
+			}
+		}
+		else{
+			shouldShow = 1;
+		}
+		
 		/*
 		 * get recent event 
-		 */
+		 */ 
 		$(document)
 				.ready(
 						function() {
-							$
-									.ajax({
+							if (shouldShow == 1){
+
+								$.ajax({
 										type : "POST",
 										url : "../getUsersRecentEvents",
 										data : {
@@ -485,6 +500,7 @@ body {
 													}
 												}
 											});
+								}
 						});
 
 		function timestampToString(timestamp) {
