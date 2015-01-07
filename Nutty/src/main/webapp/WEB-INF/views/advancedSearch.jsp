@@ -201,7 +201,16 @@
 					});
 			}
 		});
-
+		
+		$(document).ready(function(){
+			$("#likeContent").css('display', 'none');
+			$("#tasteContent").css('display', 'none');
+			$("#healthContent").css('display', 'none');
+			$("#costContent").css('display', 'none');
+			$("#easeContent").css('display', 'none');
+			$("#overallContent").css('display', 'none');
+			$("#similarityContent").css('display', 'none');
+		});
 	
 	   // to add new input text
 		var counter = 1;
@@ -255,13 +264,13 @@
 						user_id : '${user.id}'
 					}}).done(function(answer) {
 						if ((answer == "") || (answer == "[]") || (answer == null)) {
-							$("#similarityContent").append("<p>Nothing to show :(</p>");
-							$("#tasteContent").append("<p>Nothing to show :(</p>");
-							$("#healthContent").append("<p>Nothing to show :(</p>");
-							$("#costContent").append("<p>Nothing to show :(</p>");
-							$("#easeContent").append("<p>Nothing to show :(</p>");
-							$("#overallContent").append("<p>Nothing to show :(</p>");
-							$("#likeContent").append("<p>Nothing to show :(</p>");
+							$("#similarityContent").empty().append("<p>Nothing to show :(</p>");
+							$("#tasteContent").empty().append("<p>Nothing to show :(</p>");
+							$("#healthContent").empty().append("<p>Nothing to show :(</p>");
+							$("#costContent").empty().append("<p>Nothing to show :(</p>");
+							$("#easeContent").empty().append("<p>Nothing to show :(</p>");
+							$("#overallContent").empty().append("<p>Nothing to show :(</p>");
+							$("#likeContent").empty().append("<p>Nothing to show :(</p>");
 							document.body.className = "loaded";
 						} else {
 							advSearchResult = answer;

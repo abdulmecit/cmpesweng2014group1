@@ -794,7 +794,7 @@ public class HomeController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/sortBySimilarity")
+	@RequestMapping(value = "/sortBySimilarity", method = RequestMethod.POST)
 	public String sortBySimilarity(
 			@RequestParam(value = "results", required = true) String results){
 		
