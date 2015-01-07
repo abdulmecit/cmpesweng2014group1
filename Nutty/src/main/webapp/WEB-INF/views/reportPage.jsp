@@ -5,8 +5,30 @@
 <jsp:include page="header.jsp" flush="true" />
 <title>Nutty</title>
 
+<!-- Add custom CSS here -->
+<style type="text/css">
+
+.processing #processingScreen {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 100vw;
+    height: 100vh;	
+    background-color: rgba(192, 192, 192, 0.5);
+    background-image: url("../resources/img/processing.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.processed #processingScreen {
+	display: none;
+}
+</style>
+
 </head>
 <body>
+	<div id=processingScreen></div>
 
 	<div id="reportTable">
 		<!--------------------- Recipe Report Table -------------------->
@@ -115,6 +137,7 @@
 	function deleteRecipe(recipeID){
 		bootbox.confirm("Are you sure?", function(result) {
 			if (result) {
+				document.body.className = "processing";
 				$.ajax({
 					type : "POST",
 					url : "/nutty/deleteRecipe",
@@ -122,6 +145,7 @@
 						recipe_id : recipeID,
 					}
 				}).done(function(e) {
+					document.body.className = "processed";
 					location.reload();
 				})
 			} else {
@@ -135,6 +159,7 @@
 	function deleteComment(commentID){
 		bootbox.confirm("Are you sure?", function(result) {
 			if (result) {
+				document.body.className = "processing";
 				$.ajax({
 					type : "POST",
 					url : "/nutty/deleteComment",
@@ -142,6 +167,7 @@
 						comment_id : commentID,
 					}
 				}).done(function(e) {
+					document.body.className = "processed";
 					location.reload();
 				})
 			} else {
@@ -155,6 +181,7 @@
 	function cancelRecipeReport(recipeID){
 		bootbox.confirm("Are you sure?", function(result) {
 			if (result) {
+				document.body.className = "processing";
 				$.ajax({
 					type : "POST",
 					url : "/nutty/cancelRecipeReports",
@@ -162,6 +189,7 @@
 						recipe_id : recipeID,
 					}
 				}).done(function(e) {
+					document.body.className = "processed";
 					location.reload();
 				})
 			} else {
@@ -175,6 +203,7 @@
 	function cancelCommentReport(commentID){
 		bootbox.confirm("Are you sure?", function(result) {
 			if (result) {
+				document.body.className = "processing";
 				$.ajax({
 					type : "POST",
 					url : "/nutty/cancelCommentReports",
@@ -182,6 +211,7 @@
 						comment_id : commentID,
 					}
 				}).done(function(e) {
+					document.body.className = "processed";
 					location.reload();
 				})
 			} else {

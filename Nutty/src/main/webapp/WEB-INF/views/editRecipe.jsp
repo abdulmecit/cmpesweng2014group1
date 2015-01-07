@@ -271,7 +271,7 @@ body {
 										value='${recipe.portion }' name="portion" title="only number" placeholder="portion">
 								</div>
 								<div class="col-xs-6">
-									<!--<br> <font color="blue">${message.message}</font> -->
+									<br> <font color="blue">${message.message}</font>
 								</div>
 								<br> <br> <br> <br> <br>
 								<!------------------------  Get Ingredients  --------------------------->

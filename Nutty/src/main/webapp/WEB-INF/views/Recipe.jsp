@@ -10,6 +10,23 @@
 <style type="text/css">
 @import url(http://fonts.googleapis.com/css?family=Varela+Round);
 
+.processing #processingScreen {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 100vw;
+    height: 100vh;	
+    background-color: rgba(192, 192, 192, 0.5);
+    background-image: url("../resources/img/processing.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.processed #processingScreen {
+	display: none;
+}
+
 .slides {
 	padding: 0;
 	width: 457px;
@@ -178,6 +195,8 @@ body {
 
 </head>
 <body>
+<div id=processingScreen></div>
+
 <!--------------------------- for facebook share ------------------------------->
 <div id="fb-root"></div>
 <script>(function(d, s, id) {
@@ -629,6 +648,7 @@ body {
 			} else {
 				bootbox.confirm("Are you sure?", function(result) {
 					if (result) {
+						document.body.className = "processing";
 						$.ajax({
 							type : "POST",
 							url : "../deleteRecipe",
@@ -636,6 +656,7 @@ body {
 								recipe_id : '${recipe.recipe_id}',
 							}
 						}).done(function(response){
+							document.body.className = "processed";
 							window.location.href = "../index";
 						});
 

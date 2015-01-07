@@ -122,7 +122,7 @@ body {
 									name="portion" placeholder="portion" title="only number">
 							</div>
 							<div class="col-xs-6">
-							<!--<br> <font color="blue">${message.message}</font> -->
+							<br> <font color="blue">${message.message}</font>
 							</div>
 							<br> <br> <br> <br> <br>
 							<!------------------------  Get Ingredients  --------------------------->
@@ -215,7 +215,7 @@ body {
 			formCheck();
 			
 			$('.amount').keypress(function(key) {
-		        if(key.charCode > 45 && key.charCode < 58) {
+		        if(key.charCode > 45 && key.charCode < 58 || key.charCode == 44) {
 		        return true;
 		        }
 		        else {

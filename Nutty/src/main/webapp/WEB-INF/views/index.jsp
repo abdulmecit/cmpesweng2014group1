@@ -232,7 +232,7 @@ $(function() {
 			<ul class="slides">
 				<input type="radio" name="radio-btn" id="img-1" checked />
 				<li class="slide-container">
-					<div id="slideForDelicious" class="slide">
+					<div id="slideForHealthy" class="slide">
 						
 					</div>
 					<div class="nav">
@@ -243,7 +243,7 @@ $(function() {
 
 				<input type="radio" name="radio-btn" id="img-2" />
 				<li class="slide-container">
-					<div id="slideForHealthy" class="slide">
+					<div id="slideForEasy" class="slide">
 						
 					</div>
 					<div class="nav">
@@ -254,7 +254,7 @@ $(function() {
 
 				<input type="radio" name="radio-btn" id="img-3" />
 				<li class="slide-container">
-					<div id="slideForEasy" class="slide">
+					<div id="slideForDelicious" class="slide">
 						
 					</div>
 					<div class="nav">
