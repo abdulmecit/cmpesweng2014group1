@@ -31,6 +31,12 @@ public class SearchService {
 	@Autowired
 	private RecommendationService recommService;
 	
+	/**
+	 * For semantic search
+	 * 
+	 * @param searchString 
+	 * @return brings related tags with the searchString
+	 */
 	public String[] getRelatedTerms(String searchString){
 		
 		if(searchString == null || searchString.trim().equals("")){
@@ -63,9 +69,14 @@ public class SearchService {
 		}		
 		return relatedTerms.toArray(new String[relatedTerms.size()]);
 	}
-	
-	//descending order
-	//rateType might be a rate or likes/eats/overall
+
+	/**
+	 * To sort recipes in given criteria
+	 * 
+	 * @param recipes the list of the recipes to sort
+	 * @param rateType criteria of the sort, it can be "overall", "health", "ease", "cost", "taste", "likes", "eats" 
+	 * @return sorted recipe array
+	 */
 	public Recipe[] sortByRate(Recipe[] recipes, String rateType){
 		List<RecipeRate> recRates = new ArrayList<RecipeRate>();
 		for(int i=0; i<recipes.length;i++){
@@ -107,8 +118,13 @@ public class SearchService {
 		return rec;		
 	}
 	
-	//takes the tags given by the user as a parameter, does semantic search and
-	//returns sorted Recipe array according to the similarity.
+	/**
+	 * takes the tags given by the user as a parameter, does semantic search and
+	 * returns sorted Recipe array according to the similarity.
+	 * 
+	 * @param tag the tags given by the user as a parameter
+	 * @return sorted Recipe array according to the similarity.
+	 */
 	public Recipe[] semanticSearch(String tag){
 		//original tags
 		String tagz[] = tag.split(" ");
@@ -123,6 +139,14 @@ public class SearchService {
 		Recipe[] foundRecipes = searchByAllTags(tags, relatedTagsIndex);
 		return foundRecipes;
 	}
+	
+	/**
+	 * Takes tags and sort the recipes according to similarity
+	 * 
+	 * @param tags
+	 * @param relatedTagsIndex
+	 * @return
+	 */
 	public Recipe[] searchByAllTags(String[] tags, int relatedTagsIndex){		
 		List<RecipeTag> recTags = new ArrayList<RecipeTag>();
 		
