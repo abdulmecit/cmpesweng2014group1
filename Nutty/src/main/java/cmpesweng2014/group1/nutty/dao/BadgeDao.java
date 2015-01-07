@@ -17,7 +17,13 @@ import cmpesweng2014.group1.nutty.model.Badge;
 
 @Component
 public class BadgeDao extends PcDao {
-
+	/**
+	 * adding badge to Badge table
+	 * @param name
+	 * @param min_score
+	 * @param max_score
+	 * @return
+	 */
 	public Long addBadge(final String name, final double min_score, final double max_score){
 		final String query = "INSERT INTO Badge (name, min_score, max_score) VALUES (?,?,?)";
 
@@ -42,7 +48,10 @@ public class BadgeDao extends PcDao {
 
 		return newItemId;
 	}
-	
+	/**
+	 * updates the Badge max min values
+	 * @param b
+	 */
 	public void updateBadge(final Badge b){
 		final String query = "UPDATE Badge SET name=?, min_value=?, max_value=? WHERE badge_id=?";
 
@@ -61,7 +70,11 @@ public class BadgeDao extends PcDao {
 			}
 		});
 	}
-	
+	/**
+	 * get badge name
+	 * @param badge_id
+	 * @return
+	 */
 	public Badge getBadgeById(int badge_id){
 		List<Badge> badges = this.getTemplate().query(
 				"SELECT * FROM Badge WHERE badge_id = ? ",
@@ -73,6 +86,11 @@ public class BadgeDao extends PcDao {
 			return badges.get(0);
 		}
 	}
+	/**
+	 * get the badge name for the given score
+	 * @param score
+	 * @return
+	 */
 	public Badge getBadgeByScore(double score){
 		
 		List<Badge> badges = this.getTemplate().query(
@@ -93,6 +111,11 @@ public class BadgeDao extends PcDao {
 			return null;
 		}
 	}
+	/**
+	 * updates the user's badge
+	 * @param user_id
+	 * @param badge_id
+	 */
 	public void updateUserBadge(final Long user_id,final int badge_id){
 		
 		try{

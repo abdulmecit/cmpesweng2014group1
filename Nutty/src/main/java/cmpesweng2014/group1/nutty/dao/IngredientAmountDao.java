@@ -9,7 +9,11 @@ import cmpesweng2014.group1.nutty.model.IngredientAmount;
 
 @Component
 public class IngredientAmountDao extends PcDao{
-
+	/**
+	 * get ingredient and amount relations for the given recipe
+	 * @param recipe_id
+	 * @return
+	 */
 	public IngredientAmount[] allIngredientAmounts(int recipe_id){
 		List<IngredientAmount> ingredientAmountList = this.getTemplate().query(
 				"SELECT recipe_id, ing_id, Shrt_Desc as ing_name, amount, meas_type FROM HasIngredient, ingredients WHERE ing_id = NDB_No and recipe_id =?",

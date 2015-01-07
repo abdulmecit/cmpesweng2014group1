@@ -26,7 +26,13 @@ public class CommentDao extends PcDao {
 	private UserDao userDao;
 	@Autowired
 	private RecipeDao recipeDao;
-	
+	/**
+	 * creates comment
+	 * @param text for the comment
+	 * @param user_id, owner of the comment
+	 * @param recipe_id
+	 * @return
+	 */
 	public int createComment(final String text, final long user_id, final int recipe_id){
 		final String query = "INSERT INTO Comment (text, user_id, recipe_id) VALUES (?,?,?)";
 		KeyHolder gkh = new GeneratedKeyHolder();
@@ -84,6 +90,11 @@ public class CommentDao extends PcDao {
 		}		
 		return newItemId;		
 	}
+	/**
+	 * get comment object with the given comment id
+	 * @param comment_id
+	 * @return
+	 */
 	public Comment getCommentById(int comment_id){
 		List<Comment> comments = this.getTemplate().query(
 				"SELECT * FROM Comment WHERE comment_id = ? ",
@@ -95,7 +106,11 @@ public class CommentDao extends PcDao {
 			return comments.get(0);
 		}
 	}
-	
+	/**
+	 * return all the comments of a given recipe
+	 * @param recipeId
+	 * @return
+	 */
 	public Comment[] allComments(int recipeId){
 		List<Comment> commentList = this.getTemplate().query(
 				"SELECT * FROM Comment WHERE recipe_id =?",
@@ -109,18 +124,32 @@ public class CommentDao extends PcDao {
 			return comments;
 		}
 	}
+	/**
+	 * user likes a comment
+	 * @param comment
+	 * @param user
+	 */
 	public void likeComment(Comment comment, User user){
 		final String query = "INSERT INTO LikesComment (user_id, comment_id) VALUES (?,?)";
 		this.getTemplate().update(query, new Object[] { 
 				user.getId(), comment.getComment_id()});
 	}
+	/**
+	 * get the number of likes of a comment
+	 * @param comment
+	 * @return
+	 */
 	public int numberOfLikes(Comment comment) {
 		int total=this.getTemplate().queryForObject(
 				"SELECT COUNT(*) FROM LikesComment WHERE comment_id = ?", 
 				new Object[] {comment.getComment_id()}, Integer.class);
 		return total;
 	}
-	
+	/**
+	 * get the list of users who likes the given comment
+	 * @param comment
+	 * @return
+	 */	
 	public User[] usersWhoLikeThisComment(Comment comment) {
 		List<User> userList = this.getTemplate().query(
 				"SELECT a.* FROM User a, LikesComment b WHERE a.user_id = b.user_id AND b.comment_id =?",
@@ -134,14 +163,20 @@ public class CommentDao extends PcDao {
 			return users;
 		}
 	}
-	
+	/**
+	 * cancel like of a comment
+	 * @param comment
+	 * @param user
+	 */
 	public void getBackLikeOfComment(Comment comment, User user){
 		this.getTemplate().update("DELETE FROM LikesComment WHERE user_id = ? AND comment_id = ?", 
 				new Object[] { user.getId(), comment.getComment_id()});
 	}
-	
-	////Report Comment Methods////
-	//report a comment
+	/**
+	 * reporting a comment
+	 * @param comment_id
+	 * @param user_id
+	 */
 	public void reportComment(final int comment_id, final Long user_id) {
 		final String query = "INSERT INTO ReportComment (user_id, comment_id) VALUES (?,?)";
 		KeyHolder gkh = new GeneratedKeyHolder();
@@ -159,27 +194,40 @@ public class CommentDao extends PcDao {
 			}
 		}, gkh);
 	}
-	
-	//get how many reports a comment has
+	/**
+	 * get how many reports a comment has
+	 * @param comment_id
+	 * @return
+	 */
 	public int numberOfReportsOfComment(int comment_id){
 		int count = this.getTemplate().queryForObject(
 				"SELECT COUNT(*) FROM ReportComment WHERE comment_id =?",
 				new Object[] { comment_id},  Integer.class);
 		return count;		
 	}
-	
-	//delete all reports of a comment
+	/**
+	 * delete all reports of a comment
+	 * @param comment_id
+	 */
 	public void deleteAllReportsOfComment(int comment_id){
 		this.getTemplate().update("DELETE FROM ReportComment WHERE comment_id = ?",
 				new Object[] {comment_id});
 	}
-	//delete report of a user for a specific comment
+	/**
+	 * delete report of a user for a specific comment
+	 * @param comment_id
+	 * @param user_id
+	 */
 	public void deleteReportOfAUserForComment(int comment_id, Long user_id){
 		this.getTemplate().update("DELETE FROM ReportComment WHERE comment_id = ? AND user_id = ?",
 				new Object[] {comment_id,user_id});
 	}
-	
-	//returns 1 if this user reported this comment, else 0
+	/**
+	 * get if the user reported this recipe or not
+	 * @param comment_id
+	 * @param user_id
+	 * @return 1 if this user reported this comment, else 0
+	 */
 	public int hasReportedComment(int comment_id,Long user_id){
 		int count = this.getTemplate().queryForObject(
 				"SELECT COUNT(*) FROM ReportComment WHERE comment_id =? AND user_id =?",
@@ -191,7 +239,10 @@ public class CommentDao extends PcDao {
 			return 1;
 		}
 	}
-	
+	/**
+	 * delete the comment
+	 * @param comment_id
+	 */
 	//deletes the comment
 	public void deleteComment(int comment_id){
 		//first delete from comment table
@@ -204,7 +255,11 @@ public class CommentDao extends PcDao {
 		this.getTemplate().update("DELETE FROM ReportComment WHERE comment_id = ?",
 				new Object[] {comment_id});
 	}
-	//changes the text of the given comment with provided text
+	/**
+	 * changes the text of the given comment with provided text
+	 * @param comment_id
+	 * @param text
+	 */
 	public void editComment(final int comment_id, final String text){
 		final String query = "UPDATE Comment SET text=? WHERE comment_id=?";
 		KeyHolder gkh = new GeneratedKeyHolder();
@@ -220,6 +275,11 @@ public class CommentDao extends PcDao {
 				}
 			}, gkh);
 	}
+	/**
+	 * get comments of this user
+	 * @param user_id
+	 * @return
+	 */
 	public Comment[] commentsOfUser(long user_id){
 		List<Comment> commentList = this.getTemplate().query(
 		"SELECT * FROM Comment WHERE user_id =?",
@@ -233,7 +293,10 @@ public class CommentDao extends PcDao {
 			return comments;
 		}
 	}
-	
+	/**
+	 * get all reported comments
+	 * @return
+	 */
 	public Comment[] getAllReportedComments(){
 		List<Comment> commentList = this.getTemplate().query(
 				"SELECT a.comment_id, text, a.user_id, recipe_id, date FROM Comment a, ReportComment b WHERE b.comment_id=a.comment_id",
@@ -246,7 +309,10 @@ public class CommentDao extends PcDao {
 			return comments;
 		}
 	}
-	
+	/**
+	 * get the comment-number of reports map
+	 * @return
+	 */
 	public Map<Comment,Integer> getReportedCommentsMap(){
 		Map<Comment, Integer> commentReportMap = new HashMap<Comment, Integer>();
 		Comment[] comments = getAllReportedComments();

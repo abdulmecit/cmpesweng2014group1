@@ -51,6 +51,14 @@ public class RecipeDao extends PcDao{
 	@Autowired
 	private IngredientDao ingredientDao;
 	
+	/**
+	 * add recipe to the Recipe table
+	 * @param name String, recipe name
+	 * @param description String, directions
+	 * @param portion integer, portion value of the recipe
+	 * @param total_calorie, calorie of the recipe
+	 * @return
+	 */
 	public int createRecipe(final String name, final String description,
 			final int portion, final double total_calorie) {
 		final String query = "INSERT INTO Recipe (name, description, portion, created, last_updated, total_calorie) VALUES (?,?,?,?,?,?)";
@@ -78,7 +86,11 @@ public class RecipeDao extends PcDao{
 
 		return newItemId;
 	}
-	
+	/**
+	 * Returns the recipe for the given id
+	 * @param id
+	 * @return Recipe
+	 */
 	public Recipe getRecipeById(int id) {		
 		List<Recipe> recipes = this.getTemplate().query(
 				"SELECT * FROM Recipe WHERE recipe_id = ? ",
@@ -90,14 +102,23 @@ public class RecipeDao extends PcDao{
 			return recipes.get(0);
 		}
 	}
-	
+	/**
+	 * Get gram values for the given ingredient id for the given measurement type
+	 * @param ing_id
+	 * @param meas_type
+	 * @return gram value
+	 */
 	public double getWeightByMeasType(int ing_id, String meas_type){
 		double weight = this.getTemplate().queryForObject(
 				"SELECT Gm_Wgt FROM IngredientWeight WHERE NDB_No = ? and Msre_Desc = ?", 
 				new Object[] {ing_id, meas_type}, Double.class);
 		return weight;
 	}
-	
+	/**
+	 * Returns measurement types for the given ingredient
+	 * @param ing_id
+	 * @return units
+	 */
 	public String[] getMeasTypesByIngId(int ing_id) {
 		List<String> measTypeList = this.getTemplate().queryForList(
 				"SELECT Msre_Desc FROM IngredientWeight WHERE NDB_No = ?",
@@ -110,14 +131,24 @@ public class RecipeDao extends PcDao{
 			return measTypeList.toArray(new String[measTypeList.size()]);
 		}
 	}
-	
+	/**
+	 * Returns units for given ingredient
+	 * @param ing_name
+	 * @return units
+	 */
 	public String[] getMeasTypesByIngName(String ing_name) {
 		int ing_id = ingredientDao.getIdByName(ing_name);
 		if(ing_id == 0)
 			return null;
 		return getMeasTypesByIngId(ing_id);
 	}
-	
+	/**
+	 * Adding ingredient recipe relation to the database
+	 * @param ingredient_id
+	 * @param recipe_id
+	 * @param amount
+	 * @param meas_type
+	 */
 	public void addIngredient(final int ingredient_id, final int recipe_id, final String amount, final String meas_type){
 		final String query = "INSERT INTO HasIngredient (recipe_id, ing_id, amount, meas_type) VALUES (?,?,?,?)";
 		KeyHolder gkh = new GeneratedKeyHolder();
@@ -137,7 +168,11 @@ public class RecipeDao extends PcDao{
 			}
 		}, gkh);
 	}
-
+	/**
+	 * adding owner of the recipe to the database
+	 * @param recipe_id, added recipe
+	 * @param user_id, owner
+	 */
 	public void addOwner(final int recipe_id, final Long user_id) {
 		final String query = "INSERT INTO OwnsRecipe (user_id, recipe_id) VALUES (?,?)";
 		KeyHolder gkh = new GeneratedKeyHolder();
@@ -172,7 +207,11 @@ public class RecipeDao extends PcDao{
 			}
 		}, gkh2);
 	}
-	
+	/**
+	 * adding photo url for the given recipe
+	 * @param photoUrl
+	 * @param recipe_id
+	 */
 	public void addPhotoUrl(final String photoUrl, final int recipe_id) {
 		final String query = "INSERT INTO Photo (url) VALUES (?)";
 		KeyHolder gkh = new GeneratedKeyHolder();
@@ -205,7 +244,13 @@ public class RecipeDao extends PcDao{
 			}
 		});	
 	}
-
+	/**
+	 * adding like, eat, rate to the recipes
+	 * @param column, determines whether it is like,rate,eat
+	 * @param value, evaluation value
+	 * @param user
+	 * @param recipe
+	 */
 	public void evaluateRecipe(final String column,final int value,final User user, final Recipe recipe){
 		
 		String dateColumn;
@@ -308,7 +353,12 @@ public class RecipeDao extends PcDao{
 			}, gkh);
 		}
 	}
-
+	/**
+	 * if a recipe user relation for eat like rate exists or not
+	 * @param user
+	 * @param recipe
+	 * @return true if no relation 
+	 */
 	public boolean emptyCheckUserRecipeRelation(User user, Recipe recipe){
 		List<EatLikeRate> eLikeR = this.getTemplate().query(
 				"SELECT * FROM EatLikeRate WHERE recipe_id =? AND user_id=?",
@@ -321,9 +371,13 @@ public class RecipeDao extends PcDao{
 			return false;
 		}
 	}
-	
-	//this method returns the number of likes, eats.
-	//property is set to likes or eats
+	/**
+	 * this method returns the number of likes, eats.
+	 * property is set to likes or eats
+	 * @param property
+	 * @param recipe_id
+	 * @return
+	 */
 	public int getEatLikeStatistic(String property,int recipe_id){
 		int value=1;		
 		//not sure about this
@@ -332,7 +386,12 @@ public class RecipeDao extends PcDao{
 				new Object[] {recipe_id, value}, Integer.class);
 		return total;
 	}
-	
+	/**
+	 * get statistics for the given recipe
+	 * @param property can be rate, like, eat
+	 * @param recipe_id
+	 * @return value of the column
+	 */
 	public double getAvgRateStatistic(String property,int recipe_id){
 		//not sure about this
 		int voterCount=this.getTemplate().queryForObject(
@@ -350,7 +409,13 @@ public class RecipeDao extends PcDao{
 			return (double)total / voterCount;
 		}
 	}
-
+	/**
+	 * get rates for the given user for the given recipe
+	 * @param property is eat, like, rate
+	 * @param recipe_id
+	 * @param user_id
+	 * @return value 
+	 */
 	public int getRatesForUser(String property,int recipe_id,long user_id){
 		int count=this.getTemplate().queryForObject(
 				"SELECT COUNT(*) FROM EatLikeRate WHERE recipe_id = ? AND user_id = ? AND "+property+"> 0", 
@@ -365,7 +430,12 @@ public class RecipeDao extends PcDao{
 			return rate;
 		}
 	}
-	
+	/**
+	 * get how many users voted for the like/eat/rate value of the given recipe
+	 * @param property
+	 * @param recipe_id
+	 * @return count number
+	 */
 	public int getVoterCountForRate(String property, int recipe_id){
 		int voterCount=this.getTemplate().queryForObject(
 				"SELECT COUNT(*) FROM EatLikeRate WHERE recipe_id = ? AND "+property+"> 0", 
@@ -373,7 +443,11 @@ public class RecipeDao extends PcDao{
 		return voterCount;
 				
 	}
-	
+	/**
+	 * get all photo url s for the given recipe
+	 * @param recipe_id
+	 * @return
+	 */
 	public String[] getAllPhotoUrl(int recipe_id){
 		int count=this.getTemplate().queryForObject(
 				"SELECT COUNT(*) FROM RecipePhoto a, Photo b WHERE a.photo_id = b.photo_id and recipe_id = ?",  
@@ -395,8 +469,11 @@ public class RecipeDao extends PcDao{
 			}
 		}
 	}
-	
-	
+	/**
+	 * get the owner of the recipe
+	 * @param recipe_id
+	 * @return user_id
+	 */
 	public Long getOwnerId(int recipe_id){
 		
 		Long id=this.getTemplate().queryForObject(
@@ -404,7 +481,11 @@ public class RecipeDao extends PcDao{
 				new Object[] {recipe_id}, Long.class);
 		return id;
 	}
-	
+	/**
+	 * add derived form to the Recipe table
+	 * @param original recipe which is derived from
+	 * @param derived recipe
+	 */
 	public void addDerivedFrom(final Recipe original, final Recipe derived){
 		final String query = "INSERT INTO Derived (parent_recipe_id, child_recipe_id) VALUES (?,?)";
 		KeyHolder gkh = new GeneratedKeyHolder();
@@ -422,7 +503,11 @@ public class RecipeDao extends PcDao{
 			}
 		}, gkh);
 	}
-
+	/**
+	 * returns the all recipes derived from the given recipe
+	 * @param originalRecipe
+	 * @return Recipe array
+	 */
 	public Recipe[] getAllDerivations(Recipe originalRecipe) {
 		List<Recipe> recipeList = this.getTemplate().query(
 				"SELECT recipe_id, name, description, portion, created,"
@@ -438,7 +523,11 @@ public class RecipeDao extends PcDao{
 		}
 		
 	}
-
+	/**
+	 * return the parent recipe of the given recipe
+	 * @param recipe
+	 * @return Recipe object
+	 */
 	public Recipe getParent(Recipe recipe) {
 		List<Recipe> recipes = this.getTemplate().query(
 				"SELECT recipe_id, name, description, portion, created,"
@@ -452,7 +541,11 @@ public class RecipeDao extends PcDao{
 			return recipes.get(0);
 		}
 	}
-
+	/**
+	 * add tags for the recipe to the Tag table
+	 * @param recipe_id
+	 * @param tag
+	 */
 	public void addTag(final int recipe_id, final String tag) {
 		
 		List<Tag> tagList = this.getTemplate().query(
@@ -498,7 +591,11 @@ public class RecipeDao extends PcDao{
 			}
 		});		
 	}
-
+	/**
+	 * get all tags for a given recipe
+	 * @param recipe_id
+	 * @return Tag array
+	 */
 	public Tag[] getAllTags(int recipe_id) {
 		List<Tag> tagList = this.getTemplate().query(
 				"SELECT a.tag_id,tag_name FROM HasTag a, Tag b WHERE recipe_id =? AND b.tag_id = a.tag_id",
@@ -512,7 +609,11 @@ public class RecipeDao extends PcDao{
 			return tags;
 		}
 	}
-	
+	/**
+	 * search for recipes with the given query
+	 * @param search, filter for search
+	 * @return Recipe list
+	 */
 	public List<Recipe> searchRecipeByName(String search){
 		String words[] = search.split(" ");
 		String query = "SELECT * FROM Recipe WHERE";
@@ -532,6 +633,11 @@ public class RecipeDao extends PcDao{
 			return recipes;
 		}
 	}
+	/**
+	 * user shares the recipe
+	 * @param user_id
+	 * @param recipe_id
+	 */
 	public void shareRecipe(final long user_id, final int recipe_id){
 		final String query = "INSERT INTO SharesRecipe (user_id, recipe_id) VALUES (?,?)";
 
@@ -585,7 +691,11 @@ public class RecipeDao extends PcDao{
 		}		
 		
 	}
-	
+	/**
+	 * get shared recipes for the given user
+	 * @param user_id
+	 * @return recipe ids
+	 */
 	public int[] getSharedRecipes(long user_id){
 		
 		List<SharesRecipe> recipes = this.getTemplate().query(
@@ -598,6 +708,12 @@ public class RecipeDao extends PcDao{
 		}
 		return recipeIds;
 	}
+	/**
+	 * checks whether the user has shared this recipe or not
+	 * @param user_id
+	 * @param recipe_id
+	 * @return 0, if it is not shared
+	 */
 	public int isShared(long user_id, int recipe_id){
 		int count=this.getTemplate().queryForObject(
 				"SELECT COUNT(*) FROM SharesRecipe WHERE recipe_id = ? AND user_id = ?", 
@@ -609,11 +725,20 @@ public class RecipeDao extends PcDao{
 			return 1;
 		}
 	}
+	/**
+	 * cancel sharing
+	 * @param user_id
+	 * @param recipe_id
+	 */
 	public void cancelShare(long user_id, int recipe_id){
 		this.getTemplate().update("DELETE FROM SharesRecipe WHERE user_id = ? AND recipe_id = ?",
 				new Object[] { user_id, recipe_id});
 	}
-	
+	/**
+	 * get the recipes that includes the given ingredient
+	 * @param ing_name
+	 * @return recipe arrays
+	 */
 	public Recipe[] mustHaveIngredient(String ing_name){
 		List<Recipe> recList = this.getTemplate().query(
 				"SELECT a.recipe_id, a.name, a.description, a.portion, a.created, "
@@ -627,6 +752,12 @@ public class RecipeDao extends PcDao{
 			return recipes;		
 		}
 	}
+	/**
+	 * get the recipes between the calorie intervals
+	 * @param upperlimit
+	 * @param lowerlimit
+	 * @return recipe array
+	 */
 	public Recipe[] caloriesBetween(double upperlimit, double lowerlimit){
 		List<Recipe> recList = this.getTemplate().query(
 				"SELECT * FROM Recipe WHERE total_calorie > ? AND total_calorie < ? ",
@@ -638,8 +769,11 @@ public class RecipeDao extends PcDao{
 			return recipes;		
 		}
 	}
-	
-	//return recipes for the given tag
+	/**
+	 * return recipes for the given tag
+	 * @param tag
+	 * @return recipe array
+	 */
 	public Recipe[] searchRecipesForATag(String tag){
 		List<Recipe> recList = this.getTemplate().query(
 				"SELECT a.recipe_id, a.name, a.description, a.portion, a.created, "
@@ -654,17 +788,25 @@ public class RecipeDao extends PcDao{
 			return recipes;		
 		}
 	}
-	//return number of tags for a given recipe
+	/**
+	 * return number of tags for a given recipe
+	 * @param recipe_id
+	 * @return number of tags
+	 */
 	public int getNumberOfTags(int recipe_id){
 		int count=this.getTemplate().queryForObject(
 				"SELECT COUNT(*) FROM HasTag WHERE recipe_id = ?", 
 				new Object[] {recipe_id}, Integer.class);
 		return count;
 	}
-
-	//empty check for user recipe score relation
-	//if it is true, we need to insert 
-	//if it is false, update this relations score
+	/**
+	 * empty check for user recipe score relation
+	 * if it is true, we need to insert 
+	 * if it is false, update this relations score
+	 * @param user
+	 * @param recipe
+	 * @return 0 if no relation
+	 */
 	public boolean emptyCheckUserRecipeScore(User user, Recipe recipe){
 		int count = this.getTemplate().queryForObject(
 				"SELECT COUNT(*) FROM UserRecipeScore WHERE recipe_id =? AND user_id=?",
@@ -676,7 +818,10 @@ public class RecipeDao extends PcDao{
 			return false;
 		}
 	}
-
+	/**
+	 * get all recipes in the database
+	 * @return Recipe array
+	 */
 	public Recipe[] getAllRecipes(){
 		List<Recipe> recList = this.getTemplate().query(
 				"SELECT * FROM Recipe",
@@ -686,11 +831,13 @@ public class RecipeDao extends PcDao{
 		} else {
 			Recipe[] recipes = recList.toArray(new Recipe[recList.size()]);
 			return recipes;
-	
-
 		}
 	}
-	
+	/**
+	 * get UserRecipeScore objects for the given user
+	 * @param user_id
+	 * @return list of UserRecipeScore objects
+	 */
 	public List<UserRecipeScore> getUserRecipeScore(long user_id){
 		
 		List<UserRecipeScore> scoreList = this.getTemplate().query(
@@ -710,7 +857,12 @@ public class RecipeDao extends PcDao{
 			return scoreList;
 		}
 	}
-	
+	/**
+	 * returns recommended recipes for the given user
+	 * @param user_id
+	 * @return
+	 * @throws Exception
+	 */
 	public List<Recipe> calculateRecommendation(long user_id) throws Exception{
 		List<UserRecipeScore> scoreList = this.getTemplate().query(
 				"SELECT user_id,recipe_id, "
@@ -765,9 +917,11 @@ public class RecipeDao extends PcDao{
 			}
 		}
 	}
-
-	////Report Recipe Methods////
-	//report a recipe
+	/**
+	 * given user reports the given recipe
+	 * @param recipe_id
+	 * @param user_id
+	 */
 	public void reportRecipe(final int recipe_id, final Long user_id) {
 		final String query = "INSERT INTO ReportsRecipe (user_id, recipe_id) VALUES (?,?)";
 		KeyHolder gkh = new GeneratedKeyHolder();
@@ -785,26 +939,40 @@ public class RecipeDao extends PcDao{
 			}
 		}, gkh);
 	}
-	
-	//get how many reports a recipe has
+	/**
+	 * get how many reports a recipe has
+	 * @param recipe_id
+	 * @return number of reports
+	 */
 	public int numberOfReportsOfRecipe(int recipe_id){
 		int count = this.getTemplate().queryForObject(
 				"SELECT COUNT(*) FROM ReportsRecipe WHERE recipe_id =?",
 				new Object[] { recipe_id},  Integer.class);
 		return count;		
 	}
-	
-	//delete reports of a recipe
+	/**
+	 * delete reports of a recipe
+	 * @param recipe_id
+	 */
 	public void deleteAllReportsOfRecipe(int recipe_id){
 		this.getTemplate().update("DELETE FROM ReportsRecipe WHERE recipe_id = ?",
 				new Object[] {recipe_id});
 	}
-	//delete report of a user for a specific recipe
+	/**
+	 * deletes report of a user for a specific recipe
+	 * @param recipe_id
+	 * @param user_id
+	 */
 	public void deleteReportOfAUserForRecipe(int recipe_id, Long user_id){
 		this.getTemplate().update("DELETE FROM ReportsRecipe WHERE recipe_id = ? AND user_id = ?",
 				new Object[] {recipe_id,user_id});
 	}
-	//return 1 if the user has reported this recipe, else 0
+	/**
+	 * get the information if the user has reported this recipe or not
+	 * @param recipe_id
+	 * @param user_id
+	 * @return 1 if the user has reported this recipe, else 0
+	 */ 
 	public int hasReportedRecipe(int recipe_id,Long user_id){
 		int count = this.getTemplate().queryForObject(
 				"SELECT COUNT(*) FROM ReportsRecipe WHERE recipe_id =? AND user_id =?",
@@ -816,8 +984,10 @@ public class RecipeDao extends PcDao{
 			return 1;
 		}
 	}
-
-	//recipe delete
+	/**
+	 * recipe delete
+	 * @param recipe_id
+	 */
 	public void deleteRecipe(int recipe_id){
 		//update Derived table
 		//check whether it has parent or not
@@ -866,7 +1036,14 @@ public class RecipeDao extends PcDao{
 		this.getTemplate().update("DELETE FROM UserRecipeScore WHERE recipe_id = ?",
 				new Object[] {recipe_id});
 	}
-	
+	/**
+	 * editing the recipe
+	 * @param recipe_id, which recipe will be edited
+	 * @param name
+	 * @param description
+	 * @param portion
+	 * @param total_calorie
+	 */
 	public void editRecipeTable(final int recipe_id,final String name, final String description,
 			final int portion, final double total_calorie){
 		final String query = "UPDATE Recipe SET name=?, description=?, portion=?, total_calorie=? "
@@ -890,19 +1067,34 @@ public class RecipeDao extends PcDao{
 			}
 		}, gkh);		
 	}
+	/**
+	 * deletes tag recipe relations for the given recipe 
+	 * @param recipe_id
+	 */
 	public void deleteTags(int recipe_id){
 		this.getTemplate().update("DELETE FROM HasTag WHERE recipe_id = ?",
 				new Object[] {recipe_id});
 	}
+	/**
+	 * deletes ingredient recipe relation for the given recipe
+	 * @param recipe_id
+	 */
 	public void deleteIngredients(int recipe_id){
 		this.getTemplate().update("DELETE FROM HasIngredient WHERE recipe_id = ?",
 				new Object[] {recipe_id});
 	}
+	/**
+	 * deletes photo recipe relation for the given recipe
+	 * @param recipe_id
+	 */
 	public void deleteRecipePhoto(int recipe_id){
 		this.getTemplate().update("DELETE FROM RecipePhoto WHERE recipe_id = ?",
 				new Object[] {recipe_id});
 	}
-	
+	/**
+	 * returns the recipe id-number of reports mapping for all reported recipes
+	 * @return
+	 */
 	public Map<Recipe,Integer> getReportedRecipes(){
 		Map<Recipe, Integer> recipeReportMap = new HashMap<Recipe, Integer>();
 		Recipe[] recipes = getAllRecipes();

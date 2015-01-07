@@ -34,7 +34,13 @@ public class EventDao extends PcDao {
 	
 	@Autowired
 	BadgeDao badgeDao;
-	
+	/**
+	 * get recent comment event of user
+	 * @param now, todays date
+	 * @param dayCount, how many days will be looked
+	 * @param user_id
+	 * @return
+	 */
 	public List<Event> getRecentCommentEventsOfUser(long now, int dayCount, long user_id){
 		
 		Timestamp right_now = new Timestamp(now);
@@ -56,7 +62,13 @@ public class EventDao extends PcDao {
 	
 		return recentCommentEvents;
 	}
-	
+	/**
+	 * get recent recipe event of user
+	 * @param now, today
+	 * @param dayCount, how many days will be looked
+	 * @param user_id
+	 * @return
+	 */
 	public List<Event> getRecentRecipeEventsOfUser(long now, int dayCount, long user_id){
 		
 		Timestamp right_now = new Timestamp(now);
@@ -87,7 +99,13 @@ public class EventDao extends PcDao {
 		}
 		return recentRecipeEvents;
 	}
-	
+	/**
+	 * get recent share events of the user
+	 * @param now
+	 * @param dayCount, how many days will be looked
+	 * @param user_id
+	 * @return
+	 */
 	public List<Event> getRecentShareEventsOfUser(long now, int dayCount, long user_id){
 		
 		Timestamp right_now = new Timestamp(now);
@@ -109,7 +127,13 @@ public class EventDao extends PcDao {
 	
 		return recentShareEvents;
 	}
-	
+	/**
+	 * get eat events of the user
+	 * @param now
+	 * @param dayCount, how many days will be looked
+	 * @param user_id
+	 * @return
+	 */
 	public List<Event> getRecentEatEventsOfUser(long now, int dayCount, long user_id){
 		
 		Timestamp right_now = new Timestamp(now);
@@ -136,7 +160,13 @@ public class EventDao extends PcDao {
 	
 		return recentEatEvents;
 	}
-	
+	/**
+	 * get recent like events of user
+	 * @param now
+	 * @param dayCount
+	 * @param user_id
+	 * @return
+	 */
 	public List<Event> getRecentLikeEventsOfUser(long now, int dayCount, long user_id){
 		
 		Timestamp right_now = new Timestamp(now);
@@ -163,7 +193,13 @@ public class EventDao extends PcDao {
 	
 		return recentLikeEvents;
 	}
-	
+	/**
+	 * get rate events of user
+	 * @param now
+	 * @param dayCount
+	 * @param user_id
+	 * @return
+	 */
 	public List<Event> getRecentRateEventsOfUser(long now, int dayCount, long user_id){
 		
 		Timestamp right_now = new Timestamp(now);
@@ -185,7 +221,13 @@ public class EventDao extends PcDao {
 	
 		return recentRateEvents;
 	}
-	
+	/**
+	 * get recent follow event of the user
+	 * @param now
+	 * @param dayCount
+	 * @param user_id
+	 * @return
+	 */
 	public List<Event> getRecentFollowEventsOfUser(long now, int dayCount, long user_id){
 		
 		Timestamp right_now = new Timestamp(now);
@@ -212,7 +254,13 @@ public class EventDao extends PcDao {
 	
 		return recentFollowEvents;
 	}
-	
+	/**
+	 * get recent badge events of user
+	 * @param now
+	 * @param dayCount
+	 * @param user_id
+	 * @return
+	 */
 	public List<Event> getRecentBadgeEventsOfUser(long now, int dayCount, long user_id){
 		
 		Timestamp right_now = new Timestamp(now);

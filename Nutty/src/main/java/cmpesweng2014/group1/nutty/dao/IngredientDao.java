@@ -9,7 +9,11 @@ import cmpesweng2014.group1.nutty.model.Ingredient;
 
 @Component
 public class IngredientDao extends PcDao{
-
+	/**
+	 * returns the calorie value for the given ingredient
+	 * @param id
+	 * @return
+	 */
 	public int getCalorieById(int id){
 		List<Ingredient> ingredients = this.getTemplate().query(
 				 
@@ -23,6 +27,11 @@ public class IngredientDao extends PcDao{
 		}
 		
 	}
+	/**
+	 * get the ingredient id for the given name
+	 * @param name
+	 * @return id 
+	 */
 	public int getIdByName(String name){
 		List<Ingredient> ingredients = this.getTemplate().query(
 				"SELECT Shrt_Desc as ing_name, Energ_Kcal as calorie, NDB_No as id FROM ingredients WHERE Shrt_Desc = ? ",
@@ -34,7 +43,10 @@ public class IngredientDao extends PcDao{
 			return ingredients.get(0).getId();
 		}
 	}
-	
+	/**
+	 * get all the ingredients in the database for autocomplete
+	 * @return the list of ingredients
+	 */
 	public Ingredient[] allIngredients(){
 		List<Ingredient> ingredientList = this.getTemplate().query(
 				"SELECT Shrt_Desc as ing_name, Energ_Kcal as calorie, NDB_No as id FROM ingredients",
@@ -48,6 +60,11 @@ public class IngredientDao extends PcDao{
 			return ingredients;
 		}
 	}
+	/**
+	 * get the ingredients with the given filter
+	 * @param filter
+	 * @return
+	 */
 	public Ingredient[] someIngredients(String filter) {
 		List<Ingredient> ingredientList = this.getTemplate().query(
 				"SELECT Shrt_Desc as ing_name, Energ_Kcal as calorie, NDB_No as id FROM ingredients WHERE Shrt_Desc LIKE \"%" + filter.toUpperCase() + "%\"",
