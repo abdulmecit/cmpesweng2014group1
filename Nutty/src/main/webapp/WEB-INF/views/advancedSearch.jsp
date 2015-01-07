@@ -173,7 +173,7 @@
 				document.body.className = "loading";
 				$.ajax({
 					type : "POST",
-					url : "../advancedSearchResults",
+					url : "/nutty/advancedSearchResults",
 					data : {
 						search: searchKey,
 						user_id : '${user.id}'

@@ -8,7 +8,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -548,9 +550,15 @@ public class HomeController {
 		
 		User u = userService.getUserDao().getUserById(user_id);
 		
-		//Convert from JSON String
 		Gson gson = new Gson();
-		String[] mustHaveIngredients = gson.fromJson(mustHaveIngredientz, String[].class);
+		String[] mustHaveIngredients = {};
+		
+		if(mustHaveIngredientz != null){
+			//Remove empty and duplicate "must have ingredients"		
+			HashSet<String> mustHaveIngredientSet = new HashSet<String>(Arrays.asList(gson.fromJson(mustHaveIngredientz, String[].class)));
+			mustHaveIngredientSet.remove(new String(""));
+			mustHaveIngredients = mustHaveIngredientSet.toArray(new String[0]);
+		}
 		
 		Recipe[] recipes;
 		if(search == null || search.isEmpty()){
@@ -565,7 +573,7 @@ public class HomeController {
 				recipes = searchService.semanticSearch(search);
 			}
 		}
-		if(recipes != null && mustHaveIngredients != null){				
+		if(recipes != null){				
 			for(int i=0; i<mustHaveIngredients.length; i++){
 				if(!mustHaveIngredients[i].isEmpty()){
 					Recipe[] temp = recipeService.getRecipeDao().mustHaveIngredient(mustHaveIngredients[i]);
