@@ -276,7 +276,7 @@
 								var results = JSON.parse(answer);
 								$("#overallContent").empty();
 								for (i = 0; i < results.length; i++) {
-									$("#overallContent").append( "<li class='list-group-item'><a href= '/nutty/recipe/"  + results[i].recipe_id +"'>" + results[i].name + "</p></li>");
+									$("#overallContent").append( "<a href= '/nutty/recipe/"  + results[i].id +"' class='list-group-item'><img src='"+results[i].photoUrl+"' title='"+results[i].name+"' width='30%' height='auto' hspace='50px'><span style='font-size: 1.2em; width:250px; height:auto; display:inline-block'>" + results[i].name + "</span></a></p>");
 									document.body.className = "loaded";
 								}			
 							}).fail(function(){
@@ -325,7 +325,7 @@
 									var results = JSON.parse(answer);
 									$("#overallContent").empty();
 									for (i = 0; i < results.length; i++) {
-										$("#overallContent").append( "<li class='list-group-item'><a href= '/nutty/recipe/"  + results[i].recipe_id +"'>" + results[i].name + "</p></li>");
+										$("#overallContent").append( "<a href= '/nutty/recipe/"  + results[i].id +"' class='list-group-item'><img src='"+results[i].photoUrl+"' title='"+results[i].name+"' width='30%' height='auto' hspace='50px'><span style='font-size: 1.2em; width:250px; height:auto; display:inline-block'>" + results[i].name + "</span></a></p>");
 										document.body.className = "loaded";
 									}			
 								}).fail(function(){
@@ -353,7 +353,7 @@
 									var results = JSON.parse(answer);
 									$("#likeContent").empty();
 									for (i = 0; i < results.length; i++) {
-										$("#likeContent").append( "<li class='list-group-item'><a href= '/nutty/recipe/"  + results[i].recipe_id +"'>" + results[i].name + "</p></li>");
+										$("#likeContent").append( "<a href= '/nutty/recipe/"  + results[i].id +"' class='list-group-item'><img src='"+results[i].photoUrl+"' title='"+results[i].name+"' width='30%' height='auto' hspace='50px'><span style='font-size: 1.2em; width:250px; height:auto; display:inline-block'>" + results[i].name + "</span></a></p>");
 										document.body.className = "loaded";
 									}			
 								}).fail(function(){
@@ -381,7 +381,7 @@
 									var results = JSON.parse(answer);
 									$("#tasteContent").empty();
 									for (i = 0; i < results.length; i++) {
-										$("#tasteContent").append( "<li class='list-group-item'><a href= '/nutty/recipe/"  + results[i].recipe_id +"'>" + results[i].name + "</p></li>");
+										$("#tasteContent").append( "<a href= '/nutty/recipe/"  + results[i].id +"' class='list-group-item'><img src='"+results[i].photoUrl+"' title='"+results[i].name+"' width='30%' height='auto' hspace='50px'><span style='font-size: 1.2em; width:250px; height:auto; display:inline-block'>" + results[i].name + "</span></a></p>");
 										document.body.className = "loaded";
 									}			
 								}).fail(function(){
@@ -410,7 +410,7 @@
 									var results = JSON.parse(answer);
 									$("#healthContent").empty();
 									for (i = 0; i < results.length; i++) {
-										$("#healthContent").append( "<li class='list-group-item'><a href= '/nutty/recipe/"  + results[i].recipe_id +"'>" + results[i].name + "</p></li>");
+										$("#healthContent").append( "<a href= '/nutty/recipe/"  + results[i].id +"' class='list-group-item'><img src='"+results[i].photoUrl+"' title='"+results[i].name+"' width='30%' height='auto' hspace='50px'><span style='font-size: 1.2em; width:250px; height:auto; display:inline-block'>" + results[i].name + "</span></a></p>");
 										document.body.className = "loaded";
 									}			
 								}).fail(function(){
@@ -439,7 +439,7 @@
 									var results = JSON.parse(answer);
 									$("#costContent").empty();
 									for (i = 0; i < results.length; i++) {
-										$("#costContent").append( "<li class='list-group-item'><a href= '/nutty/recipe/"  + results[i].recipe_id +"'>" + results[i].name + "</p></li>");
+										$("#costContent").append( "<a href= '/nutty/recipe/"  + results[i].id +"' class='list-group-item'><img src='"+results[i].photoUrl+"' title='"+results[i].name+"' width='30%' height='auto' hspace='50px'><span style='font-size: 1.2em; width:250px; height:auto; display:inline-block'>" + results[i].name + "</span></a></p>");
 										document.body.className = "loaded";
 									}			
 								}).fail(function(){
@@ -468,7 +468,7 @@
 									var results = JSON.parse(answer);
 									$("#easeContent").empty();
 									for (i = 0; i < results.length; i++) {
-										$("#easeContent").append( "<li class='list-group-item'><a href= '/nutty/recipe/"  + results[i].recipe_id +"'>" + results[i].name + "</p></li>");
+										$("#easeContent").append( "<a href= '/nutty/recipe/"  + results[i].id +"' class='list-group-item'><img src='"+results[i].photoUrl+"' title='"+results[i].name+"' width='30%' height='auto' hspace='50px'><span style='font-size: 1.2em; width:250px; height:auto; display:inline-block'>" + results[i].name + "</span></a></p>");
 										document.body.className = "loaded";
 									}			
 								}).fail(function(){

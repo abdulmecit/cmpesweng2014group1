@@ -729,24 +729,24 @@ public class HomeController {
 		
 		Recipe[] sortedRecipes=searchService.sortByRate(recipes, type);
 		
-		return gson.toJson(sortedRecipes);
+		return jsonEncode(sortedRecipes);
 	}
 	
-//	private String jsonEncode(Recipe[] sortedRecipes){
-//		String answer="";
-//		if(sortedRecipes != null){
-//			answer += "[";
-//			for(int i=0; i<sortedRecipes.length; i++){
-//				String[] photoUrls = recipeService.getRecipeAllPhotoUrl(sortedRecipes[i].getRecipe_id());
-//				answer += "{\"name\":\"" + sortedRecipes[i].getName() +"\", \"id\":\"" + sortedRecipes[i].getRecipe_id() + "\", \"photoUrl\":\"" + photoUrls[0] + "\"}";
-//				if(i != (sortedRecipes.length-1)) {
-//					answer += ",";
-//				}
-//			}
-//			answer += "]";
-//		}
-//		return answer;
-//	}
+	private String jsonEncode(Recipe[] sortedRecipes){
+		String answer="";
+		if(sortedRecipes != null){
+			answer += "[";
+			for(int i=0; i<sortedRecipes.length; i++){
+				String[] photoUrls = recipeService.getRecipeAllPhotoUrl(sortedRecipes[i].getRecipe_id());
+				answer += "{\"name\":\"" + sortedRecipes[i].getName() +"\", \"id\":\"" + sortedRecipes[i].getRecipe_id() + "\", \"photoUrl\":\"" + photoUrls[0] + "\"}";
+				if(i != (sortedRecipes.length-1)) {
+					answer += ",";
+				}
+			}
+			answer += "]";
+		}
+		return answer;
+	}
 	
 }
 
