@@ -17,6 +17,12 @@ import cmpesweng2014.group1.nutty.model.IngredientAmount;
 
 @Component
 public class FoodSelectionDao extends PcDao {
+	
+	/**
+	 * get the id of the food selection
+	 * @param foodSelection
+	 * @return
+	 */
 	public int getFoodSelectionIdByName(String foodSelection){
 		List<FoodSelection> foodSelections = this.getTemplate().query(
 				"SELECT * FROM FoodSelection WHERE fs_name = ? ",
@@ -28,13 +34,19 @@ public class FoodSelectionDao extends PcDao {
 			return foodSelections.get(0).getFs_id();
 		}
 	}
-	
+	/**
+	 * delete food selections for the given user
+	 * @param user_id
+	 */
 	public void deleteAllFoodSelection(long user_id){
 		this.getTemplate().update("DELETE FROM HasSelection WHERE user_id = ?", 
 				new Object[] { user_id});
-	}
-	
-	
+	}	
+	/**
+	 * add food selections for the user
+	 * @param fs_id
+	 * @param user_id
+	 */
 	public void addFoodSelection(final int fs_id, final long user_id){			
 		final String query = "INSERT INTO HasSelection (user_id, fs_id) VALUES (?,?)";
 
@@ -50,12 +62,19 @@ public class FoodSelectionDao extends PcDao {
 			}
 		});
 	}
-	
+	/**
+	 * delete all unpreferred food data for the user
+	 * @param user_id
+	 */
 	public void deleteAllUnpreferredFood(long user_id){
 		this.getTemplate().update("DELETE FROM Unprefer WHERE user_id = ?", 
 				new Object[] { user_id});
 	}
-	
+	/**
+	 * add unpreferred food group for the user
+	 * @param user_id
+	 * @param ing_grp_name
+	 */
 	public void addUnpreferredFood(final long user_id, final String ing_grp_name){
 		final String query = "INSERT INTO Unprefer (user_id, ing_grp_name) VALUES (?,?)";
 
@@ -71,7 +90,11 @@ public class FoodSelectionDao extends PcDao {
 			}
 		});
 	}
-	
+	/**
+	 * returns food selections for the given user
+	 * @param user_id
+	 * @return
+	 */
 	public FoodSelection[] getFoodSelectionForUser(long user_id){
 		List<FoodSelection> fsList = this.getTemplate().query(
 				"SELECT a.fs_id, a.fs_name, a.type FROM FoodSelection a, HasSelection b WHERE "
@@ -85,7 +108,12 @@ public class FoodSelectionDao extends PcDao {
 			return foodSelections;
 		}
 	}
-	
+	/**
+	 * get food selections for the user for the given type(food intolerance/health condition)
+	 * @param user_id
+	 * @param type
+	 * @return
+	 */
 	public FoodSelection[] getFoodSelectionForUser(long user_id, String type){
 		List<FoodSelection> fsList = this.getTemplate().query(
 				"SELECT a.fs_id, a.fs_name, a.type FROM FoodSelection a, HasSelection b WHERE "
@@ -99,7 +127,11 @@ public class FoodSelectionDao extends PcDao {
 			return foodSelections;
 		}
 	}
-	
+	/**
+	 * get unpreferred food for the given user
+	 * @param user_id
+	 * @return
+	 */
 	public String[] getUnpreferredFoodForUser(long user_id){		
 		List<String> unpreferred = this.getTemplate().queryForList(
 				"SELECT ing_grp_name FROM Unprefer WHERE user_id = ?",
@@ -112,8 +144,12 @@ public class FoodSelectionDao extends PcDao {
 			return unpreferred.toArray(new String[unpreferred.size()]);
 		}
 	}
-
-	//return true if there is an ingredient in the given array, that the user should not eat
+	/**
+	 * Takes the ingredient array and determines if the user shouldn't eat this recipe or not
+	 * @param ingredientAmounts
+	 * @param user_id
+	 * @return true if there is an ingredient in the given array, that the user should not eat
+	 */
 	public boolean hasSelection(IngredientAmount[] ingredientAmounts, long user_id) {
 		List<Ingredient> ingredientList = getFoodSelectionIngredients(user_id);
 		List<Ingredient> unpreferredList = getUnpreferredIngredients(user_id);
@@ -135,8 +171,11 @@ public class FoodSelectionDao extends PcDao {
 		}
 		return false;
 	}
-	
-	//return the list of ingredients for the food intolerance and health condition
+	/**
+	 * return the list of ingredients for the food intolerance and health condition of the user
+	 * @param user_id
+	 * @return
+	 */
 	public List<Ingredient> getFoodSelectionIngredients(long user_id){
 		FoodSelection[] foodIntolerance=getFoodSelectionForUser(user_id, "food_intolerance");
 		FoodSelection[] healthCondition=getFoodSelectionForUser(user_id, "health_condition");
@@ -159,8 +198,11 @@ public class FoodSelectionDao extends PcDao {
 		}
 		return ingredientList;
 	}
-
-	//return the unpreferred ingredients for that user
+	/**
+	 * returns the unpreferred ingredients for that user
+	 * @param user_id
+	 * @return
+	 */
 	public List<Ingredient> getUnpreferredIngredients(long user_id) {
 		List<Ingredient> ingList = this.getTemplate().query(
 				"SELECT Shrt_Desc as ing_name, Energ_Kcal as calorie, NDB_No as id "
@@ -174,8 +216,11 @@ public class FoodSelectionDao extends PcDao {
 		}
 		
 	}
-	
-	//returns all ingredients for the food selection (should not eat)
+	/**
+	 * returns all ingredients for the food selection (should not eat)
+	 * @param foodSelection
+	 * @return
+	 */
 	public List<Ingredient> getIngredientsForSelection(FoodSelection foodSelection){
 		List<Ingredient> ingList = this.getTemplate().query(
 				"SELECT Shrt_Desc as ing_name, Energ_Kcal as calorie, NDB_No as id "

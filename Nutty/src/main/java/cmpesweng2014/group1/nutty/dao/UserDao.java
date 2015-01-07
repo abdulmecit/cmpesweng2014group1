@@ -34,7 +34,17 @@ public class UserDao extends PcDao {
 	private RecipeDao recipeDao;
 	@Autowired
 	private CommentDao commentDao;
-	
+	/**
+	 * Creates new user.
+	 * @param email String, email address of the user
+	 * @param password String, password provided by the user
+	 * @param name String, name of the user
+	 * @param surname String, surname of the user
+	 * @param birthday Date
+	 * @param gender integer, 1 is it is female, 0 is male
+	 * @param photo
+	 * @return created user object
+	 */
 	public Long createUser(final String email, final String password,
 			final String name, final String surname, final Date birthday, final Integer gender,final String photo) {
 		final String query = "INSERT INTO User (email, password, name, surname, birthday, gender, isBanned, photo) VALUES (?,?,?,?,?,?,?,?)";
@@ -73,7 +83,10 @@ public class UserDao extends PcDao {
 
 		return newItemId;
 	}
-	
+	/**
+	 * Updates user information
+	 * @param u User
+	 */
 	public void updateUser(final User u){
 		final String query = "UPDATE User SET name=?, surname=?, email=?, password=?, birthday=?, gender=?, isBanned=?, photo=? WHERE user_id=?";
 
@@ -101,7 +114,11 @@ public class UserDao extends PcDao {
 			}
 		});
 	}
-	
+	/**
+	 * Get user object by providing email 
+	 * @param email
+	 * @return User object
+	 */
 	public User getUserByEmail(String email) {
 		List<User> users = this.getTemplate().query(
 				"SELECT * FROM User WHERE email = ? ",
@@ -113,7 +130,11 @@ public class UserDao extends PcDao {
 			return users.get(0);
 		}
 	}
-	
+	/**
+	 * Returns user object with the given id
+	 * @param id
+	 * @return User object
+	 */
 	public User getUserById(Long id) {		
 		List<User> users = this.getTemplate().query(
 				"SELECT * FROM User WHERE user_id = ? ",
@@ -125,6 +146,11 @@ public class UserDao extends PcDao {
 			return users.get(0);
 		}
 	}	
+	/**
+	 * Return recipes of the given user
+	 * @param id
+	 * @return recipe ids as an array
+	 */
 	public int[] getRecipes(Long id){
 		List<OwnsRecipe> recipes = this.getTemplate().query(
 				"SELECT * FROM OwnsRecipe WHERE user_id = ?",
@@ -136,6 +162,11 @@ public class UserDao extends PcDao {
 		}
 		return recipeIds;
 	}	
+	/**
+	 * Return which recipes were eaten by this user
+	 * @param user_id
+	 * @return recipe id s as an array 
+	 */
 	public int[] getEatenRecipes(Long user_id){
 		int eats = 1;
 		List<EatLikeRate> recipes = this.getTemplate().query(
@@ -148,7 +179,11 @@ public class UserDao extends PcDao {
 		}
 		return recipeIds;
 	}	
-	
+	/**
+	 * Get token id for the given user_id
+	 * @param user_id
+	 * @return token_id String
+	 */
 	public String getTokenById(long user_id){	
 		String token_id;
 		try{
@@ -161,7 +196,11 @@ public class UserDao extends PcDao {
 		}
 		return token_id;
 	}
-	
+	/**
+	 * Get time value for the reset password request
+	 * @param user_id
+	 * @return time value
+	 */
 	public Timestamp getTimestampById(Long user_id){	
 		Timestamp timestamp;
 		try{
@@ -174,7 +213,11 @@ public class UserDao extends PcDao {
 		}
 		return timestamp;
 	}
-	
+	/**
+	 * adds password reset request to the database
+	 * @param token_id
+	 * @param user_id
+	 */
 	public void addPasswordResetRequest(final String token_id, final long user_id){
 		// if there are old password reset requests delete them
 		if(!emptyCheckPassResetRequest(user_id)){
@@ -193,12 +236,19 @@ public class UserDao extends PcDao {
 			}
 		});
 	}
-	
+	/**
+	 * deletes password reset request for the given user
+	 * @param user_id 
+	 */
 	public void deletePasswordResetRequest(final Long user_id){
 		this.getTemplate().update("DELETE FROM PassResetRequests WHERE user_id = ?", 
 				new Object[] { user_id});
 	}
-	
+	/**
+	 * adding follow request
+	 * @param follower_id, who will follow
+	 * @param followed_id, who will be followed
+	 */
 	public void addFollowRequest(final long follower_id, final long followed_id){
 		final String query = "INSERT INTO `FollowRequests` (follower_id, followed_id) VALUES (?,?)";
 		this.getTemplate().update(new PreparedStatementCreator() {
@@ -213,12 +263,20 @@ public class UserDao extends PcDao {
 			}
 		});
 	}
-	
+	/**
+	 * deletes follow request
+	 * @param follower_id, who wanted to follow
+	 * @param followed_id, who will be followed
+	 */
 	public void deleteFollowRequest(final long follower_id, final long followed_id){
 		this.getTemplate().update("DELETE FROM FollowRequests WHERE follower_id = ? AND followed_id=?", 
 				new Object[] { follower_id, followed_id });
 	}
-	
+	/**
+	 * returns users who requested to follow the given user
+	 * @param user_id, owner of the requests
+	 * @return user objects
+	 */
 	public User[] getFollowRequests(long user_id){
 		List<User> followRequesterList = this.getTemplate().query(
 				"SELECT user_id, email, password, name, surname, "
@@ -234,7 +292,11 @@ public class UserDao extends PcDao {
 			return followRequesters;
 		}
 	}
-	
+	/**
+	 * add follower
+	 * @param follower_id, who is following
+	 * @param followed_id, who will be followed
+	 */
 	public void addFollower(final long follower_id, final long followed_id){
 		final String query = "INSERT INTO Follows (follower_id, followed_id) VALUES (?,?)";
 
@@ -250,11 +312,21 @@ public class UserDao extends PcDao {
 				return ps;
 			}
 		});
-	}	
+	}
+	/**
+	 * cancel following
+	 * @param follower_id
+	 * @param followed_id
+	 */
 	public void unfollow(final long follower_id, final long followed_id){
 		this.getTemplate().update("DELETE FROM Follows WHERE follower_id = ? AND followed_id=?", 
 				new Object[] { follower_id, followed_id });
 	}
+	/**
+	 * returns the list of followers 
+	 * @param user_id, get followers of this recipe
+	 * @return user objects
+	 */
 	public User[] getFollowers(long user_id){
 		List<User> followerList = this.getTemplate().query(
 				"SELECT user_id, email, password, name, surname, "
@@ -270,7 +342,11 @@ public class UserDao extends PcDao {
 			return users;
 		}
 	}
-	
+	/**
+	 * returns following list of the user
+	 * @param user_id
+	 * @return user objects
+	 */
 	public User[] getFollowings(long user_id){
 		List<User> followingList = this.getTemplate().query(
 				"SELECT user_id, email, password, name, surname, "
@@ -286,8 +362,11 @@ public class UserDao extends PcDao {
 			return users;
 		}
 	}
-	
-	
+	/**
+	 * returns userRecipeScore objects for the given user
+	 * @param user_id
+	 * @return
+	 */
 	public List<UserRecipeScore> getUserRecipeScore(long user_id){
 		
 		List<UserRecipeScore> scoreList = this.getTemplate().query(
@@ -307,35 +386,11 @@ public class UserDao extends PcDao {
 			return scoreList;
 		}
 	}
-	
-/*	
-	public List<User> searchUserByNameSurname(String search){
-		String words[] = search.split(" ");
-		String query = "SELECT * FROM User WHERE ";
-		for(int i=0; i<words.length; i++){
-			query += " name LIKE '%" + words[i] + "%' ";
-			if(i<words.length-1){
-				query += "OR";
-			}
-		}	
-		query+="UNION SELECT * FROM User WHERE";
-		for(int i=0; i<words.length; i++){
-			query += " surname LIKE '%" + words[i] + "%' ";
-			if(i<words.length-1){
-				query += "OR";
-			}
-		}	
-		List<User> users = this.getTemplate().query(
-				query,
-				new UserRowMapper());
-		
-		if (users.isEmpty()) {
-			return null;
-		} else {
-			return users;
-		}
-	}
-*/	
+	/**
+	 * searches for users with the given string
+	 * @param search String, query
+	 * @return user list
+	 */
 	public List<User> searchUserByNameSurname(String search){
 		String query = "SELECT a.* FROM User a, ( SELECT user_id, concat(name, ' ', surname) as fullName FROM `User` ) b WHERE a.user_id = b.user_id AND b.fullName LIKE ?";
 		List<User> users = this.getTemplate().query(query,new Object[] { "%" + search + "%"  }, new UserRowMapper());
@@ -346,7 +401,10 @@ public class UserDao extends PcDao {
 			return users;
 		}
 	}
-	
+	/**
+	 * Adds privacy options for the given user
+	 * @param user_id
+	 */
 	public void addPrivacyOptions(final long user_id){
 		
 		if(emptyCheckPrivacy(user_id)) {
@@ -368,7 +426,12 @@ public class UserDao extends PcDao {
 			});
 		}
 	}
-	
+	/**
+	 * updates privacy options for the given user
+	 * @param user_id
+	 * @param column String, which option will be updated
+	 * @param value integer, new value for that column
+	 */
 	public void updatePrivacyOption(final long user_id, final String column, final int value){
 		
 		if(!emptyCheckPrivacy(user_id)) {
@@ -386,7 +449,11 @@ public class UserDao extends PcDao {
 			});
 		}
 	}
-	
+	/**
+	 * returns privacy options for the given user
+	 * @param user_id
+	 * @return PrivacyOptions object
+	 */
 	public PrivacyOptions getPrivacyOptions(long user_id) {		
 		List<PrivacyOptions> privOptions = this.getTemplate().query(
 				"SELECT * FROM PrivacyOption WHERE user_id = ? ",
@@ -398,7 +465,12 @@ public class UserDao extends PcDao {
 			return privOptions.get(0);
 		}
 	}
-	
+	/**
+	 * get privacy option value for a given column
+	 * @param user_id
+	 * @param column
+	 * @return
+	 */
 	public Integer getPrivacyOptionValue(long user_id, final String column) {		
 		Integer po;
 		try{
@@ -411,7 +483,11 @@ public class UserDao extends PcDao {
 		}
 		return po;
 	}
-	
+	/**
+	 * checks whether privacy options exist for this user or not
+	 * @param user_id
+	 * @return true if no previous privacy option
+	 */
 	public boolean emptyCheckPrivacy(long user_id){
 		int count = this.getTemplate().queryForObject(
 				"SELECT COUNT(*) FROM PrivacyOption WHERE user_id=?",
@@ -423,7 +499,11 @@ public class UserDao extends PcDao {
 			return false;
 		}
 	}
-	
+	/**
+	 * Checks whether there exists a password reset request for that user
+	 * @param user_id
+	 * @return true if there is no request
+	 */
 	public boolean emptyCheckPassResetRequest(long user_id){
 		int count = this.getTemplate().queryForObject(
 				"SELECT COUNT(*) FROM PassResetRequests WHERE user_id=?",
@@ -435,7 +515,10 @@ public class UserDao extends PcDao {
 			return false;
 		}
 	}
-	
+	/**
+	 * Deletes the account of the given user
+	 * @param user_id
+	 */
 	public void deactivateAccount(long user_id){
 		//delete comments of this user
 		Comment[] comments=commentDao.commentsOfUser(user_id);
