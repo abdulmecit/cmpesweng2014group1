@@ -141,7 +141,7 @@ body {
 				<li><a href="/nutty/advancedSearch">Advanced<br />&nbsp;&nbsp;Search
 				</a></li>
 				<li><a id="report" href="/nutty/user/reportPage">Reports</a></li>
-				<li><a id="AddRec" href="/nutty/addRecipe">Add Recipe</a></li>
+				<li><a id="addRec" href="/nutty/addRecipe">Add Recipe</a></li>
 				<li><a id="profile" href="/nutty/user/profile/${user.id}">My Profile</a></li>
 				<li><a id="logout" href="/nutty/logout">Logout</a></li>
 				<li id="settings" class="dropdown"><a href="#"
@@ -271,38 +271,7 @@ body {
 			})
 		}
 		
-		/*		
-		function showResult(answer) {
-		var resultsWindow  = window.open("", "_blank", "left=500, top=350, width=200, height=150, resizable=1, scrollbars=1");
-		var results = answer.split('|');
-		var path = results[0];
-		var content = "<h3>Results:</h3>";
-		for (i = 1; i < results.length; i++) {
-		dummy = results[i].split('>');
-		content += "<li class='list-group-item'><a href='javascript:;' onclick='window.opener.location.href = \" " + path + "/" + dummy[1] +"  \"; window.close();'>" + dummy[0] + "</p></li>";
-		}
-		content += "<button type='button' onclick='window.close()'> Close </button>";
 		
-		resultsWindow.document.write(content);
-		return false;
-		}
-		
-		$("#searchResults").html("");
-						if (answer == "") {
-							alert("Sorry, Nothing to show :(");
-						} else {
-							window.location = "../basicSearchResult";
-							var results = answer
-									.split('|');
-							var path = results[0];
-							for (i = 1; i < results.length; i++) {
-								dummy = results[i]
-										.split('>');
-								$("#searchResults")
-										.append(
-												"<a href='" + path + "/" + dummy[1] + "'>"
-														+ dummy[0]
-														+ "</p>");*/
 </script>
 </body>
 </html>
