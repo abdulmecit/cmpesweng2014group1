@@ -298,7 +298,7 @@ body {
 		}
 
 		window.ondragover = function(e) {
-			e.preventDefault()
+			e.preventDefault();
 		}
 		window.ondrop = function(e) {
 			e.preventDefault();

@@ -511,14 +511,13 @@ body {
 			return (!str || /^\s*$/.test(str));
 		}
 
-		/*
 		window.ondragover = function(e) {
-			e.preventDefault()
+			e.preventDefault();
 		}
 		window.ondrop = function(e) {
 			e.preventDefault();
 			upload(e.dataTransfer.files[0]);
-		}*/
+		}
 
 		/*
 		* Photo upload to imgur  
