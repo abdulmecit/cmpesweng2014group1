@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 
 public class Event implements Comparable<Event>{
 	private User user;
+	private int is_act_allowed;
 	private String action;
 	private Object target;
 	private String target_photo_url;
@@ -13,9 +14,10 @@ public class Event implements Comparable<Event>{
 		super();
 	}
 
-	public Event(User user, String action, Object target, String target_photo_url, Timestamp timestamp) {
+	public Event(User user, int  is_act_allowed, String action, Object target, String target_photo_url, Timestamp timestamp) {
 		super();
 		this.user = user;
+		this.setIs_act_allowed(is_act_allowed);
 		this.action = action;
 		this.target = target;
 		this.setTarget_photo_url(target_photo_url);
@@ -28,6 +30,14 @@ public class Event implements Comparable<Event>{
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public int getIs_act_allowed() {
+		return is_act_allowed;
+	}
+
+	public void setIs_act_allowed(int is_act_allowed) {
+		this.is_act_allowed = is_act_allowed;
 	}
 
 	public String getAction() {
