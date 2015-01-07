@@ -793,6 +793,18 @@ public class HomeController {
 		return jsonEncode(sortedRecipes);
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/sortBySimilarity")
+	public String sortBySimilarity(
+			@RequestParam(value = "results", required = true) String results){
+		
+		//Convert from JSON String
+		Gson gson = new Gson();
+		Recipe[] recipes = gson.fromJson(results, Recipe[].class);
+		
+		return jsonEncode(recipes);
+	}
+	
 	private String jsonEncode(Recipe[] sortedRecipes){
 		String answer="";
 		if(sortedRecipes != null){

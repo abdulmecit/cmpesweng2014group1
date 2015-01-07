@@ -115,7 +115,9 @@
 				<div class="panel-body">
 					<h5 style="text-align: center;">Results According to</h5>
 					<ul class="nav nav-tabs nav-justified">
-						<li role="presentation" class="filter active" id="overall"><a
+						<li role="presentation" class="filter active" id="similarity"><a
+							class="btn btn-link">Similarity</a></li>
+						<li role="presentation" class="filter" id="overall"><a
 							class="btn btn-link">Overall</a></li>
 						<li role="presentation" class="filter" id="likes"><a
 							class="btn btn-link">Like</a></li>
@@ -128,8 +130,13 @@
 						<li role="presentation" class="filter" id="ease"><a
 							class="btn btn-link">Ease Rate</a></li>
 					</ul>
-					<ul id="overallContent" class="list-group"
+					<ul id="similarityContent" class="list-group"
 						style="overflow: scroll; display: block;">
+						<li><br>
+							<p>Loading, please wait..</p> <br></li>
+					</ul>
+					<ul id="overallContent" class="list-group"
+						style="overflow: scroll; display: none;">
 						<li><br>
 							<p>Loading, please wait..</p> <br></li>
 					</ul>
@@ -248,6 +255,7 @@
 						user_id : '${user.id}'
 					}}).done(function(answer) {
 						if ((answer == "") || (answer == "[]") || (answer == null)) {
+							$("#similarityContent").append("<p>Nothing to show :(</p>");
 							$("#tasteContent").append("<p>Nothing to show :(</p>");
 							$("#healthContent").append("<p>Nothing to show :(</p>");
 							$("#costContent").append("<p>Nothing to show :(</p>");
@@ -263,32 +271,27 @@
 							$("#healthContent").css('display', 'none');
 							$("#costContent").css('display', 'none');
 							$("#easeContent").css('display', 'none');
-							$("#overallContent").css('display', 'block');
+							$("#overallContent").css('display', 'none');
+							$("#similarityContent").css('display', 'block');
 							
 							$.ajax({
 								type:"POST",
-								url:"sortBy",
+								url:"sortBySimilarity",
 								data:{
-									results:advSearchResult,
-									type:"overall"
+									results:advSearchResult
 								}
 							}).done(function(answer){
 								var results = JSON.parse(answer);
-								$("#overallContent").empty();
+								$("#similarityContent").empty();
 								for (i = 0; i < results.length; i++) {
-									$("#overallContent").append( "<a href= '/nutty/recipe/"  + results[i].id +"' class='list-group-item'><img src='"+results[i].photoUrl+"' title='"+results[i].name+"' width='30%' height='auto' hspace='50px'><span style='font-size: 1.2em; width:250px; height:auto; display:inline-block'>" + results[i].name + "</span></a></p>");
+									$("#similarityContent").append( "<a href= '/nutty/recipe/"  + results[i].id +"' class='list-group-item'><img src='"+results[i].photoUrl+"' title='"+results[i].name+"' width='30%' height='auto' hspace='50px'><span style='font-size: 1.2em; width:250px; height:auto; display:inline-block'>" + results[i].name + "</span></a></p>");
 									document.body.className = "loaded";
 								}			
 							}).fail(function(){
 								alert("Ajax call was unsuccessfull :(");	
 								document.body.className = "loaded";
 								
-							});
-// 							var resultsRec = JSON.parse(answer);
-// 							for (i = 0; i < resultsRec.length; i++) {
-// 								$("#results").append( "<li class='list-group-item'><a href= '/nutty/recipe/"  + resultsRec[i].id +"'>" + resultsRec[i].name + "</p></li>");
-// 								document.body.className = "loaded";
-// 							}			
+							});		
 						}
 					}).fail(function (){
 						alert("Ajax call was unsuccessfull :(");	
@@ -312,6 +315,7 @@
 								$("#healthContent").css('display', 'none');
 								$("#costContent").css('display', 'none');
 								$("#easeContent").css('display', 'none');
+								$("#similarityContent").css('display', 'none');
 								$("#overallContent").css('display', 'block');
 								
 								$.ajax({
@@ -334,12 +338,23 @@
 									
 								});
 							}
+							else if(searchFilter == "similarity"){
+								$("#likeContent").css('display', 'none');
+								$("#tasteContent").css('display', 'none');
+								$("#healthContent").css('display', 'none');
+								$("#costContent").css('display', 'none');
+								$("#easeContent").css('display', 'none');
+								$("#overallContent").css('display', 'none');
+								$("#similarityContent").css('display', 'block');
+								document.body.className = "loaded";
+							}
 							else if(searchFilter == "likes") {
 								$("#tasteContent").css('display', 'none');
 								$("#healthContent").css('display', 'none');
 								$("#costContent").css('display', 'none');
 								$("#easeContent").css('display', 'none');
 								$("#overallContent").css('display', 'none');
+								$("#similarityContent").css('display', 'none');
 								$("#likeContent").css('display', 'block');
 								
 								$.ajax({
@@ -368,6 +383,7 @@
 								$("#easeContent").css('display', 'none');
 								$("#overallContent").css('display', 'none');
 								$("#likeContent").css('display', 'none');
+								$("#similarityContent").css('display', 'none');
 								$("#tasteContent").css('display', 'block');
 								
 								$.ajax({
@@ -397,6 +413,7 @@
 								$("#overallContent").css('display', 'none');
 								$("#likeContent").css('display', 'none');
 								$("#tasteContent").css('display', 'none');
+								$("#similarityContent").css('display', 'none');
 								$("#healthContent").css('display', 'block');
 								
 								$.ajax({
@@ -426,6 +443,7 @@
 								$("#likeContent").css('display', 'none');
 								$("#tasteContent").css('display', 'none');
 								$("#healthContent").css('display', 'none');
+								$("#similarityContent").css('display', 'none');
 								$("#costContent").css('display', 'block');
 								
 								$.ajax({
@@ -455,6 +473,7 @@
 								$("#tasteContent").css('display', 'none');
 								$("#healthContent").css('display', 'none');
 								$("#costContent").css('display', 'none');
+								$("#similarityContent").css('display', 'none');
 								$("#easeContent").css('display', 'block');
 								
 								$.ajax({
