@@ -141,8 +141,8 @@ body {
 				<li><a href="/nutty/advancedSearch">Advanced<br />&nbsp;&nbsp;Search
 				</a></li>
 				<li><a id="report" href="/nutty/user/reportPage">Reports</a></li>
-				<li><a href="/nutty/addRecipe">Add Recipe</a></li>
-				<li><a href="/nutty/user/profile/${user.id}">My Profile</a></li>
+				<li><a id="AddRec" href="/nutty/addRecipe">Add Recipe</a></li>
+				<li><a id="profile" href="/nutty/user/profile/${user.id}">My Profile</a></li>
 				<li><a id="logout" href="/nutty/logout">Logout</a></li>
 				<li id="settings" class="dropdown"><a href="#"
 					data-toggle="dropdown" class="dropdown-toggle"><span
@@ -173,8 +173,14 @@ body {
 		$(document).ready(function(){
 			if('${isLogged}')
 				checkResults();
-			if('${user.id}'!=0)
+			if('${user.id}'!=0){
 				$("#report").css('display', 'none');
+			}
+			else{
+				$("#profile").css('display', 'none');
+				$("#addRec").css('display', 'none');
+				$("#requests").css('display', 'none');
+			}
 		});
 		
 		function checkResults(){
