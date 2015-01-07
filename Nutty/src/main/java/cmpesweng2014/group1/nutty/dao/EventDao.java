@@ -47,6 +47,7 @@ public class EventDao extends PcDao {
 		Timestamp past = new Timestamp(now - (dayCount * 86400000));
 		
 		User u = userDao.getUserById(user_id);
+		int isActivityAllowed = userDao.getPrivacyOptionValue(user_id, "visible_activities");
 					
 		List<Comment> recentComments = this.getTemplate().query(
 				"SELECT * FROM Comment WHERE user_id = ? AND date BETWEEN ? AND ?",
@@ -57,7 +58,7 @@ public class EventDao extends PcDao {
 		for(Comment c : recentComments){
 			Recipe r = recipeDao.getRecipeById(c.getRecipe_id());
 			String photo = recipeDao.getAllPhotoUrl(c.getRecipe_id())[0];
-			recentCommentEvents.add(new Event(u, "add_comment", r, photo, c.getTimestamp()));
+			recentCommentEvents.add(new Event(u, isActivityAllowed, "add_comment", r, photo, c.getTimestamp()));
 		}
 	
 		return recentCommentEvents;
@@ -75,6 +76,7 @@ public class EventDao extends PcDao {
 		Timestamp past = new Timestamp(now - (dayCount * 86400000));
 		
 		User u = userDao.getUserById(user_id);
+		int isActivityAllowed = userDao.getPrivacyOptionValue(user_id, "visible_activities");
 					
 		List<Recipe> recentRecipes = this.getTemplate().query(
 				"SELECT b.* FROM OwnsRecipe a, Recipe b WHERE a.user_id = ? AND a.recipe_id = b.recipe_id "
@@ -87,13 +89,13 @@ public class EventDao extends PcDao {
 			String photo = recipeDao.getAllPhotoUrl(r.getRecipe_id())[0];
 
 			if(!r.getCreatedDate().equals(r.getUpdatedDate()))
-				recentRecipeEvents.add(new Event(u, "edit_recipe", r, photo, r.getUpdatedDate()));
+				recentRecipeEvents.add(new Event(u, isActivityAllowed, "edit_recipe", r, photo, r.getUpdatedDate()));
 			else{
 				if(recipeDao.getParent(r) == null){
-					recentRecipeEvents.add(new Event(u, "add_recipe", r, photo, r.getUpdatedDate()));
+					recentRecipeEvents.add(new Event(u, isActivityAllowed, "add_recipe", r, photo, r.getUpdatedDate()));
 				}
 				else{
-					recentRecipeEvents.add(new Event(u, "derive_recipe", r, photo, r.getUpdatedDate()));
+					recentRecipeEvents.add(new Event(u, isActivityAllowed, "derive_recipe", r, photo, r.getUpdatedDate()));
 				}
 			}
 		}
@@ -112,6 +114,7 @@ public class EventDao extends PcDao {
 		Timestamp past = new Timestamp(now - (dayCount * 86400000));
 		
 		User u = userDao.getUserById(user_id);
+		int isActivityAllowed = userDao.getPrivacyOptionValue(user_id, "visible_activities");
 					
 		List<SharesRecipe> recentShares = this.getTemplate().query(
 				"SELECT * FROM SharesRecipe WHERE user_id = ? AND date BETWEEN ? AND ?",
@@ -122,7 +125,7 @@ public class EventDao extends PcDao {
 		for(SharesRecipe s : recentShares){
 			Recipe r = recipeDao.getRecipeById(s.getRecipe_id());
 			String photo = recipeDao.getAllPhotoUrl(s.getRecipe_id())[0];
-			recentShareEvents.add(new Event(u, "share_recipe", r, photo, s.getDate()));
+			recentShareEvents.add(new Event(u, isActivityAllowed, "share_recipe", r, photo, s.getDate()));
 		}
 	
 		return recentShareEvents;
@@ -140,6 +143,7 @@ public class EventDao extends PcDao {
 		Timestamp past = new Timestamp(now - (dayCount * 86400000));
 		
 		User u = userDao.getUserById(user_id);
+		int isActivityAllowed = userDao.getPrivacyOptionValue(user_id, "visible_activities");
 					
 		List<EatLikeRate> recentEats = this.getTemplate().query(
 				"SELECT * FROM EatLikeRate WHERE user_id = ? AND eat_date BETWEEN ? AND ?",
@@ -151,10 +155,10 @@ public class EventDao extends PcDao {
 			Recipe r = recipeDao.getRecipeById(elr.getRecipeId());
 			String photo = recipeDao.getAllPhotoUrl(elr.getRecipeId())[0];
 			if(elr.getEats() == 1)
-				recentEatEvents.add(new Event(u, "eat_recipe", r, photo, elr.getEat_date()));
+				recentEatEvents.add(new Event(u, isActivityAllowed, "eat_recipe", r, photo, elr.getEat_date()));
 			/*
 			else
-				recentEatEvents.add(new Event(u, "not_eat_recipe", r, photo, elr.getEat_date()));
+				recentEatEvents.add(new Event(u, isActivityAllowed, "not_eat_recipe", r, photo, elr.getEat_date()));
 			*/
 		}
 	
@@ -173,6 +177,7 @@ public class EventDao extends PcDao {
 		Timestamp past = new Timestamp(now - (dayCount * 86400000));
 		
 		User u = userDao.getUserById(user_id);
+		int isActivityAllowed = userDao.getPrivacyOptionValue(user_id, "visible_activities");
 					
 		List<EatLikeRate> recentLikes = this.getTemplate().query(
 				"SELECT * FROM EatLikeRate WHERE user_id = ? AND like_date BETWEEN ? AND ?",
@@ -184,10 +189,10 @@ public class EventDao extends PcDao {
 			Recipe r = recipeDao.getRecipeById(elr.getRecipeId());
 			String photo = recipeDao.getAllPhotoUrl(elr.getRecipeId())[0];
 			if(elr.getLikes() == 1)
-				recentLikeEvents.add(new Event(u, "like_recipe", r, photo, elr.getLike_date()));
+				recentLikeEvents.add(new Event(u, isActivityAllowed, "like_recipe", r, photo, elr.getLike_date()));
 			/*
 			else
-				recentLikeEvents.add(new Event(u, "not_like_recipe", r, photo, elr.getLike_date()));
+				recentLikeEvents.add(new Event(u, isActivityAllowed, "not_like_recipe", r, photo, elr.getLike_date()));
 			*/
 		}
 	
@@ -206,6 +211,7 @@ public class EventDao extends PcDao {
 		Timestamp past = new Timestamp(now - (dayCount * 86400000));
 		
 		User u = userDao.getUserById(user_id);
+		int isActivityAllowed = userDao.getPrivacyOptionValue(user_id, "visible_activities");
 					
 		List<EatLikeRate> recentRates = this.getTemplate().query(
 				"SELECT * FROM EatLikeRate WHERE user_id = ? AND rate_date BETWEEN ? AND ?",
@@ -216,7 +222,7 @@ public class EventDao extends PcDao {
 		for(EatLikeRate elr : recentRates){
 			Recipe r = recipeDao.getRecipeById(elr.getRecipeId());
 			String photo = recipeDao.getAllPhotoUrl(elr.getRecipeId())[0];
-			recentRateEvents.add(new Event(u, "rate_recipe", r, photo, elr.getRate_date()));
+			recentRateEvents.add(new Event(u, isActivityAllowed, "rate_recipe", r, photo, elr.getRate_date()));
 		}
 	
 		return recentRateEvents;
@@ -234,6 +240,7 @@ public class EventDao extends PcDao {
 		Timestamp past = new Timestamp(now - (dayCount * 86400000));
 		
 		User u = userDao.getUserById(user_id);
+		int isActivityAllowed = userDao.getPrivacyOptionValue(user_id, "visible_activities");
 					
 		List<FollowsUser> recentFollows = this.getTemplate().query(
 				"SELECT * FROM Follows WHERE follower_id = ? OR followed_id = ? AND date BETWEEN ? AND ?",
@@ -244,11 +251,11 @@ public class EventDao extends PcDao {
 		for(FollowsUser f : recentFollows){
 			if(f.getFollowed_id() == user_id){
 				User target = userDao.getUserById(f.getFollower_id());
-				recentFollowEvents.add(new Event(u, "get_followed", target, target.getPhoto(), f.getDate()));
+				recentFollowEvents.add(new Event(u, isActivityAllowed, "get_followed", target, target.getPhoto(), f.getDate()));
 			}
 			else{
 				User target = userDao.getUserById(f.getFollowed_id());
-				recentFollowEvents.add(new Event(u, "follow_user", target, target.getPhoto(), f.getDate()));
+				recentFollowEvents.add(new Event(u, isActivityAllowed, "follow_user", target, target.getPhoto(), f.getDate()));
 			}
 		}
 	
@@ -267,6 +274,7 @@ public class EventDao extends PcDao {
 		Timestamp past = new Timestamp(now - (dayCount * 86400000));
 		
 		User u = userDao.getUserById(user_id);
+		int isActivityAllowed = userDao.getPrivacyOptionValue(user_id, "visible_activities");
 					
 		List<UserBadge> recentBadges = this.getTemplate().query(
 				"SELECT * FROM UserBadge WHERE user_id = ? AND date BETWEEN ? AND ?",
@@ -278,7 +286,7 @@ public class EventDao extends PcDao {
 
 			Badge target = badgeDao.getBadgeById(b.getBadge_id());
 			String photo = "http://ak2.polyvoreimg.com/cgi/img-thing/size/l/tid/91774.jpg";
-			recentBadgeEvents.add(new Event(u, "earn_badge", target, photo, b.getDate()));
+			recentBadgeEvents.add(new Event(u, isActivityAllowed, "earn_badge", target, photo, b.getDate()));
 		}
 	
 		return recentBadgeEvents;
