@@ -793,8 +793,8 @@ public class HomeController {
 		return jsonEncode(sortedRecipes);
 	}
 	
+	@RequestMapping(value = "/sortBySimilarity")
 	@ResponseBody
-	@RequestMapping(value = "/sortBySimilarity", method = RequestMethod.POST)
 	public String sortBySimilarity(
 			@RequestParam(value = "results", required = true) String results){
 		
