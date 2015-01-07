@@ -95,10 +95,11 @@ public class UserService {
 	}
 	
 	/**
+	 * to use forgot password
 	 * 
-	 * @param token
-	 * @param user_id
-	 * @return
+	 * @param token randomly generated token
+	 * @param user_id the id of the user
+	 * @return if the user is allowed to change password
 	 */
 	public boolean tokensDoMatch(String token, long user_id) {
 		String hashedToken = userDao.getTokenById(user_id);

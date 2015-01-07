@@ -651,8 +651,22 @@ public class HomeController {
 	
 	@RequestMapping(value = "/bestOfHealthCategory")
 	@ResponseBody
-	public String[] getBestOfHealth(){
-		Recipe[] allRecipes = recipeService.getAllRecipes();
+	public String[] getBestOfHealth(HttpSession session){
+        Object logged = session.getAttribute("isLogged");
+        Recipe[] allRecipes = null;
+        boolean isLogged = logged == null ? false : (Boolean) logged;
+        if (isLogged) {
+            User u = (User) session.getAttribute("user");
+            allRecipes = null;
+            try {
+                allRecipes = recommService.getRecommendation(u.getId());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else{
+            allRecipes = recipeService.getAllRecipes();
+        }
+
 		Random rand = new Random();
 		int randHealth = rand.nextInt(2);
 
@@ -670,8 +684,21 @@ public class HomeController {
 	
 	@RequestMapping(value = "/bestOfEaseCategory")
 	@ResponseBody
-	public String[] getBestOfEase(){
-		Recipe[] allRecipes = recipeService.getAllRecipes();
+	public String[] getBestOfEase(HttpSession session){
+		Object logged = session.getAttribute("isLogged");
+        Recipe[] allRecipes = null;
+        boolean isLogged = logged == null ? false : (Boolean) logged;
+        if (isLogged) {
+            User u = (User) session.getAttribute("user");
+            allRecipes = null;
+            try {
+                allRecipes = recommService.getRecommendation(u.getId());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else{
+            allRecipes = recipeService.getAllRecipes();
+        }
 		Random rand = new Random();
 		int randEase = rand.nextInt(2);
 
@@ -689,8 +716,21 @@ public class HomeController {
 	
 	@RequestMapping(value = "/bestOfTasteCategory")
 	@ResponseBody
-	public String[] getBestOfTaste(){
-		Recipe[] allRecipes = recipeService.getAllRecipes();
+	public String[] getBestOfTaste(HttpSession session){
+		Object logged = session.getAttribute("isLogged");
+        Recipe[] allRecipes = null;
+        boolean isLogged = logged == null ? false : (Boolean) logged;
+        if (isLogged) {
+            User u = (User) session.getAttribute("user");
+            allRecipes = null;
+            try {
+                allRecipes = recommService.getRecommendation(u.getId());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else{
+            allRecipes = recipeService.getAllRecipes();
+        }
 		Random rand = new Random();
 		int randTaste = rand.nextInt(2);
 		
@@ -708,8 +748,21 @@ public class HomeController {
 	
 	@RequestMapping(value = "/bestOfCostCategory")
 	@ResponseBody
-	public String[] getBestOfCost(){
-		Recipe[] allRecipes = recipeService.getAllRecipes();
+	public String[] getBestOfCost(HttpSession session){
+		Object logged = session.getAttribute("isLogged");
+        Recipe[] allRecipes = null;
+        boolean isLogged = logged == null ? false : (Boolean) logged;
+        if (isLogged) {
+            User u = (User) session.getAttribute("user");
+            allRecipes = null;
+            try {
+                allRecipes = recommService.getRecommendation(u.getId());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else{
+            allRecipes = recipeService.getAllRecipes();
+        }
 		Random rand = new Random();
 		int randCost = rand.nextInt(2);
 
