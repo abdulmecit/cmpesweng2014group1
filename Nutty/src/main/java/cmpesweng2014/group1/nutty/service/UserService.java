@@ -31,14 +31,36 @@ public class UserService {
 	private BadgeDao badgeDao;
 
 
+	/**
+	 * gets the userDao 
+	 * 
+	 * @return UserDao
+	 */
 	public UserDao getUserDao() {
 		return userDao;
 	}
 
+	/**
+	 * setter for userDao
+	 * 
+	 * @param userDao
+	 */
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
 
+	/**
+	 * 
+	 * @param email String, user's email address
+	 * @param password String, user's password
+	 * @param name String, user's first name
+	 * @param surname String, user's surname
+	 * @param birthday Date, user's birthday
+	 * @param gender int, user's gender. 0 for male, 1 for female
+	 * @param photo String, the url of user's profile picture
+	 * @return if the user created successfully or not
+	 */
+	
 	public Message createUser(String email, String password, String name,
 			String surname, Date birthday, Integer gender, String photo) {
 		if(userDao.getUserByEmail(email) != null)
@@ -52,6 +74,12 @@ public class UserService {
 		return new Message(1, u, "Signup is successful.");
 	}
 	
+	/**
+	 * 
+	 * @param email user's email
+	 * @param password user's password, without encode
+	 * @return if the user is allowed returns the User, otherwise null
+	 */
 	public User canLogin(String email, String password) {
 		User u = userDao.getUserByEmail(email);
 		if (u == null) { // no user
@@ -66,6 +94,12 @@ public class UserService {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param token
+	 * @param user_id
+	 * @return
+	 */
 	public boolean tokensDoMatch(String token, long user_id) {
 		String hashedToken = userDao.getTokenById(user_id);
 		if (hashedToken == null) { // no token
@@ -81,8 +115,13 @@ public class UserService {
 		}
 	}
 	
-	//add food intolerance and health condition
-	//it is the same to add food intolerance and health condition 
+	/**
+	 * add food intolerance and health condition
+	 * it is the same for both
+	 * 
+	 * @param user the user which owns the given food selection
+	 * @param foodSelectionNames names for user's food selections
+	 */
 	public void addFoodSelection(User user, String[] foodSelectionNames){
 		foodSelectionDao.deleteAllFoodSelection(user.getId());
 		if(foodSelectionNames == null)
@@ -95,7 +134,13 @@ public class UserService {
 			foodSelectionDao.addFoodSelection(fs_id,user.getId());
 		}		
 	}
-	//add unpreferred food 
+	 
+	/**
+	 * add unpreferred food
+	 * 
+	 * @param user user the user which owns the given food selection
+	 * @param ing_grp_names names of unpreferred ingredients
+	 */
 	public void addUnpreferredFood(User user, String[] ing_grp_names){
 		foodSelectionDao.deleteAllUnpreferredFood(user.getId());
 		if(ing_grp_names == null)
@@ -104,47 +149,103 @@ public class UserService {
 			foodSelectionDao.addUnpreferredFood(user.getId(), ing_grp_names[i]);
 		}		
 	}	
-	//returns food intolerances for the given user as an array of foodSelection objects
+ 
+	/**
+	 * 
+	 * @param user the user
+	 * @return food intolerances for the given user as an array of foodSelection objects
+	 */
 	public FoodSelection[] getFoodIntolerances(User user){
 		return foodSelectionDao.getFoodSelectionForUser(user.getId(), "food_intolerance");
-	}
-	//returns health conditions for the given user as an array of foodSelection objects
+	} 
+	/**
+	 * 
+	 * @param user the user
+	 * @return health conditions for the given user as an array of foodSelection objects
+	 */
 	public FoodSelection[] getHealthCondition(User user){
 		return foodSelectionDao.getFoodSelectionForUser(user.getId(), "health_condition");
 	}
-	//returns food intolerances and health conditions combined
+	
+	/**
+	 * 
+	 * @param user the user
+	 * @return food intolerances and health conditions combined
+	 */
 	public FoodSelection[] getFoodSelection(User user){
 		return foodSelectionDao.getFoodSelectionForUser(user.getId());
 	}
-	//returns unpreferred foods for the given user
+ 
+	/**
+	 * 
+	 * @param user the user
+	 * @return unpreferred foods for the given user
+	 */
 	public String[] getUnpreferredForUser(User user){
 		return foodSelectionDao.getUnpreferredFoodForUser(user.getId());
 	}
+	/**
+	 * to add a follow request from a follower to followed
+	 * 
+	 * @param follower_id the id of the user who wants to follow
+	 * @param followed_id the id of the user whom the follower wants to follow
+	 */
 	public void addFollowRequest(long follower_id, long followed_id){
 		userDao.addFollowRequest(follower_id, followed_id);
 	}
+	/**
+	 * To delete the follow request from db
+	 * 
+	 * @param follower_id id of the follow request sender
+	 * @param followed_id id of the one who has a follow request
+	 */
 	public void deleteFollowRequest(long follower_id, long followed_id){
 		userDao.deleteFollowRequest(follower_id, followed_id);
 	}
-	//add follower
-	//for now no private users, directly added to follower list
+	
+	/**
+	 * to add follower
+	 * 
+	 * @param follower_id the id of the user who wants to follow
+	 * @param followed_id the id of the user whom the follower wants to follow
+	 */
 	public void addFollower(long follower_id, long followed_id){
 		userDao.addFollower(follower_id, followed_id);
 	}
-	//unfollow
-	//deletes the row. not sure if the query will be problematic or not?
+	
+	/**
+	 * to delete the follower
+	 * 
+	 * @param follower_id user id of the follower
+	 * @param followed_id user id of the followed
+	 */
 	public void unfollow(long follower_id, long followed_id){
 		userDao.unfollow(follower_id, followed_id);
 	}
-	//returns followers as user objects
+ 
+	/**
+	 * 
+	 * @param user_id the id of the user
+	 * @return followers as user objects
+	 */
 	public User[] getFollowerList(long user_id){
 		return userDao.getFollowers(user_id);
 	}
-	//returns following list as user objects
+ 
+	/**
+	 * 
+	 * @param user_id the id of the user
+	 * @return following list as user objects
+	 */
 	public User[] getFollowingList(long user_id){
 		return userDao.getFollowings(user_id);
 	}
-	//returns number of followers
+	
+	/**
+	 * 
+	 * @param user_id the id of the user
+	 * @return number of followers
+	 */
 	public int getNumberOfFollowers(long user_id){
 		if(getFollowerList(user_id)==null){
 			return 0;
@@ -153,7 +254,12 @@ public class UserService {
 			return getFollowerList(user_id).length;
 		}
 	}
-	//returns number of following
+ 
+	/**
+	 * 
+	 * @param user_id the id of the user
+	 * @return the number of following
+	 */
 	public int getNumberOfFollowing(long user_id){
 		if(getFollowingList(user_id)==null){
 			return 0;
@@ -162,7 +268,13 @@ public class UserService {
 			return getFollowingList(user_id).length;
 		}
 	}
-	//determines the follow status of an user against the other
+	/**
+	 * determines the follow status of an user against the other
+	 * 
+	 * @param follower_id id of the user which we want to know the follow status from
+ 	 * @param followed_id id of the user which we want to know the follow status to
+	 * @return a string value true for following, false for not following, request for there is a live request
+	 */
 	public String getFollowStatus(long follower_id, long followed_id){
 		if(isFollower(follower_id, followed_id))
 			return "true";
@@ -172,8 +284,14 @@ public class UserService {
 			else
 				return "false";
 		}
-	}	
-	//determines if user with follower_id is a follower of the user with followed_id
+	}
+	
+	/**
+	 * 
+	 * @param follower_id id of the follower
+	 * @param followed_id id of the followed
+	 * @return if user with follower_id is a follower of the user with followed_id
+	 */
 	public boolean isFollower(long follower_id, long followed_id){
 		User[] followerList = getFollowerList(followed_id);
 		if(followerList == null){
@@ -185,7 +303,13 @@ public class UserService {
 			return true;
 		return false;
 	}
-	//determines if user with follower_id has sent a follow request to the user with followed_id
+ 
+	/**
+	 * 
+	 * @param follower_id id of the follower
+	 * @param followed_id id of the followed
+	 * @return if user with follower_id has sent a follow request to the user with followed_id
+	 */
 	public boolean hasFollowRequest(long follower_id, long followed_id){
 		User[] followRequesterList = getUserDao().getFollowRequests(followed_id);
 		if(followRequesterList == null){
@@ -197,6 +321,12 @@ public class UserService {
 			return true;
 		return false;
 	}	
+	
+	/**
+	 * 
+	 * @param user_id the id of the user
+	 * @return badge of the given user
+	 */
 	public Badge getBadge(long user_id){
 		List<UserRecipeScore> scoreList = userDao.getUserRecipeScore(user_id);
 		if(scoreList == null){
@@ -214,6 +344,11 @@ public class UserService {
 			return badge;
 		}
 	}
+	/**
+	 * 
+	 * @param user_id the id of the user
+	 * @return the score of the given user
+	 */
 	public int getScore(long user_id){
 		int score = 0;
 		List<UserRecipeScore> scoreList = userDao.getUserRecipeScore(user_id);
