@@ -152,7 +152,7 @@ body {
 								<br> <br> <br> <br>
 								<div class="col-xs-2">
 									Portion:<input type="text" class="form-control" id="portion"
-										value='${recipe.portion }' name="portion" placeholder="portion">
+										value='${recipe.portion }' name="portion" title="only number" placeholder="portion">
 								</div>
 								<div class="col-xs-6">
 									<!--<br> <font color="blue">${message.message}</font> -->
@@ -292,7 +292,7 @@ body {
 		function addInput(div, ing_name, meas_types) {
 			var newDiv = document.createElement('div');
 			newDiv.id = 'textBoxDiv' + counter;
-			var content = "<p><div class='col-sm-2' align='left'> <input type='text' class='form-control' id='amount' name='amount[]' placeholder='number'> </div>"
+			var content = "<p><div class='col-sm-2' align='left'> <input type='text' class='form-control amount' id='amount' name='amount[]' title='only number \".\" and \"/\"' placeholder='number'> </div>"
 					+ "<div class='col-sm-3' align='left'> <select name='measType[]' style='width:100%; height:35px; line-height:35px; overflow:hidden;'> <option value='gr' selected>gr</option>";
 			for (var i = 0; i < meas_types.length; i++) {
 				content += "<option value='" + meas_types[i] + "'>"
@@ -310,6 +310,15 @@ body {
 			document.getElementById(div).appendChild(newDiv);
 			counter++;
 	        formCheck();
+	        
+	        $('.amount').keypress(function(key) {
+		        if(key.charCode > 45 && key.charCode < 58) {
+		        return true;
+		        }
+		        else {
+		        return false; 
+		        }
+		    });
 		}
 
 		/*
@@ -484,6 +493,17 @@ body {
 				return false;
 			}
 		});
+		
+		$(document).ready(function() {
+		    $('#portion').keypress(function(key) {
+		        if(key.charCode > 47 && key.charCode < 58) {
+		        return true;
+		        }
+		        else {
+		        return false; 
+		        }
+		    });
+		  });
 	</script>
 </body>
 </html>

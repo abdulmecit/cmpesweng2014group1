@@ -78,7 +78,7 @@ body {
 				<!-- 	    		<img id="profilePic" alt="Photo of the User" src="http://cdn.sett.com/images/user/20140502/chef57b22ab552661a6852fe44c0e7e59e63.jpg" width="100%" height="auto"/> -->
 			</div>
 			<br> <br> <br>
-			<h2>Best Of</h2>
+			<h2>Recipe's of ${visitedUser.name} </h2>
 			<br> <br>
 			<div id="bestOf">
 				<p>Loading Recipes, please wait..</p>
