@@ -308,7 +308,7 @@ $(function(){
 							document.body.className = "loaded";
 						} else {
 							advSearchResult = answer;
-							
+							console.log(answer);
 							$("#likeContent").css('display', 'none');
 							$("#tasteContent").css('display', 'none');
 							$("#healthContent").css('display', 'none');
