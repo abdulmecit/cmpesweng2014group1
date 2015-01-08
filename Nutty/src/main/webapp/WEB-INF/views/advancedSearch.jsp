@@ -26,6 +26,21 @@
 	@import url(http://fonts.googleapis.com/css?family=Varela+Round);
 </style>
 
+<script type="text/javascript">
+
+$(function(){
+	$("#likeContent").css('display', 'none');
+	$("#tasteContent").css('display', 'none');
+	$("#healthContent").css('display', 'none');
+	$("#costContent").css('display', 'none');
+	$("#easeContent").css('display', 'none');
+	$("#overallContent").css('display', 'none');
+	$("#similarityContent").css('display', 'none');
+});
+
+
+</script>
+
 <body>
 	<div id=loadingScreen></div>
 	<div class="container">
@@ -172,8 +187,8 @@
 
 	<script type="text/javascript">
 		
+	var searchKey = '${searchKey}';
 		$(document).ready(function(){
-			var searchKey = '${searchKey}';
 			if(searchKey != null && searchKey.trim().length > 0){
 				$("#searchKey").val(searchKey);
 				$("#results").empty();
@@ -185,33 +200,52 @@
 						search: searchKey,
 						user_id : '${user.id}'
 					}}).done(function(answer) {
-						if ((answer == "") || (answer == "[]")) {
-							$("#results").append("<p>Nothing to show :(</p>");
+						if ((answer == "") || (answer == "[]") || (answer == null)) {
+							$("#similarityContent").empty().append("<p>Nothing to show :(</p>");
+							$("#tasteContent").empty().append("<p>Nothing to show :(</p>");
+							$("#healthContent").empty().append("<p>Nothing to show :(</p>");
+							$("#costContent").empty().append("<p>Nothing to show :(</p>");
+							$("#easeContent").empty().append("<p>Nothing to show :(</p>");
+							$("#overallContent").empty().append("<p>Nothing to show :(</p>");
+							$("#likeContent").empty().append("<p>Nothing to show :(</p>");
 							document.body.className = "loaded";
 						} else {
-							var resultsRec = JSON.parse(answer);
-							for (i = 0; i < resultsRec.length; i++) {
-								$("#results").append( "<li class='list-group-item'><a href= '/nutty/recipe/"  + resultsRec[i].id +"'>" + resultsRec[i].name + "</p></li>");
+							advSearchResult = answer;
+							
+							$("#likeContent").css('display', 'none');
+							$("#tasteContent").css('display', 'none');
+							$("#healthContent").css('display', 'none');
+							$("#costContent").css('display', 'none');
+							$("#easeContent").css('display', 'none');
+							$("#overallContent").css('display', 'none');
+							$("#similarityContent").css('display', 'block');
+							
+							$.ajax({
+								type:"POST",
+								url:"../sortBySimilarity",
+								data:{
+									results:advSearchResult
+								}
+							}).done(function(answer){
+								var results = JSON.parse(answer);
+								$("#similarityContent").empty();
+								for (i = 0; i < results.length; i++) {
+									$("#similarityContent").append( "<a href= '/nutty/recipe/"  + results[i].id +"' class='list-group-item'><img src='"+results[i].photoUrl+"' title='"+results[i].name+"' width='30%' height='auto' hspace='50px'><span style='font-size: 1.2em; width:250px; height:auto; display:inline-block'>" + results[i].name + "</span></a></p>");
+									document.body.className = "loaded";
+								}			
+							}).fail(function(){
+								alert("Ajax call was unsuccessfull :(");	
 								document.body.className = "loaded";
-							}	
+								
+							});		
 						}
 					}).fail(function (){
-						alert("Ajax call was unsuccessfull :(");
+						alert("Ajax call was unsuccessfull :(");	
 						document.body.className = "loaded";
 					});
 			}
 		});
 		
-		$(document).ready(function(){
-			$("#likeContent").css('display', 'none');
-			$("#tasteContent").css('display', 'none');
-			$("#healthContent").css('display', 'none');
-			$("#costContent").css('display', 'none');
-			$("#easeContent").css('display', 'none');
-			$("#overallContent").css('display', 'none');
-			$("#similarityContent").css('display', 'none');
-		});
-	
 	   // to add new input text
 		var counter = 1;
 		function addInput(divName) {
@@ -314,6 +348,10 @@
 			$(".filter")
 					.click(
 							function() {
+								var url = "sortBy";
+								if(searchKey != null && searchKey.trim().length > 0){
+									url = "../sortBy";
+								}
 								$(this).addClass("active").siblings().removeClass(
 										"active");
 								searchFilter = this.id;
@@ -329,7 +367,7 @@
 								
 								$.ajax({
 									type:"POST",
-									url:"sortBy",
+									url:url,
 									data:{
 										results:advSearchResult,
 										type:searchFilter
@@ -368,7 +406,7 @@
 								
 								$.ajax({
 									type:"POST",
-									url:"sortBy",
+									url:url,
 									data:{
 										results:advSearchResult,
 										type:searchFilter
@@ -397,7 +435,7 @@
 								
 								$.ajax({
 									type:"POST",
-									url:"sortBy",
+									url:url,
 									data:{
 										results:advSearchResult,
 										type:searchFilter
@@ -427,7 +465,7 @@
 								
 								$.ajax({
 									type:"POST",
-									url:"sortBy",
+									url:url,
 									data:{
 										results:advSearchResult,
 										type:searchFilter
@@ -457,7 +495,7 @@
 								
 								$.ajax({
 									type:"POST",
-									url:"sortBy",
+									url:url,
 									data:{
 										results:advSearchResult,
 										type:searchFilter
@@ -487,7 +525,7 @@
 								
 								$.ajax({
 									type:"POST",
-									url:"sortBy",
+									url:url,
 									data:{
 										results:advSearchResult,
 										type:searchFilter
