@@ -616,6 +616,46 @@ public class UserController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(value = "/addFoodSelectionsREST")
+	public Message addFoodSelectionsREST(
+			@RequestParam(value = "FoodSelection[]",required = false) String foodSelectionz,
+			@RequestParam(value = "user_id", required = true) Long user_id
+			){
+
+		//Convert from JSON String
+		Gson gson = new Gson();
+		String[] foodSelection = gson.fromJson(foodSelectionz, String[].class);
+		
+		User u = (User) userService.getUserDao().getUserById(user_id);
+		userService.addFoodSelection(u, foodSelection);
+		
+		return new Message(1, null, "Your food selections are successfully added to the system.");
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/addUnpreferredREST")
+	public Message addUnpreferredREST(
+			@RequestParam(value = "unpreferred", required = false) String unpreferred,
+			@RequestParam(value = "user_id", required = true) Long user_id
+			){
+		
+		userService.getFoodSelectionDao().addUnpreferredFood(user_id, unpreferred);
+		
+		return new Message(1, null, "Your unpreferred foods are successfully added to the system.");
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/clearUnpreferredsREST")
+	public Message deleteUnpreferredREST(
+			@RequestParam(value = "user_id", required = true) Long user_id
+			){
+		
+		userService.getFoodSelectionDao().deleteAllUnpreferredFood(user_id);
+		
+		return new Message(1, null, "Your unpreferred foods are successfully removed from system.");
+	}
+	
+	@ResponseBody
 	@RequestMapping(value = "/isFollowerREST")
 	public boolean isFollower(
 			@RequestParam(value = "visiting_user_id", required = true) Long visiting_user_id,

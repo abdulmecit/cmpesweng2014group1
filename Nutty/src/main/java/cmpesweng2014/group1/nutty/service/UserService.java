@@ -48,6 +48,24 @@ public class UserService {
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
+	
+	/**
+	 * gets the foodSelectionDao 
+	 * 
+	 * @return FoodSelectionDao
+	 */
+	public FoodSelectionDao getFoodSelectionDao() {
+		return foodSelectionDao;
+	}
+
+	/**
+	 * setter for foodSelectionDao
+	 * 
+	 * @param foodSelectionDao
+	 */
+	public void setFoodSelectionDao(FoodSelectionDao foodSelectionDao) {
+		this.foodSelectionDao = foodSelectionDao;
+	}
 
 	/**
 	 * 
