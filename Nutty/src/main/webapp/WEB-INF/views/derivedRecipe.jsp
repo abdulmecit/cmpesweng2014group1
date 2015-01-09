@@ -1,7 +1,5 @@
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1" import="java.sql.*"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <html lang="en">
 <jsp:include page="header.jsp" flush="true" />
@@ -14,7 +12,7 @@ body {
 }
 
 .ui-autocomplete-loading {
-	background: white url("../resources/img/ui-anim_basic_16x16.gif") right
+	background: white url("./resources/img/ui-anim_basic_16x16.gif") right
 		center no-repeat;
 }
 
@@ -48,8 +46,8 @@ body {
 
 #dropArea {
 	text-align: center;
-	line-height: 50px;
-	line-width: 50px;
+	line-height: 15px;
+	line-width: 15px;
 	margin: auto;
 	font-size: 15px;
 	display: inline-block;
@@ -64,7 +62,7 @@ body {
 }
 
 .uploaded #dropArea {
-	display: none
+	display: inline
 }
 
 .uploading #progress {
@@ -78,16 +76,6 @@ body {
 
 </head>
 <body>
-	<%
-		if (session.getAttribute("isLogged") == null
-				|| ((Boolean) (session.getAttribute("isLogged")) == false)) {
-	%>
-	<h4 style='text-align: center; margin-bottom: 10px; margin-top: 10px'>
-		<em>please login to see this page</em>
-	</h4>
-	<%
-		} else {
-	%>
 	<div class="container">
 		<form method="POST">
 			<div class="panel panel-default">
@@ -113,33 +101,34 @@ body {
 								</div>
 								<input id="elma" style="visibility: hidden; width: 0px;"
 									type="file" onchange="upload(this.files[0])"> <input
-									type="hidden" class="form-control" id="photo" name="photo"></input>
+									type="hidden" class="form-control" id="photo" name="photo"
+									disabled></input>
 								<p id="progress">Uploading...</p>
 							</div>
-							<div id="dynamicPhoto"
-								style="margin-left: 15px; min-height: 500px;"></div>
-
-							<c:forEach var="photo" items="${photoUrl}" varStatus="counter">
-								<div class='input-group input-group-sm'>
-									<span class='input-group-btn'>
-										<button type='button' class='btn btn-default'
-											onclick='deletePhoto(0${counter.index})'
-											id='delphoto0${counter.index}'>
-											<span>&times;</span>
-										</button>
-									</span><input type='text' class='form-control' id='link'
-										name='link[]'
-										style='visibility: hidden; width: 80px; overflow: scroll'
-										value='${photoUrl[counter.index]}' readonly> <img
-										src='${photoUrl[counter.index]}' class='img-responsive'
-										style='height: 80px; width: 80px'>
-								</div>
-							</c:forEach>
+							<div id="dynamicPhoto" 
+								style="margin-left: 15px; min-height: 500px;">
+								<c:forEach var="photo" items="${photoUrl}" varStatus="counter">
+								<div id="photoDiv0${counter.index}">
+									<div class='input-group input-group-sm'>
+										<span class='input-group-btn'>
+											<button type='button' class='btn btn-default'
+												onclick='deletePhoto("0${counter.index}")'
+												id='delphoto0${counter.index}'>
+												<span>&times;</span>
+											</button>
+										</span><input type='text' class='form-control' id='link'
+											name='link[]'
+											style='visibility: hidden; width: 80px; overflow: scroll'
+											value='${photoUrl[counter.index]}' readonly> <img
+											src='${photoUrl[counter.index]}' class='img-responsive'
+											style='height: 80px; width: 80px'>
+									</div>
+									</div>
+								</c:forEach>
+							</div>
 							<br>
 						</div>
 					</div>
-
-
 					<div class="col-xs-10">
 						<div class="row">
 							<!------------------------  Get Name & Portion  --------------------------->
@@ -152,7 +141,8 @@ body {
 								<br> <br> <br> <br>
 								<div class="col-xs-2">
 									Portion:<input type="text" class="form-control" id="portion"
-										value='${recipe.portion }' name="portion" title="only number" placeholder="portion">
+										value='${recipe.portion }' name="portion" title="only number"
+										placeholder="portion">
 								</div>
 								<div class="col-xs-6">
 									<br> <font color="blue">${message.message}</font>
@@ -172,45 +162,43 @@ body {
 											</div>
 											<div class="panel-body" style="min-height: 50px">
 												<div id="dynamicInput">
-													<div>
-														<c:forEach var="ingredientAmount"
-															items="${ingredientAmounts}" varStatus="loop">
-															<div id="textBoxDiv0${loop.index}">
-																<p>
-																<div class="col-sm-2" align="left">
-																	<input type="text" class="form-control" id="amount"
-																		name="amount[]" value="${ingredientAmount.amount}">
-																</div>
-																<div class='col-sm-3' align='left'>
-																	<select name='measType[]'
-																		style="width: 100%; height: 35px; line-height: 35px; overflow: hidden;">
-																		<option value='gr'
-																			<c:if test ="${ingredientAmount.meas_type == 'gr'}">selected</c:if>>gr</option>
-																		<c:forEach var="item"
-																			items="${measTypesMap[loop.index]}">
-																			<option value="${item}"
-																				<c:if test ="${ingredientAmount.meas_type == item}">selected</c:if>>${item}</option>
-																		</c:forEach>
-																	</select>
-																</div>
-																<div class="col-sm-7">
-																	<div class="input-group">
-																		<input type="text" class="form-control"
-																			id="ingredient" name="ingredient[]"
-																			value="${ingredientAmount.ing_name}" readonly>
-																		<span class="input-group-btn">
-																			<button type="button" class="btn btn-default"
-																				onclick="deleteText('0${loop.index}')"
-																				id="delingredient">
-																				<span>&times;</span>
-																			</button>
-																		</span>
-																	</div>
-																</div>
-																<br> <br>
+													<c:forEach var="ingredientAmount"
+														items="${ingredientAmounts}" varStatus="loop">
+														<div id="textBoxDiv0${loop.index}">
+															<p>
+															<div class="col-sm-2" align="left">
+																<input type="text" class="form-control" id="amount"
+																	name="amount[]" value="${ingredientAmount.amount}">
 															</div>
-														</c:forEach>
-													</div>
+															<div class='col-sm-3' align='left'>
+																<select name='measType[]'
+																	style="width: 100%; height: 35px; line-height: 35px; overflow: hidden;">
+																	<option value='gr'
+																		<c:if test ="${ingredientAmount.meas_type == 'gr'}">selected</c:if>>gr</option>
+																	<c:forEach var="item"
+																		items="${measTypesMap[loop.index]}">
+																		<option value="${item}"
+																			<c:if test ="${ingredientAmount.meas_type == item}">selected</c:if>>${item}</option>
+																	</c:forEach>
+																</select>
+															</div>
+															<div class="col-sm-7">
+																<div class="input-group">
+																	<input type="text" class="form-control" id="ingredient"
+																		name="ingredient[]"
+																		value="${ingredientAmount.ing_name}" readonly>
+																	<span class="input-group-btn">
+																		<button type="button" class="btn btn-default"
+																			onclick="deleteText('0${loop.index}')"
+																			id="delingredient">
+																			<span>&times;</span>
+																		</button>
+																	</span>
+																</div>
+															</div>
+															<br> <br>
+														</div>
+													</c:forEach>
 												</div>
 											</div>
 										</div>
@@ -226,13 +214,12 @@ body {
 											<input type="text" id="myTag" class="form-control"
 												placeholder="tags..."> <span class="input-group-btn">
 												<button class="btn btn-default" type="button"
-													onclick="addTag('dynamicTag')">Add Tag</button>
+													onclick="addTag('dynamicTag')">Tag</button>
 											</span>
 										</div>
 									</div>
-									<div class="panel-body" style="min-height: 50px">
+									<div class="panel-body" style="min-height: 230px">
 										<div id="dynamicTag">
-
 											<div>
 												<c:forEach var="tagItem" items="${tags}" varStatus="loop">
 													<div id="tagDiv0${loop.index}">
@@ -250,13 +237,11 @@ body {
 													</div>
 												</c:forEach>
 											</div>
-
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-
 						<br>
 						<div class="row">
 							<div class="col-xs-12">
@@ -272,27 +257,26 @@ body {
 								</div>
 							</div>
 						</div>
-							<input type="hidden" id="from_page" name="from_page" value="${from_page}">	  							
+						<input type="hidden" id="from_page" name="from_page"
+							value="${from_page}">
 					</div>
 				</div>
 			</div>
 		</form>
 	</div>
-	<%
-		}
-	%>
+	
 	<!---------------------------  Functions  ------------------------------>
 	<script type="text/javascript">
 		var counter = 1;
 		var tagCounter = 1;
-		
+		var photoCounter = 1;
 		/*
 		* Dynamic div creation for added ingredients 
 		*/
 		function addInput(div, ing_name, meas_types) {
 			var newDiv = document.createElement('div');
 			newDiv.id = 'textBoxDiv' + counter;
-			var content = "<p><div class='col-sm-2' align='left'> <input type='text' class='form-control amount' id='amount' name='amount[]' title='only number \".\" and \"/\"' placeholder='number'> </div>"
+			var content = "<p><div class='col-sm-2' align='left'> <input type='text' class='form-control amount' id='amount' title='only number \".\" and \"/\"' name='amount[]' placeholder='number'> </div>"
 					+ "<div class='col-sm-3' align='left'> <select name='measType[]' style='width:100%; height:35px; line-height:35px; overflow:hidden;'> <option value='gr' selected>gr</option>";
 			for (var i = 0; i < meas_types.length; i++) {
 				content += "<option value='" + meas_types[i] + "'>"
@@ -309,10 +293,10 @@ body {
 			newDiv.innerHTML = content;
 			document.getElementById(div).appendChild(newDiv);
 			counter++;
-	        formCheck();
-	        
-	        $('.amount').keypress(function(key) {
-		        if(key.charCode > 45 && key.charCode < 58) {
+			formCheck();
+			
+			$('.amount').keypress(function(key) {
+		        if(key.charCode > 45 && key.charCode < 58 || key.charCode == 44) {
 		        return true;
 		        }
 		        else {
@@ -320,22 +304,7 @@ body {
 		        }
 		    });
 		}
-
-		/*
-		* Delete ingredient div  
-		*/
-		function deleteText(i) {
-			$("#textBoxDiv" + i).remove();
-			formCheck();
-		}
-
-		/*
-		* Delete tag div
-		*/
-		function deleteTag(i) {
-			$("#tagDiv" + i).remove();
-		}
-
+    
 		/*
 		* Dynamic div creation for added tags 
 		*/
@@ -355,6 +324,21 @@ body {
 			document.getElementById(div).appendChild(newDiv);
 			tagCounter++;
 			$("#myTag").val("");
+		}
+
+		/*
+		* Delete tag div
+		*/
+		function deleteTag(i) {
+			$("#tagDiv" + i).remove();
+		}
+
+		/*
+		* Delete ingredient div  
+		*/
+		function deleteText(i) {
+			$("#textBoxDiv" + i).remove();
+			formCheck();
 		}
 
 		$(document).on("keyup change",
@@ -461,32 +445,42 @@ body {
 		$("#addIngredient").autocomplete({
 			source : function(request, response) {
 				$.ajax({
-					url : "../someIngredients2",
+					url : "someIngredients2",
 					dataType : "json",
 					data : {
 						filter : request.term
 					},
 					success : function(data) {
-						response($.map(data, function(item) {
-							return {
-								label : item.ing_name,
-								id : item.id,
-							};
-						}));
+						if (!data.length) {
+							response([ {
+								label : 'Sorry! No matches found.',
+								value : "false"
+							} ]);
+						} else {
+							response($.map(data, function(item) {
+								return {
+									label : item.ing_name,
+									id : item.id,
+									value : "true"
+								};
+							}));
+						}
 					}
 				});
 			},
 			minLength : 3,
 			select : function(event, ui) {
-				$.ajax({
-					type : "POST",
-					url : "../measTypesOfIngr",
-					data : {
-						ing_id : ui.item.id
-					}
-				}).done(function(meas_types) {
-					addInput('dynamicInput', ui.item.label, meas_types);
-				});
+				if (ui.item.value == "true") {
+					$.ajax({
+						type : "POST",
+						url : "measTypesOfIngr",
+						data : {
+							ing_id : ui.item.id
+						}
+					}).done(function(meas_types) {
+						addInput('dynamicInput', ui.item.label, meas_types);
+					});
+				}
 				//clear text box
 				$(this).val("");
 				return false;
@@ -506,4 +500,3 @@ body {
 	</script>
 </body>
 </html>
-
