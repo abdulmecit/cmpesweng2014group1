@@ -261,7 +261,7 @@ $(function(){
 			}
 			$.ajax({
 				type : "POST",
-				url : "advancedSearchResults",
+				url : "/nutty/advancedSearchResults",
 				data : {
 					search: $("#searchKey").val(),
 					calorieIntervalLow : $("#caloriesMin").val(),
@@ -307,10 +307,6 @@ $(function(){
 					function() {
 						document.body.className = "loading";
 
-						var url = "sortBy";
-						if(searchKey != null && searchKey.trim().length > 0){
-							url = "../sortBy";
-						}
 						$(this).addClass("active").siblings().removeClass(
 								"active");
 						searchFilter = this.id;
@@ -326,7 +322,7 @@ $(function(){
 								if($(contentHolder)[0].innerText.trim() == "Loading, please wait.."){
 									$.ajax({
 										type:"POST",
-										url:url,
+										url:"/nutty/sortBy",
 										data:{
 											results:JSON.stringify(advSearchResultIds),
 											type:searchFilter

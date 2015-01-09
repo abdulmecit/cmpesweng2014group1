@@ -12,7 +12,7 @@ body {
 }
 
 .ui-autocomplete-loading {
-	background: white url("./resources/img/ui-anim_basic_16x16.gif") right
+	background: white url("../resources/img/ui-anim_basic_16x16.gif") right
 		center no-repeat;
 }
 
@@ -108,22 +108,24 @@ body {
 							<div id="dynamicPhoto" 
 								style="margin-left: 15px; min-height: 500px;">
 								<c:forEach var="photo" items="${photoUrl}" varStatus="counter">
-								<div id="photoDiv0${counter.index}">
-									<div class='input-group input-group-sm'>
-										<span class='input-group-btn'>
-											<button type='button' class='btn btn-default'
-												onclick='deletePhoto("0${counter.index}")'
-												id='delphoto0${counter.index}'>
-												<span>&times;</span>
-											</button>
-										</span><input type='text' class='form-control' id='link'
-											name='link[]'
-											style='visibility: hidden; width: 80px; overflow: scroll'
-											value='${photoUrl[counter.index]}' readonly> <img
-											src='${photoUrl[counter.index]}' class='img-responsive'
-											style='height: 80px; width: 80px'>
-									</div>
-									</div>
+									<c:if test ="${photo != 'http://i.imgur.com/opd2vBI.png'}">							
+										<div id="photoDiv0${counter.index}">
+											<div class='input-group input-group-sm'>
+												<span class='input-group-btn'>
+													<button type='button' class='btn btn-default'
+														onclick='deletePhoto("0${counter.index}")'
+														id='delphoto0${counter.index}'>
+														<span>&times;</span>
+													</button>
+												</span><input type='text' class='form-control' id='link'
+													name='link[]'
+													style='visibility: hidden; width: 80px; overflow: scroll'
+													value='${photoUrl[counter.index]}' readonly> <img
+													src='${photoUrl[counter.index]}' class='img-responsive'
+													style='height: 80px; width: 80px'>
+											</div>
+										</div>
+									</c:if>
 								</c:forEach>
 							</div>
 							<br>
@@ -445,7 +447,7 @@ body {
 		$("#addIngredient").autocomplete({
 			source : function(request, response) {
 				$.ajax({
-					url : "someIngredients2",
+					url : "../someIngredients2",
 					dataType : "json",
 					data : {
 						filter : request.term
@@ -473,7 +475,7 @@ body {
 				if (ui.item.value == "true") {
 					$.ajax({
 						type : "POST",
-						url : "measTypesOfIngr",
+						url : "../measTypesOfIngr",
 						data : {
 							ing_id : ui.item.id
 						}
