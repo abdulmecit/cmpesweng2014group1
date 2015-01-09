@@ -566,7 +566,7 @@ public class HomeController {
 		}
 		else{
 			if(disableSemantic){
-				String[] tags = search.split(" ");
+				String[] tags = search.replace(","," ").split("\\s+");
 				recipes = searchService.searchByAllTags(tags, tags.length);
 			}
 			else{
@@ -614,7 +614,7 @@ public class HomeController {
 				recipes = recipez.toArray(new Recipe[recipez.size()]);
 			}
 		}
-		return gson.toJson(recipes);
+		return jsonEncode(recipes);
 	}
 	
 	@RequestMapping(value = "/signUpOrLogin", method = RequestMethod.POST) //for facebook login
@@ -657,7 +657,6 @@ public class HomeController {
         boolean isLogged = logged == null ? false : (Boolean) logged;
         if (isLogged) {
             User u = (User) session.getAttribute("user");
-            allRecipes = null;
             try {
                 allRecipes = recommService.getRecommendation(u.getId());
             } catch (Exception e) {
@@ -690,7 +689,6 @@ public class HomeController {
         boolean isLogged = logged == null ? false : (Boolean) logged;
         if (isLogged) {
             User u = (User) session.getAttribute("user");
-            allRecipes = null;
             try {
                 allRecipes = recommService.getRecommendation(u.getId());
             } catch (Exception e) {
@@ -722,7 +720,6 @@ public class HomeController {
         boolean isLogged = logged == null ? false : (Boolean) logged;
         if (isLogged) {
             User u = (User) session.getAttribute("user");
-            allRecipes = null;
             try {
                 allRecipes = recommService.getRecommendation(u.getId());
             } catch (Exception e) {
@@ -754,7 +751,6 @@ public class HomeController {
         boolean isLogged = logged == null ? false : (Boolean) logged;
         if (isLogged) {
             User u = (User) session.getAttribute("user");
-            allRecipes = null;
             try {
                 allRecipes = recommService.getRecommendation(u.getId());
             } catch (Exception e) {
@@ -786,23 +782,11 @@ public class HomeController {
 		
 		//Convert from JSON String
 		Gson gson = new Gson();
-		Recipe[] recipes = gson.fromJson(results, Recipe[].class);
+		int[] recipeIds = gson.fromJson(results, int[].class);
 		
-		Recipe[] sortedRecipes=searchService.sortByRate(recipes, type);
+		Recipe[] sortedRecipes=searchService.sortByRate(recipeIds, type);
 		
 		return jsonEncode(sortedRecipes);
-	}
-	
-	@RequestMapping(value = "/sortBySimilarity", method = RequestMethod.POST)
-	@ResponseBody
-	public String sortBySimilarity(
-			@RequestParam(value = "results", required = true) String results){
-		
-		//Convert from JSON String
-		Gson gson = new Gson();
-		Recipe[] recipes = gson.fromJson(results, Recipe[].class);
-		
-		return jsonEncode(recipes);
 	}
 	
 	private String jsonEncode(Recipe[] sortedRecipes){

@@ -227,7 +227,7 @@ $(function() {
 	<!------------------ Photo Slides -------------------->
 	<div class="container" style="height: 400px">
 		<div class="col-sm-8 col-centered">
-			<div id="loading"><h4>We are finding the best recipes for you, please wait..</h4><img src="http://rpg.drivethrustuff.com/shared_images/ajax-loader.gif" height="400px" width="400px"/></div>
+			<div id="loading"><h4>We are finding the best recipes for you, please wait..</h4><img src="http://rpg.drivethrustuff.com/shared_images/ajax-loader.gif" height="300px" width="300px"/></div>
 			<div id="recipeSlides">
 			<ul class="slides">
 				<input type="radio" name="radio-btn" id="img-1" checked />
@@ -330,14 +330,6 @@ $(function() {
 							class="btn btn-link">News Feed</a></li>
 						<li role="presentation" class="filter" id="recommendation"><a
 							class="btn btn-link">Recommendations</a></li>
-						<%
-							/**	<li role="presentation" class="filter" id="myRecipe"><a
-							class="btn btn-link">My Recipe</a></li>
-							<li role="presentation" class="filter" id="myFriendsRecipe"><a
-							class="btn btn-link">Recipe From My Friends</a></li>
-							<li role="presentation" class="filter" id="sharedRecipe"><a
-							class="btn btn-link">Shared Recipes</a></li> **/
-						%>
 					</ul>
 					<ul id="recommContent" class="list-group"
 						style="overflow: scroll; display: none;">
@@ -382,17 +374,9 @@ $(function() {
 							result = '<c:forEach var="recRecipes" items="${recommendedRecipes}"> <a href="recipe/${recRecipes.recipe_id}"'
 							+'class="list-group-item"><h5 class="list-group-item-heading">${recRecipes.name}</h5></a></c:forEach>';
 							$('#recommContent').append(result);
-							/*} else if (searchFilter == "myRecipe") {
-							 $('#results').empty();	
-							 } else if (searchFilter == "myFriendsRecipe") {
-							 $('#results').empty();
-							 } else if (searchFilter == "sharedRecipe") {
-							 $('#results').empty(); 
-							 */
 						} else {
 							$("#recommContent").css('display', 'none');
-							$("#newsfeedContent").css('display', 'block');
-							
+							$("#newsfeedContent").css('display', 'block');						
 						}
 					});
 

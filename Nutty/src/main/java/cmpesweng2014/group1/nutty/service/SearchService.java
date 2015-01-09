@@ -43,7 +43,7 @@ public class SearchService {
 			return null;
 		}
 		
-		List<String> searchTerms = Arrays.asList((searchString.toLowerCase()).split(" "));
+		List<String> searchTerms = Arrays.asList((searchString.toLowerCase()).replace(","," ").split("\\s+"));
 		int termCount = searchTerms.size();
 				
 		String queryString = "";		
@@ -69,49 +69,64 @@ public class SearchService {
 		}		
 		return relatedTerms.toArray(new String[relatedTerms.size()]);
 	}
+	
+	/**
+	 * To sort recipes in given criteria
+	 * 
+	 * @param recipes the list of recipes to be sorted
+	 * @param rateType criteria of the sort, it can be "overall", "health", "ease", "cost", "taste", "like", "eat" 
+	 * @return sorted recipe array
+	 */
+	public Recipe[] sortByRate(Recipe[] recipes, String rateType){
+		int[] recipeIds = new int[recipes.length];
+		for(int i=0; i<recipes.length; i++)
+			recipeIds[i] = recipes[i].getRecipe_id();
+		
+		return sortByRate(recipeIds, rateType);
+	}
 
 	/**
 	 * To sort recipes in given criteria
 	 * 
-	 * @param recipes the list of the recipes to sort
-	 * @param rateType criteria of the sort, it can be "overall", "health", "ease", "cost", "taste", "likes", "eats" 
+	 * @param recipeIds the list of the ids of recipes to be sorted
+	 * @param rateType criteria of the sort, it can be "overall", "health", "ease", "cost", "taste", "like", "eat" 
 	 * @return sorted recipe array
 	 */
-	public Recipe[] sortByRate(Recipe[] recipes, String rateType){
+	public Recipe[] sortByRate(int[] recipeIds, String rateType){
 		List<RecipeRate> recRates = new ArrayList<RecipeRate>();
-		for(int i=0; i<recipes.length;i++){
+		for(int i=0; i<recipeIds.length;i++){
 			double rate;
 			if(rateType.equals("overall")){
-				rate = recipeService.avgOfAllRates(recipes[i].getRecipe_id());
+				rate = recipeService.avgOfAllRates(recipeIds[i]);
 			}
 			else if(rateType.equals("health")){
-				rate = recipeService.avgOfHealthRates(recipes[i].getRecipe_id());
+				rate = recipeService.avgOfHealthRates(recipeIds[i]);
 			}
 			else if(rateType.equals("ease")){
-				rate = recipeService.avgOfEaseRates(recipes[i].getRecipe_id());
+				rate = recipeService.avgOfEaseRates(recipeIds[i]);
 			}
 			else if(rateType.equals("cost")){
-				rate = recipeService.avgOfCostRates(recipes[i].getRecipe_id());
+				rate = recipeService.avgOfCostRates(recipeIds[i]);
 			}
 			else if(rateType.equals("taste")){
-				rate = recipeService.avgOfTasteRates(recipes[i].getRecipe_id());
+				rate = recipeService.avgOfTasteRates(recipeIds[i]);
 			}
-			else if(rateType.equals("likes")){
-				rate=recipeService.numberOfLikes(recipes[i].getRecipe_id());
+			else if(rateType.equals("like")){
+				rate=recipeService.numberOfLikes(recipeIds[i]);
 			}
-			else if(rateType.equals("eats")){
-				rate=recipeService.numberOfEats(recipes[i].getRecipe_id());
+			else if(rateType.equals("eat")){
+				rate=recipeService.numberOfEats(recipeIds[i]);
 			}
 			else{
-				rate = recipeDao.getAvgRateStatistic(rateType, recipes[i].getRecipe_id());
+				rate = recipeDao.getAvgRateStatistic(rateType, recipeIds[i]);
 			}
 			RecipeRate r=new RecipeRate();
 			r.setRate(rate);
-			r.setRecipe_id(recipes[i].getRecipe_id());
+			r.setRecipe_id(recipeIds[i]);
 			recRates.add(r);
 		}
 		Collections.sort(recRates);
-		Recipe[] rec=new Recipe[recipes.length];
+		Recipe[] rec=new Recipe[recipeIds.length];
 		for(int i=0; i<recRates.size();i++){
 			rec[i]= recipeDao.getRecipeById(recRates.get(i).getRecipe_id());
 		}
@@ -127,7 +142,7 @@ public class SearchService {
 	 */
 	public Recipe[] semanticSearch(String tag){
 		//original tags
-		String tagz[] = tag.split(" ");
+		String tagz[] = tag.replace(","," ").split("\\s+");
 		int relatedTagsIndex = tagz.length;
 		String[] related = getRelatedTerms(tag);
 		int relatedTagsLength = related.length;
