@@ -11,18 +11,19 @@
 @import url(http://fonts.googleapis.com/css?family=Varela+Round);
 
 .processing #processingScreen {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 100;
-    width: 100vw;
-    height: 100vh;	
-    background-color: rgba(192, 192, 192, 0.5);
-    background-image: url("../resources/img/processing.gif");
-    background-repeat: no-repeat;
-    background-position: center;
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 100;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(192, 192, 192, 0.5);
+	background-image: url("../resources/img/processing.gif");
+	background-repeat: no-repeat;
+	background-position: center;
 }
+
 .processed #processingScreen {
 	display: none;
 }
@@ -148,11 +149,6 @@ body {
 	margin-top: 80px;
 }
 
-#info-wrap {
-	/* overflow to handle inner floating block */
-	overflow: hidden;
-	margin-left: 40px
-}
 
 .info {
 	width: 50%;
@@ -195,17 +191,21 @@ body {
 
 </head>
 <body>
-<div id=processingScreen></div>
+	<div id=processingScreen></div>
 
-<!--------------------------- for facebook share ------------------------------->
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/tr_TR/sdk.js#xfbml=1&appId=595039627289255&version=v2.0";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+	<!--------------------------- for facebook share ------------------------------->
+	<div id="fb-root"></div>
+	<script>
+		(function(d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id))
+				return;
+			js = d.createElement(s);
+			js.id = id;
+			js.src = "//connect.facebook.net/tr_TR/sdk.js#xfbml=1&appId=595039627289255&version=v2.0";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+	</script>
 
 	<!------------------------ star --------------------------->
 	<div class="container">
@@ -423,41 +423,54 @@ body {
 				<div class=row>
 					<!----------------------- Share/Report Button ----------------------------->
 					<div class="col-sm-8">
-						<div id="info-wrap">
+						<div id="info-wrap" style="margin-left: 30px">
+							<div class="row">
+								<div class="col-sm-8">
+									<p style="margin-top: 0px">
+										<b>Portion:</b> &nbsp ${recipe.portion} <br> <b>Total
+											Calories: </b> &nbsp ${recipe.nutrition_info.total_calorie} kcal
+										<br> <b> Total Fat:</b> &nbsp
+										${recipe.nutrition_info.total_fat} g <br> <b> Total
+											Protein:</b> &nbsp ${recipe.nutrition_info.total_protein} g <br>
+										<b> Total Carbohydrate:</b> &nbsp
+										${recipe.nutrition_info.total_carbohydrate} g
+									</p>
+								</div>
+								<div class="col-sm-4">
+									<button type="button" class="btn btn-primary"
+										value="Share Recipe" id="Share"
+										style="float: right; margin-right: 15 px; margin-left: 15px;">
+										<span id="textShare" class="ui-button-text">Share &nbsp
+										</span> <span id="shareCheck" class="glyphicon glyphicon-check"
+											style="visibility: hidden;"></span>
+										<!-- caret for arrow. ui-button-text for button text visible; -->
+									</button>
+									<button type="button" class="btn btn-primary" id="reportRecipe"
+										style="float: right; margin-right: 15 px; margin-left: 15px;">
+										<span id="textReport" class="ui-button-text">Report</span>
+									</button>
+									<br> <br>
+									<div
+										style="float: right; margin-right: 15 px; margin-left: 15px;"
+										id="fbShare" class="fb-share-button"
+										data-href="http://titan.cmpe.boun.edu.tr:8080/nutty/recipe/${recipe.recipe_id}"
+										data-layout="button"></div>
 
-							<button type="button" class="btn btn-primary"
-								value="Share Recipe" id="Share"
-								style="float: right; margin-right: 15 px; margin-left: 15px;">
-								<span id="textShare" class="ui-button-text">Share &nbsp </span>
-								<span id="shareCheck" class="glyphicon glyphicon-check"
-									style="visibility: hidden;"></span>
-								<!-- caret for arrow. ui-button-text for button text visible; -->
-							</button>
-							<button type="button" class="btn btn-primary" id="reportRecipe"
-								style="float: right; margin-right: 15 px; margin-left: 15px;">
-								<span id="textReport" class="ui-button-text">Report</span>
-							</button>
-							<br><br>
-							<div style="float: right;margin-right: 15 px; margin-left: 15px;" id="fbShare" class="fb-share-button" data-href="http://titan.cmpe.boun.edu.tr:8080/nutty/recipe/${recipe.recipe_id}" data-layout="button"></div>
-
-							<!----------------------- Recipe Description ----------------------------->
-							<div id=recipeDetail>
-								<h3 style="margin-top: 0px">Portion:${recipe.portion}
-									&nbsp;&nbsp; Total Calories:${recipe.nutrition_info.total_calorie} kcal
-									&nbsp;&nbsp; Total Fat:${recipe.nutrition_info.total_fat} g
-									&nbsp;&nbsp; Total Protein:${recipe.nutrition_info.total_protein} g
-									&nbsp;&nbsp; Total Carbohydrate:${recipe.nutrition_info.total_carbohydrate} g
-								</h3>
-								<h3>Ingredients</h3>
-								<c:forEach var="ingredientAmount" items="${ingredientAmounts}">
-									<p>${ingredientAmount.amount}&nbsp${ingredientAmount.meas_type}&nbsp;
-										${ingredientAmount.ing_name}</p>
-
-								</c:forEach>
+								</div>
 							</div>
+							<div class="row" style="margin-left: 5px">
+								<!----------------------- Recipe Description ----------------------------->
+								<div id=recipeDetail>
+									<h3>Ingredients</h3>
+									<c:forEach var="ingredientAmount" items="${ingredientAmounts}">
+										<p>${ingredientAmount.amount}&nbsp${ingredientAmount.meas_type}&nbsp;
+											${ingredientAmount.ing_name}</p>
 
-							<h3>Description</h3>
-							<p>${recipe.description}</p>
+									</c:forEach>
+								</div>
+								<h3>Description</h3>
+								<p>${recipe.description}</p>
+							</div>
 						</div>
 					</div>
 					<!----------------------- Derived Recipe ----------------------------->
@@ -489,7 +502,6 @@ body {
 							</div>
 						</div>
 					</div>
-
 				</div>
 				<!-- end of row -->
 				<br> <br> <br>
@@ -506,7 +518,7 @@ body {
 									name="comment" rows="3" style="resize: none"></textarea>
 								<br>
 								<button type="submit" class="btn btn-primary" id="comment"
-									style="right">Comment</button>
+									style="">Comment</button>
 
 							</form>
 						</div>
@@ -606,7 +618,7 @@ body {
 							$("#textEatEdit").text("Edit");
 						}
 					});
-	
+
 	/*
 	 * change & save values of rate buttons
 	 */
@@ -633,8 +645,7 @@ body {
 					}
 				}
 			});
-	
-	
+
 	/*
 	 * Like/Delete button functions
 	 */
@@ -659,7 +670,7 @@ body {
 							data : {
 								recipe_id : '${recipe.recipe_id}',
 							}
-						}).done(function(response){
+						}).done(function(response) {
 							document.body.className = "processed";
 							window.location.href = "../index";
 						});
@@ -695,8 +706,8 @@ body {
 	});
 
 	/*
-	* Share recipe
-	*/
+	 * Share recipe
+	 */
 	$("#Share").click(function(e) {
 		if (isLogged == 'true') {
 			if (shared == 0) {
@@ -720,8 +731,8 @@ body {
 	});
 
 	/*
-	* Report Comment
-	*/
+	 * Report Comment
+	 */
 	function reportComment(commentID, index) {
 		bootbox.confirm("Are you sure?", function(result) {
 			if (result) {
@@ -733,7 +744,7 @@ body {
 						user_id : '${user.id}'
 					}
 				});
-				
+
 			} else {
 
 			}
@@ -741,8 +752,8 @@ body {
 	}
 
 	/*
-	* Report Recipe
-	*/
+	 * Report Recipe
+	 */
 	$("#reportRecipe").click(function(e) {
 		bootbox.confirm("Are you sure?", function(result) {
 			if (result) {
@@ -759,11 +770,8 @@ body {
 
 			}
 		});
-		
+
 	});
-
-	
-
 
 	var comments = [];
 	var commentsILike = [];
@@ -783,8 +791,8 @@ body {
 					});
 
 	/*
-	* Getting comments
-	*/
+	 * Getting comments
+	 */
 	function getComment() {
 		$
 				.ajax({
@@ -825,27 +833,26 @@ body {
 											+ "<input type='hidden' id='commentId" + i + "' value='" + comments[i].comment_id + "' style='visibility: collapse; width: 0px;'/>";
 
 									if (comments[i].commenter_id != '${user.id}') {
-										if(comments[i].commentedByMe==0){
+										if (comments[i].commentedByMe == 0) {
 											content += "<button type='button' class='btn btn-primary btn-xs'"
-												+ "onclick='reportComment("
-												+ comments[i].comment_id
-												+ ","
-												+ i
-												+ ")' "
-												+ " value='report' id='reportComment"
-												+ i
-												+ "'style='float: left; margin-right:5px' disabled='disabled'><span class='ui-button-text'>Report </span></button>"
-										}
-										else {
+													+ "onclick='reportComment("
+													+ comments[i].comment_id
+													+ ","
+													+ i
+													+ ")' "
+													+ " value='report' id='reportComment"
+													+ i
+													+ "'style='float: left; margin-right:5px' disabled='disabled'><span class='ui-button-text'>Report </span></button>"
+										} else {
 											content += "<button type='button' class='btn btn-primary btn-xs'"
-												+ "onclick='reportComment("
-												+ comments[i].comment_id
-												+ ","
-												+ i
-												+ ")' "
-												+ " value='report' id='reportComment"
-												+ i
-												+ "'style='float: left; margin-right:5px'><span class='ui-button-text'>Report </span></button>"	
+													+ "onclick='reportComment("
+													+ comments[i].comment_id
+													+ ","
+													+ i
+													+ ")' "
+													+ " value='report' id='reportComment"
+													+ i
+													+ "'style='float: left; margin-right:5px'><span class='ui-button-text'>Report </span></button>"
 										}
 										content += "<button type='button' class='btn btn-primary btn-xs'"
 												+ "onclick='commentLike("
@@ -899,10 +906,10 @@ body {
 							}
 						});
 	}
-	
+
 	/*
-	* Comment Like
-	*/
+	 * Comment Like
+	 */
 	function commentLike(index) {
 		var likersCount = $("#showLikers" + index).text().split(" ");
 		var num = likersCount[0];
@@ -924,15 +931,15 @@ body {
 					comment_id : $("#commentId" + index).val(),
 					value : commentsILike[index]
 				}
-			}).done(function(response){
+			}).done(function(response) {
 				$("#showLikers" + index).text(num + " likes");
 			});
 		}
 	};
 
 	/*
-	* Comment Edit
-	*/
+	 * Comment Edit
+	 */
 	function editComment(index) {
 		$('#commentDiv' + index).empty();
 
@@ -952,15 +959,15 @@ body {
 					recipe_id : '${recipe.recipe_id}',
 					text : newComment
 				}
-			}).done(function(response){
+			}).done(function(response) {
 				getComment();
 			});
 		});
 	}
 
 	/*
-	* Comment Delete
-	*/
+	 * Comment Delete
+	 */
 	function deleteComment(commentID, index) {
 		bootbox.confirm("Are you sure?", function(result) {
 			if (result) {
@@ -981,8 +988,8 @@ body {
 	}
 
 	/*
-	* Comment Report
-	*/
+	 * Comment Report
+	 */
 	function reportComment(commentID, index) {
 		bootbox.confirm("Are you sure?", function(result) {
 			if (result) {
@@ -994,18 +1001,17 @@ body {
 						user_id : '${user.id}'
 					}
 				});
-				$("#reportComment"+index).attr("disabled", true);
+				$("#reportComment" + index).attr("disabled", true);
 			} else {
 
 			}
 		});
-		
-		
+
 	}
 
 	/*
-	* for changing and saving rate values
-	*/
+	 * for changing and saving rate values
+	 */
 	function updateRate(changed, value) {
 		$.ajax({
 			type : "POST",
@@ -1020,8 +1026,8 @@ body {
 	};
 
 	/*
-	* show likes number and likers of comment
-	*/
+	 * show likes number and likers of comment
+	 */
 	function showLikers(index) {
 		var likers = comments[index].likers;
 		var content = "";
@@ -1044,8 +1050,8 @@ body {
 	};
 
 	/*
-	* change visibility according to user/guest
-	*/
+	 * change visibility according to user/guest
+	 */
 	$(document).ready(function() {
 		if (isLogged != 'true') {
 			$('#rateButtons').css('display', 'none');
@@ -1059,12 +1065,12 @@ body {
 			$("#EatEdit").css('display', 'none');
 			$("#LikeDelete").css('display', 'none');
 			$("#version").css('display', 'none');
-		}else{
+		} else {
 			if (user == owner) {
 				$("#reportRecipe").css('display', 'none');
 			}
 		}
-	});					
+	});
 
 	function search(searchKey) {
 		window.location.href = "../advancedSearch/" + searchKey;
