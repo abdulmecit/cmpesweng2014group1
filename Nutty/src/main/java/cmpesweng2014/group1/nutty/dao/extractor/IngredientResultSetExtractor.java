@@ -13,9 +13,12 @@ public class IngredientResultSetExtractor implements ResultSetExtractor<Ingredie
 	public Ingredient extractData(ResultSet rs) throws SQLException,
 			DataAccessException {
 		Ingredient ingredient = new Ingredient();
-		ingredient.setIng_name(rs.getString(1));
-		ingredient.setCalorie(rs.getInt(2));
-		ingredient.setId(rs.getInt(3));	
+		ingredient.setId(rs.getInt(1));
+		ingredient.setIng_name(rs.getString(2));
+		ingredient.setCalorie(rs.getInt(3));
+		ingredient.setFat(Double.valueOf((rs.getString(4)).replace(",",".")));
+		ingredient.setProtein(Double.valueOf((rs.getString(5)).replace(",",".")));
+		ingredient.setCarbohydrate(Double.valueOf((rs.getString(6)).replace(",",".")));
 		return ingredient;
 	}
 }

@@ -35,6 +35,7 @@ import cmpesweng2014.group1.nutty.dao.mapper.TagRowMapper;
 import cmpesweng2014.group1.nutty.dao.mapper.UserRecipeScoreRowMapper;
 import cmpesweng2014.group1.nutty.model.Comment;
 import cmpesweng2014.group1.nutty.model.EatLikeRate;
+import cmpesweng2014.group1.nutty.model.NutritionInfo;
 import cmpesweng2014.group1.nutty.model.Recipe;
 import cmpesweng2014.group1.nutty.model.SharesRecipe;
 import cmpesweng2014.group1.nutty.model.Tag;
@@ -56,12 +57,12 @@ public class RecipeDao extends PcDao{
 	 * @param name String, recipe name
 	 * @param description String, directions
 	 * @param portion integer, portion value of the recipe
-	 * @param total_calorie, calorie of the recipe
+	 * @param nutrition_info, nutritional properties of the recipe
 	 * @return
 	 */
 	public int createRecipe(final String name, final String description,
-			final int portion, final double total_calorie) {
-		final String query = "INSERT INTO Recipe (name, description, portion, created, last_updated, total_calorie) VALUES (?,?,?,?,?,?)";
+			final int portion, final NutritionInfo nutrition_info) {
+		final String query = "INSERT INTO Recipe (name, description, portion, created, last_updated, total_calorie, total_fat, total_protein, total_carbohydrate) VALUES (?,?,?,?,?,?,?,?,?)";
 
 		KeyHolder gkh = new GeneratedKeyHolder();
 
@@ -77,7 +78,11 @@ public class RecipeDao extends PcDao{
 				ps.setInt(3, portion);
 				ps.setDate(4,null);
 				ps.setDate(5,null);
-				ps.setDouble(6, total_calorie);
+				ps.setDouble(6, nutrition_info.getTotal_calorie());
+				ps.setDouble(7, nutrition_info.getTotal_fat());
+				ps.setDouble(8, nutrition_info.getTotal_protein());
+				ps.setDouble(9, nutrition_info.getTotal_carbohydrate());
+
 				return ps;
 			}
 		}, gkh);
@@ -137,9 +142,7 @@ public class RecipeDao extends PcDao{
 	 * @return units
 	 */
 	public String[] getMeasTypesByIngName(String ing_name) {
-		int ing_id = ingredientDao.getIdByName(ing_name);
-		if(ing_id == 0)
-			return null;
+		int ing_id = ingredientDao.getIngredientByName(ing_name).getId();
 		return getMeasTypesByIngId(ing_id);
 	}
 	/**
@@ -510,8 +513,7 @@ public class RecipeDao extends PcDao{
 	 */
 	public Recipe[] getAllDerivations(Recipe originalRecipe) {
 		List<Recipe> recipeList = this.getTemplate().query(
-				"SELECT recipe_id, name, description, portion, created,"
-				+ "last_updated,total_calorie  FROM Recipe, Derived WHERE recipe_id = child_recipe_id "
+				"SELECT a.* FROM Recipe a, Derived b WHERE recipe_id = child_recipe_id "
 				+ "AND parent_recipe_id = ? ",
 				new Object[] { originalRecipe.getRecipe_id() }, new RecipeRowMapper());
 
@@ -530,8 +532,7 @@ public class RecipeDao extends PcDao{
 	 */
 	public Recipe getParent(Recipe recipe) {
 		List<Recipe> recipes = this.getTemplate().query(
-				"SELECT recipe_id, name, description, portion, created,"
-				+ "last_updated,total_calorie  FROM Recipe, Derived WHERE recipe_id = parent_recipe_id "
+				"SELECT a.* FROM Recipe a, Derived b WHERE recipe_id = parent_recipe_id "
 				+ "AND child_recipe_id = ? ",
 				new Object[] { recipe.getRecipe_id() }, new RecipeRowMapper());
 
@@ -741,9 +742,8 @@ public class RecipeDao extends PcDao{
 	 */
 	public Recipe[] mustHaveIngredient(String ing_name){
 		List<Recipe> recList = this.getTemplate().query(
-				"SELECT a.recipe_id, a.name, a.description, a.portion, a.created, "
-						+ "a.last_updated,a.total_calorie  FROM Recipe a, HasIngredient b, "
-						+ "ingredients c WHERE c.Shrt_Desc LIKE ? AND b.ing_id=c.NDB_No AND "
+				"SELECT a.* FROM Recipe a, HasIngredient b, ingredients c "
+						+ "WHERE c.Shrt_Desc LIKE ? AND b.ing_id=c.NDB_No AND "
 						+ "a.recipe_id=b.recipe_id ",new Object[] { "%" + ing_name.toUpperCase() + "%" }, new RecipeRowMapper());
 		if (recList.isEmpty()) {
 			return null;
@@ -776,9 +776,8 @@ public class RecipeDao extends PcDao{
 	 */
 	public Recipe[] searchRecipesForATag(String tag){
 		List<Recipe> recList = this.getTemplate().query(
-				"SELECT a.recipe_id, a.name, a.description, a.portion, a.created, "
-						+ "a.last_updated,a.total_calorie  FROM Recipe a, HasTag b, "
-						+ "Tag c WHERE c.tag_name=? AND b.tag_id=c.tag_id AND "
+				"SELECT a.* FROM Recipe a, HasTag b, Tag c "
+						+ "WHERE c.tag_name=? AND b.tag_id=c.tag_id AND "
 						+ "a.recipe_id=b.recipe_id ",
 						new Object[] { tag }, new RecipeRowMapper());
 		if (recList.isEmpty()) {
@@ -1042,30 +1041,30 @@ public class RecipeDao extends PcDao{
 	 * @param name
 	 * @param description
 	 * @param portion
-	 * @param total_calorie
+	 * @param nutrition_info, nutritional properties of the recipe
 	 */
 	public void editRecipeTable(final int recipe_id,final String name, final String description,
-			final int portion, final double total_calorie){
-		final String query = "UPDATE Recipe SET name=?, description=?, portion=?, total_calorie=? "
-				+ "WHERE recipe_id= ?";
-
-		KeyHolder gkh = new GeneratedKeyHolder();
+			final int portion, final NutritionInfo nutrition_info){
+		final String query = "UPDATE Recipe SET name=?, description=?, portion=?, total_calorie=?, "
+				+ "total_fat=?, total_protein=?, total_carbohydrate=? WHERE recipe_id= ?";
 
 		this.getTemplate().update(new PreparedStatementCreator() {
 
 			@Override
 			public PreparedStatement createPreparedStatement(
 					Connection connection) throws SQLException {
-				PreparedStatement ps = connection.prepareStatement(query,
-						Statement.RETURN_GENERATED_KEYS);
+				PreparedStatement ps = connection.prepareStatement(query);
 				ps.setString(1, name);
 				ps.setString(2, description);
 				ps.setInt(3, portion);
-				ps.setDouble(4,total_calorie);
-				ps.setInt(5, recipe_id);
+				ps.setDouble(4,nutrition_info.getTotal_calorie());
+				ps.setDouble(5,nutrition_info.getTotal_fat());
+				ps.setDouble(6,nutrition_info.getTotal_protein());
+				ps.setDouble(7,nutrition_info.getTotal_carbohydrate());
+				ps.setInt(8, recipe_id);
 				return ps;
 			}
-		}, gkh);		
+		});		
 	}
 	/**
 	 * deletes tag recipe relations for the given recipe 

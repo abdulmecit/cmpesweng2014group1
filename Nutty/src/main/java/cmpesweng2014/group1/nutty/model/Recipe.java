@@ -10,21 +10,21 @@ public class Recipe implements Comparable<Recipe>{
 	private int portion;
 	private Timestamp createdDate;
 	private Timestamp updatedDate;
-	private double total_calorie;
+	private NutritionInfo nutrition_info;
 	
 	public Recipe() {
 		super();
 	}
 	
 	public Recipe(int recipe_id, String name, String description, int portion,
-			Timestamp createdDate, double total_calorie) {
+			Timestamp createdDate, NutritionInfo nutrition_info) {
 		super();
 		this.setRecipe_id(recipe_id);
 		this.name = name;
 		this.description = description;
 		this.portion = portion;
 		this.createdDate = createdDate;
-		this.setTotal_calorie(total_calorie);		
+		this.setNutrition_info(nutrition_info);	
 	}
 	
 	public int getRecipe_id() {
@@ -70,19 +70,19 @@ public class Recipe implements Comparable<Recipe>{
 		this.updatedDate = date;
 	}
 
-	public double getTotal_calorie() {
-		return total_calorie;
+	public NutritionInfo getNutrition_info() {
+		return nutrition_info;
 	}
 
-	public void setTotal_calorie(double total_calorie) {
-		this.total_calorie = total_calorie;
+	public void setNutrition_info(NutritionInfo nutrition_info) {
+		this.nutrition_info = nutrition_info;
 	}
-
+	
 	@Override
 	public int compareTo(Recipe other) {
 		return (int)(this.recipe_id - other.recipe_id);
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -92,11 +92,10 @@ public class Recipe implements Comparable<Recipe>{
 		result = prime * result
 				+ ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result
+				+ ((nutrition_info == null) ? 0 : nutrition_info.hashCode());
 		result = prime * result + portion;
 		result = prime * result + recipe_id;
-		long temp;
-		temp = Double.doubleToLongBits(total_calorie);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result
 				+ ((updatedDate == null) ? 0 : updatedDate.hashCode());
 		return result;
@@ -126,12 +125,14 @@ public class Recipe implements Comparable<Recipe>{
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
+		if (nutrition_info == null) {
+			if (other.nutrition_info != null)
+				return false;
+		} else if (!nutrition_info.equals(other.nutrition_info))
+			return false;
 		if (portion != other.portion)
 			return false;
 		if (recipe_id != other.recipe_id)
-			return false;
-		if (Double.doubleToLongBits(total_calorie) != Double
-				.doubleToLongBits(other.total_calorie))
 			return false;
 		if (updatedDate == null) {
 			if (other.updatedDate != null)
@@ -140,5 +141,5 @@ public class Recipe implements Comparable<Recipe>{
 			return false;
 		return true;
 	}
-	
+
 }

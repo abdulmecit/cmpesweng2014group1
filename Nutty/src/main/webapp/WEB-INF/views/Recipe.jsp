@@ -443,10 +443,14 @@ body {
 							<!----------------------- Recipe Description ----------------------------->
 							<div id=recipeDetail>
 								<h3 style="margin-top: 0px">Portion:${recipe.portion}
-									&nbsp&nbsp Total Calories:${recipe.total_calorie}</h3>
+									&nbsp;&nbsp; Total Calories:${recipe.nutrition_info.total_calorie} kcal
+									&nbsp;&nbsp; Total Fat:${recipe.nutrition_info.total_fat} g
+									&nbsp;&nbsp; Total Protein:${recipe.nutrition_info.total_protein} g
+									&nbsp;&nbsp; Total Carbohydrate:${recipe.nutrition_info.total_carbohydrate} g
+								</h3>
 								<h3>Ingredients</h3>
 								<c:forEach var="ingredientAmount" items="${ingredientAmounts}">
-									<p>${ingredientAmount.amount}&nbsp${ingredientAmount.meas_type}&nbsp
+									<p>${ingredientAmount.amount}&nbsp${ingredientAmount.meas_type}&nbsp;
 										${ingredientAmount.ing_name}</p>
 
 								</c:forEach>

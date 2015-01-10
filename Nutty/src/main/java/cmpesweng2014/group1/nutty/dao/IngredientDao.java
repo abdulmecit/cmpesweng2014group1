@@ -10,37 +10,39 @@ import cmpesweng2014.group1.nutty.model.Ingredient;
 @Component
 public class IngredientDao extends PcDao{
 	/**
-	 * returns the calorie value for the given ingredient
+	 * get the ingredient for the given id
 	 * @param id
-	 * @return
+	 * @return ingredient
 	 */
-	public int getCalorieById(int id){
+	public Ingredient getIngredientById(int id){
 		List<Ingredient> ingredients = this.getTemplate().query(
 				 
-				"SELECT Shrt_Desc as ing_name, Energ_Kcal as calorie, NDB_No as id FROM ingredients WHERE NDB_No= ? ",
+				"SELECT NDB_No as id, Shrt_Desc as ing_name, Energ_Kcal as calorie, Lipid_Tot_g as fat,"
+				+ " Protein_g as protein, Carbohydrt_g as carbohydrate FROM ingredients WHERE NDB_No= ? ",
 				new Object[] { id }, new IngredientRowMapper());
 
 		if (ingredients.isEmpty()) {
-			return 0;
+			return null;
 		} else {
-			return ingredients.get(0).getCalorie();
+			return ingredients.get(0);
 		}
 		
 	}
 	/**
-	 * get the ingredient id for the given name
+	 * get the ingredient for the given name
 	 * @param name
-	 * @return id 
+	 * @return ingredient
 	 */
-	public int getIdByName(String name){
+	public Ingredient getIngredientByName(String name){
 		List<Ingredient> ingredients = this.getTemplate().query(
-				"SELECT Shrt_Desc as ing_name, Energ_Kcal as calorie, NDB_No as id FROM ingredients WHERE Shrt_Desc = ? ",
+				"SELECT NDB_No as id, Shrt_Desc as ing_name, Energ_Kcal as calorie, Lipid_Tot_g as fat,"
+				+ " Protein_g as protein, Carbohydrt_g as carbohydrate FROM ingredients WHERE Shrt_Desc = ? ",
 				new Object[] { name }, new IngredientRowMapper());
 
 		if (ingredients.isEmpty()) {
-			return 0;
+			return null;
 		} else {
-			return ingredients.get(0).getId();
+			return ingredients.get(0);
 		}
 	}
 	/**
@@ -49,7 +51,8 @@ public class IngredientDao extends PcDao{
 	 */
 	public Ingredient[] allIngredients(){
 		List<Ingredient> ingredientList = this.getTemplate().query(
-				"SELECT Shrt_Desc as ing_name, Energ_Kcal as calorie, NDB_No as id FROM ingredients",
+				"SELECT NDB_No as id, Shrt_Desc as ing_name, Energ_Kcal as calorie, Lipid_Tot_g as fat,"
+				+ " Protein_g as protein, Carbohydrt_g as carbohydrate FROM ingredients",
 				new Object[] {}, new IngredientRowMapper());
 	
 		if (ingredientList.isEmpty()) {
@@ -67,8 +70,9 @@ public class IngredientDao extends PcDao{
 	 */
 	public Ingredient[] someIngredients(String filter) {
 		List<Ingredient> ingredientList = this.getTemplate().query(
-				"SELECT Shrt_Desc as ing_name, Energ_Kcal as calorie, NDB_No as id FROM ingredients WHERE Shrt_Desc LIKE \"%" + filter.toUpperCase() + "%\"",
-				new Object[] {}, new IngredientRowMapper());
+				"SELECT NDB_No as id, Shrt_Desc as ing_name, Energ_Kcal as calorie, Lipid_Tot_g as fat,"
+				+ " Protein_g as protein, Carbohydrt_g as carbohydrate FROM ingredients WHERE Shrt_Desc LIKE ?",
+				new Object[] {"%" + filter.toUpperCase() + "%"}, new IngredientRowMapper());
 	
 		if (ingredientList.isEmpty()) {
 			return null;

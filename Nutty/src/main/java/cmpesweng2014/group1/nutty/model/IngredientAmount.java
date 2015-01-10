@@ -1,6 +1,5 @@
 package cmpesweng2014.group1.nutty.model;
 
-
 public class IngredientAmount {
 	private int recipe_id;
 	private int ing_id;

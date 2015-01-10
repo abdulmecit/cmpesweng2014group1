@@ -29,15 +29,8 @@
 <script type="text/javascript">
 
 $(function(){
-	$("#likeContent").css('display', 'none');
-	$("#tasteContent").css('display', 'none');
-	$("#healthContent").css('display', 'none');
-	$("#costContent").css('display', 'none');
-	$("#easeContent").css('display', 'none');
-	$("#overallContent").css('display', 'none');
-	$("#similarityContent").css('display', 'none');
+	hideContent();
 });
-
 
 </script>
 

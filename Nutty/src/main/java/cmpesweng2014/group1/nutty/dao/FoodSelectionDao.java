@@ -205,9 +205,9 @@ public class FoodSelectionDao extends PcDao {
 	 */
 	public List<Ingredient> getUnpreferredIngredients(long user_id) {
 		List<Ingredient> ingList = this.getTemplate().query(
-				"SELECT Shrt_Desc as ing_name, Energ_Kcal as calorie, NDB_No as id "
-				+ "FROM ingredients a, Unprefer b  WHERE "
-				+ " user_id= ? AND a.Shrt_Desc LIKE CONCAT(b.ing_grp_name,',%') ",
+				"SELECT NDB_No as id, Shrt_Desc as ing_name, Energ_Kcal as calorie, Lipid_Tot_g as fat,"
+				+ " Protein_g as protein, Carbohydrt_g as carbohydrate FROM ingredients a, Unprefer b"
+				+ " WHERE user_id= ? AND a.Shrt_Desc LIKE CONCAT(b.ing_grp_name,',%') ",
 				new Object[] { user_id }, new IngredientRowMapper());
 		if (ingList.isEmpty()) {
 			return null;
@@ -223,9 +223,9 @@ public class FoodSelectionDao extends PcDao {
 	 */
 	public List<Ingredient> getIngredientsForSelection(FoodSelection foodSelection){
 		List<Ingredient> ingList = this.getTemplate().query(
-				"SELECT Shrt_Desc as ing_name, Energ_Kcal as calorie, NDB_No as id "
-				+ "FROM ingredients a, `Should(Not)Eat` b  WHERE "
-				+ " b.avoid_suggest=1 AND b.fs_id= ? AND a.NDB_No=b.ing_id",
+				"SELECT NDB_No as id, Shrt_Desc as ing_name, Energ_Kcal as calorie, Lipid_Tot_g as fat,"
+				+ " Protein_g as protein, Carbohydrt_g as carbohydrate FROM ingredients a, `Should(Not)Eat` b"
+				+ " WHERE b.avoid_suggest=1 AND b.fs_id= ? AND a.NDB_No=b.ing_id",
 				new Object[] { foodSelection.getFs_id() }, new IngredientRowMapper());
 		if (ingList.isEmpty()) {
 			return null;

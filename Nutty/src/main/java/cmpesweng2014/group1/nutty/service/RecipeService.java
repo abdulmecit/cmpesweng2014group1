@@ -16,6 +16,7 @@ import cmpesweng2014.group1.nutty.model.Comment;
 import cmpesweng2014.group1.nutty.model.Ingredient;
 import cmpesweng2014.group1.nutty.model.IngredientAmount;
 import cmpesweng2014.group1.nutty.model.Recipe;
+import cmpesweng2014.group1.nutty.model.NutritionInfo;
 import cmpesweng2014.group1.nutty.model.Tag;
 import cmpesweng2014.group1.nutty.model.User;
 
@@ -107,7 +108,7 @@ public class RecipeService {
 	 * @param ingredients String array, ingredient names for the recipe
 	 * @param amounts String array, amount of the ingredients
 	 * @param parsedAmounts double array, amounts of the ingredients in double format
-	 * @param meas-types String array, units of the amounts
+	 * @param meas_types String array, units of the amounts
 	 * @param user User, the user which adds the recipe
 	 * @param tags String array, tags of the recipe
 	 * @return Recipe object that is created now.
@@ -115,21 +116,18 @@ public class RecipeService {
 	public Recipe createRecipe(String name, String description,
 			int portion, String[] photo_urls, String[] ingredients, String[] amounts, double[] parsedAmounts, String[] meas_types, User user, String[] tags) {
 		
-		int[] ingredient_ids=new int[ingredients.length];
-		int[] ingredient_calories=new int[ingredients.length];
-		int ing_id;		
-		//get an array of ingredient id s for the given ingredient names
-		//get an array of calories for the given ingredients
+		Ingredient[] ings = new Ingredient[ingredients.length];
+		int[] ingredient_ids = new int[ingredients.length];
+
 		for(int i=0; i<ingredients.length; i++){
-			ing_id=ingredientDao.getIdByName(ingredients[i]);
-			ingredient_ids[i]=ing_id;
-			ingredient_calories[i]=ingredientDao.getCalorieById(ing_id);
+			ings[i] = ingredientDao.getIngredientByName(ingredients[i]);
+			ingredient_ids[i] = ings[i].getId();
 		}		
-		//get total calorie value for the recipe
-		double total_calorie = calculateTotalCalorie(ingredient_ids, ingredient_calories, parsedAmounts, meas_types);		
+		//get total nutrition info for the recipe
+		NutritionInfo nutrition_info = calculateNutritionInfo(ings, parsedAmounts, meas_types);		
 		
 		//create new recipe
-		int recipe_id=recipeDao.createRecipe(name, description, portion, total_calorie);
+		int recipe_id=recipeDao.createRecipe(name, description, portion, nutrition_info);
 		//add tags
 		for(int i=0; i<tags.length; i++){
 			recipeDao.addTag(recipe_id, tags[i]);
@@ -151,26 +149,35 @@ public class RecipeService {
 	}	
 	
 	/** 
-	 * Calculates the calorie of the recipe.
-	 * @param ingredient_ids integer array, id s of the ingredients of this recipe
-	 * @param ingredient_calories integer array, calorie values of each ingredient
+	 * Calculates nutrition info of the recipe.
+	 * @param ings ingredient array
 	 * @param parsedAmounts double array, amounts of the ingredients in double format
-	 * @param meas-types String array, units of the amounts
+	 * @param meas_types String array, units of the amounts
 	 * @return the total calorie of the recipe
 	 * */
-	//calculates total calorie of a recipe
-	public double calculateTotalCalorie(int ingredient_ids[], int[] ingredient_calories, double[] parsedAmounts, String[] meas_types){
-		double total=0;
-		for(int i=0; i<ingredient_calories.length; i++){
+	public NutritionInfo calculateNutritionInfo(Ingredient[] ings, double[] parsedAmounts, String[] meas_types){
+		double totalCalorie = 0, totalFat = 0, totalProtein = 0, totalCarbohydrate = 0;
+		for(int i=0; i<ings.length; i++){
 			if(meas_types[i].equals("gr")){
-				total += (ingredient_calories[i]/100.0) * parsedAmounts[i];
+				totalCalorie += (ings[i].getCalorie()/100.0) * parsedAmounts[i];
+				totalFat += (ings[i].getFat()/100.0) * parsedAmounts[i];
+				totalProtein += (ings[i].getProtein()/100.0) * parsedAmounts[i];
+				totalCarbohydrate += (ings[i].getCarbohydrate()/100.0) * parsedAmounts[i];
 			}
 			else{
-				double weight = recipeDao.getWeightByMeasType(ingredient_ids[i], meas_types[i]);
-				total += (ingredient_calories[i]/100.0) * weight * parsedAmounts[i];
+				double weight = recipeDao.getWeightByMeasType(ings[i].getId(), meas_types[i]);
+				totalCalorie += (ings[i].getCalorie()/100.0) * weight * parsedAmounts[i];
+				totalFat += (ings[i].getFat()/100.0) * weight * parsedAmounts[i];
+				totalProtein += (ings[i].getProtein()/100.0) * weight * parsedAmounts[i];
+				totalCarbohydrate += (ings[i].getCarbohydrate()/100.0) * weight * parsedAmounts[i];
 			}
 		}		
-		return new BigDecimal(String.valueOf(total)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		totalCalorie = new BigDecimal(String.valueOf(totalCalorie)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		totalFat = new BigDecimal(String.valueOf(totalFat)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		totalProtein = new BigDecimal(String.valueOf(totalProtein)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		totalCarbohydrate = new BigDecimal(String.valueOf(totalCarbohydrate)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+
+		return new NutritionInfo(totalCalorie, totalFat, totalProtein, totalCarbohydrate);
 	}
 	/**
 	 * parses amount string to get the double value
@@ -563,21 +570,19 @@ public class RecipeService {
 	 * @return edited recipe object
 	 */
 	public Recipe editRecipe(int recipe_id,String name, String description,int portion, String[] photo_url, String[] ingredients, String[] amounts, double[] parsedAmounts, String[] meas_types, String[] tags){
-		int[] ingredient_ids=new int[ingredients.length];
-		int[] ingredient_calories=new int[ingredients.length];
-		int ing_id;		
-		//get an array of ingredient id s for the given ingredient names
-		//get an array of calories for the given ingredients
+		
+		Ingredient[] ings = new Ingredient[ingredients.length];
+		int[] ingredient_ids = new int[ingredients.length];
+
 		for(int i=0; i<ingredients.length; i++){
-			ing_id=ingredientDao.getIdByName(ingredients[i]);
-			ingredient_ids[i]=ing_id;
-			ingredient_calories[i]=ingredientDao.getCalorieById(ing_id);
+			ings[i] = ingredientDao.getIngredientByName(ingredients[i]);
+			ingredient_ids[i] = ings[i].getId();
 		}		
-		//get total calorie value for the recipe
-		double total_calorie = calculateTotalCalorie(ingredient_ids, ingredient_calories, parsedAmounts, meas_types);		
+		//get total nutrition info for the recipe
+		NutritionInfo nutrition_info = calculateNutritionInfo(ings, parsedAmounts, meas_types);		
 		
 		//edit recipe table
-		recipeDao.editRecipeTable(recipe_id, name, description, portion, total_calorie);
+		recipeDao.editRecipeTable(recipe_id, name, description, portion, nutrition_info);
 		//delete previous tags
 		recipeDao.deleteTags(recipe_id);
 		//add tags
