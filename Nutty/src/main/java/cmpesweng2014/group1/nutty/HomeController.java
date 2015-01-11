@@ -38,6 +38,7 @@ import cmpesweng2014.group1.nutty.model.Event;
 import cmpesweng2014.group1.nutty.model.Mail;
 import cmpesweng2014.group1.nutty.model.Message;
 import cmpesweng2014.group1.nutty.model.Recipe;
+import cmpesweng2014.group1.nutty.model.SuperUser;
 import cmpesweng2014.group1.nutty.model.User;
 import cmpesweng2014.group1.nutty.service.EventService;
 import cmpesweng2014.group1.nutty.service.MailService;
@@ -161,7 +162,8 @@ public class HomeController {
 		User u = userService.canLogin(email, password);
 		if (u != null) {
 			String badge = userService.getBadge(u.getId()).getName();
-			return new Message(1, u, "You have successfully logged in, " + badge + " " + u.getName() + "."); 
+			int score = userService.getScore(u.getId());
+			return new Message(1, new SuperUser(u,badge,score,null,null,null,null,null,null,null), "You have successfully logged in, " + badge + " " + u.getName() + "."); 
 		} 
 		else {
 			return new Message(0, null, "Invalid email address or password.");
