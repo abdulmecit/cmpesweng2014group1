@@ -3,6 +3,9 @@ package cmpesweng2014.group1.nutty.model;
 public class SuperUser{
 	
 	private User user;
+	private String badge;
+	private int score;
+	private PrivacyOptions privOptions;
 	private User[] followerList;
 	private User[] followingList;
 	private Recipe[] ownedRecipes;
@@ -14,7 +17,8 @@ public class SuperUser{
 		super();
 	}
 
-	public SuperUser(User user, User[] followerList, User[] followingList,
+	public SuperUser(User user, String badge, int score, PrivacyOptions privOptions,
+			User[] followerList, User[] followingList,
 			Recipe[] ownedRecipes, String[] ownedRecipePictures,
 			Recipe[] sharedRecipes, String[] sharedRecipePictures) {
 		super();
@@ -33,6 +37,30 @@ public class SuperUser{
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public String getBadge() {
+		return badge;
+	}
+
+	public void setBadge(String badge) {
+		this.badge = badge;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public PrivacyOptions getPrivOptions() {
+		return privOptions;
+	}
+
+	public void setPrivOptions(PrivacyOptions privOptions) {
+		this.privOptions = privOptions;
 	}
 
 	public User[] getFollowerList() {

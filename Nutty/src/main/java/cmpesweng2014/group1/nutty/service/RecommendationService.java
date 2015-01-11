@@ -1,7 +1,10 @@
 package cmpesweng2014.group1.nutty.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -54,38 +57,48 @@ public class RecommendationService {
 		return (!hasSelection);
 	}
 	
+	private Map<Long, Recipe[]> recommendedRecipeMap = new HashMap<Long, Recipe[]>();
 	/**
 	 * 
 	 * @param user_id
-	 * @return the recipe list to recommend user
+	 * @param isFast whether the recommendations will be recalculated
+	 * @return a recipe list of max size 5 to recommend user
 	 * @throws Exception
 	 */
-	public Recipe[] getRecommendation(long user_id) throws Exception{
-		List<Recipe> recList=recipeDao.calculateRecommendation(user_id);
-		Recipe[] rec;
-		if(recList == null || recList.size()==0)
-			rec = recipeService.getRecipeDao().getAllRecipes();
-		else
-			rec = recList.toArray(new Recipe[recList.size()]);
-		List<Recipe> selList=new ArrayList<Recipe>();
-		for(int i=0; i<rec.length;i++){
-			if(canEat(rec[i].getRecipe_id(), user_id)){
-				selList.add(rec[i]);
+	public Recipe[] getRecommendation(long user_id, boolean isFast) throws Exception{
+		List<Recipe> recList;
+		if(!isFast){
+			recList = recipeDao.calculateRecommendation(user_id);
+		
+			Recipe[] rec;
+			if(recList == null || recList.size()==0)
+				rec = recipeService.getRecipeDao().getAllRecipes();
+			else
+				rec = recList.toArray(new Recipe[recList.size()]);
+			List<Recipe> selList=new ArrayList<Recipe>();
+			for(int i=0; i<rec.length;i++){
+				if(canEat(rec[i].getRecipe_id(), user_id)){
+					selList.add(rec[i]);
+				}
+			}
+			List<Recipe> finalList = new ArrayList<Recipe>();
+			for(int i=0; i<selList.size();i++){
+				if(!isEaten(selList.get(i).getRecipe_id(), user_id)){
+					finalList.add(selList.get(i));
+				}
+			}
+			if(finalList.size() == 0){
+				//no appropriate recipe found, return random recipes
+				recommendedRecipeMap.put(user_id, recipeService.getRecipeDao().getRandomRecipes());
+			}
+			else if(finalList.size() > 5){
+				Collections.shuffle(finalList);
+				recommendedRecipeMap.put(user_id, (finalList.subList(0, 5)).toArray(new Recipe[finalList.size()]));
+			}
+			else{
+				recommendedRecipeMap.put(user_id, finalList.toArray(new Recipe[finalList.size()]));
 			}
 		}
-		List<Recipe> finalList = new ArrayList<Recipe>();
-		for(int i=0; i<selList.size();i++){
-			if(!isEaten(selList.get(i).getRecipe_id(), user_id)){
-				finalList.add(selList.get(i));
-			}
-		}
-		if(finalList.size()==0){
-			//no recipe found, return without any filter
-			return recipeService.getRecipeDao().getAllRecipes();
-		}
-		else{
-			return finalList.toArray(new Recipe[finalList.size()]);
-		}
-
-	}	
+		return recommendedRecipeMap.get(user_id);
+	}
 }

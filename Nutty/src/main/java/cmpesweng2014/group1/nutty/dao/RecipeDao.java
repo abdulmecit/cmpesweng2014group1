@@ -833,6 +833,21 @@ public class RecipeDao extends PcDao{
 		}
 	}
 	/**
+	 * get random recipes from the database
+	 * @return Recipe array
+	 */
+	public Recipe[] getRandomRecipes(){
+		List<Recipe> recList = this.getTemplate().query(
+				"SELECT * FROM Recipe ORDER BY RAND() LIMIT 5",
+				new Object[] {}, new RecipeRowMapper());
+		if (recList.isEmpty()) {
+			return null;
+		} else {
+			Recipe[] recipes = recList.toArray(new Recipe[recList.size()]);
+			return recipes;
+		}
+	}
+	/**
 	 * get UserRecipeScore objects for the given user
 	 * @param user_id
 	 * @return list of UserRecipeScore objects
@@ -899,8 +914,7 @@ public class RecipeDao extends PcDao{
 				List<RecommendedItem> recommendations = recommender.recommend(user_id, 7);
 				List<Recipe> recipes=new ArrayList<Recipe>();
 				out.close();
-				//File f2 = new File("results.txt");
-				//OutputStream out2 = new FileOutputStream(f2);
+
 				if(recommendations.size()==0){
 					return null;
 				}

@@ -692,6 +692,15 @@ public class UserController {
 		User visited_user = userService.getUserDao().getUserById(visited_user_id);
 		su.setUser(visited_user);
 		
+		String badge = userService.getBadge(visited_user_id).getName();
+		su.setBadge(badge);
+		
+		int score = userService.getScore(visited_user_id);
+		su.setScore(score);
+		
+		PrivacyOptions privOptions = userService.getUserDao().getPrivacyOptions(visited_user_id);
+		su.setPrivOptions(privOptions);
+		
 		User[] followerList = userService.getFollowerList(visited_user_id);
 		su.setFollowerList(followerList);
 		
@@ -766,6 +775,33 @@ public class UserController {
 		userService.getUserDao().updatePrivacyOption(user_id, "visible_activities", visible_ac);
 		redirectAttrs.addFlashAttribute("message", new Message(1, from_page, "Your privacy settings are successfully updated."));
 		return "redirect:/success";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "getPrivacyOptionsREST")
+	public PrivacyOptions getPrivacyOptions(
+			@RequestParam(value = "user_id", required = true) Long user_id
+			){
+		return userService.getUserDao().getPrivacyOptions(user_id);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "updatePrivacyOptionsREST")
+	public Message updatePrivacyOptions(
+			@RequestParam(value = "user_id", required = true) Long user_id,			
+			@RequestParam(value = "followable", required = true) int followable,
+			@RequestParam(value = "visible_hc", required = true) int visible_hc,
+			@RequestParam(value = "visible_fi", required = true) int visible_fi,
+			@RequestParam(value = "visible_np", required = true) int visible_np,
+			@RequestParam(value = "visible_ac", required = true) int visible_ac
+			){
+		userService.getUserDao().updatePrivacyOption(user_id, "followable", followable);
+		userService.getUserDao().updatePrivacyOption(user_id, "visible_health_condition", visible_hc);
+		userService.getUserDao().updatePrivacyOption(user_id, "visible_food_intolerance", visible_fi);
+		userService.getUserDao().updatePrivacyOption(user_id, "visible_not_pref", visible_np);
+		userService.getUserDao().updatePrivacyOption(user_id, "visible_activities", visible_ac);
+		
+		return new Message(1, null, "Your privacy settings are successfully updated.");
 	}
 	
 	@RequestMapping(value = "deleteAccount")

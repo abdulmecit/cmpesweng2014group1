@@ -606,7 +606,7 @@ public class RecipeService {
 		return recipeDao.getRecipeById(recipe_id);
 	}
 	
-	public static Recipe[] all_recipes = null;
+	private Recipe[] all_recipes = null;
 	/**
 	 * Returns all the recipes in the database.
 	 * @return

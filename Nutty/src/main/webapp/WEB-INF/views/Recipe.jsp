@@ -428,11 +428,11 @@ body {
 								<div class="col-sm-8">
 									<p style="margin-top: 0px">
 										<b>Portion:</b> &nbsp ${recipe.portion} <br> <b>Total
-											Calories: </b> &nbsp ${recipe.nutrition_info.total_calorie} kcal
-										<br> <b> Total Fat:</b> &nbsp
-										${recipe.nutrition_info.total_fat} g <br> <b> Total
+											Calories:</b> &nbsp ${recipe.nutrition_info.total_calorie} kcal
+										<br> <b>Total Fat:</b> &nbsp
+										${recipe.nutrition_info.total_fat} g <br> <b>Total
 											Protein:</b> &nbsp ${recipe.nutrition_info.total_protein} g <br>
-										<b> Total Carbohydrate:</b> &nbsp
+										<b>Total Carbohydrate:</b> &nbsp
 										${recipe.nutrition_info.total_carbohydrate} g
 									</p>
 								</div>

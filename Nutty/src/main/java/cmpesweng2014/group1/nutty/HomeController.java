@@ -92,7 +92,7 @@ public class HomeController {
 			User u = (User) session.getAttribute("user");
 			Recipe[] recipes = null;
 			try {
-				recipes = recommService.getRecommendation(u.getId());
+				recipes = recommService.getRecommendation(u.getId(), false);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -149,7 +149,7 @@ public class HomeController {
 			return "redirect:login";
 		}
 	}
-
+	
 	@ResponseBody
 	@RequestMapping(value = "/loginREST")
 	public Message loginREST(
@@ -160,7 +160,8 @@ public class HomeController {
 		}
 		User u = userService.canLogin(email, password);
 		if (u != null) {
-			return new Message(1, u, "You have successfully logged in, " + u.getName() + "."); 
+			String badge = userService.getBadge(u.getId()).getName();
+			return new Message(1, u, "You have successfully logged in, " + badge + " " + u.getName() + "."); 
 		} 
 		else {
 			return new Message(0, null, "Invalid email address or password.");
@@ -658,7 +659,7 @@ public class HomeController {
         if (isLogged) {
             User u = (User) session.getAttribute("user");
             try {
-                allRecipes = recommService.getRecommendation(u.getId());
+                allRecipes = recommService.getRecommendation(u.getId(), true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -690,7 +691,7 @@ public class HomeController {
         if (isLogged) {
             User u = (User) session.getAttribute("user");
             try {
-                allRecipes = recommService.getRecommendation(u.getId());
+                allRecipes = recommService.getRecommendation(u.getId(), true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -721,7 +722,7 @@ public class HomeController {
         if (isLogged) {
             User u = (User) session.getAttribute("user");
             try {
-                allRecipes = recommService.getRecommendation(u.getId());
+                allRecipes = recommService.getRecommendation(u.getId(), true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -752,7 +753,7 @@ public class HomeController {
         if (isLogged) {
             User u = (User) session.getAttribute("user");
             try {
-                allRecipes = recommService.getRecommendation(u.getId());
+                allRecipes = recommService.getRecommendation(u.getId(), true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -803,6 +804,21 @@ public class HomeController {
 			answer += "]";
 		}
 		return answer;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/getRecommendationREST")
+	public String getRecommendationREST(
+			@RequestParam(value = "user_id", required = true) Long user_id
+			){
+
+		Recipe[] recipes = null;
+		try {
+			recipes = recommService.getRecommendation(user_id, false);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return jsonEncode(recipes);
 	}
 	
 }
