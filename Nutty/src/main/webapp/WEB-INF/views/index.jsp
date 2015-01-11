@@ -371,8 +371,9 @@ $(function() {
 							$("#recommContent").css('display', 'block');
 
 							$('#recommContent').empty();
-							result = '<c:forEach var="recRecipes" items="${recommendedRecipes}"> <a href="recipe/${recRecipes.recipe_id}"'
-							+'class="list-group-item"><h5 class="list-group-item-heading">${recRecipes.name}</h5></a></c:forEach>';
+							result = '<c:forEach var="recRecipes" items="${recommendedRecipes}" varStatus="loop"><a href="recipe/${recRecipes.recipe_id}"'
+							+'class="list-group-item"><img src="${recommendedRecipesPhotos[loop.index]}" title="${recRecipes.name}" width="30%" height="auto" hspace="50px">'
+							+'<span style="font-size:1.2em; width:250px; height:auto; display:inline-block">${recRecipes.name}</span></a></c:forEach>';						
 							$('#recommContent').append(result);
 						} else {
 							$("#recommContent").css('display', 'none');

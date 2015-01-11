@@ -99,9 +99,9 @@ public class HomeController {
 			}
 			if(recipes != null){
 				model.addAttribute("recommendedRecipes", recipes);
-				String[][] recipePhotos = new String[recipes.length][];
+				String[] recipePhotos = new String[recipes.length];
 				for(int i=0; i<recipes.length; i++){
-					recipePhotos[i] = recipeService.getRecipeAllPhotoUrl(recipes[i].getRecipe_id());
+					recipePhotos[i] = recipeService.getRecipeAllPhotoUrl(recipes[i].getRecipe_id())[0];
 				}
 				model.addAttribute("recommendedRecipesPhotos", recipePhotos);
 			}
@@ -670,7 +670,7 @@ public class HomeController {
         }
 
 		Random rand = new Random();
-		int randHealth = rand.nextInt(2);
+		int randHealth = rand.nextInt((allRecipes.length > 2) ? 2 : allRecipes.length);
 
 		Recipe[] health = searchService.sortByRate(allRecipes, "health");				
 		String[] response = new String[3];
@@ -701,8 +701,8 @@ public class HomeController {
             allRecipes = recipeService.getAllRecipes();
         }
 		Random rand = new Random();
-		int randEase = rand.nextInt(2);
-
+		int randEase = rand.nextInt((allRecipes.length > 2) ? 2 : allRecipes.length);
+		
 		Recipe[] ease = searchService.sortByRate(allRecipes, "ease");		
 		String[] response = new String[3];
 		
@@ -732,7 +732,7 @@ public class HomeController {
             allRecipes = recipeService.getAllRecipes();
         }
 		Random rand = new Random();
-		int randTaste = rand.nextInt(2);
+		int randTaste = rand.nextInt((allRecipes.length > 2) ? 2 : allRecipes.length);
 		
 		Recipe[] taste = searchService.sortByRate(allRecipes, "taste");		
 		String[] response = new String[3];
@@ -763,7 +763,7 @@ public class HomeController {
             allRecipes = recipeService.getAllRecipes();
         }
 		Random rand = new Random();
-		int randCost = rand.nextInt(2);
+		int randCost = rand.nextInt((allRecipes.length > 2) ? 2 : allRecipes.length);
 
 		Recipe[] cost = searchService.sortByRate(allRecipes, "cost");
 		String[] response = new String[3];

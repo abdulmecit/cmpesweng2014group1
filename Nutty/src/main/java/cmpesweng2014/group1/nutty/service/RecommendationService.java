@@ -62,7 +62,7 @@ public class RecommendationService {
 	 * 
 	 * @param user_id
 	 * @param isFast whether the recommendations will be recalculated
-	 * @return a recipe list of max size 5 to recommend user
+	 * @return a recipe list of max size 7 to recommend user
 	 * @throws Exception
 	 */
 	public Recipe[] getRecommendation(long user_id, boolean isFast) throws Exception{
@@ -91,9 +91,9 @@ public class RecommendationService {
 				//no appropriate recipe found, return random recipes
 				recommendedRecipeMap.put(user_id, recipeService.getRecipeDao().getRandomRecipes());
 			}
-			else if(finalList.size() > 5){
+			else if(finalList.size() > 7){
 				Collections.shuffle(finalList);
-				recommendedRecipeMap.put(user_id, (finalList.subList(0, 5)).toArray(new Recipe[finalList.size()]));
+				recommendedRecipeMap.put(user_id, (finalList.subList(0, 7)).toArray(new Recipe[7]));
 			}
 			else{
 				recommendedRecipeMap.put(user_id, finalList.toArray(new Recipe[finalList.size()]));

@@ -704,6 +704,7 @@ public class RecipeController {
 			@RequestParam(value = "user_id", defaultValue = "-1") long user_id){
 
 		String answer = "";
+		Gson gson = new Gson();
 		
 		Comment comments[] = recipeService.getComments(recipeId);
 		
@@ -712,7 +713,7 @@ public class RecipeController {
 		}
 		answer += "[";
 		for(int i=0; i<comments.length; i++){
-			answer += "{\"comment_id\":\"" + comments[i].getComment_id() +"\", \"comment_text\":\"" + comments[i].getText() + "\", ";
+			answer += "{\"comment_id\":\"" + comments[i].getComment_id() +"\", \"comment_text\":" + gson.toJson(comments[i].getText()) + ", ";
 			User u = userService.getUserDao().getUserById(comments[i].getUser_id());
 			answer += "\"commenter_id\":\"" + u.getId() + "\", \"commenter_name\":\"" + u.getName() + " " + u.getSurname() + "\"";
 			

@@ -838,7 +838,7 @@ public class RecipeDao extends PcDao{
 	 */
 	public Recipe[] getRandomRecipes(){
 		List<Recipe> recList = this.getTemplate().query(
-				"SELECT * FROM Recipe ORDER BY RAND() LIMIT 5",
+				"SELECT * FROM Recipe ORDER BY RAND() LIMIT 7",
 				new Object[] {}, new RecipeRowMapper());
 		if (recList.isEmpty()) {
 			return null;
@@ -914,7 +914,7 @@ public class RecipeDao extends PcDao{
 				List<RecommendedItem> recommendations = recommender.recommend(user_id, 7);
 				List<Recipe> recipes=new ArrayList<Recipe>();
 				out.close();
-
+				
 				if(recommendations.size()==0){
 					return null;
 				}
