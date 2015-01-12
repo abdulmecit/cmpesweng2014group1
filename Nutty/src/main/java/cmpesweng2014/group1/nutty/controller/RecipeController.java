@@ -117,7 +117,7 @@ public class RecipeController {
 	public Message addRecipeREST(@RequestParam(value = "recipeName", required = true) String recipeName,
 							@RequestParam(value = "description", required = true) String description,
 							@RequestParam(value = "portion", required = true) int portion,
-							@RequestParam(value = "link[]", required = true) String link,
+							@RequestParam(value = "link[]", required = false) String linkz,
 							@RequestParam(value = "ingredient[]", required = true) String ingredientz,
 							@RequestParam(value = "amount[]", required = true) String amountz,
 							@RequestParam(value = "measType[]", required = true) String meas_typez, 
@@ -125,25 +125,22 @@ public class RecipeController {
 							@RequestParam(value = "tag[]", required = false) String tagz) {
 		
 		String[] tags = {};
-		String[] urls = {};
+		String[] links = {};
+
 		//Convert from JSON String
 		Gson gson = new Gson();
 		String[] ingredients = gson.fromJson(ingredientz, String[].class);
 		String[] amounts = gson.fromJson(amountz, String[].class);
 		String[] meas_types = gson.fromJson(meas_typez, String[].class);
 		
+		if(linkz != null)
+			links = gson.fromJson(linkz, String[].class);
+	
 		if(tagz != null){
 			//Remove empty and duplicate tags			
 			HashSet<String> tagSet = new HashSet<String>(Arrays.asList(gson.fromJson(tagz, String[].class)));
 			tagSet.remove(new String(""));
 			tags = tagSet.toArray(new String[0]);
-		}
-		
-		if(link != null){
-			//Remove empty and duplicate links			
-			HashSet<String> linkSet = new HashSet<String>(Arrays.asList(gson.fromJson(link, String[].class)));
-			linkSet.remove(new String(""));
-			urls = linkSet.toArray(new String[0]);
 		}
 		
 		double[] parsedAmounts = new double[amounts.length];
@@ -157,7 +154,7 @@ public class RecipeController {
 		}
 		
 		User u = userService.getUserDao().getUserById(user_id);	
-		Recipe r = recipeService.createRecipe(recipeName, description, portion, urls, ingredients, amounts, parsedAmounts, meas_types, u, tags);
+		Recipe r = recipeService.createRecipe(recipeName, description, portion, links, ingredients, amounts, parsedAmounts, meas_types, u, tags);
 		if(r != null){
 			return new Message(1, r, "Your recipe is successfully added to the system.");		
 		}
@@ -348,6 +345,55 @@ public class RecipeController {
 		return "redirect:/derivedRecipe/"+recipeId;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/derivedRecipeREST/{recipeId}")
+	public Message deriveRecipeREST(@PathVariable int recipeId, @RequestParam(value = "recipeName", required = true) String recipeName,
+							@RequestParam(value = "description", required = true) String description,
+							@RequestParam(value = "portion", required = true) int portion,
+							@RequestParam(value = "link[]", required = false) String linkz,
+							@RequestParam(value = "ingredient[]", required = true) String ingredientz,
+							@RequestParam(value = "amount[]", required = true) String amountz,
+							@RequestParam(value = "measType[]", required = true) String meas_typez, 
+							@RequestParam(value = "user_id", required = true) Long user_id,
+							@RequestParam(value = "tag[]", required = false) String tagz) {
+		
+		String[] tags = {};
+		String[] links = {};
+
+		//Convert from JSON String
+		Gson gson = new Gson();
+		String[] ingredients = gson.fromJson(ingredientz, String[].class);
+		String[] amounts = gson.fromJson(amountz, String[].class);
+		String[] meas_types = gson.fromJson(meas_typez, String[].class);
+		
+		if(linkz != null)
+			links = gson.fromJson(linkz, String[].class);
+	
+		if(tagz != null){
+			//Remove empty and duplicate tags			
+			HashSet<String> tagSet = new HashSet<String>(Arrays.asList(gson.fromJson(tagz, String[].class)));
+			tagSet.remove(new String(""));
+			tags = tagSet.toArray(new String[0]);
+		}
+		
+		double[] parsedAmounts = new double[amounts.length];
+		//Check if entered amounts are valid
+		for(int i=0; i<amounts.length; i++){
+			double parsedAmount = recipeService.parseAmount(amounts[i]);
+			if(parsedAmount <= 0.0)
+				return new Message(0, null, "Your recipe had invalid ingredient amount values.");
+			else
+				parsedAmounts[i] = parsedAmount;
+		}
+		
+		User u = userService.getUserDao().getUserById(user_id);	
+		Recipe r = recipeService.createRecipe(recipeName, description, portion, links, ingredients, amounts, parsedAmounts, meas_types, u, tags);
+		if(r != null){
+			return new Message(1, r, "Your new version is successfully added to the system.");		
+		}
+		return new Message(0, null, "Your recipe couldn't added to the system.");
+	}
+	
 	@RequestMapping(value = "/editRecipe/{recipeId}", method = RequestMethod.GET)
 	public String fillEditRecipe(@PathVariable int recipeId, Model model, HttpSession session){
 		Recipe recipe = recipeService.getRecipe(recipeId);
@@ -418,6 +464,55 @@ public class RecipeController {
 		}
 		redirectAttrs.addFlashAttribute("message", new Message(0, null, "Your recipe couldn't added to the system."));
 		return "redirect:/editRecipe/"+recipeId;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/editRecipeREST/{recipeId}")
+	public Message editRecipeREST(@PathVariable int recipeId, @RequestParam(value = "recipeName", required = true) String recipeName,
+							@RequestParam(value = "description", required = true) String description,
+							@RequestParam(value = "portion", required = true) int portion,
+							@RequestParam(value = "link[]", required = false) String linkz,
+							@RequestParam(value = "ingredient[]", required = true) String ingredientz,
+							@RequestParam(value = "amount[]", required = true) String amountz,
+							@RequestParam(value = "measType[]", required = true) String meas_typez, 
+							@RequestParam(value = "user_id", required = true) Long user_id,
+							@RequestParam(value = "tag[]", required = false) String tagz) {
+		
+		String[] tags = {};
+		String[] links = {};
+
+		//Convert from JSON String
+		Gson gson = new Gson();
+		String[] ingredients = gson.fromJson(ingredientz, String[].class);
+		String[] amounts = gson.fromJson(amountz, String[].class);
+		String[] meas_types = gson.fromJson(meas_typez, String[].class);
+		
+		if(linkz != null)
+			links = gson.fromJson(linkz, String[].class);
+	
+		if(tagz != null){
+			//Remove empty and duplicate tags			
+			HashSet<String> tagSet = new HashSet<String>(Arrays.asList(gson.fromJson(tagz, String[].class)));
+			tagSet.remove(new String(""));
+			tags = tagSet.toArray(new String[0]);
+		}
+		
+		double[] parsedAmounts = new double[amounts.length];
+		//Check if entered amounts are valid
+		for(int i=0; i<amounts.length; i++){
+			double parsedAmount = recipeService.parseAmount(amounts[i]);
+			if(parsedAmount <= 0.0)
+				return new Message(0, null, "Your recipe had invalid ingredient amount values.");
+			else
+				parsedAmounts[i] = parsedAmount;
+		}
+		
+		User u = userService.getUserDao().getUserById(user_id);	
+		Recipe r = recipeService.createRecipe(recipeName, description, portion, links, ingredients, amounts, parsedAmounts, meas_types, u, tags);
+		if(r != null){
+			return new Message(1, r, "Your new version is successfully added to the system.");		
+		}
+		return new Message(0, null, "Your recipe couldn't added to the system.");
 	}
 	
 	@RequestMapping(value = "/deleteRecipe")

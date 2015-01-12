@@ -23,6 +23,9 @@ public class SuperUser{
 			Recipe[] sharedRecipes, String[] sharedRecipePictures) {
 		super();
 		this.user = user;
+		this.badge = badge;
+		this.score = score;
+		this.privOptions = privOptions;
 		this.followerList = followerList;
 		this.followingList = followingList;
 		this.ownedRecipes = ownedRecipes;

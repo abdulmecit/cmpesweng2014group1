@@ -319,7 +319,7 @@ public class HomeController {
 			@RequestParam(value = "birthday_month", required = false) String month,
 			@RequestParam(value = "birthday_day", required = false) String day,
 			@RequestParam(value = "gender", required = false) Integer gender,
-			@RequestParam(value = "link", required = false) String link,
+			@RequestParam(value = "link", defaultValue="") String link,
 			@RequestParam(value = "from_page", required = true) String from_page,
 			RedirectAttributes redirectAttrs, HttpSession session) throws ParseException {
 						
@@ -362,7 +362,7 @@ public class HomeController {
 			@RequestParam(value = "birthday_month", required = false) String month,
 			@RequestParam(value = "birthday_day", required = false) String day,
 			@RequestParam(value = "gender", required = false) Integer gender,
-			@RequestParam(value = "link", required = false) String link) throws ParseException {
+			@RequestParam(value = "link", defaultValue="") String link) throws ParseException {
 						
 		if (name.equals("") || surname.equals("") || email.equals("") || password.equals("")) {
 			return new Message(0, null, "Name, surname, email and password fields cannot be empty!");
